@@ -1,0 +1,227 @@
+#Region "Old"
+
+#Region "Transfer From Vault"
+            Case "*WHTITEMOUT*"
+                Try
+                    Dim orderNum As String = "RTISTRANSFER"
+                    Dim itemCode As String = ClientData.Split("|")(0)
+                    Dim lot As String = ClientData.Split("|")(1)
+                    Dim qty As String = ClientData.Split("|")(2)
+                    Dim unq As String = ClientData.Split("|")(3)
+                    Dim whseFrom As String = ClientData.Split("|")(4)
+                    Dim whseTo As String = ClientData.Split("|")(5)
+                    Dim process As String = ClientData.Split("|")(6)
+                    Dim userName As String = ClientData.Split("|")(7)
+
+                    Dim barcode As String = "(240)" + itemCode.PadRight(25, " ") + "(15)" + "".PadRight(6, " ") + "(10)" + lot.PadRight(20, " ") + "(30)" + qty.PadLeft(8, "0") + "(90)" + unq
+                    Dim fromVault As String = Unique.RTSQL.Retreive.PGM_GetBarcodeFromVault(barcode)
+                    Select Case fromVault.Split("*")(0)
+                        Case "1"
+                            fromVault = fromVault.Remove(0, 2)
+                            If Convert.ToBoolean(fromVault) = False Then
+                                Dim transferLoged As String = PGM.RTSQL.Insert.PGM_AddWhseTransferLog(itemCode, lot, whseFrom, whseTo, qty, userName, process)
+                                Select Case transferLoged.Split("*")(0)
+                                    Case "1"
+                                        Dim transferred As String = Transfers.RTSQL.Insert.UI_InsertWhseTransfer(itemCode, lot, whseFrom, whseTo, qty, userName, "PGM", "Transfer from vault", "Pending")
+                                        'Dim transferred As String = PGM.EvolutionSDK.CTransferItem(orderNum, whseFrom, whseTo, itemCode, lot, qty)
+                                        Select Case transferred.Split("*")(0)
+                                            Case "1"
+                                                Dim transferLogged = Transfers.RTSQL.Insert.UI_whtTransferLog(itemCode, lot, whseFrom, whseTo, qty.Replace(",", "."), userName, "PGM")
+                                                Select Case transferLoged.Split("*")(0)
+                                                    Case "1"
+                                                        Server.Listener.SendResponse(ClientSocket, Unique.RTSQL.Update.UI_UpdateTransFromVault(barcode))
+                                                    Case "-1"
+                                                        Server.Listener.SendResponse(ClientSocket, transferLogged)
+                                                End Select
+                                            Case "0"
+                                                Server.Listener.SendResponse(ClientSocket, transferred)
+                                            Case "-1"
+                                                Server.Listener.SendResponse(ClientSocket, transferred)
+                                        End Select
+                                    Case "-1"
+                                        Server.Listener.SendResponse(ClientSocket, transferLoged)
+                                End Select
+                            Else
+                                Server.Listener.SendResponse(ClientSocket, "0*Item already transferred from vault")
+                            End If
+                        Case "0"
+                            Server.Listener.SendResponse(ClientSocket, fromVault)
+                        Case "-1"
+                            Server.Listener.SendResponse(ClientSocket, fromVault)
+                    End Select
+                Catch ex As Exception
+                    Server.Listener.SendResponse(ClientSocket, "-1*" + ex.Message)
+                End Try
+#End Region
+
+#Region "Manufacture"
+            'Case "*MAUFACTUREPGM*"
+            '    Try
+            '        Dim itemCode As String = ClientData.Split("|")(0)
+            '        Dim weight As String = ClientData.Split("|")(1)
+            '        Dim concentration As String = ClientData.Split("|")(2)
+            '        Dim batch As String = ClientData.Split("|")(3)
+            '        Dim location As String = ClientData.Split("|")(4)
+            '        Dim userName As String = ClientData.Split("|")(5)
+            '        Dim batchFound As String = PGM.RTSQL.Retreive.PGM_GetItemBatch(itemCode, batch, location)
+            '        Select Case batchFound.Split("*")(0)
+            '            Case "1"
+            '                'Update Qty
+            '                batchFound = batchFound.Remove(0, 2)
+            '                Dim weightIn As String = batchFound.Split("|")(0)
+            '                Dim weightOut As String = batchFound.Split("|")(1)
+            '                Dim weightBal As String = batchFound.Split("|")(2)
+            '                Dim weightCon As String = batchFound.Split("|")(3)
+            '                If Convert.ToDouble(weightCon) = Convert.ToDouble(concentration) Then
+            '                    Dim headerUpdated As String = PGM.RTSQL.Update.PGM_updateHeader(itemCode, batch, weight.Replace(",", "."), location)
+            '                    Select Case headerUpdated.Split("*")(0)
+            '                        Case "1"
+            '                            Dim headerId As String = PGM.RTSQL.Retreive.PGM_GetHeaderID(itemCode, batch, location)
+            '                            Select Case headerId.Split("*")(0)
+            '                                Case "1"
+            '                                    headerId = headerId.Remove(0, 2)
+            '                                    Server.Listener.SendResponse(ClientSocket, PGM.RTSQL.Insert.PGM_ManufactureLine(headerId, weight, userName))
+            '                                Case "-1"
+            '                                    Server.Listener.SendResponse(ClientSocket, headerId)
+            '                            End Select
+            '                        Case "-1"
+            '                            Server.Listener.SendResponse(ClientSocket, headerUpdated)
+            '                    End Select
+            '                Else
+            '                    Server.Listener.SendResponse(ClientSocket, "-1*Incorrect concentraction entered")
+            '                End If
+            '            Case "0"
+            '                'Add new
+            '                Dim headerAdded As String = PGM.RTSQL.Insert.PGM_ManufactureHeader(itemCode, batch, weight, weight, concentration, location, userName)
+            '                Select Case headerAdded.Split("*")(0)
+            '                    Case "1"
+            '                        Dim headerId As String = PGM.RTSQL.Retreive.PGM_GetHeaderID(itemCode, batch, location)
+            '                        Select Case headerId.Split("*")(0)
+            '                            Case "1"
+            '                                headerId = headerId.Remove(0, 2)
+            '                                Server.Listener.SendResponse(ClientSocket, PGM.RTSQL.Insert.PGM_ManufactureLine(headerId, weight, userName))
+            '                            Case "-1"
+            '                                Server.Listener.SendResponse(ClientSocket, headerId)
+            '                        End Select
+            '                    Case "-1"
+            '                        Server.Listener.SendResponse(ClientSocket, headerAdded)
+            '                End Select
+            '            Case "-1"
+            '                Server.Listener.SendResponse(ClientSocket, batchFound)
+            '        End Select
+            '    Catch ex As Exception
+            '        Server.Listener.SendResponse(ClientSocket, "-1*" + ex.Message)
+            '    End Try
+#End Region
+
+#Region "Transfer To WIP"
+            Case "*PGMGETITEMLOTSWQTY*"
+                Try
+                    Dim itemCode As String = ClientData.Split("|")(0)
+                    Dim whse As String = ClientData.Split("|")(1)
+                    Dim manufItem As String = ClientData.Split("|")(2)
+                    Dim transferType As String = ClientData.Split("|")(3)
+                    Dim itemChecked As String = String.Empty
+                    Select Case transferType
+                        Case "VW"
+                            itemChecked = PGM.RTSQL.Retreive.PGM_CheckItemAllowedVW(manufItem, itemCode)
+                        Case "TPP"
+                            itemChecked = PGM.RTSQL.Retreive.PGM_CheckItemAllowedTP(manufItem, itemCode)
+                        Case "TSP"
+                            itemChecked = PGM.RTSQL.Retreive.PGM_CheckItemAllowedTS(manufItem, itemCode)
+                        Case "TAW"
+                            itemChecked = PGM.RTSQL.Retreive.PGM_CheckItemAllowedTAW(manufItem, itemCode)
+                        Case Else
+                            itemChecked = "-1*Invalid Transfer Type"
+                    End Select
+
+                    Select Case itemChecked.Split("*")(0)
+                        Case "1"
+                            Server.Listener.SendResponse(ClientSocket, PGM.Evolutiom.Retreive.PGM_GetItemLots(itemCode, whse))
+                        Case "-1"
+                            Server.Listener.SendResponse(ClientSocket, itemChecked)
+                    End Select
+
+                Catch ex As Exception
+                    Server.Listener.SendResponse(ClientSocket, "-1*" + ex.Message)
+                End Try
+            'Case "*PGMTRANSFERTOWIP*"
+            '    Try
+            '        Dim orderNum As String = "RTISTRANSFER"
+            '        Dim itemCode As String = ClientData.Split("|")(0)
+            '        Dim lotNum As String = ClientData.Split("|")(1)
+            '        Dim qty As String = ClientData.Split("|")(2)
+            '        Dim whseFrom As String = ClientData.Split("|")(3)
+            '        Dim manufItem As String = ClientData.Split("|")(4)
+            '        Dim batch As String = ClientData.Split("|")(5)
+            '        Dim userName As String = ClientData.Split("|")(6)
+            '        'Dim pgmLoc As String = ClientData.Split("|")(7)
+            '        Dim transType As String = ClientData.Split("|")(7)
+            '        Dim whseTo As String = String.Empty '"WIP-FS"
+            '        Select Case transType
+            '            Case "VW"
+            '                whseTo = PGM.RTSQL.Retreive.PGM_GetVWWIPLoc()
+            '                'whseTo = "WIP-FS"
+            '            Case "TPP"
+            '                whseTo = PGM.RTSQL.Retreive.PGM_GetTPWIPLoc()
+            '                'whseTo = "WIP-PP"
+            '            Case "TSP"
+            '                whseTo = PGM.RTSQL.Retreive.PGM_GetTSWIPLoc()
+            '                'hseTo = "WIP-FS"
+            '            Case "TAW"
+            '                whseTo = PGM.RTSQL.Retreive.PGM_GetTAWWIPLoc()
+            '                'whseTo = "WIP-AW"
+            '        End Select
+
+            '        Dim itemInLoc As String = PGM.RTSQL.Retreive.PGM_GetItemLocQty(itemCode, lotNum, whseFrom)
+            '        Select Case itemInLoc.Split("*")(0)
+            '            Case "1"
+            '                Select Case whseTo.Split("*")(0)
+            '                    Case "1"
+            '                        whseTo = whseTo.Remove(0, 2)
+            '                        Dim transferred As String = Transfers.RTSQL.Insert.UI_InsertWhseTransfer(itemCode, lotNum, whseFrom, whseTo, qty, userName, "PGM", "PGM Transfer out", "Pending")
+            '                        'Dim transferred As String = PGM.EvolutionSDK.CTransferItem(orderNum, whseFrom, whseTo, itemCode, lotNum, qty)
+            '                        Select Case transferred.Split("*")(0)
+            '                            Case "1"
+            '                                Dim headerUpdated As String = PGM.RTSQL.Update.PGM_updateHeaderQtyOut(itemCode, lotNum, qty, whseFrom)
+            '                                Select Case headerUpdated.Split("*")(0)
+            '                                    Case "1"
+            '                                        Dim headerId As String = PGM.RTSQL.Retreive.PGM_GetHeaderID(itemCode, lotNum, whseFrom)
+            '                                        Select Case headerId.Split("*")(0)
+            '                                            Case "1"
+            '                                                headerId = headerId.Remove(0, 2)
+            '                                                Dim transferAdded As String = PGM.RTSQL.Insert.PGM_AddTransferOutLine(headerId, qty, whseFrom, whseTo, manufItem, batch, userName)
+            '                                                Select Case transferAdded.Split("*")(0)
+            '                                                    Case "1"
+            '                                                        Server.Listener.SendResponse(ClientSocket, Transfers.RTSQL.Insert.UI_whtTransferLog(itemCode, batch, whseFrom, whseTo, qty.Replace(",", "."), userName, "PGM"))
+            '                                                    Case "-1"
+            '                                                        Server.Listener.SendResponse(ClientSocket, transferAdded)
+            '                                                End Select
+            '                                            Case "-1"
+            '                                                Server.Listener.SendResponse(ClientSocket, headerId)
+            '                                        End Select
+            '                                    Case "-1"
+            '                                        Server.Listener.SendResponse(ClientSocket, transferred)
+            '                                End Select
+            '                            Case "-1"
+            '                                Server.Listener.SendResponse(ClientSocket, transferred)
+            '                        End Select
+            '                    Case "-1"
+            '                        Server.Listener.SendResponse(ClientSocket, whseTo)
+            '                End Select
+            '            Case "-1"
+            '                Server.Listener.SendResponse(ClientSocket, itemInLoc)
+            '        End Select
+            '        'Dim availablePGMQty As String = String.Empty
+            '        'Select Case availablePGMQty.Split("*")(0)
+            '        '    Case "1"
+            '        '        availablePGMQty = availablePGMQty.Remove(0, 2)
+            '        '    Case "-1"
+            '        '        Server.Listener.SendResponse(ClientSocket, availablePGMQty)
+            '        'End Select
+            '    Catch ex As Exception
+            '        Server.Listener.SendResponse(ClientSocket, "-1*" + ex.Message)
+            '    End Try
+#End Region
+
+#End Region
