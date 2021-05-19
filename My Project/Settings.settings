@@ -6,7 +6,7 @@
       <Value Profile="(Default)">32017</Value>
     </Setting>
     <Setting Name="RTServer" Type="System.String" Scope="User">
-      <Value Profile="(Default)">MSI\PADDYSQL</Value>
+      <Value Profile="(Default)">LAPTOP-BURSESPP</Value>
     </Setting>
     <Setting Name="RTDB" Type="System.String" Scope="User">
       <Value Profile="(Default)">CAT_RTIS</Value>
@@ -18,7 +18,7 @@
       <Value Profile="(Default)">62017</Value>
     </Setting>
     <Setting Name="EvoServer" Type="System.String" Scope="User">
-      <Value Profile="(Default)">MSI\PADDYSQL</Value>
+      <Value Profile="(Default)">LAPTOP-BURSESPP</Value>
     </Setting>
     <Setting Name="EvoDB" Type="System.String" Scope="User">
       <Value Profile="(Default)">Cataler_SCN</Value>
@@ -30,7 +30,7 @@
       <Value Profile="(Default)">62017</Value>
     </Setting>
     <Setting Name="EvoComServer" Type="System.String" Scope="User">
-      <Value Profile="(Default)">MSI\PADDYSQL</Value>
+      <Value Profile="(Default)">LAPTOP-BURSESPP</Value>
     </Setting>
     <Setting Name="EvoComDB" Type="System.String" Scope="User">
       <Value Profile="(Default)">CAT_EvolutionCommon</Value>
