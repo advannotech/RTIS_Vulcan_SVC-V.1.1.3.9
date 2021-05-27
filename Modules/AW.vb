@@ -743,7 +743,7 @@ Public Class AW
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
                     Dim sqlComm As New SqlCommand("  SELECT [iLIneID], [vJobUnq], [vAWCode], [vLotNumber], [vPGMCode], [vPGMLot], [dQty], [dQtyManuf], [dtStarted] ,[vUserStarted] ,[dtStopped] ,[vUserStopped] ,[dtSReopened] ,[vUserReopened], [bJobRunning]
-                                                     FROM [tbl_RTIS_AW_Jobs] WHERE [dtStarted] BETWEEN @1 AND @2", sqlConn)
+                                                     FROM [tbl_RTIS_AW_Jobs] WHERE [dtStarted] BETWEEN @1 AND @2 ORDER BY [dtStarted] DESC", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", dateFrom))
                     sqlComm.Parameters.Add(New SqlParameter("@2", dateTo))
                     sqlConn.Open()

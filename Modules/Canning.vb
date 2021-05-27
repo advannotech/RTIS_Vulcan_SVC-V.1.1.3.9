@@ -61,19 +61,21 @@ Public Class Canning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT 
-      [vCanningCode]
-      ,[vCanningDesc]
-      ,[vQty]
-	  ,[vRMCode]
-      ,[vRMDesc]
-      ,[vRMQty]
-	  ,[vLotNumber]
-      ,[vOldJobCode]
-      ,[vPalletNo]      
-      ,[vUserAdded]
-      ,[dtDateAdded]
-  FROM [tbl_RTIS_Canning_Out] WHERE [dtDateAdded] BETWEEN @1 AND @2", sqlConn)
+                    Dim sqlComm As New SqlCommand("SELECT 
+                                                  [vCanningCode]
+                                                  ,[vCanningDesc]
+                                                  ,[vQty]
+	                                              ,[vRMCode]
+                                                  ,[vRMDesc]
+                                                  ,[vRMQty]
+	                                              ,[vLotNumber]
+                                                  ,[vOldJobCode]
+                                                  ,[vPalletNo]      
+                                                  ,[vUserAdded]
+                                                  ,[dtDateAdded]
+                                                   FROM [tbl_RTIS_Canning_Out] 
+                                                   WHERE [dtDateAdded] BETWEEN @1 AND @2
+                                                   ORDER BY [dtDateAdded] DESC", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", dateFrom))
                     sqlComm.Parameters.Add(New SqlParameter("@2", dateTo))
                     sqlConn.Open()

@@ -1029,7 +1029,7 @@ Public Class Transfers
                     Dim sqlComm As New SqlCommand(" INSERT INTO [tbl_WHTFGRequests]
                                                     ([vItemCode], [vLotNumber], [vWarehouse_From], [vWarehouse_To], [dQtyTransfered], [dtDateTransfered], [vUsername], [vProcess])
                                                     VALUES
-                                                    (@1, @2, @3, @4, @5, GETDATE(), @6, @7) ", sqlConn)
+                                                    (@1, @2, @3, @4, CONVERT(DECIMAL,@5), GETDATE(), @6, @7) ", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", lotNum))
                     sqlComm.Parameters.Add(New SqlParameter("@3", whseFrom))
@@ -1054,7 +1054,7 @@ Public Class Transfers
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
                     Dim sqlComm As New SqlCommand("INSERT INTO [stbl_WHTLog] ([vItemCode], [vLotNumber], [vWarehouse_From], [vWarehouse_To], [dQtyTransfered], [vUsername], [vProcess], [dtDateTransfered])
-                                                                               VALUES (@1, @2, @3, @4, @5, @6, @7, GETDATE())", sqlConn)
+                                                                               VALUES (@1, @2, @3, @4, CONVERT(DECIMAL,@5), @6, @7, GETDATE())", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", lotNum))
                     sqlComm.Parameters.Add(New SqlParameter("@3", whseFrom))

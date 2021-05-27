@@ -56,8 +56,8 @@ Public Class Server
             Try
                 Dim ThisIPAddress As IPAddress
                 ThisIPAddress = IPAddress.Parse(GetIPv4Address)
-                EventLog.WriteEntry(NameOf(RTIS_Vulcan_SVC), "Listener strated listening on " & ThisIPAddress.ToString() & " on port " & "32018")
-                Dim Listener As TcpListener = New TcpListener(ThisIPAddress, Convert.ToInt32("32018"))
+                EventLog.WriteEntry(NameOf(RTIS_Vulcan_SVC), "Listener strated listening on " & ThisIPAddress.ToString() & " on port " & My.Settings.Port)
+                Dim Listener As TcpListener = New TcpListener(ThisIPAddress, Convert.ToInt32(My.Settings.Port))
                 AllListeners.Add(Listener)
                 Listener.Start()
 

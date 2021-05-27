@@ -782,7 +782,40 @@ Public Class ServerResponse
                     Dim status As String = ClientData.Split("|")(0)
                     Dim process As String = ClientData.Split("|")(1)
                     Dim rows As String = ClientData.Split("|")(2)
-                    Server.Listener.SendResponse(ClientSocket, WhseTransfers.RTSQL.Retreive.UI_getWhtLInes(status, process, rows))
+                    Dim transferredDate As String = String.Empty
+                    Dim failedDate As String = String.Empty
+                    Dim charIndex As Integer = 3
+
+                    If ClientData.Split("|").Length = 5 Then
+                        Select Case ClientData.Split("|")(charIndex).Substring(0, 1)
+                            Case "t"
+                                Dim transferredStartDate As String = ClientData.Split("|")(3)
+                                Dim transferredEndDate As String = ClientData.Split("|")(4)
+                                transferredDate = String.Format("AND [dtDateTransfered] >= '{0}' AND [dtDateTransfered] <= '{1}'", transferredStartDate.Replace("t", ""), transferredEndDate)
+                            Case "f"
+                                Dim failedStartDate As String = ClientData.Split("|")(3)
+                                Dim failedEndDate As String = ClientData.Split("|")(4)
+                                failedDate = String.Format("AND [dtDateFailed] >= '{0}' AND [dtDateFailed] <= '{1}'", failedStartDate.Replace("f", ""), failedEndDate)
+                        End Select
+                    End If
+
+                    If ClientData.Split("|").Length = 7 Then
+                        For index = 1 To ClientData.Split("|").Length - 3
+                            Select Case ClientData.Split("|")(charIndex).Substring(0, 1)
+                                Case "t"
+                                    Dim transferredStartDate As String = ClientData.Split("|")(3)
+                                    Dim transferredEndDate As String = ClientData.Split("|")(4)
+                                    transferredDate = String.Format("AND [dtDateTransfered] >= '{0}' BETWEEN '{1}'", transferredStartDate.Replace("t", ""), transferredEndDate)
+                                Case "f"
+                                    Dim failedStartDate As String = ClientData.Split("|")(5)
+                                    Dim failedEndDate As String = ClientData.Split("|")(6)
+                                    failedDate = String.Format("AND [dtDateFailed] >= '{0}' BETWEEN '{1}'", failedStartDate.Replace("f", ""), failedEndDate)
+                            End Select
+                            charIndex = charIndex + 1
+                        Next
+                    End If
+
+                    Server.Listener.SendResponse(ClientSocket, WhseTransfers.RTSQL.Retreive.UI_getWhtLInes(status, process, rows, transferredDate, failedDate))
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try

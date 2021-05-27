@@ -136,15 +136,16 @@ Public Class PowderPrep
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
                     Dim sqlComm As New SqlCommand("SELECT [vItemCode], [vItemDesc], [vLotDesc], [dQty], [vUsername], [dtDateAdded], ISNULL([bManufactured], 0), [dtManufDate], [vUserManuf], ISNULL([bTransfered], 0)       
-      ,[dtTransDate]
-      ,[vUserTrans]
-      , ISNULL([bRecTrans], 0)
-      ,[dtRecTrans]
-      ,[vUserRec]
-      ,[vUserEdited]
-      ,[dtDateEdited]
-      ,[vEditReason]
-      ,[dOldQty] FROM [tbl_RTIS_Powder_Prep] WHERE [dtDateAdded] BETWEEN @1 AND @2", sqlConn)
+                                                  ,[dtTransDate]
+                                                  ,[vUserTrans]
+                                                  , ISNULL([bRecTrans], 0)
+                                                  ,[dtRecTrans]
+                                                  ,[vUserRec]
+                                                  ,[vUserEdited]
+                                                  ,[dtDateEdited]
+                                                  ,[vEditReason]
+                                                  ,[dOldQty] FROM [tbl_RTIS_Powder_Prep] WHERE [dtDateAdded] BETWEEN @1 AND @2
+                                                   ORDER BY [dtDateAdded] DESC", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", dateFrom))
                     sqlComm.Parameters.Add(New SqlParameter("@2", dateTo))
                     sqlConn.Open()

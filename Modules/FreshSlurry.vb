@@ -215,7 +215,22 @@ Public Class FreshSlurry
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [vTrolleyCode],[vItemCode],[vItemDesc],[vLotNumber],[dWetWeight],[dDryWeight],[dSolidity],[dtDateSol],[vUserSol],[dtDateEntered],[vUserEntered],ISNULL([bManuf], 0),[dtManufDate],[vUserManuf],ISNULL([bTrans], 0),[dtTrans],ISNULL([bRecTrans], 0),[dtRecTrans] ,[vUserRec] FROM [tbl_RTIS_Fresh_Slurry] WHERE [dtDateEntered] BETWEEN @1 AND @2", sqlConn)
+                    Dim sqlComm As New SqlCommand("SELECT [vTrolleyCode],
+                                                [vItemCode],[vItemDesc],
+                                                [vLotNumber],[dWetWeight],
+                                                [dDryWeight],[dSolidity],[dtDateSol],
+                                                [vUserSol],[dtDateEntered],[vUserEntered],
+                                                ISNULL([bManuf], 0),
+                                                [dtManufDate],
+                                                [vUserManuf],
+                                                ISNULL([bTrans], 0),
+                                                [dtTrans],
+                                                ISNULL([bRecTrans], 0),
+                                                [dtRecTrans] ,
+                                                [vUserRec] 
+                                                FROM [tbl_RTIS_Fresh_Slurry]
+                                                WHERE [dtDateEntered] BETWEEN @1 AND @2
+                                                ORDER BY [dtDateEntered] DESC", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", dateFrom))
                     sqlComm.Parameters.Add(New SqlParameter("@2", dateTo))
                     sqlConn.Open()

@@ -1008,7 +1008,7 @@ Public Class PGM
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
                     Dim sqlComm As New SqlCommand("	  SELECT [vItemCode], [vLotDesc], [vWhseCode], [dWeightIn], [dWeightOut], [dWeightBal], [dConcentration], [dtDateAdded]
-                                                      FROM [htbl_RTIS_PGM_Manuf] WHERE [dtDateAdded] BETWEEN @1 AND @2 ORDER BY [iLineID] DESC", sqlConn)
+                                                      FROM [htbl_RTIS_PGM_Manuf] WHERE [dtDateAdded] BETWEEN @1 AND @2 ORDER BY [iLineID] DESC, [dtDateAdded] DESC", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", dateFrom))
                     sqlComm.Parameters.Add(New SqlParameter("@2", dateTo))
                     sqlConn.Open()

@@ -78,7 +78,7 @@ Public Class WhseTransfers
                     End If
                 End Try
             End Function
-            Public Shared Function UI_getWhtLInes(ByVal status As String, ByVal process As String, ByVal rows As String) As String
+            Public Shared Function UI_getWhtLInes(ByVal status As String, ByVal process As String, ByVal rows As String, transferredDate As String, failedDate As String) As String
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
@@ -100,6 +100,7 @@ Public Class WhseTransfers
                                                     FROM [tbl_WHTPending]  wt
                                                     INNER JOIN [tbl_ProcNames] pr ON wt.[vProcess]  = [vProcName]
                                                     WHERE [vStatus] LIKE @1 AND [vProcess] LIKE @2
+                                                    " + transferredDate + failedDate + "
                                                     ORDER BY [iLineID] DESC", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", "%" + status + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@2", "%" + process + "%"))
@@ -134,29 +135,30 @@ Public Class WhseTransfers
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
                     Dim sqlComm As New SqlCommand("
-  SELECT fg.[iLineID], 
-  fg.[vItemCode], 
-  fg.[vLotNumber], 
-  fg.[vWarehouse_From], 
-  fg.[vWarehouse_To], 
-  fg.[dQtyTransfered], 
-  ISNULL(lq.[fQtyOnHand], 0) AS [QtyOnHand],
-  fg.[vUsername],
-  fg.[vProcess], 
-  fg.[dtDateTransfered],
-  CASE 
-	WHEN l.[cLotDescription] IS NULL THEN
-		'The lot was not found in evolution, has the lot been manufactured.'		
-	WHEN lq.[fQtyOnHand] < fg.[dQtyTransfered] THEN
-		'Insufficient quantity of this lot was found in the out going warehouse.'			
-	ELSE
-		''
-	END  AS [Warnings]
-  FROM [tbl_WHTFGRequests] fg
-  INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[Code] = fg.[vItemCode]
-  INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[Code] = fg.[vWarehouse_From]
-  LEFT JOIN [Cataler_SCN].[dbo].[_etblLotTracking] l ON l.[cLotDescription] = fg.[vLotNumber]
-  LEFT JOIN   [Cataler_SCN].[dbo].[_etblLotTrackingQty] lq ON l.[idLotTracking] = lq.[iLotTrackingID] AND lq.[iWarehouseID] = w.[WhseLink] WHERE [dtDateTransfered] BETWEEN @1 AND @2", sqlConn)
+                    SELECT fg.[iLineID], 
+                    fg.[vItemCode], 
+                    fg.[vLotNumber], 
+                    fg.[vWarehouse_From], 
+                    fg.[vWarehouse_To], 
+                    fg.[dQtyTransfered], 
+                    ISNULL(lq.[fQtyOnHand], 0) AS [QtyOnHand],
+                    fg.[vUsername],
+                    fg.[vProcess], 
+                    fg.[dtDateTransfered],
+                    CASE 
+                    WHEN l.[cLotDescription] IS NULL THEN
+	                    'The lot was not found in evolution, has the lot been manufactured.'		
+                    WHEN lq.[fQtyOnHand] < fg.[dQtyTransfered] THEN
+	                    'Insufficient quantity of this lot was found in the out going warehouse.'			
+                    ELSE
+	                    ''
+                    END  AS [Warnings]
+                    FROM [tbl_WHTFGRequests] fg
+                    INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[Code] = fg.[vItemCode]
+                    INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[Code] = fg.[vWarehouse_From]
+                    LEFT JOIN [Cataler_SCN].[dbo].[_etblLotTracking] l ON l.[cLotDescription] = fg.[vLotNumber]
+                    LEFT JOIN   [Cataler_SCN].[dbo].[_etblLotTrackingQty] lq ON l.[idLotTracking] = lq.[iLotTrackingID] AND lq.[iWarehouseID] = w.[WhseLink] WHERE [dtDateTransfered] BETWEEN @1 AND @2 
+                    ORDER BY [dtDateTransfered] DESC ", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", dateFrom))
                     sqlComm.Parameters.Add(New SqlParameter("@2", dateTo))
                     sqlConn.Open()

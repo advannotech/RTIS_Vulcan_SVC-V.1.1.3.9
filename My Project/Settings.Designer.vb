@@ -15,7 +15,7 @@ Option Explicit On
 Namespace My
     
     <Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
-     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.9.0.0"),  _
+     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.8.1.0"),  _
      Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>  _
     Partial Friend NotInheritable Class MySettings
         Inherits Global.System.Configuration.ApplicationSettingsBase
@@ -56,42 +56,6 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("32017")>  _
-        Public Property Port() As String
-            Get
-                Return CType(Me("Port"),String)
-            End Get
-            Set
-                Me("Port") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("MSI\PADDYSQL")>  _
-        Public Property RTServer() As String
-            Get
-                Return CType(Me("RTServer"),String)
-            End Get
-            Set
-                Me("RTServer") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("CAT_RTIS")>  _
-        Public Property RTDB() As String
-            Get
-                Return CType(Me("RTDB"),String)
-            End Get
-            Set
-                Me("RTDB") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("sa")>  _
         Public Property RTUser() As String
             Get
@@ -99,30 +63,6 @@ Namespace My
             End Get
             Set
                 Me("RTUser") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("62017")>  _
-        Public Property RTPassword() As String
-            Get
-                Return CType(Me("RTPassword"),String)
-            End Get
-            Set
-                Me("RTPassword") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("MSI\PADDYSQL")>  _
-        Public Property EvoServer() As String
-            Get
-                Return CType(Me("EvoServer"),String)
-            End Get
-            Set
-                Me("EvoServer") = value
             End Set
         End Property
         
@@ -147,18 +87,6 @@ Namespace My
             End Get
             Set
                 Me("EvoUser") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("62017")>  _
-        Public Property EvoPassword() As String
-            Get
-                Return CType(Me("EvoPassword"),String)
-            End Get
-            Set
-                Me("EvoPassword") = value
             End Set
         End Property
         
@@ -219,6 +147,78 @@ Namespace My
             End Get
             Set
                 Me("Project") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("5000")>  _
+        Public Property Port() As String
+            Get
+                Return CType(Me("Port"),String)
+            End Get
+            Set
+                Me("Port") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("localhost")>  _
+        Public Property RTServer() As String
+            Get
+                Return CType(Me("RTServer"),String)
+            End Get
+            Set
+                Me("RTServer") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("CAT_RTIS2018")>  _
+        Public Property RTDB() As String
+            Get
+                Return CType(Me("RTDB"),String)
+            End Get
+            Set
+                Me("RTDB") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("password123")>  _
+        Public Property RTPassword() As String
+            Get
+                Return CType(Me("RTPassword"),String)
+            End Get
+            Set
+                Me("RTPassword") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("localhost")>  _
+        Public Property EvoServer() As String
+            Get
+                Return CType(Me("EvoServer"),String)
+            End Get
+            Set
+                Me("EvoServer") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("password123")>  _
+        Public Property EvoPassword() As String
+            Get
+                Return CType(Me("EvoPassword"),String)
+            End Get
+            Set
+                Me("EvoPassword") = value
             End Set
         End Property
     End Class

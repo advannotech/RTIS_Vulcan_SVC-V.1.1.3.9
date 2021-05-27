@@ -1532,17 +1532,18 @@ Public Class MixedSlurry
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("   SELECT m.[iLineID], m.[vTankType] + '_' + m.[vTankCode], m.[vItemCode], m.[vDescription], m.[vLotNumber], ISNULL( COUNT( s.[iLineID]), 0), m.[dtUserStarted], ISNULL(m.[bTransferred], 0), ISNULL(m.[bReceived], 0), ISNULL(m.[bManualclose], 0)
-                                                      FROM [tbl_RTIS_MS_Main] m
-                                                      LEFT JOIN [tbl_RTIS_MS_Slurries] s ON s.[iHeaderID] = m.[iLineID]
-                                                      WHERE m.[vTankType] = 'TNK' AND m.[dtUserStarted] BETWEEN @1 AND @2
-                                                      GROUP BY m.[iLineID], m.[vTankType] , m.[vTankCode], m.[vItemCode], m.[vDescription], m.[vLotNumber], m.[dtUserStarted], m.[bTransferred], m.[bReceived], m.[bManualclose]
-                                                      UNION 
- SELECT  d.[iLineID], 'MTNK_' + d.[vTankCode], d.[vItemCode], m.[vDescription], d.[vLotNumber], ISNULL( COUNT( s.[iLineID]), 0), m.[dtUserStarted], ISNULL(d.[bTransferred], 0), ISNULL(d.[bReceived], 0), ISNULL(d.[bManualclose], 0) 
- FROM [tbl_RTIS_MS_Decant] d 
- INNER JOIN [tbl_RTIS_MS_Main] m ON m.[iLineID] = d.[iHeaderID]
- LEFT JOIN [tbl_RTIS_MS_Slurries] s ON m.[iLineID] = s.[iHeaderID] WHERE m.[dtUserStarted] BETWEEN @1 AND @2
- GROUP BY d.[iLineID],d.[vTankCode], d.[vItemCode], m.[vDescription], d.[vLotNumber], m.[dtUserStarted], d.[bTransferred], d.[bReceived], d.[bManualclose]", sqlConn)
+                    Dim sqlComm As New SqlCommand("SELECT m.[iLineID], m.[vTankType] + '_' + m.[vTankCode], m.[vItemCode], m.[vDescription], m.[vLotNumber], ISNULL( COUNT( s.[iLineID]), 0), m.[dtUserStarted], ISNULL(m.[bTransferred], 0), ISNULL(m.[bReceived], 0), ISNULL(m.[bManualclose], 0)
+                                                    FROM [tbl_RTIS_MS_Main] m
+                                                    LEFT JOIN [tbl_RTIS_MS_Slurries] s ON s.[iHeaderID] = m.[iLineID]
+                                                    WHERE m.[vTankType] = 'TNK' AND m.[dtUserStarted] BETWEEN @1 AND @2
+                                                    GROUP BY m.[iLineID], m.[vTankType] , m.[vTankCode], m.[vItemCode], m.[vDescription], m.[vLotNumber], m.[dtUserStarted], m.[bTransferred], m.[bReceived], m.[bManualclose]
+                                                    UNION 
+                                                    SELECT  d.[iLineID], 'MTNK_' + d.[vTankCode], d.[vItemCode], m.[vDescription], d.[vLotNumber], ISNULL( COUNT( s.[iLineID]), 0), m.[dtUserStarted], ISNULL(d.[bTransferred], 0), ISNULL(d.[bReceived], 0), ISNULL(d.[bManualclose], 0) 
+                                                    FROM [tbl_RTIS_MS_Decant] d 
+                                                    INNER JOIN [tbl_RTIS_MS_Main] m ON m.[iLineID] = d.[iHeaderID]
+                                                    LEFT JOIN [tbl_RTIS_MS_Slurries] s ON m.[iLineID] = s.[iHeaderID] WHERE m.[dtUserStarted] BETWEEN @1 AND @2
+                                                    GROUP BY d.[iLineID],d.[vTankCode], d.[vItemCode], m.[vDescription], d.[vLotNumber], m.[dtUserStarted], d.[bTransferred], d.[bReceived], d.[bManualclose]
+                                                    ORDER BY m.[dtUserStarted] DESC", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", dateFrom))
                     sqlComm.Parameters.Add(New SqlParameter("@2", dateTo))
                     sqlConn.Open()
