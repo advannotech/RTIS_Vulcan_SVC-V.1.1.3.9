@@ -2112,7 +2112,7 @@ Public Class MixedSlurry
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [tbl_RTIS_MS_Main] SET [bManufactured] = 1, [vUserManufactured] = @USER, [dtManufactured] = GETDATE() WHERE [iLineID] = @ID" , sqlConn)
+                    Dim sqlComm As New SqlCommand(" UPDATE [tbl_RTIS_MS_Main] SET [bManufactured] = 1, [vUserManufactured] = @USER, [dtManufactured] = GETDATE() WHERE [iLineID] = @ID", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@ID", id))
                     sqlComm.Parameters.Add(New SqlParameter("@USER", username))
                     sqlConn.Open()
