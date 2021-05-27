@@ -2744,19 +2744,19 @@ Public Class ServerResponse
                                                     Dim stockInfo As String = MixedSlurry.Evolution.Rereive.MBL_GetFeshSlurryInfo(itemCode)
                                                     Select Case stockInfo.Split("*")(0)
                                                         Case "1"
-                                                            stockInfo = stockInfo.Remove(0, 2)  
+                                                            stockInfo = stockInfo.Remove(0, 2)
                                                             Dim stockLink As String = stockInfo.Split("|")(0)
                                                             Dim cost As String = stockInfo.Split("|")(1)
-                                                            Dim query As String = "  INSERT INTO _etblInvJrBatchLines (iInvJrBatchID, iStockID, iWarehouseID, dTrDate, iTrCodeID,
+                                                            Dim query As String = "INSERT INTO _etblInvJrBatchLines (iInvJrBatchID, iStockID, iWarehouseID, dTrDate, iTrCodeID,
                                                                     cReference, cDescription, fQtyIn, fQtyOut, fNewCost, iProjectID, bIsSerialItem, bIsLotItem, 
                                                                     iSNGroupID, iJobID, iLotID, cLotNumber, cLineNotes, iGLContraID, _etblInvJrBatchLines_iBranchID,
                                                                     iUnitsOfMeasureStockingID, iUnitsOfMeasureCategoryID, iUnitsOfMeasureID)
-                                                                    VALUES(" +iJournalID+ ", "+stockLink+", '10', '" + solDate + "', 83,
-                                                                    '', '– CS FRESH TO MIS', 0, "+dryWeight.Replace(",", ".")+", "+cost.Replace(",", ".")+", 23, 0, 1, 
-                                                                    0, 0, 0, '"+lot+"', '', 84199, 0,
+                                                                    VALUES(" + iJournalID + ", " + stockLink + ", '10', '" + solDate + "', 83,
+                                                                    '', '– CS FRESH TO MIS', 0, " + dryWeight.Replace(",", ".") + ", " + cost.Replace(",", ".") + ", 23, 0, 1, 
+                                                                    0, 0, 0, '" + lot + "', '', 84199, 0,
                                                                     0, 0, 0)
-                                                                    "   
-                                                                    queryList.Add(query)
+                                                                    "
+                                                            queryList.Add(query)
                                                             'Dim lotID As String = MixedSlurry.Evolution.Rereive.MBL_GetFeshSlurryLotID(lot, stockLink)
                                                             'Select Case lotID.Split("*")(0)
                                                             '    Case "1"
@@ -2781,9 +2781,9 @@ Public Class ServerResponse
                                     If Failed = False Then
                                         Dim mixInfo As String = MixedSlurry.RTSQL.Retreive.UI_GetAllMixedSlurryManufInfo(lineID)
                                         Select Case mixInfo.Split("*")(0)
-                                            Case "1"          
-                                                mixInfo = mixInfo.Remove(0, 2)
-                                                Dim allInfo As String() = mixInfo.Split("|")
+                                            Case "1"
+                                                    mixInfo = mixInfo.Remove(0, 2)
+                                                    Dim allInfo As String() = mixInfo.Split("|")
                                                 Dim stockLink As String = allInfo(0)
                                                 Dim lotID As String = allInfo(1)
                                                 Dim lotNumber As String = allInfo(2)

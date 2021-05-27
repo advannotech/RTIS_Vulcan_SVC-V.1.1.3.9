@@ -503,9 +503,15 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("    SELECT w.[Code], w.[Name] FROM [RTIS_WarehouseLookUp_MStZect] wl
-                                                       INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
-                                                       WHERE [bEnabled] = 1", sqlConn)
+                    Dim sqlComm As New SqlCommand("WHERE [bEnabled] = 1SELECT w.[Code], w.[Name] FROM [RTIS_WarehouseLookUp_MStZect] wl
+                                                        INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = wl.iWhse_Link
+                                                        WHERE w.[Code] NOT IN (SELECT w.[Code] FROM [RTIS_WarehouseLookUp_MStZect] wl
+                                                        INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = wl.iWhse_Link
+                                                        WHERE wl.iWhse_Link !=w.WhseLink) AND wl.bEnabled=1", sqlConn)
+
+                    'Dim sqlComm As New SqlCommand("    SELECT w.[Code], w.[Name] FROM [RTIS_WarehouseLookUp_MStZect] wl
+                    '                                   INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
+                    '                                   WHERE [bEnabled] = 1", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -998,7 +1004,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" INSERT INTO [tbl_WHTPending] 
+                    Dim sqlComm As New SqlCommand(" INSERT INTO [tbl_WHTPending]
                                                     ([vItemCode], [vLotNumber], [vWarehouse_From], [vWarehouse_To], [dQtyTransfered], [dtDateTransfered], [vUsername], [vProcess], [vTransDesc], [vStatus])
                                                     VALUES
                                                     (@1, @2, @3, @4, @5, GETDATE(), @6, @7, @8, @9) ", sqlConn)
