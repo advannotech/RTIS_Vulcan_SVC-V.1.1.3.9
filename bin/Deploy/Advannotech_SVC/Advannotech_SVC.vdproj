@@ -1,0 +1,4909 @@
+﻿"DeployProject"
+{
+"VSVersion" = "3:800"
+"ProjectType" = "8:{978C614F-708E-4E1A-B201-565925725DBA}"
+"IsWebType" = "8:FALSE"
+"ProjectName" = "8:Advannotech_SVC"
+"LanguageId" = "3:1033"
+"CodePage" = "3:1252"
+"UILanguageId" = "3:1033"
+"SccProjectName" = "8:"
+"SccLocalPath" = "8:"
+"SccAuxPath" = "8:"
+"SccProvider" = "8:"
+    "Hierarchy"
+    {
+        "Entry"
+        {
+        "MsmKey" = "8:_04257ADD5F615BF450FC3C9DE49A1E61"
+        "OwnerKey" = "8:_6BAA1F2559F64713995FAF4047FBBC33"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_0483B258A09586986B36C64F51680CA5"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_0483B258A09586986B36C64F51680CA5"
+        "OwnerKey" = "8:_4B5F2B66D5C4E08736E0AED9985FDB5E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_0483B258A09586986B36C64F51680CA5"
+        "OwnerKey" = "8:_D96BA0F8C5E57ACFE22CCE036B710E29"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_0483B258A09586986B36C64F51680CA5"
+        "OwnerKey" = "8:_7F718A380AF5717DA4465C10CD010C82"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_0483B258A09586986B36C64F51680CA5"
+        "OwnerKey" = "8:_B8E03D523D94A68E8CAD7FC821B742BA"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_06B0F4FF9670C96127BC6BDA4E017C0E"
+        "OwnerKey" = "8:_6BAA1F2559F64713995FAF4047FBBC33"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_07AB35720B2FFB94ED644233EA3C0387"
+        "OwnerKey" = "8:_6BAA1F2559F64713995FAF4047FBBC33"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_0B10187F1EFFA8E37693F9C004EEF425"
+        "OwnerKey" = "8:_B8E03D523D94A68E8CAD7FC821B742BA"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_0B10187F1EFFA8E37693F9C004EEF425"
+        "OwnerKey" = "8:_D96BA0F8C5E57ACFE22CCE036B710E29"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_0B10187F1EFFA8E37693F9C004EEF425"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_0B10187F1EFFA8E37693F9C004EEF425"
+        "OwnerKey" = "8:_7F718A380AF5717DA4465C10CD010C82"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_15152DF62B63C0ACFDC6824E6B2FA43F"
+        "OwnerKey" = "8:_B02D1849236D556E233B70C9ACEE7F93"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_15152DF62B63C0ACFDC6824E6B2FA43F"
+        "OwnerKey" = "8:_4B5F2B66D5C4E08736E0AED9985FDB5E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_15152DF62B63C0ACFDC6824E6B2FA43F"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_17B03584C033857DD4C89EA4BC730741"
+        "OwnerKey" = "8:_0B10187F1EFFA8E37693F9C004EEF425"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_17B03584C033857DD4C89EA4BC730741"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_17E0C65F6F6E5E7E7D2123066B63B6F3"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_1C38931AC6B8FFF25B07A0F06E91F498"
+        "OwnerKey" = "8:_28F149F3C83948E12F2CC231CA5C71F6"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_1C38931AC6B8FFF25B07A0F06E91F498"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_20061A2150BCCAD032548C55224EC1E5"
+        "OwnerKey" = "8:_ECA8E36427703C8F700784CC32077236"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_20061A2150BCCAD032548C55224EC1E5"
+        "OwnerKey" = "8:_D96BA0F8C5E57ACFE22CCE036B710E29"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_20061A2150BCCAD032548C55224EC1E5"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_20061A2150BCCAD032548C55224EC1E5"
+        "OwnerKey" = "8:_C37D1D20C591B7959CEDE62F534FA3D0"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_20061A2150BCCAD032548C55224EC1E5"
+        "OwnerKey" = "8:_28F149F3C83948E12F2CC231CA5C71F6"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_20061A2150BCCAD032548C55224EC1E5"
+        "OwnerKey" = "8:_BC271238412D6C2FB4E3C83791697D0E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_20061A2150BCCAD032548C55224EC1E5"
+        "OwnerKey" = "8:_F7B511627EDF7465E3CA42C3355B66A9"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_20061A2150BCCAD032548C55224EC1E5"
+        "OwnerKey" = "8:_858DA29CD58309FFD18D7E86E4594619"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_23800290E5C648D96571BB551E56DA0A"
+        "OwnerKey" = "8:_6BAA1F2559F64713995FAF4047FBBC33"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_28F149F3C83948E12F2CC231CA5C71F6"
+        "OwnerKey" = "8:_85C1EEDB5507AB331B626F1C34CA77DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_28F149F3C83948E12F2CC231CA5C71F6"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_28F149F3C83948E12F2CC231CA5C71F6"
+        "OwnerKey" = "8:_4B5F2B66D5C4E08736E0AED9985FDB5E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_28F149F3C83948E12F2CC231CA5C71F6"
+        "OwnerKey" = "8:_7F718A380AF5717DA4465C10CD010C82"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_2BD46F432A3010AD8E50F5C7A894009C"
+        "OwnerKey" = "8:_6BAA1F2559F64713995FAF4047FBBC33"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_2D79883D1DEB8D41D7513748BEFC732D"
+        "OwnerKey" = "8:_6BAA1F2559F64713995FAF4047FBBC33"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_301879469BE939D8ACE342F96BBCD167"
+        "OwnerKey" = "8:_15152DF62B63C0ACFDC6824E6B2FA43F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_301879469BE939D8ACE342F96BBCD167"
+        "OwnerKey" = "8:_4B5F2B66D5C4E08736E0AED9985FDB5E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_301879469BE939D8ACE342F96BBCD167"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_31CD55A67E69FD981DF6A7E190E631A7"
+        "OwnerKey" = "8:_6BAA1F2559F64713995FAF4047FBBC33"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_354A12388E5134FA1D6AE99DA5CFBD4C"
+        "OwnerKey" = "8:_C7BB3E1D27E2094D458D9D6293E55446"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_354A12388E5134FA1D6AE99DA5CFBD4C"
+        "OwnerKey" = "8:_4B5F2B66D5C4E08736E0AED9985FDB5E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_354A12388E5134FA1D6AE99DA5CFBD4C"
+        "OwnerKey" = "8:_FDEB83F56323F259FED5926361FAF840"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_354A12388E5134FA1D6AE99DA5CFBD4C"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_354A12388E5134FA1D6AE99DA5CFBD4C"
+        "OwnerKey" = "8:_301879469BE939D8ACE342F96BBCD167"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_354A12388E5134FA1D6AE99DA5CFBD4C"
+        "OwnerKey" = "8:_15152DF62B63C0ACFDC6824E6B2FA43F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_354A12388E5134FA1D6AE99DA5CFBD4C"
+        "OwnerKey" = "8:_7F718A380AF5717DA4465C10CD010C82"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_354A12388E5134FA1D6AE99DA5CFBD4C"
+        "OwnerKey" = "8:_C37D1D20C591B7959CEDE62F534FA3D0"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_354A12388E5134FA1D6AE99DA5CFBD4C"
+        "OwnerKey" = "8:_F9E6E1D15CDD0F24B9F4632A6E696B61"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_354A12388E5134FA1D6AE99DA5CFBD4C"
+        "OwnerKey" = "8:_63C2EAF2811132C179FEE669DD0D30ED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_354A12388E5134FA1D6AE99DA5CFBD4C"
+        "OwnerKey" = "8:_28F149F3C83948E12F2CC231CA5C71F6"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_354A12388E5134FA1D6AE99DA5CFBD4C"
+        "OwnerKey" = "8:_9F36454921A53C22F39097DAC042E2D2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_354A12388E5134FA1D6AE99DA5CFBD4C"
+        "OwnerKey" = "8:_500EBEF152789CB87E9B92E40076BB19"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_354A12388E5134FA1D6AE99DA5CFBD4C"
+        "OwnerKey" = "8:_A00A0E609E229F5B9D1631A075016EA0"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_354A12388E5134FA1D6AE99DA5CFBD4C"
+        "OwnerKey" = "8:_85C1EEDB5507AB331B626F1C34CA77DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_40E8156B5AD5030BA668B95369FBDD32"
+        "OwnerKey" = "8:_6BAA1F2559F64713995FAF4047FBBC33"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_44449ADA0D68FF93F13EEAB4450EBEBA"
+        "OwnerKey" = "8:_6BAA1F2559F64713995FAF4047FBBC33"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_463DFECF329AF1C409160DE0CC72A5DA"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_463DFECF329AF1C409160DE0CC72A5DA"
+        "OwnerKey" = "8:_4B5F2B66D5C4E08736E0AED9985FDB5E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_463DFECF329AF1C409160DE0CC72A5DA"
+        "OwnerKey" = "8:_D96BA0F8C5E57ACFE22CCE036B710E29"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_463DFECF329AF1C409160DE0CC72A5DA"
+        "OwnerKey" = "8:_FDEB83F56323F259FED5926361FAF840"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_471B873B4B62E4E9DD37500DDC0E067A"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_471B873B4B62E4E9DD37500DDC0E067A"
+        "OwnerKey" = "8:_D20E8BB8F5886FDAE2D6BCC88DC81481"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_471B873B4B62E4E9DD37500DDC0E067A"
+        "OwnerKey" = "8:_B02D1849236D556E233B70C9ACEE7F93"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_471B873B4B62E4E9DD37500DDC0E067A"
+        "OwnerKey" = "8:_15152DF62B63C0ACFDC6824E6B2FA43F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_471B873B4B62E4E9DD37500DDC0E067A"
+        "OwnerKey" = "8:_D96BA0F8C5E57ACFE22CCE036B710E29"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_471B873B4B62E4E9DD37500DDC0E067A"
+        "OwnerKey" = "8:_4B5F2B66D5C4E08736E0AED9985FDB5E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_4ADC35A961417815BFC003FD063E0628"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_4B5F2B66D5C4E08736E0AED9985FDB5E"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_500EBEF152789CB87E9B92E40076BB19"
+        "OwnerKey" = "8:_85C1EEDB5507AB331B626F1C34CA77DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_500EBEF152789CB87E9B92E40076BB19"
+        "OwnerKey" = "8:_4B5F2B66D5C4E08736E0AED9985FDB5E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_500EBEF152789CB87E9B92E40076BB19"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_500EBEF152789CB87E9B92E40076BB19"
+        "OwnerKey" = "8:_15152DF62B63C0ACFDC6824E6B2FA43F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_500EBEF152789CB87E9B92E40076BB19"
+        "OwnerKey" = "8:_7F718A380AF5717DA4465C10CD010C82"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_500EBEF152789CB87E9B92E40076BB19"
+        "OwnerKey" = "8:_C37D1D20C591B7959CEDE62F534FA3D0"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_500EBEF152789CB87E9B92E40076BB19"
+        "OwnerKey" = "8:_F9E6E1D15CDD0F24B9F4632A6E696B61"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_500EBEF152789CB87E9B92E40076BB19"
+        "OwnerKey" = "8:_28F149F3C83948E12F2CC231CA5C71F6"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_500EBEF152789CB87E9B92E40076BB19"
+        "OwnerKey" = "8:_63C2EAF2811132C179FEE669DD0D30ED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_518CA0C1162CD7ECB5CBFFB3F48092C1"
+        "OwnerKey" = "8:_6BAA1F2559F64713995FAF4047FBBC33"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_567D3D5A78F68EBCF720B59A6BAB6B07"
+        "OwnerKey" = "8:_6BAA1F2559F64713995FAF4047FBBC33"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_57FB75C65C2E0BAF1CA60134155C8577"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_57FB75C65C2E0BAF1CA60134155C8577"
+        "OwnerKey" = "8:_4B5F2B66D5C4E08736E0AED9985FDB5E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_57FB75C65C2E0BAF1CA60134155C8577"
+        "OwnerKey" = "8:_301879469BE939D8ACE342F96BBCD167"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_57FB75C65C2E0BAF1CA60134155C8577"
+        "OwnerKey" = "8:_15152DF62B63C0ACFDC6824E6B2FA43F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_57FB75C65C2E0BAF1CA60134155C8577"
+        "OwnerKey" = "8:_B02D1849236D556E233B70C9ACEE7F93"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_57FB75C65C2E0BAF1CA60134155C8577"
+        "OwnerKey" = "8:_C37D1D20C591B7959CEDE62F534FA3D0"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_57FB75C65C2E0BAF1CA60134155C8577"
+        "OwnerKey" = "8:_F9E6E1D15CDD0F24B9F4632A6E696B61"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_57FB75C65C2E0BAF1CA60134155C8577"
+        "OwnerKey" = "8:_63C2EAF2811132C179FEE669DD0D30ED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_57FB75C65C2E0BAF1CA60134155C8577"
+        "OwnerKey" = "8:_28F149F3C83948E12F2CC231CA5C71F6"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_57FB75C65C2E0BAF1CA60134155C8577"
+        "OwnerKey" = "8:_9F36454921A53C22F39097DAC042E2D2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_57FB75C65C2E0BAF1CA60134155C8577"
+        "OwnerKey" = "8:_500EBEF152789CB87E9B92E40076BB19"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_57FB75C65C2E0BAF1CA60134155C8577"
+        "OwnerKey" = "8:_A00A0E609E229F5B9D1631A075016EA0"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_57FB75C65C2E0BAF1CA60134155C8577"
+        "OwnerKey" = "8:_354A12388E5134FA1D6AE99DA5CFBD4C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_57FB75C65C2E0BAF1CA60134155C8577"
+        "OwnerKey" = "8:_C7BB3E1D27E2094D458D9D6293E55446"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_57FB75C65C2E0BAF1CA60134155C8577"
+        "OwnerKey" = "8:_85C1EEDB5507AB331B626F1C34CA77DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_57FB75C65C2E0BAF1CA60134155C8577"
+        "OwnerKey" = "8:_9030D38D40EB8B32CC2EC08A5BCAF1AA"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_57FB75C65C2E0BAF1CA60134155C8577"
+        "OwnerKey" = "8:_A57E1836937F7BC7B6A4C1B85551791F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_57FB75C65C2E0BAF1CA60134155C8577"
+        "OwnerKey" = "8:_7F718A380AF5717DA4465C10CD010C82"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_607FE7B258340AA16F162D0644CFC51A"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_63C2EAF2811132C179FEE669DD0D30ED"
+        "OwnerKey" = "8:_28F149F3C83948E12F2CC231CA5C71F6"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_63C2EAF2811132C179FEE669DD0D30ED"
+        "OwnerKey" = "8:_4B5F2B66D5C4E08736E0AED9985FDB5E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_63C2EAF2811132C179FEE669DD0D30ED"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_63C2EAF2811132C179FEE669DD0D30ED"
+        "OwnerKey" = "8:_15152DF62B63C0ACFDC6824E6B2FA43F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_63C2EAF2811132C179FEE669DD0D30ED"
+        "OwnerKey" = "8:_7F718A380AF5717DA4465C10CD010C82"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_6BAA1F2559F64713995FAF4047FBBC33"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_756989F335E8AAAC366327B9C47E7581"
+        "OwnerKey" = "8:_6BAA1F2559F64713995FAF4047FBBC33"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_7CBE75D0A5F0528ACE4EA1B6835DCBCF"
+        "OwnerKey" = "8:_6BAA1F2559F64713995FAF4047FBBC33"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_7F718A380AF5717DA4465C10CD010C82"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_7F718A380AF5717DA4465C10CD010C82"
+        "OwnerKey" = "8:_4B5F2B66D5C4E08736E0AED9985FDB5E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_7F718A380AF5717DA4465C10CD010C82"
+        "OwnerKey" = "8:_B02D1849236D556E233B70C9ACEE7F93"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_858DA29CD58309FFD18D7E86E4594619"
+        "OwnerKey" = "8:_ECA8E36427703C8F700784CC32077236"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_858DA29CD58309FFD18D7E86E4594619"
+        "OwnerKey" = "8:_4B5F2B66D5C4E08736E0AED9985FDB5E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_858DA29CD58309FFD18D7E86E4594619"
+        "OwnerKey" = "8:_D96BA0F8C5E57ACFE22CCE036B710E29"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_858DA29CD58309FFD18D7E86E4594619"
+        "OwnerKey" = "8:_FDEB83F56323F259FED5926361FAF840"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_858DA29CD58309FFD18D7E86E4594619"
+        "OwnerKey" = "8:_E262D8B583E50F9D7015564E6551351A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_858DA29CD58309FFD18D7E86E4594619"
+        "OwnerKey" = "8:_15152DF62B63C0ACFDC6824E6B2FA43F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_858DA29CD58309FFD18D7E86E4594619"
+        "OwnerKey" = "8:_B02D1849236D556E233B70C9ACEE7F93"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_858DA29CD58309FFD18D7E86E4594619"
+        "OwnerKey" = "8:_D20E8BB8F5886FDAE2D6BCC88DC81481"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_858DA29CD58309FFD18D7E86E4594619"
+        "OwnerKey" = "8:_17E0C65F6F6E5E7E7D2123066B63B6F3"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_858DA29CD58309FFD18D7E86E4594619"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_858DA29CD58309FFD18D7E86E4594619"
+        "OwnerKey" = "8:_463DFECF329AF1C409160DE0CC72A5DA"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_858DA29CD58309FFD18D7E86E4594619"
+        "OwnerKey" = "8:_C37D1D20C591B7959CEDE62F534FA3D0"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_858DA29CD58309FFD18D7E86E4594619"
+        "OwnerKey" = "8:_F9E6E1D15CDD0F24B9F4632A6E696B61"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_858DA29CD58309FFD18D7E86E4594619"
+        "OwnerKey" = "8:_63C2EAF2811132C179FEE669DD0D30ED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_858DA29CD58309FFD18D7E86E4594619"
+        "OwnerKey" = "8:_28F149F3C83948E12F2CC231CA5C71F6"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_858DA29CD58309FFD18D7E86E4594619"
+        "OwnerKey" = "8:_9F36454921A53C22F39097DAC042E2D2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_858DA29CD58309FFD18D7E86E4594619"
+        "OwnerKey" = "8:_500EBEF152789CB87E9B92E40076BB19"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_858DA29CD58309FFD18D7E86E4594619"
+        "OwnerKey" = "8:_A00A0E609E229F5B9D1631A075016EA0"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_858DA29CD58309FFD18D7E86E4594619"
+        "OwnerKey" = "8:_354A12388E5134FA1D6AE99DA5CFBD4C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_858DA29CD58309FFD18D7E86E4594619"
+        "OwnerKey" = "8:_85C1EEDB5507AB331B626F1C34CA77DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_858DA29CD58309FFD18D7E86E4594619"
+        "OwnerKey" = "8:_9030D38D40EB8B32CC2EC08A5BCAF1AA"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_858DA29CD58309FFD18D7E86E4594619"
+        "OwnerKey" = "8:_7F718A380AF5717DA4465C10CD010C82"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_858DA29CD58309FFD18D7E86E4594619"
+        "OwnerKey" = "8:_A57E1836937F7BC7B6A4C1B85551791F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_858DA29CD58309FFD18D7E86E4594619"
+        "OwnerKey" = "8:_BC271238412D6C2FB4E3C83791697D0E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_858DA29CD58309FFD18D7E86E4594619"
+        "OwnerKey" = "8:_B8E03D523D94A68E8CAD7FC821B742BA"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_85C1EEDB5507AB331B626F1C34CA77DC"
+        "OwnerKey" = "8:_7F718A380AF5717DA4465C10CD010C82"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_85C1EEDB5507AB331B626F1C34CA77DC"
+        "OwnerKey" = "8:_4B5F2B66D5C4E08736E0AED9985FDB5E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_85C1EEDB5507AB331B626F1C34CA77DC"
+        "OwnerKey" = "8:_15152DF62B63C0ACFDC6824E6B2FA43F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_85C1EEDB5507AB331B626F1C34CA77DC"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_89759E876AD43E53C180152AB5F5B5D6"
+        "OwnerKey" = "8:_6BAA1F2559F64713995FAF4047FBBC33"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_8E5E658FC13F316B5456CBC195C37DA4"
+        "OwnerKey" = "8:_6BAA1F2559F64713995FAF4047FBBC33"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9030D38D40EB8B32CC2EC08A5BCAF1AA"
+        "OwnerKey" = "8:_7F718A380AF5717DA4465C10CD010C82"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9030D38D40EB8B32CC2EC08A5BCAF1AA"
+        "OwnerKey" = "8:_4B5F2B66D5C4E08736E0AED9985FDB5E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9030D38D40EB8B32CC2EC08A5BCAF1AA"
+        "OwnerKey" = "8:_FDEB83F56323F259FED5926361FAF840"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9030D38D40EB8B32CC2EC08A5BCAF1AA"
+        "OwnerKey" = "8:_301879469BE939D8ACE342F96BBCD167"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9030D38D40EB8B32CC2EC08A5BCAF1AA"
+        "OwnerKey" = "8:_15152DF62B63C0ACFDC6824E6B2FA43F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9030D38D40EB8B32CC2EC08A5BCAF1AA"
+        "OwnerKey" = "8:_B02D1849236D556E233B70C9ACEE7F93"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9030D38D40EB8B32CC2EC08A5BCAF1AA"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9030D38D40EB8B32CC2EC08A5BCAF1AA"
+        "OwnerKey" = "8:_C37D1D20C591B7959CEDE62F534FA3D0"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9030D38D40EB8B32CC2EC08A5BCAF1AA"
+        "OwnerKey" = "8:_F9E6E1D15CDD0F24B9F4632A6E696B61"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9030D38D40EB8B32CC2EC08A5BCAF1AA"
+        "OwnerKey" = "8:_63C2EAF2811132C179FEE669DD0D30ED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9030D38D40EB8B32CC2EC08A5BCAF1AA"
+        "OwnerKey" = "8:_28F149F3C83948E12F2CC231CA5C71F6"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9030D38D40EB8B32CC2EC08A5BCAF1AA"
+        "OwnerKey" = "8:_9F36454921A53C22F39097DAC042E2D2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9030D38D40EB8B32CC2EC08A5BCAF1AA"
+        "OwnerKey" = "8:_500EBEF152789CB87E9B92E40076BB19"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9030D38D40EB8B32CC2EC08A5BCAF1AA"
+        "OwnerKey" = "8:_A00A0E609E229F5B9D1631A075016EA0"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9030D38D40EB8B32CC2EC08A5BCAF1AA"
+        "OwnerKey" = "8:_354A12388E5134FA1D6AE99DA5CFBD4C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9030D38D40EB8B32CC2EC08A5BCAF1AA"
+        "OwnerKey" = "8:_C7BB3E1D27E2094D458D9D6293E55446"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9030D38D40EB8B32CC2EC08A5BCAF1AA"
+        "OwnerKey" = "8:_85C1EEDB5507AB331B626F1C34CA77DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_98C75792124DB9B2DBF90B2041E3A8B5"
+        "OwnerKey" = "8:_6BAA1F2559F64713995FAF4047FBBC33"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_98E1F323A835FABC13EF928E5AD327E7"
+        "OwnerKey" = "8:_6BAA1F2559F64713995FAF4047FBBC33"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9F36454921A53C22F39097DAC042E2D2"
+        "OwnerKey" = "8:_500EBEF152789CB87E9B92E40076BB19"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9F36454921A53C22F39097DAC042E2D2"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9F36454921A53C22F39097DAC042E2D2"
+        "OwnerKey" = "8:_4B5F2B66D5C4E08736E0AED9985FDB5E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9F36454921A53C22F39097DAC042E2D2"
+        "OwnerKey" = "8:_15152DF62B63C0ACFDC6824E6B2FA43F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9F36454921A53C22F39097DAC042E2D2"
+        "OwnerKey" = "8:_7F718A380AF5717DA4465C10CD010C82"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9F36454921A53C22F39097DAC042E2D2"
+        "OwnerKey" = "8:_85C1EEDB5507AB331B626F1C34CA77DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A00A0E609E229F5B9D1631A075016EA0"
+        "OwnerKey" = "8:_85C1EEDB5507AB331B626F1C34CA77DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A00A0E609E229F5B9D1631A075016EA0"
+        "OwnerKey" = "8:_4B5F2B66D5C4E08736E0AED9985FDB5E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A00A0E609E229F5B9D1631A075016EA0"
+        "OwnerKey" = "8:_FDEB83F56323F259FED5926361FAF840"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A00A0E609E229F5B9D1631A075016EA0"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A00A0E609E229F5B9D1631A075016EA0"
+        "OwnerKey" = "8:_15152DF62B63C0ACFDC6824E6B2FA43F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A00A0E609E229F5B9D1631A075016EA0"
+        "OwnerKey" = "8:_7F718A380AF5717DA4465C10CD010C82"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A00A0E609E229F5B9D1631A075016EA0"
+        "OwnerKey" = "8:_F9E6E1D15CDD0F24B9F4632A6E696B61"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A00A0E609E229F5B9D1631A075016EA0"
+        "OwnerKey" = "8:_28F149F3C83948E12F2CC231CA5C71F6"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A00A0E609E229F5B9D1631A075016EA0"
+        "OwnerKey" = "8:_63C2EAF2811132C179FEE669DD0D30ED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A00A0E609E229F5B9D1631A075016EA0"
+        "OwnerKey" = "8:_9F36454921A53C22F39097DAC042E2D2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A00A0E609E229F5B9D1631A075016EA0"
+        "OwnerKey" = "8:_500EBEF152789CB87E9B92E40076BB19"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A2C287B049D213978F0828F46E2ADDA1"
+        "OwnerKey" = "8:_6BAA1F2559F64713995FAF4047FBBC33"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A57E1836937F7BC7B6A4C1B85551791F"
+        "OwnerKey" = "8:_7F718A380AF5717DA4465C10CD010C82"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A57E1836937F7BC7B6A4C1B85551791F"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A57E1836937F7BC7B6A4C1B85551791F"
+        "OwnerKey" = "8:_C37D1D20C591B7959CEDE62F534FA3D0"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A6F925314091D651FBFA3F7D4FDCA191"
+        "OwnerKey" = "8:_6BAA1F2559F64713995FAF4047FBBC33"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A7B9DD1BC69962CDD6590041E3F7EC1C"
+        "OwnerKey" = "8:_6BAA1F2559F64713995FAF4047FBBC33"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B02D1849236D556E233B70C9ACEE7F93"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B02D1849236D556E233B70C9ACEE7F93"
+        "OwnerKey" = "8:_4B5F2B66D5C4E08736E0AED9985FDB5E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B1E2DEB147840E723149A6FAE389A155"
+        "OwnerKey" = "8:_0483B258A09586986B36C64F51680CA5"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B1E2DEB147840E723149A6FAE389A155"
+        "OwnerKey" = "8:_471B873B4B62E4E9DD37500DDC0E067A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B1E2DEB147840E723149A6FAE389A155"
+        "OwnerKey" = "8:_4B5F2B66D5C4E08736E0AED9985FDB5E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B1E2DEB147840E723149A6FAE389A155"
+        "OwnerKey" = "8:_D96BA0F8C5E57ACFE22CCE036B710E29"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B1E2DEB147840E723149A6FAE389A155"
+        "OwnerKey" = "8:_FDEB83F56323F259FED5926361FAF840"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B1E2DEB147840E723149A6FAE389A155"
+        "OwnerKey" = "8:_E262D8B583E50F9D7015564E6551351A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B1E2DEB147840E723149A6FAE389A155"
+        "OwnerKey" = "8:_301879469BE939D8ACE342F96BBCD167"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B1E2DEB147840E723149A6FAE389A155"
+        "OwnerKey" = "8:_15152DF62B63C0ACFDC6824E6B2FA43F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B1E2DEB147840E723149A6FAE389A155"
+        "OwnerKey" = "8:_B02D1849236D556E233B70C9ACEE7F93"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B1E2DEB147840E723149A6FAE389A155"
+        "OwnerKey" = "8:_D20E8BB8F5886FDAE2D6BCC88DC81481"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B1E2DEB147840E723149A6FAE389A155"
+        "OwnerKey" = "8:_17E0C65F6F6E5E7E7D2123066B63B6F3"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B1E2DEB147840E723149A6FAE389A155"
+        "OwnerKey" = "8:_463DFECF329AF1C409160DE0CC72A5DA"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B1E2DEB147840E723149A6FAE389A155"
+        "OwnerKey" = "8:_BD0D1857B0A61AB9C3EB558F7B6B1F17"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B1E2DEB147840E723149A6FAE389A155"
+        "OwnerKey" = "8:_C37D1D20C591B7959CEDE62F534FA3D0"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B1E2DEB147840E723149A6FAE389A155"
+        "OwnerKey" = "8:_F9E6E1D15CDD0F24B9F4632A6E696B61"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B1E2DEB147840E723149A6FAE389A155"
+        "OwnerKey" = "8:_63C2EAF2811132C179FEE669DD0D30ED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B1E2DEB147840E723149A6FAE389A155"
+        "OwnerKey" = "8:_1C38931AC6B8FFF25B07A0F06E91F498"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B1E2DEB147840E723149A6FAE389A155"
+        "OwnerKey" = "8:_28F149F3C83948E12F2CC231CA5C71F6"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B1E2DEB147840E723149A6FAE389A155"
+        "OwnerKey" = "8:_9F36454921A53C22F39097DAC042E2D2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B1E2DEB147840E723149A6FAE389A155"
+        "OwnerKey" = "8:_500EBEF152789CB87E9B92E40076BB19"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B1E2DEB147840E723149A6FAE389A155"
+        "OwnerKey" = "8:_A00A0E609E229F5B9D1631A075016EA0"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B1E2DEB147840E723149A6FAE389A155"
+        "OwnerKey" = "8:_FFFB4FF0684D1BC1B50194AFF8546B36"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B1E2DEB147840E723149A6FAE389A155"
+        "OwnerKey" = "8:_354A12388E5134FA1D6AE99DA5CFBD4C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B1E2DEB147840E723149A6FAE389A155"
+        "OwnerKey" = "8:_C7BB3E1D27E2094D458D9D6293E55446"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B1E2DEB147840E723149A6FAE389A155"
+        "OwnerKey" = "8:_85C1EEDB5507AB331B626F1C34CA77DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B1E2DEB147840E723149A6FAE389A155"
+        "OwnerKey" = "8:_9030D38D40EB8B32CC2EC08A5BCAF1AA"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B1E2DEB147840E723149A6FAE389A155"
+        "OwnerKey" = "8:_A57E1836937F7BC7B6A4C1B85551791F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B1E2DEB147840E723149A6FAE389A155"
+        "OwnerKey" = "8:_7F718A380AF5717DA4465C10CD010C82"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B1E2DEB147840E723149A6FAE389A155"
+        "OwnerKey" = "8:_0B10187F1EFFA8E37693F9C004EEF425"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B1E2DEB147840E723149A6FAE389A155"
+        "OwnerKey" = "8:_BC271238412D6C2FB4E3C83791697D0E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B1E2DEB147840E723149A6FAE389A155"
+        "OwnerKey" = "8:_F7B511627EDF7465E3CA42C3355B66A9"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B1E2DEB147840E723149A6FAE389A155"
+        "OwnerKey" = "8:_858DA29CD58309FFD18D7E86E4594619"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B1E2DEB147840E723149A6FAE389A155"
+        "OwnerKey" = "8:_20061A2150BCCAD032548C55224EC1E5"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B1E2DEB147840E723149A6FAE389A155"
+        "OwnerKey" = "8:_ECA8E36427703C8F700784CC32077236"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B1E2DEB147840E723149A6FAE389A155"
+        "OwnerKey" = "8:_B8E03D523D94A68E8CAD7FC821B742BA"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B1E2DEB147840E723149A6FAE389A155"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B1E2DEB147840E723149A6FAE389A155"
+        "OwnerKey" = "8:_57FB75C65C2E0BAF1CA60134155C8577"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B8E03D523D94A68E8CAD7FC821B742BA"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B8E03D523D94A68E8CAD7FC821B742BA"
+        "OwnerKey" = "8:_4B5F2B66D5C4E08736E0AED9985FDB5E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B8E03D523D94A68E8CAD7FC821B742BA"
+        "OwnerKey" = "8:_D96BA0F8C5E57ACFE22CCE036B710E29"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B8E03D523D94A68E8CAD7FC821B742BA"
+        "OwnerKey" = "8:_85C1EEDB5507AB331B626F1C34CA77DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B8E03D523D94A68E8CAD7FC821B742BA"
+        "OwnerKey" = "8:_7F718A380AF5717DA4465C10CD010C82"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_BC271238412D6C2FB4E3C83791697D0E"
+        "OwnerKey" = "8:_B8E03D523D94A68E8CAD7FC821B742BA"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_BC271238412D6C2FB4E3C83791697D0E"
+        "OwnerKey" = "8:_4B5F2B66D5C4E08736E0AED9985FDB5E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_BC271238412D6C2FB4E3C83791697D0E"
+        "OwnerKey" = "8:_D96BA0F8C5E57ACFE22CCE036B710E29"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_BC271238412D6C2FB4E3C83791697D0E"
+        "OwnerKey" = "8:_17E0C65F6F6E5E7E7D2123066B63B6F3"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_BC271238412D6C2FB4E3C83791697D0E"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_BC271238412D6C2FB4E3C83791697D0E"
+        "OwnerKey" = "8:_28F149F3C83948E12F2CC231CA5C71F6"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_BC271238412D6C2FB4E3C83791697D0E"
+        "OwnerKey" = "8:_500EBEF152789CB87E9B92E40076BB19"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_BC271238412D6C2FB4E3C83791697D0E"
+        "OwnerKey" = "8:_7F718A380AF5717DA4465C10CD010C82"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_BD0D1857B0A61AB9C3EB558F7B6B1F17"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_BD0D1857B0A61AB9C3EB558F7B6B1F17"
+        "OwnerKey" = "8:_D20E8BB8F5886FDAE2D6BCC88DC81481"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_BD89676CC1E3D09C81B11F6E80D9B5B2"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_BD89676CC1E3D09C81B11F6E80D9B5B2"
+        "OwnerKey" = "8:_F5740921BB5CF055D543972D37F26EAF"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_BD89676CC1E3D09C81B11F6E80D9B5B2"
+        "OwnerKey" = "8:_607FE7B258340AA16F162D0644CFC51A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_BF8EE21354113BC6559C24F39ECA19DC"
+        "OwnerKey" = "8:_6BAA1F2559F64713995FAF4047FBBC33"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C37D1D20C591B7959CEDE62F534FA3D0"
+        "OwnerKey" = "8:_7F718A380AF5717DA4465C10CD010C82"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C37D1D20C591B7959CEDE62F534FA3D0"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C7BB3E1D27E2094D458D9D6293E55446"
+        "OwnerKey" = "8:_85C1EEDB5507AB331B626F1C34CA77DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C7BB3E1D27E2094D458D9D6293E55446"
+        "OwnerKey" = "8:_4B5F2B66D5C4E08736E0AED9985FDB5E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C7BB3E1D27E2094D458D9D6293E55446"
+        "OwnerKey" = "8:_15152DF62B63C0ACFDC6824E6B2FA43F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C7BB3E1D27E2094D458D9D6293E55446"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C7BB3E1D27E2094D458D9D6293E55446"
+        "OwnerKey" = "8:_C37D1D20C591B7959CEDE62F534FA3D0"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C7BB3E1D27E2094D458D9D6293E55446"
+        "OwnerKey" = "8:_7F718A380AF5717DA4465C10CD010C82"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C7BB3E1D27E2094D458D9D6293E55446"
+        "OwnerKey" = "8:_28F149F3C83948E12F2CC231CA5C71F6"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C7BB3E1D27E2094D458D9D6293E55446"
+        "OwnerKey" = "8:_500EBEF152789CB87E9B92E40076BB19"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_CC2666D9753489EF634CD4824B21BAAD"
+        "OwnerKey" = "8:_6BAA1F2559F64713995FAF4047FBBC33"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_D20E8BB8F5886FDAE2D6BCC88DC81481"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_D20E8BB8F5886FDAE2D6BCC88DC81481"
+        "OwnerKey" = "8:_4B5F2B66D5C4E08736E0AED9985FDB5E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_D20E8BB8F5886FDAE2D6BCC88DC81481"
+        "OwnerKey" = "8:_D96BA0F8C5E57ACFE22CCE036B710E29"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_D20E8BB8F5886FDAE2D6BCC88DC81481"
+        "OwnerKey" = "8:_15152DF62B63C0ACFDC6824E6B2FA43F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_D20E8BB8F5886FDAE2D6BCC88DC81481"
+        "OwnerKey" = "8:_B02D1849236D556E233B70C9ACEE7F93"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_D84F89C2975A4869B75788BEDDDC3FAC"
+        "OwnerKey" = "8:_6BAA1F2559F64713995FAF4047FBBC33"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_D96BA0F8C5E57ACFE22CCE036B710E29"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_D96BA0F8C5E57ACFE22CCE036B710E29"
+        "OwnerKey" = "8:_4B5F2B66D5C4E08736E0AED9985FDB5E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_DDDB142E683AB78E97BA5B6AAF8859BA"
+        "OwnerKey" = "8:_6BAA1F2559F64713995FAF4047FBBC33"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_DF757A8BD19B80F2B22E0E2293AF1E75"
+        "OwnerKey" = "8:_6BAA1F2559F64713995FAF4047FBBC33"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_E262D8B583E50F9D7015564E6551351A"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_E262D8B583E50F9D7015564E6551351A"
+        "OwnerKey" = "8:_4B5F2B66D5C4E08736E0AED9985FDB5E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_E262D8B583E50F9D7015564E6551351A"
+        "OwnerKey" = "8:_D96BA0F8C5E57ACFE22CCE036B710E29"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_E70980962029BE06F49B6E99050E7133"
+        "OwnerKey" = "8:_6BAA1F2559F64713995FAF4047FBBC33"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_EB297DCB8CB1B94AC5DE346CF3F1056A"
+        "OwnerKey" = "8:_6BAA1F2559F64713995FAF4047FBBC33"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_ECA8E36427703C8F700784CC32077236"
+        "OwnerKey" = "8:_B8E03D523D94A68E8CAD7FC821B742BA"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_ECA8E36427703C8F700784CC32077236"
+        "OwnerKey" = "8:_4B5F2B66D5C4E08736E0AED9985FDB5E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_ECA8E36427703C8F700784CC32077236"
+        "OwnerKey" = "8:_D96BA0F8C5E57ACFE22CCE036B710E29"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_ECA8E36427703C8F700784CC32077236"
+        "OwnerKey" = "8:_17E0C65F6F6E5E7E7D2123066B63B6F3"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_ECA8E36427703C8F700784CC32077236"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_ECA8E36427703C8F700784CC32077236"
+        "OwnerKey" = "8:_C37D1D20C591B7959CEDE62F534FA3D0"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_ECA8E36427703C8F700784CC32077236"
+        "OwnerKey" = "8:_28F149F3C83948E12F2CC231CA5C71F6"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_ECA8E36427703C8F700784CC32077236"
+        "OwnerKey" = "8:_BC271238412D6C2FB4E3C83791697D0E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_EE2E9ED4433C2432DC867F75E22A1D26"
+        "OwnerKey" = "8:_6BAA1F2559F64713995FAF4047FBBC33"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F52F54E903C9983598D5D84D0B956465"
+        "OwnerKey" = "8:_6BAA1F2559F64713995FAF4047FBBC33"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F5740921BB5CF055D543972D37F26EAF"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F7B511627EDF7465E3CA42C3355B66A9"
+        "OwnerKey" = "8:_858DA29CD58309FFD18D7E86E4594619"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F7B511627EDF7465E3CA42C3355B66A9"
+        "OwnerKey" = "8:_D96BA0F8C5E57ACFE22CCE036B710E29"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F7B511627EDF7465E3CA42C3355B66A9"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F9E6E1D15CDD0F24B9F4632A6E696B61"
+        "OwnerKey" = "8:_85C1EEDB5507AB331B626F1C34CA77DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F9E6E1D15CDD0F24B9F4632A6E696B61"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F9E6E1D15CDD0F24B9F4632A6E696B61"
+        "OwnerKey" = "8:_4B5F2B66D5C4E08736E0AED9985FDB5E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F9E6E1D15CDD0F24B9F4632A6E696B61"
+        "OwnerKey" = "8:_15152DF62B63C0ACFDC6824E6B2FA43F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F9E6E1D15CDD0F24B9F4632A6E696B61"
+        "OwnerKey" = "8:_C37D1D20C591B7959CEDE62F534FA3D0"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_FDB13BE8E5BC2EC7060D4B8A6C693E06"
+        "OwnerKey" = "8:_6BAA1F2559F64713995FAF4047FBBC33"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_FDEB83F56323F259FED5926361FAF840"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_FDEB83F56323F259FED5926361FAF840"
+        "OwnerKey" = "8:_4B5F2B66D5C4E08736E0AED9985FDB5E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_FEC0C7ED49900E4B1F82E680F2F6877F"
+        "OwnerKey" = "8:_6BAA1F2559F64713995FAF4047FBBC33"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_FFFB4FF0684D1BC1B50194AFF8546B36"
+        "OwnerKey" = "8:_354A12388E5134FA1D6AE99DA5CFBD4C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_FFFB4FF0684D1BC1B50194AFF8546B36"
+        "OwnerKey" = "8:_4B5F2B66D5C4E08736E0AED9985FDB5E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_FFFB4FF0684D1BC1B50194AFF8546B36"
+        "OwnerKey" = "8:_D96BA0F8C5E57ACFE22CCE036B710E29"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_FFFB4FF0684D1BC1B50194AFF8546B36"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_471B873B4B62E4E9DD37500DDC0E067A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_25047178CB734030A205F11DCB6505DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_F5740921BB5CF055D543972D37F26EAF"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_607FE7B258340AA16F162D0644CFC51A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_BD89676CC1E3D09C81B11F6E80D9B5B2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_4ADC35A961417815BFC003FD063E0628"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_4B5F2B66D5C4E08736E0AED9985FDB5E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_D96BA0F8C5E57ACFE22CCE036B710E29"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_FDEB83F56323F259FED5926361FAF840"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_E262D8B583E50F9D7015564E6551351A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_B02D1849236D556E233B70C9ACEE7F93"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_15152DF62B63C0ACFDC6824E6B2FA43F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_301879469BE939D8ACE342F96BBCD167"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_D20E8BB8F5886FDAE2D6BCC88DC81481"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_17E0C65F6F6E5E7E7D2123066B63B6F3"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_463DFECF329AF1C409160DE0CC72A5DA"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_BD0D1857B0A61AB9C3EB558F7B6B1F17"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_7F718A380AF5717DA4465C10CD010C82"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_C37D1D20C591B7959CEDE62F534FA3D0"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_85C1EEDB5507AB331B626F1C34CA77DC"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_F9E6E1D15CDD0F24B9F4632A6E696B61"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_28F149F3C83948E12F2CC231CA5C71F6"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_63C2EAF2811132C179FEE669DD0D30ED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_1C38931AC6B8FFF25B07A0F06E91F498"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_500EBEF152789CB87E9B92E40076BB19"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_9F36454921A53C22F39097DAC042E2D2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_A00A0E609E229F5B9D1631A075016EA0"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_C7BB3E1D27E2094D458D9D6293E55446"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_354A12388E5134FA1D6AE99DA5CFBD4C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_FFFB4FF0684D1BC1B50194AFF8546B36"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_9030D38D40EB8B32CC2EC08A5BCAF1AA"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_A57E1836937F7BC7B6A4C1B85551791F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_B8E03D523D94A68E8CAD7FC821B742BA"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_0B10187F1EFFA8E37693F9C004EEF425"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_17B03584C033857DD4C89EA4BC730741"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_BC271238412D6C2FB4E3C83791697D0E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_ECA8E36427703C8F700784CC32077236"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_858DA29CD58309FFD18D7E86E4594619"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_F7B511627EDF7465E3CA42C3355B66A9"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_20061A2150BCCAD032548C55224EC1E5"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_57FB75C65C2E0BAF1CA60134155C8577"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_0483B258A09586986B36C64F51680CA5"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_B1E2DEB147840E723149A6FAE389A155"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+    }
+    "Configurations"
+    {
+        "Debug"
+        {
+        "DisplayName" = "8:Debug"
+        "IsDebugOnly" = "11:TRUE"
+        "IsReleaseOnly" = "11:FALSE"
+        "OutputFilename" = "8:Debug\\Advannotech_SVC.msi"
+        "PackageFilesAs" = "3:2"
+        "PackageFileSize" = "3:-2147483648"
+        "CabType" = "3:1"
+        "Compression" = "3:2"
+        "SignOutput" = "11:FALSE"
+        "CertificateFile" = "8:"
+        "PrivateKeyFile" = "8:"
+        "TimeStampServer" = "8:"
+        "InstallerBootstrapper" = "3:2"
+        }
+        "Release"
+        {
+        "DisplayName" = "8:Release"
+        "IsDebugOnly" = "11:FALSE"
+        "IsReleaseOnly" = "11:TRUE"
+        "OutputFilename" = "8:Release\\Advannotech_SVC.msi"
+        "PackageFilesAs" = "3:2"
+        "PackageFileSize" = "3:-2147483648"
+        "CabType" = "3:1"
+        "Compression" = "3:2"
+        "SignOutput" = "11:FALSE"
+        "CertificateFile" = "8:"
+        "PrivateKeyFile" = "8:"
+        "TimeStampServer" = "8:"
+        "InstallerBootstrapper" = "3:2"
+        }
+    }
+    "Deployable"
+    {
+        "CustomAction"
+        {
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_263B86FE71614842BCD93B74F3FF1E45"
+            {
+            "Name" = "8:Primary output from RTIS_Vulcan_SVC (Active)"
+            "Condition" = "8:"
+            "Object" = "8:_25047178CB734030A205F11DCB6505DC"
+            "FileType" = "3:2"
+            "InstallAction" = "3:1"
+            "Arguments" = "8:"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:1"
+            "Identifier" = "8:_94EBC5D9_255C_42CE_9EF2_FD53AB2F5B77"
+            "InstallerClass" = "11:TRUE"
+            "CustomActionData" = "8:"
+            }
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_670D7B2263E5498BA426FA0CEFB0BE23"
+            {
+            "Name" = "8:Primary output from RTIS_Vulcan_SVC (Active)"
+            "Condition" = "8:"
+            "Object" = "8:_25047178CB734030A205F11DCB6505DC"
+            "FileType" = "3:2"
+            "InstallAction" = "3:4"
+            "Arguments" = "8:"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:1"
+            "Identifier" = "8:_29D73932_BD69_4B12_A6E1_BDE4D4451A3F"
+            "InstallerClass" = "11:TRUE"
+            "CustomActionData" = "8:"
+            }
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_7176F376C8C84972B9A8D6A5175D4E51"
+            {
+            "Name" = "8:Primary output from RTIS_Vulcan_SVC (Active)"
+            "Condition" = "8:"
+            "Object" = "8:_25047178CB734030A205F11DCB6505DC"
+            "FileType" = "3:2"
+            "InstallAction" = "3:3"
+            "Arguments" = "8:"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:1"
+            "Identifier" = "8:_237D59F1_D11F_41E2_A22E_DB7F62533E95"
+            "InstallerClass" = "11:TRUE"
+            "CustomActionData" = "8:"
+            }
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_F1F7AC7F64FB4A259B326C7FE4CC6F49"
+            {
+            "Name" = "8:Primary output from RTIS_Vulcan_SVC (Active)"
+            "Condition" = "8:"
+            "Object" = "8:_25047178CB734030A205F11DCB6505DC"
+            "FileType" = "3:2"
+            "InstallAction" = "3:2"
+            "Arguments" = "8:"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:1"
+            "Identifier" = "8:_FAB0F448_F98F_4C8D_A2C8_87FC31EBE77C"
+            "InstallerClass" = "11:TRUE"
+            "CustomActionData" = "8:"
+            }
+        }
+        "DefaultFeature"
+        {
+        "Name" = "8:DefaultFeature"
+        "Title" = "8:"
+        "Description" = "8:"
+        }
+        "ExternalPersistence"
+        {
+            "LaunchCondition"
+            {
+                "{A06ECF26-33A3-4562-8140-9B0E340D4F24}:_934F04256B344038AF35EA7848F38B43"
+                {
+                "Name" = "8:.NET Framework"
+                "Message" = "8:[VSDNETMSG]"
+                "FrameworkVersion" = "8:.NETFramework,Version=v4.7.2"
+                "AllowLaterVersions" = "11:FALSE"
+                "InstallUrl" = "8:http://go.microsoft.com/fwlink/?LinkId=863262"
+                }
+            }
+        }
+        "File"
+        {
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_04257ADD5F615BF450FC3C9DE49A1E61"
+            {
+            "SourcePath" = "8:DevExpress.XtraReports.v20.2.Extensions.xml"
+            "TargetName" = "8:DevExpress.XtraReports.v20.2.Extensions.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_0483B258A09586986B36C64F51680CA5"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DevExpress.CodeParser.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_0483B258A09586986B36C64F51680CA5"
+                    {
+                    "Name" = "8:DevExpress.CodeParser.v20.2.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DevExpress.CodeParser.v20.2.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_06B0F4FF9670C96127BC6BDA4E017C0E"
+            {
+            "SourcePath" = "8:DevExpress.XtraReports.v20.2.xml"
+            "TargetName" = "8:DevExpress.XtraReports.v20.2.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_07AB35720B2FFB94ED644233EA3C0387"
+            {
+            "SourcePath" = "8:DevExpress.DataAccess.v20.2.xml"
+            "TargetName" = "8:DevExpress.DataAccess.v20.2.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_0B10187F1EFFA8E37693F9C004EEF425"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DevExpress.Xpo.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_0B10187F1EFFA8E37693F9C004EEF425"
+                    {
+                    "Name" = "8:DevExpress.Xpo.v20.2.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DevExpress.Xpo.v20.2.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_15152DF62B63C0ACFDC6824E6B2FA43F"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DevExpress.XtraCharts.v20.2.Wizard, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_15152DF62B63C0ACFDC6824E6B2FA43F"
+                    {
+                    "Name" = "8:DevExpress.XtraCharts.v20.2.Wizard.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DevExpress.XtraCharts.v20.2.Wizard.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_17B03584C033857DD4C89EA4BC730741"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:System.Net.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
+                "ScatterAssemblies"
+                {
+                    "_17B03584C033857DD4C89EA4BC730741"
+                    {
+                    "Name" = "8:System.Net.Http.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:System.Net.Http.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_17E0C65F6F6E5E7E7D2123066B63B6F3"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DevExpress.RichEdit.v20.2.Export, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_17E0C65F6F6E5E7E7D2123066B63B6F3"
+                    {
+                    "Name" = "8:DevExpress.RichEdit.v20.2.Export.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DevExpress.RichEdit.v20.2.Export.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_1C38931AC6B8FFF25B07A0F06E91F498"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DevExpress.Images.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_1C38931AC6B8FFF25B07A0F06E91F498"
+                    {
+                    "Name" = "8:DevExpress.Images.v20.2.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DevExpress.Images.v20.2.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_20061A2150BCCAD032548C55224EC1E5"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DevExpress.Pdf.v20.2.Core, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_20061A2150BCCAD032548C55224EC1E5"
+                    {
+                    "Name" = "8:DevExpress.Pdf.v20.2.Core.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DevExpress.Pdf.v20.2.Core.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_23800290E5C648D96571BB551E56DA0A"
+            {
+            "SourcePath" = "8:DevExpress.PivotGrid.v20.2.Core.xml"
+            "TargetName" = "8:DevExpress.PivotGrid.v20.2.Core.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_28F149F3C83948E12F2CC231CA5C71F6"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DevExpress.XtraRichEdit.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_28F149F3C83948E12F2CC231CA5C71F6"
+                    {
+                    "Name" = "8:DevExpress.XtraRichEdit.v20.2.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DevExpress.XtraRichEdit.v20.2.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2BD46F432A3010AD8E50F5C7A894009C"
+            {
+            "SourcePath" = "8:DevExpress.RichEdit.v20.2.Core.xml"
+            "TargetName" = "8:DevExpress.RichEdit.v20.2.Core.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2D79883D1DEB8D41D7513748BEFC732D"
+            {
+            "SourcePath" = "8:DevExpress.Xpo.v20.2.xml"
+            "TargetName" = "8:DevExpress.Xpo.v20.2.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_301879469BE939D8ACE342F96BBCD167"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DevExpress.XtraNavBar.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_301879469BE939D8ACE342F96BBCD167"
+                    {
+                    "Name" = "8:DevExpress.XtraNavBar.v20.2.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DevExpress.XtraNavBar.v20.2.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_31CD55A67E69FD981DF6A7E190E631A7"
+            {
+            "SourcePath" = "8:DevExpress.XtraGauges.v20.2.Core.xml"
+            "TargetName" = "8:DevExpress.XtraGauges.v20.2.Core.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_354A12388E5134FA1D6AE99DA5CFBD4C"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DevExpress.XtraEditors.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_354A12388E5134FA1D6AE99DA5CFBD4C"
+                    {
+                    "Name" = "8:DevExpress.XtraEditors.v20.2.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DevExpress.XtraEditors.v20.2.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_40E8156B5AD5030BA668B95369FBDD32"
+            {
+            "SourcePath" = "8:DevExpress.XtraPivotGrid.v20.2.xml"
+            "TargetName" = "8:DevExpress.XtraPivotGrid.v20.2.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_44449ADA0D68FF93F13EEAB4450EBEBA"
+            {
+            "SourcePath" = "8:DevExpress.XtraCharts.v20.2.xml"
+            "TargetName" = "8:DevExpress.XtraCharts.v20.2.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_463DFECF329AF1C409160DE0CC72A5DA"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DevExpress.PivotGrid.v20.2.Core, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_463DFECF329AF1C409160DE0CC72A5DA"
+                    {
+                    "Name" = "8:DevExpress.PivotGrid.v20.2.Core.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DevExpress.PivotGrid.v20.2.Core.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_471B873B4B62E4E9DD37500DDC0E067A"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DevExpress.Charts.v20.2.Core, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_471B873B4B62E4E9DD37500DDC0E067A"
+                    {
+                    "Name" = "8:DevExpress.Charts.v20.2.Core.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DevExpress.Charts.v20.2.Core.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_4ADC35A961417815BFC003FD063E0628"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Pastel.Evolution, Version=7.20.0.0, Culture=neutral, PublicKeyToken=86fac4c1500a3756, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_4ADC35A961417815BFC003FD063E0628"
+                    {
+                    "Name" = "8:Pastel.Evolution.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Pastel.Evolution.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_4B5F2B66D5C4E08736E0AED9985FDB5E"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DevExpress.XtraReports.v20.2.Extensions, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_4B5F2B66D5C4E08736E0AED9985FDB5E"
+                    {
+                    "Name" = "8:DevExpress.XtraReports.v20.2.Extensions.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DevExpress.XtraReports.v20.2.Extensions.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_500EBEF152789CB87E9B92E40076BB19"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DevExpress.XtraPrinting.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_500EBEF152789CB87E9B92E40076BB19"
+                    {
+                    "Name" = "8:DevExpress.XtraPrinting.v20.2.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DevExpress.XtraPrinting.v20.2.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_518CA0C1162CD7ECB5CBFFB3F48092C1"
+            {
+            "SourcePath" = "8:DevExpress.Pdf.v20.2.Drawing.xml"
+            "TargetName" = "8:DevExpress.Pdf.v20.2.Drawing.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_567D3D5A78F68EBCF720B59A6BAB6B07"
+            {
+            "SourcePath" = "8:DevExpress.XtraPrinting.v20.2.xml"
+            "TargetName" = "8:DevExpress.XtraPrinting.v20.2.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_57FB75C65C2E0BAF1CA60134155C8577"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DevExpress.Data.Desktop.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_57FB75C65C2E0BAF1CA60134155C8577"
+                    {
+                    "Name" = "8:DevExpress.Data.Desktop.v20.2.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DevExpress.Data.Desktop.v20.2.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_607FE7B258340AA16F162D0644CFC51A"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:System.Data.SQLite.EF6, Version=1.0.103.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_607FE7B258340AA16F162D0644CFC51A"
+                    {
+                    "Name" = "8:System.Data.SQLite.EF6.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:System.Data.SQLite.EF6.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_63C2EAF2811132C179FEE669DD0D30ED"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DevExpress.XtraGrid.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_63C2EAF2811132C179FEE669DD0D30ED"
+                    {
+                    "Name" = "8:DevExpress.XtraGrid.v20.2.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DevExpress.XtraGrid.v20.2.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_756989F335E8AAAC366327B9C47E7581"
+            {
+            "SourcePath" = "8:DevExpress.Office.v20.2.Core.xml"
+            "TargetName" = "8:DevExpress.Office.v20.2.Core.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7CBE75D0A5F0528ACE4EA1B6835DCBCF"
+            {
+            "SourcePath" = "8:DevExpress.Pdf.v20.2.Core.xml"
+            "TargetName" = "8:DevExpress.Pdf.v20.2.Core.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_7F718A380AF5717DA4465C10CD010C82"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DevExpress.DataAccess.v20.2.UI, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_7F718A380AF5717DA4465C10CD010C82"
+                    {
+                    "Name" = "8:DevExpress.DataAccess.v20.2.UI.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DevExpress.DataAccess.v20.2.UI.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_858DA29CD58309FFD18D7E86E4594619"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DevExpress.Printing.v20.2.Core, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_858DA29CD58309FFD18D7E86E4594619"
+                    {
+                    "Name" = "8:DevExpress.Printing.v20.2.Core.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DevExpress.Printing.v20.2.Core.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_85C1EEDB5507AB331B626F1C34CA77DC"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DevExpress.Utils.v20.2.UI, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_85C1EEDB5507AB331B626F1C34CA77DC"
+                    {
+                    "Name" = "8:DevExpress.Utils.v20.2.UI.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DevExpress.Utils.v20.2.UI.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_89759E876AD43E53C180152AB5F5B5D6"
+            {
+            "SourcePath" = "8:DevExpress.XtraLayout.v20.2.xml"
+            "TargetName" = "8:DevExpress.XtraLayout.v20.2.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8E5E658FC13F316B5456CBC195C37DA4"
+            {
+            "SourcePath" = "8:DevExpress.XtraEditors.v20.2.xml"
+            "TargetName" = "8:DevExpress.XtraEditors.v20.2.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_9030D38D40EB8B32CC2EC08A5BCAF1AA"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DevExpress.Utils.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_9030D38D40EB8B32CC2EC08A5BCAF1AA"
+                    {
+                    "Name" = "8:DevExpress.Utils.v20.2.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DevExpress.Utils.v20.2.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_98C75792124DB9B2DBF90B2041E3A8B5"
+            {
+            "SourcePath" = "8:DevExpress.XtraBars.v20.2.xml"
+            "TargetName" = "8:DevExpress.XtraBars.v20.2.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_98E1F323A835FABC13EF928E5AD327E7"
+            {
+            "SourcePath" = "8:DevExpress.DataAccess.v20.2.UI.xml"
+            "TargetName" = "8:DevExpress.DataAccess.v20.2.UI.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_9F36454921A53C22F39097DAC042E2D2"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DevExpress.XtraTreeList.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_9F36454921A53C22F39097DAC042E2D2"
+                    {
+                    "Name" = "8:DevExpress.XtraTreeList.v20.2.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DevExpress.XtraTreeList.v20.2.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A00A0E609E229F5B9D1631A075016EA0"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DevExpress.XtraLayout.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_A00A0E609E229F5B9D1631A075016EA0"
+                    {
+                    "Name" = "8:DevExpress.XtraLayout.v20.2.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DevExpress.XtraLayout.v20.2.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A2C287B049D213978F0828F46E2ADDA1"
+            {
+            "SourcePath" = "8:DevExpress.XtraDiagram.v20.2.xml"
+            "TargetName" = "8:DevExpress.XtraDiagram.v20.2.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A57E1836937F7BC7B6A4C1B85551791F"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DevExpress.Diagram.v20.2.Core, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_A57E1836937F7BC7B6A4C1B85551791F"
+                    {
+                    "Name" = "8:DevExpress.Diagram.v20.2.Core.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DevExpress.Diagram.v20.2.Core.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A6F925314091D651FBFA3F7D4FDCA191"
+            {
+            "SourcePath" = "8:DevExpress.Utils.v20.2.UI.xml"
+            "TargetName" = "8:DevExpress.Utils.v20.2.UI.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A7B9DD1BC69962CDD6590041E3F7EC1C"
+            {
+            "SourcePath" = "8:DevExpress.XtraNavBar.v20.2.xml"
+            "TargetName" = "8:DevExpress.XtraNavBar.v20.2.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_B02D1849236D556E233B70C9ACEE7F93"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DevExpress.XtraCharts.v20.2.Extensions, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_B02D1849236D556E233B70C9ACEE7F93"
+                    {
+                    "Name" = "8:DevExpress.XtraCharts.v20.2.Extensions.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DevExpress.XtraCharts.v20.2.Extensions.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_B1E2DEB147840E723149A6FAE389A155"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DevExpress.Data.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_B1E2DEB147840E723149A6FAE389A155"
+                    {
+                    "Name" = "8:DevExpress.Data.v20.2.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DevExpress.Data.v20.2.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_B8E03D523D94A68E8CAD7FC821B742BA"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DevExpress.DataAccess.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_B8E03D523D94A68E8CAD7FC821B742BA"
+                    {
+                    "Name" = "8:DevExpress.DataAccess.v20.2.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DevExpress.DataAccess.v20.2.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_BC271238412D6C2FB4E3C83791697D0E"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DevExpress.RichEdit.v20.2.Core, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_BC271238412D6C2FB4E3C83791697D0E"
+                    {
+                    "Name" = "8:DevExpress.RichEdit.v20.2.Core.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DevExpress.RichEdit.v20.2.Core.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_BD0D1857B0A61AB9C3EB558F7B6B1F17"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DevExpress.DataVisualization.v20.2.Core, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_BD0D1857B0A61AB9C3EB558F7B6B1F17"
+                    {
+                    "Name" = "8:DevExpress.DataVisualization.v20.2.Core.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DevExpress.DataVisualization.v20.2.Core.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_BD89676CC1E3D09C81B11F6E80D9B5B2"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:System.Data.SQLite, Version=1.0.103.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_BD89676CC1E3D09C81B11F6E80D9B5B2"
+                    {
+                    "Name" = "8:System.Data.SQLite.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:System.Data.SQLite.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BF8EE21354113BC6559C24F39ECA19DC"
+            {
+            "SourcePath" = "8:DevExpress.Printing.v20.2.Core.xml"
+            "TargetName" = "8:DevExpress.Printing.v20.2.Core.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C37D1D20C591B7959CEDE62F534FA3D0"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DevExpress.XtraDiagram.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_C37D1D20C591B7959CEDE62F534FA3D0"
+                    {
+                    "Name" = "8:DevExpress.XtraDiagram.v20.2.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DevExpress.XtraDiagram.v20.2.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C7BB3E1D27E2094D458D9D6293E55446"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DevExpress.XtraBars.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_C7BB3E1D27E2094D458D9D6293E55446"
+                    {
+                    "Name" = "8:DevExpress.XtraBars.v20.2.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DevExpress.XtraBars.v20.2.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CC2666D9753489EF634CD4824B21BAAD"
+            {
+            "SourcePath" = "8:DevExpress.XtraRichEdit.v20.2.xml"
+            "TargetName" = "8:DevExpress.XtraRichEdit.v20.2.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D20E8BB8F5886FDAE2D6BCC88DC81481"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DevExpress.XtraCharts.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_D20E8BB8F5886FDAE2D6BCC88DC81481"
+                    {
+                    "Name" = "8:DevExpress.XtraCharts.v20.2.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DevExpress.XtraCharts.v20.2.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D84F89C2975A4869B75788BEDDDC3FAC"
+            {
+            "SourcePath" = "8:DevExpress.Sparkline.v20.2.Core.xml"
+            "TargetName" = "8:DevExpress.Sparkline.v20.2.Core.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D96BA0F8C5E57ACFE22CCE036B710E29"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DevExpress.XtraReports.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_D96BA0F8C5E57ACFE22CCE036B710E29"
+                    {
+                    "Name" = "8:DevExpress.XtraReports.v20.2.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DevExpress.XtraReports.v20.2.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DDDB142E683AB78E97BA5B6AAF8859BA"
+            {
+            "SourcePath" = "8:DevExpress.XtraGrid.v20.2.xml"
+            "TargetName" = "8:DevExpress.XtraGrid.v20.2.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DF757A8BD19B80F2B22E0E2293AF1E75"
+            {
+            "SourcePath" = "8:DevExpress.Data.Desktop.v20.2.xml"
+            "TargetName" = "8:DevExpress.Data.Desktop.v20.2.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_E262D8B583E50F9D7015564E6551351A"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DevExpress.XtraGauges.v20.2.Core, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_E262D8B583E50F9D7015564E6551351A"
+                    {
+                    "Name" = "8:DevExpress.XtraGauges.v20.2.Core.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DevExpress.XtraGauges.v20.2.Core.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E70980962029BE06F49B6E99050E7133"
+            {
+            "SourcePath" = "8:DevExpress.XtraVerticalGrid.v20.2.xml"
+            "TargetName" = "8:DevExpress.XtraVerticalGrid.v20.2.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_EB297DCB8CB1B94AC5DE346CF3F1056A"
+            {
+            "SourcePath" = "8:DevExpress.XtraCharts.v20.2.Wizard.xml"
+            "TargetName" = "8:DevExpress.XtraCharts.v20.2.Wizard.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_ECA8E36427703C8F700784CC32077236"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DevExpress.Office.v20.2.Core, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_ECA8E36427703C8F700784CC32077236"
+                    {
+                    "Name" = "8:DevExpress.Office.v20.2.Core.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DevExpress.Office.v20.2.Core.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_EE2E9ED4433C2432DC867F75E22A1D26"
+            {
+            "SourcePath" = "8:DevExpress.Diagram.v20.2.Core.xml"
+            "TargetName" = "8:DevExpress.Diagram.v20.2.Core.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F52F54E903C9983598D5D84D0B956465"
+            {
+            "SourcePath" = "8:DevExpress.Data.v20.2.xml"
+            "TargetName" = "8:DevExpress.Data.v20.2.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_F5740921BB5CF055D543972D37F26EAF"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:System.Data.SQLite.Linq, Version=1.0.103.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_F5740921BB5CF055D543972D37F26EAF"
+                    {
+                    "Name" = "8:System.Data.SQLite.Linq.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:System.Data.SQLite.Linq.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_F7B511627EDF7465E3CA42C3355B66A9"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DevExpress.Pdf.v20.2.Drawing, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_F7B511627EDF7465E3CA42C3355B66A9"
+                    {
+                    "Name" = "8:DevExpress.Pdf.v20.2.Drawing.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DevExpress.Pdf.v20.2.Drawing.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_F9E6E1D15CDD0F24B9F4632A6E696B61"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DevExpress.XtraVerticalGrid.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_F9E6E1D15CDD0F24B9F4632A6E696B61"
+                    {
+                    "Name" = "8:DevExpress.XtraVerticalGrid.v20.2.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DevExpress.XtraVerticalGrid.v20.2.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FDB13BE8E5BC2EC7060D4B8A6C693E06"
+            {
+            "SourcePath" = "8:DevExpress.XtraTreeList.v20.2.xml"
+            "TargetName" = "8:DevExpress.XtraTreeList.v20.2.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_FDEB83F56323F259FED5926361FAF840"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DevExpress.XtraPivotGrid.v20.2, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_FDEB83F56323F259FED5926361FAF840"
+                    {
+                    "Name" = "8:DevExpress.XtraPivotGrid.v20.2.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DevExpress.XtraPivotGrid.v20.2.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FEC0C7ED49900E4B1F82E680F2F6877F"
+            {
+            "SourcePath" = "8:DevExpress.Utils.v20.2.xml"
+            "TargetName" = "8:DevExpress.Utils.v20.2.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_FFFB4FF0684D1BC1B50194AFF8546B36"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DevExpress.Sparkline.v20.2.Core, Version=20.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_FFFB4FF0684D1BC1B50194AFF8546B36"
+                    {
+                    "Name" = "8:DevExpress.Sparkline.v20.2.Core.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DevExpress.Sparkline.v20.2.Core.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+        }
+        "FileType"
+        {
+        }
+        "Folder"
+        {
+            "{3C67513D-01DD-4637-8A68-80971EB9504F}:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            {
+            "DefaultLocation" = "8:[ProgramFilesFolder][Manufacturer]\\[ProductName]"
+            "Name" = "8:#1925"
+            "AlwaysCreate" = "11:FALSE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Property" = "8:TARGETDIR"
+                "Folders"
+                {
+                }
+            }
+            "{1525181F-901A-416C-8A58-119130FE478E}:_D1054C1FC2214EFF916323A7FF64B94B"
+            {
+            "Name" = "8:#1919"
+            "AlwaysCreate" = "11:FALSE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Property" = "8:ProgramMenuFolder"
+                "Folders"
+                {
+                }
+            }
+            "{1525181F-901A-416C-8A58-119130FE478E}:_D4C1066420CB469D8E04BD984ACD3320"
+            {
+            "Name" = "8:#1916"
+            "AlwaysCreate" = "11:FALSE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Property" = "8:DesktopFolder"
+                "Folders"
+                {
+                }
+            }
+        }
+        "LaunchCondition"
+        {
+        }
+        "Locator"
+        {
+        }
+        "MsiBootstrapper"
+        {
+        "LangId" = "3:1033"
+        "RequiresElevation" = "11:FALSE"
+        }
+        "Product"
+        {
+        "Name" = "8:Microsoft Visual Studio"
+        "ProductName" = "8:Advannotech_SVC"
+        "ProductCode" = "8:{522AA42F-60E5-4531-9770-132AF60EF689}"
+        "PackageCode" = "8:{1668E456-5151-4F7A-A04E-12BC83251F57}"
+        "UpgradeCode" = "8:{1C571DC9-0621-4952-812E-3E75027D79AD}"
+        "AspNetVersion" = "8:4.0.30319.0"
+        "RestartWWWService" = "11:FALSE"
+        "RemovePreviousVersions" = "11:FALSE"
+        "DetectNewerInstalledVersion" = "11:TRUE"
+        "InstallAllUsers" = "11:FALSE"
+        "ProductVersion" = "8:1.0.0"
+        "Manufacturer" = "8:advannotechdev2"
+        "ARPHELPTELEPHONE" = "8:"
+        "ARPHELPLINK" = "8:"
+        "Title" = "8:Advannotech_SVC"
+        "Subject" = "8:"
+        "ARPCONTACT" = "8:advannotechdev2"
+        "Keywords" = "8:"
+        "ARPCOMMENTS" = "8:"
+        "ARPURLINFOABOUT" = "8:"
+        "ARPPRODUCTICON" = "8:"
+        "ARPIconIndex" = "3:0"
+        "SearchPath" = "8:"
+        "UseSystemSearchPath" = "11:TRUE"
+        "TargetPlatform" = "3:0"
+        "PreBuildEvent" = "8:"
+        "PostBuildEvent" = "8:"
+        "RunPostBuildEvent" = "3:0"
+        }
+        "Registry"
+        {
+            "HKLM"
+            {
+                "Keys"
+                {
+                    "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_7960705D85A24667AD78E7091B46FA45"
+                    {
+                    "Name" = "8:Software"
+                    "Condition" = "8:"
+                    "AlwaysCreate" = "11:FALSE"
+                    "DeleteAtUninstall" = "11:FALSE"
+                    "Transitive" = "11:FALSE"
+                        "Keys"
+                        {
+                            "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_B27E91994AE3437BBC1AFF5CDFA914B3"
+                            {
+                            "Name" = "8:[Manufacturer]"
+                            "Condition" = "8:"
+                            "AlwaysCreate" = "11:FALSE"
+                            "DeleteAtUninstall" = "11:FALSE"
+                            "Transitive" = "11:FALSE"
+                                "Keys"
+                                {
+                                }
+                                "Values"
+                                {
+                                }
+                            }
+                        }
+                        "Values"
+                        {
+                        }
+                    }
+                }
+            }
+            "HKCU"
+            {
+                "Keys"
+                {
+                    "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_0259EBDF21DB422CBBDC52ED2030A1F4"
+                    {
+                    "Name" = "8:Software"
+                    "Condition" = "8:"
+                    "AlwaysCreate" = "11:FALSE"
+                    "DeleteAtUninstall" = "11:FALSE"
+                    "Transitive" = "11:FALSE"
+                        "Keys"
+                        {
+                            "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_2F865F17F11E4ABABDB1EE7E991645A8"
+                            {
+                            "Name" = "8:[Manufacturer]"
+                            "Condition" = "8:"
+                            "AlwaysCreate" = "11:FALSE"
+                            "DeleteAtUninstall" = "11:FALSE"
+                            "Transitive" = "11:FALSE"
+                                "Keys"
+                                {
+                                }
+                                "Values"
+                                {
+                                }
+                            }
+                        }
+                        "Values"
+                        {
+                        }
+                    }
+                }
+            }
+            "HKCR"
+            {
+                "Keys"
+                {
+                }
+            }
+            "HKU"
+            {
+                "Keys"
+                {
+                }
+            }
+            "HKPU"
+            {
+                "Keys"
+                {
+                }
+            }
+        }
+        "Sequences"
+        {
+        }
+        "Shortcut"
+        {
+        }
+        "UserInterface"
+        {
+            "{DF760B10-853B-4699-99F2-AFF7185B4A62}:_299795F7175A4967BD48E90E64306135"
+            {
+            "Name" = "8:#1900"
+            "Sequence" = "3:2"
+            "Attributes" = "3:1"
+                "Dialogs"
+                {
+                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_58F9AA6F4912456CAF2B7CD83A87576C"
+                    {
+                    "Sequence" = "3:300"
+                    "DisplayName" = "8:Confirm Installation"
+                    "UseDynamicProperties" = "11:TRUE"
+                    "IsDependency" = "11:FALSE"
+                    "SourcePath" = "8:<VsdDialogDir>\\VsdAdminConfirmDlg.wid"
+                        "Properties"
+                        {
+                            "BannerBitmap"
+                            {
+                            "Name" = "8:BannerBitmap"
+                            "DisplayName" = "8:#1001"
+                            "Description" = "8:#1101"
+                            "Type" = "3:8"
+                            "ContextData" = "8:Bitmap"
+                            "Attributes" = "3:4"
+                            "Setting" = "3:1"
+                            "UsePlugInResources" = "11:TRUE"
+                            }
+                        }
+                    }
+                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_E0E69C41CB0F4520826C38BB0C596A74"
+                    {
+                    "Sequence" = "3:200"
+                    "DisplayName" = "8:Installation Folder"
+                    "UseDynamicProperties" = "11:TRUE"
+                    "IsDependency" = "11:FALSE"
+                    "SourcePath" = "8:<VsdDialogDir>\\VsdAdminFolderDlg.wid"
+                        "Properties"
+                        {
+                            "BannerBitmap"
+                            {
+                            "Name" = "8:BannerBitmap"
+                            "DisplayName" = "8:#1001"
+                            "Description" = "8:#1101"
+                            "Type" = "3:8"
+                            "ContextData" = "8:Bitmap"
+                            "Attributes" = "3:4"
+                            "Setting" = "3:1"
+                            "UsePlugInResources" = "11:TRUE"
+                            }
+                        }
+                    }
+                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_E2DE35340CF24C06B006D794AA650AE6"
+                    {
+                    "Sequence" = "3:100"
+                    "DisplayName" = "8:Welcome"
+                    "UseDynamicProperties" = "11:TRUE"
+                    "IsDependency" = "11:FALSE"
+                    "SourcePath" = "8:<VsdDialogDir>\\VsdAdminWelcomeDlg.wid"
+                        "Properties"
+                        {
+                            "BannerBitmap"
+                            {
+                            "Name" = "8:BannerBitmap"
+                            "DisplayName" = "8:#1001"
+                            "Description" = "8:#1101"
+                            "Type" = "3:8"
+                            "ContextData" = "8:Bitmap"
+                            "Attributes" = "3:4"
+                            "Setting" = "3:1"
+                            "UsePlugInResources" = "11:TRUE"
+                            }
+                            "CopyrightWarning"
+                            {
+                            "Name" = "8:CopyrightWarning"
+                            "DisplayName" = "8:#1002"
+                            "Description" = "8:#1102"
+                            "Type" = "3:3"
+                            "ContextData" = "8:"
+                            "Attributes" = "3:0"
+                            "Setting" = "3:1"
+                            "Value" = "8:#1202"
+                            "DefaultValue" = "8:#1202"
+                            "UsePlugInResources" = "11:TRUE"
+                            }
+                            "Welcome"
+                            {
+                            "Name" = "8:Welcome"
+                            "DisplayName" = "8:#1003"
+                            "Description" = "8:#1103"
+                            "Type" = "3:3"
+                            "ContextData" = "8:"
+                            "Attributes" = "3:0"
+                            "Setting" = "3:1"
+                            "Value" = "8:#1203"
+                            "DefaultValue" = "8:#1203"
+                            "UsePlugInResources" = "11:TRUE"
+                            }
+                        }
+                    }
+                }
+            }
+            "{DF760B10-853B-4699-99F2-AFF7185B4A62}:_6814DB75D7FA4C1C8D2564B6906A7A3C"
+            {
+            "Name" = "8:#1902"
+            "Sequence" = "3:2"
+            "Attributes" = "3:3"
+                "Dialogs"
+                {
+                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_47C59402D2D54F379FA1EA34EE6B21BF"
+                    {
+                    "Sequence" = "3:100"
+                    "DisplayName" = "8:Finished"
+                    "UseDynamicProperties" = "11:TRUE"
+                    "IsDependency" = "11:FALSE"
+                    "SourcePath" = "8:<VsdDialogDir>\\VsdAdminFinishedDlg.wid"
+                        "Properties"
+                        {
+                            "BannerBitmap"
+                            {
+                            "Name" = "8:BannerBitmap"
+                            "DisplayName" = "8:#1001"
+                            "Description" = "8:#1101"
+                            "Type" = "3:8"
+                            "ContextData" = "8:Bitmap"
+                            "Attributes" = "3:4"
+                            "Setting" = "3:1"
+                            "UsePlugInResources" = "11:TRUE"
+                            }
+                        }
+                    }
+                }
+            }
+            "{2479F3F5-0309-486D-8047-8187E2CE5BA0}:_866AFAF897D14E70B9196038F3EB7A3B"
+            {
+            "UseDynamicProperties" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "SourcePath" = "8:<VsdDialogDir>\\VsdUserInterface.wim"
+            }
+            "{2479F3F5-0309-486D-8047-8187E2CE5BA0}:_8E1FE496359545D793E9BE21F7217942"
+            {
+            "UseDynamicProperties" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "SourcePath" = "8:<VsdDialogDir>\\VsdBasicDialogs.wim"
+            }
+            "{DF760B10-853B-4699-99F2-AFF7185B4A62}:_94C9DD31286D4AE79C71BBAA2E3B5E4D"
+            {
+            "Name" = "8:#1901"
+            "Sequence" = "3:1"
+            "Attributes" = "3:2"
+                "Dialogs"
+                {
+                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_F3E46E6004A14950959FD8C2FE2A3748"
+                    {
+                    "Sequence" = "3:100"
+                    "DisplayName" = "8:Progress"
+                    "UseDynamicProperties" = "11:TRUE"
+                    "IsDependency" = "11:FALSE"
+                    "SourcePath" = "8:<VsdDialogDir>\\VsdProgressDlg.wid"
+                        "Properties"
+                        {
+                            "BannerBitmap"
+                            {
+                            "Name" = "8:BannerBitmap"
+                            "DisplayName" = "8:#1001"
+                            "Description" = "8:#1101"
+                            "Type" = "3:8"
+                            "ContextData" = "8:Bitmap"
+                            "Attributes" = "3:4"
+                            "Setting" = "3:1"
+                            "UsePlugInResources" = "11:TRUE"
+                            }
+                            "ShowProgress"
+                            {
+                            "Name" = "8:ShowProgress"
+                            "DisplayName" = "8:#1009"
+                            "Description" = "8:#1109"
+                            "Type" = "3:5"
+                            "ContextData" = "8:1;True=1;False=0"
+                            "Attributes" = "3:0"
+                            "Setting" = "3:0"
+                            "Value" = "3:1"
+                            "DefaultValue" = "3:1"
+                            "UsePlugInResources" = "11:TRUE"
+                            }
+                        }
+                    }
+                }
+            }
+            "{DF760B10-853B-4699-99F2-AFF7185B4A62}:_9FD4533B24C34567BDA354F2AFDF3603"
+            {
+            "Name" = "8:#1902"
+            "Sequence" = "3:1"
+            "Attributes" = "3:3"
+                "Dialogs"
+                {
+                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_5DF9D88671A24E60AA8307F45A2F551F"
+                    {
+                    "Sequence" = "3:100"
+                    "DisplayName" = "8:Finished"
+                    "UseDynamicProperties" = "11:TRUE"
+                    "IsDependency" = "11:FALSE"
+                    "SourcePath" = "8:<VsdDialogDir>\\VsdFinishedDlg.wid"
+                        "Properties"
+                        {
+                            "BannerBitmap"
+                            {
+                            "Name" = "8:BannerBitmap"
+                            "DisplayName" = "8:#1001"
+                            "Description" = "8:#1101"
+                            "Type" = "3:8"
+                            "ContextData" = "8:Bitmap"
+                            "Attributes" = "3:4"
+                            "Setting" = "3:1"
+                            "UsePlugInResources" = "11:TRUE"
+                            }
+                            "UpdateText"
+                            {
+                            "Name" = "8:UpdateText"
+                            "DisplayName" = "8:#1058"
+                            "Description" = "8:#1158"
+                            "Type" = "3:15"
+                            "ContextData" = "8:"
+                            "Attributes" = "3:0"
+                            "Setting" = "3:1"
+                            "Value" = "8:#1258"
+                            "DefaultValue" = "8:#1258"
+                            "UsePlugInResources" = "11:TRUE"
+                            }
+                        }
+                    }
+                }
+            }
+            "{DF760B10-853B-4699-99F2-AFF7185B4A62}:_AEE87507F6A54601800AC7B0C8A441CF"
+            {
+            "Name" = "8:#1901"
+            "Sequence" = "3:2"
+            "Attributes" = "3:2"
+                "Dialogs"
+                {
+                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_C91C39126CF2444CBFE24F9A0EB2B319"
+                    {
+                    "Sequence" = "3:100"
+                    "DisplayName" = "8:Progress"
+                    "UseDynamicProperties" = "11:TRUE"
+                    "IsDependency" = "11:FALSE"
+                    "SourcePath" = "8:<VsdDialogDir>\\VsdAdminProgressDlg.wid"
+                        "Properties"
+                        {
+                            "BannerBitmap"
+                            {
+                            "Name" = "8:BannerBitmap"
+                            "DisplayName" = "8:#1001"
+                            "Description" = "8:#1101"
+                            "Type" = "3:8"
+                            "ContextData" = "8:Bitmap"
+                            "Attributes" = "3:4"
+                            "Setting" = "3:1"
+                            "UsePlugInResources" = "11:TRUE"
+                            }
+                            "ShowProgress"
+                            {
+                            "Name" = "8:ShowProgress"
+                            "DisplayName" = "8:#1009"
+                            "Description" = "8:#1109"
+                            "Type" = "3:5"
+                            "ContextData" = "8:1;True=1;False=0"
+                            "Attributes" = "3:0"
+                            "Setting" = "3:0"
+                            "Value" = "3:1"
+                            "DefaultValue" = "3:1"
+                            "UsePlugInResources" = "11:TRUE"
+                            }
+                        }
+                    }
+                }
+            }
+            "{DF760B10-853B-4699-99F2-AFF7185B4A62}:_F5A39B46CCC543EF80D6415AEE1A5311"
+            {
+            "Name" = "8:#1900"
+            "Sequence" = "3:1"
+            "Attributes" = "3:1"
+                "Dialogs"
+                {
+                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_25009E2983E142498FE585B78FB9730F"
+                    {
+                    "Sequence" = "3:300"
+                    "DisplayName" = "8:Confirm Installation"
+                    "UseDynamicProperties" = "11:TRUE"
+                    "IsDependency" = "11:FALSE"
+                    "SourcePath" = "8:<VsdDialogDir>\\VsdConfirmDlg.wid"
+                        "Properties"
+                        {
+                            "BannerBitmap"
+                            {
+                            "Name" = "8:BannerBitmap"
+                            "DisplayName" = "8:#1001"
+                            "Description" = "8:#1101"
+                            "Type" = "3:8"
+                            "ContextData" = "8:Bitmap"
+                            "Attributes" = "3:4"
+                            "Setting" = "3:1"
+                            "UsePlugInResources" = "11:TRUE"
+                            }
+                        }
+                    }
+                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_D1DFD9F167D14373B213DC1B6ACB548A"
+                    {
+                    "Sequence" = "3:200"
+                    "DisplayName" = "8:Installation Folder"
+                    "UseDynamicProperties" = "11:TRUE"
+                    "IsDependency" = "11:FALSE"
+                    "SourcePath" = "8:<VsdDialogDir>\\VsdFolderDlg.wid"
+                        "Properties"
+                        {
+                            "BannerBitmap"
+                            {
+                            "Name" = "8:BannerBitmap"
+                            "DisplayName" = "8:#1001"
+                            "Description" = "8:#1101"
+                            "Type" = "3:8"
+                            "ContextData" = "8:Bitmap"
+                            "Attributes" = "3:4"
+                            "Setting" = "3:1"
+                            "UsePlugInResources" = "11:TRUE"
+                            }
+                            "InstallAllUsersVisible"
+                            {
+                            "Name" = "8:InstallAllUsersVisible"
+                            "DisplayName" = "8:#1059"
+                            "Description" = "8:#1159"
+                            "Type" = "3:5"
+                            "ContextData" = "8:1;True=1;False=0"
+                            "Attributes" = "3:0"
+                            "Setting" = "3:0"
+                            "Value" = "3:1"
+                            "DefaultValue" = "3:1"
+                            "UsePlugInResources" = "11:TRUE"
+                            }
+                        }
+                    }
+                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_D92BBD57CBB4412D8D1E6B04D817DCB6"
+                    {
+                    "Sequence" = "3:100"
+                    "DisplayName" = "8:Welcome"
+                    "UseDynamicProperties" = "11:TRUE"
+                    "IsDependency" = "11:FALSE"
+                    "SourcePath" = "8:<VsdDialogDir>\\VsdWelcomeDlg.wid"
+                        "Properties"
+                        {
+                            "BannerBitmap"
+                            {
+                            "Name" = "8:BannerBitmap"
+                            "DisplayName" = "8:#1001"
+                            "Description" = "8:#1101"
+                            "Type" = "3:8"
+                            "ContextData" = "8:Bitmap"
+                            "Attributes" = "3:4"
+                            "Setting" = "3:1"
+                            "UsePlugInResources" = "11:TRUE"
+                            }
+                            "CopyrightWarning"
+                            {
+                            "Name" = "8:CopyrightWarning"
+                            "DisplayName" = "8:#1002"
+                            "Description" = "8:#1102"
+                            "Type" = "3:3"
+                            "ContextData" = "8:"
+                            "Attributes" = "3:0"
+                            "Setting" = "3:1"
+                            "Value" = "8:#1202"
+                            "DefaultValue" = "8:#1202"
+                            "UsePlugInResources" = "11:TRUE"
+                            }
+                            "Welcome"
+                            {
+                            "Name" = "8:Welcome"
+                            "DisplayName" = "8:#1003"
+                            "Description" = "8:#1103"
+                            "Type" = "3:3"
+                            "ContextData" = "8:"
+                            "Attributes" = "3:0"
+                            "Setting" = "3:1"
+                            "Value" = "8:#1203"
+                            "DefaultValue" = "8:#1203"
+                            "UsePlugInResources" = "11:TRUE"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        "MergeModule"
+        {
+        }
+        "ProjectOutput"
+        {
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_055740D0BE48469C8684E3A8792144C1"
+            {
+            "SourcePath" = "8:"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:"
+            "OutputGroupCanonicalName" = "8:LocalizedResourceDlls"
+            "OutputProjectGuid" = "8:{FB689BF8-E82C-43AF-B561-2E23AEA8B051}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_22D65DDF5CD249D2A637993AAEEC3A81"
+            {
+            "SourcePath" = "8:"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:"
+            "OutputGroupCanonicalName" = "8:XmlSerializer"
+            "OutputProjectGuid" = "8:{FB689BF8-E82C-43AF-B561-2E23AEA8B051}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_25047178CB734030A205F11DCB6505DC"
+            {
+            "SourcePath" = "8:..\\..\\..\\obj\\Release\\RTIS_Vulcan_SVC.exe"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:"
+            "OutputGroupCanonicalName" = "8:Built"
+            "OutputProjectGuid" = "8:{FB689BF8-E82C-43AF-B561-2E23AEA8B051}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_3CAFD697A1FA405792B69793F9630986"
+            {
+            "SourcePath" = "8:"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:"
+            "OutputGroupCanonicalName" = "8:RuntimeImplementation"
+            "OutputProjectGuid" = "8:{FB689BF8-E82C-43AF-B561-2E23AEA8B051}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_4AA3D7FB5A604A33BF118C3C60C420DD"
+            {
+            "SourcePath" = "8:"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:"
+            "OutputGroupCanonicalName" = "8:Symbols"
+            "OutputProjectGuid" = "8:{FB689BF8-E82C-43AF-B561-2E23AEA8B051}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_549FB92B47B94DCB8BA7DE7EABEA9578"
+            {
+            "SourcePath" = "8:"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:"
+            "OutputGroupCanonicalName" = "8:ContentFiles"
+            "OutputProjectGuid" = "8:{FB689BF8-E82C-43AF-B561-2E23AEA8B051}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_6BAA1F2559F64713995FAF4047FBBC33"
+            {
+            "SourcePath" = "8:..\\..\\..\\obj\\Release\\RTIS_Vulcan_SVC.xml"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:"
+            "OutputGroupCanonicalName" = "8:Documentation"
+            "OutputProjectGuid" = "8:{FB689BF8-E82C-43AF-B561-2E23AEA8B051}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_8521F2D65D55469F910A226F98BC61B3"
+            {
+            "SourcePath" = "8:"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:"
+            "OutputGroupCanonicalName" = "8:SourceFiles"
+            "OutputProjectGuid" = "8:{FB689BF8-E82C-43AF-B561-2E23AEA8B051}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_A40905E57A3E4DA1961368AD03FE59F4"
+            {
+            "SourcePath" = "8:"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_5EB3D54F9FEB48A0A53585BDCBFA964A"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:"
+            "OutputGroupCanonicalName" = "8:ReferenceCopyLocalPaths"
+            "OutputProjectGuid" = "8:{FB689BF8-E82C-43AF-B561-2E23AEA8B051}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
+        }
+    }
+}
