@@ -944,7 +944,7 @@ Public Class MixedSlurry
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT TOP 1 [vLotNumber], [dDryWeight], ISNULL([bTransferred], 0), [vItemDesc]
+                    Dim sqlComm As New SqlCommand("SELECT TOP 1 [vLotNumber], [dDryWeight], ISNULL([bTransferred], 0), [vItemDesc]
                                                     FROM [tbl_RTIS_MS_Decant] WHERE [vTankCode] = @1 AND [vItemCode] = @2 AND [dSolidity] IS NOT NULL
                                                     ORDER BY [iLineID] DESC", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", tankNo))
