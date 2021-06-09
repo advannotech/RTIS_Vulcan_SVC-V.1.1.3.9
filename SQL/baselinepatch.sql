@@ -45,12 +45,12 @@ IF (OBJECT_ID('[dbo].[fn_CalculateVariance]') IS NOT NULL)
 GO
 
 CREATE FUNCTION [dbo].[fn_CalculateVariance](@diff FLOAT, @tolerance DECIMAL(18,5))
-RETURNS VARCHAR(max)
+RETURNS DECIMAL(18,5)
 BEGIN
-DECLARE @variance VARCHAR(MAX)
+DECLARE @variance DECIMAL(18,5)
 
 	IF @diff <= @tolerance
-		SET @variance = '0'
+		SET @variance = 0
 	ELSE
 		SET @variance = @diff
 RETURN @variance
@@ -65,9 +65,9 @@ IF (OBJECT_ID('[dbo].[fn_GetDifference]') IS NOT NULL)
 GO
 
 CREATE FUNCTION [dbo].[fn_GetDifference](@count1 DECIMAL(18,5), @sysCount DECIMAL(18,5))
-RETURNS DECIMAL(18,2)
+RETURNS DECIMAL(18,5)
 BEGIN
-DECLARE @diff DECIMAL(18,7)
+DECLARE @diff DECIMAL(18,5)
 
 	IF @count1 >= @sysCount
 		SET @diff = @count1 - @sysCount
@@ -81,7 +81,7 @@ GO
 
 
 
-
+SELECT [dbo].[fn_CalculateVariance]([dbo].[fn_GetDifference](30, 31), 0.02)
 
 
 
