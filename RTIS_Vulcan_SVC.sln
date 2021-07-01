@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "RTIS_Vulcan_SVC", "RTIS_Vulcan_SVC.vbproj", "{FB689BF8-E82C-43AF-B561-2E23AEA8B051}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Advannotech_SVC", "..\Advannotech_SVC\Advannotech_SVC.vdproj", "{3A7AD460-340E-42CD-A0E9-5B04B9541AA4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +17,13 @@ Global
 		{FB689BF8-E82C-43AF-B561-2E23AEA8B051}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB689BF8-E82C-43AF-B561-2E23AEA8B051}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB689BF8-E82C-43AF-B561-2E23AEA8B051}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A7AD460-340E-42CD-A0E9-5B04B9541AA4}.Debug|Any CPU.ActiveCfg = Debug
+		{3A7AD460-340E-42CD-A0E9-5B04B9541AA4}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {54FB3CFB-7F5A-42FE-AAC2-2244301A2A64}
 	EndGlobalSection
 EndGlobal

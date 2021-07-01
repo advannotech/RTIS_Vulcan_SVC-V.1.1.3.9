@@ -49,7 +49,7 @@ RETURNS DECIMAL(18,5)
 BEGIN
 DECLARE @variance DECIMAL(18,5)
 
-	IF @diff <= @tolerance
+	IF ABS(@diff) >= @tolerance
 		SET @variance = 0
 	ELSE
 		SET @variance = @diff
@@ -81,7 +81,31 @@ GO
 
 
 
-SELECT [dbo].[fn_CalculateVariance]([dbo].[fn_GetDifference](30, 31), 0.02)
+SELECT [dbo].[fn_CalculateVariance]([dbo].[fn_GetDifference](0, 6.999), null)
+
+
+
+
+
+select ABS(-6) AS result
+
+
+
+BEGIN
+IF 0.00005 >= 0.00001
+	SELECT 'YES'
+ELSE 
+	SELECT 'NO'
+END
+
+
+
+
+
+if ABS(0.00005) <= null
+	select 'yes'
+else
+	select 'no'
 
 
 

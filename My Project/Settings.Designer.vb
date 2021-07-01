@@ -56,13 +56,13 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("sa")>  _
-        Public Property RTUser() As String
+         Global.System.Configuration.DefaultSettingValueAttribute("CAT_RTIS")>  _
+        Public Property RTDB() As String
             Get
-                Return CType(Me("RTUser"),String)
+                Return CType(Me("RTDB"),String)
             End Get
             Set
-                Me("RTUser") = value
+                Me("RTDB") = value
             End Set
         End Property
         
@@ -80,13 +80,25 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("sa")>  _
-        Public Property EvoUser() As String
+         Global.System.Configuration.DefaultSettingValueAttribute("CAT_EvolutionCommon")>  _
+        Public Property EvoComDB() As String
             Get
-                Return CType(Me("EvoUser"),String)
+                Return CType(Me("EvoComDB"),String)
             End Get
             Set
-                Me("EvoUser") = value
+                Me("EvoComDB") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("A GF 100")>  _
+        Public Property Project() As String
+            Get
+                Return CType(Me("Project"),String)
+            End Get
+            Set
+                Me("Project") = value
             End Set
         End Property
         
@@ -104,13 +116,37 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("CAT_EvolutionCommon")>  _
-        Public Property EvoComDB() As String
+         Global.System.Configuration.DefaultSettingValueAttribute("32017")>  _
+        Public Property Port() As String
             Get
-                Return CType(Me("EvoComDB"),String)
+                Return CType(Me("Port"),String)
             End Get
             Set
-                Me("EvoComDB") = value
+                Me("Port") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("sa")>  _
+        Public Property RTUser() As String
+            Get
+                Return CType(Me("RTUser"),String)
+            End Get
+            Set
+                Me("RTUser") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("sa")>  _
+        Public Property EvoUser() As String
+            Get
+                Return CType(Me("EvoUser"),String)
+            End Get
+            Set
+                Me("EvoUser") = value
             End Set
         End Property
         
@@ -140,55 +176,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("A GF 100")>  _
-        Public Property Project() As String
-            Get
-                Return CType(Me("Project"),String)
-            End Get
-            Set
-                Me("Project") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("5000")>  _
-        Public Property Port() As String
-            Get
-                Return CType(Me("Port"),String)
-            End Get
-            Set
-                Me("Port") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("localhost")>  _
-        Public Property RTServer() As String
-            Get
-                Return CType(Me("RTServer"),String)
-            End Get
-            Set
-                Me("RTServer") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("CAT_RTIS2018")>  _
-        Public Property RTDB() As String
-            Get
-                Return CType(Me("RTDB"),String)
-            End Get
-            Set
-                Me("RTDB") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("password123")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("62017")>  _
         Public Property RTPassword() As String
             Get
                 Return CType(Me("RTPassword"),String)
@@ -200,25 +188,37 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("localhost")>  _
-        Public Property EvoServer() As String
-            Get
-                Return CType(Me("EvoServer"),String)
-            End Get
-            Set
-                Me("EvoServer") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("password123")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("62017")>  _
         Public Property EvoPassword() As String
             Get
                 Return CType(Me("EvoPassword"),String)
             End Get
             Set
                 Me("EvoPassword") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("MSI\PADDYSQL")>  _
+        Public Property RTServer() As String
+            Get
+                Return CType(Me("RTServer"),String)
+            End Get
+            Set
+                Me("RTServer") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("MSI\PADDYSQL")>  _
+        Public Property EvoServer() As String
+            Get
+                Return CType(Me("EvoServer"),String)
+            End Get
+            Set
+                Me("EvoServer") = value
             End Set
         End Property
     End Class
