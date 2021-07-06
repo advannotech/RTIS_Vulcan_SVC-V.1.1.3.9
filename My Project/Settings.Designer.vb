@@ -200,7 +200,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("MSI\PADDYSQL")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("localhost")>  _
         Public Property RTServer() As String
             Get
                 Return CType(Me("RTServer"),String)
@@ -212,7 +212,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("MSI\PADDYSQL")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("localhost")>  _
         Public Property EvoServer() As String
             Get
                 Return CType(Me("EvoServer"),String)

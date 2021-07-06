@@ -39,10 +39,10 @@
       <Value Profile="(Default)">62017</Value>
     </Setting>
     <Setting Name="RTServer" Type="System.String" Scope="User">
-      <Value Profile="(Default)">MSI\PADDYSQL</Value>
+      <Value Profile="(Default)">localhost</Value>
     </Setting>
     <Setting Name="EvoServer" Type="System.String" Scope="User">
-      <Value Profile="(Default)">MSI\PADDYSQL</Value>
+      <Value Profile="(Default)">localhost</Value>
     </Setting>
   </Settings>
 </SettingsFile>
