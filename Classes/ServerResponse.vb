@@ -1635,7 +1635,7 @@ Public Class ServerResponse
                     Dim deleted As String = POReceiving.RTSQL.Delete.UI_DeletePOLines(orderNum)
                     Select Case deleted.Split("*")(0)
                         Case "1"
-                            Dim query As String = "INSERT INTO [tblPOLines] ([vOrderNum]     ,[vItemCode], [vLotNumber]  , [dOrderQty]  , [dRecQty]   , [dPrintQty]  , [bValidated]    , [bScanned], [dtDateEntered], [vUserEntered]) VALUES"
+                            Dim query As String = "INSERT INTO [tblPOLines] ([vOrderNum],[vItemCode], [vLotNumber], [dOrderQty], [dRecQty]   , [dPrintQty]  , [bValidated]    , [bScanned], [dtDateEntered], [vUserEntered]) VALUES"
                             For Each line As String In allLines
                                 'orderNum + "|" +  code + "|" + lot + "|" + orderQty + "|" + recQty + "|" + printQty + "|" + validated + "|" + scanned + "|" + userName + "~";
                                 If line <> String.Empty Then

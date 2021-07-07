@@ -32,9 +32,6 @@
     <Setting Name="EvoComServer" Type="System.String" Scope="User">
       <Value Profile="(Default)">LAPTOP-BURSESPP</Value>
     </Setting>
-    <Setting Name="EvoComDB" Type="System.String" Scope="User">
-      <Value Profile="(Default)">CAT_EvolutionCommon</Value>
-    </Setting>
     <Setting Name="EvoComUser" Type="System.String" Scope="User">
       <Value Profile="(Default)">sa</Value>
     </Setting>
@@ -42,7 +39,10 @@
       <Value Profile="(Default)">62017</Value>
     </Setting>
     <Setting Name="Project" Type="System.String" Scope="User">
-      <Value Profile="(Default)">A GF 100</Value>
+      <Value Profile="(Default)">RTIS_Vulcan_SVC</Value>
+    </Setting>
+    <Setting Name="EvoComDB" Type="System.String" Scope="User">
+      <Value Profile="(Default)">CAT_EvolutionCommon</Value>
     </Setting>
   </Settings>
 </SettingsFile>

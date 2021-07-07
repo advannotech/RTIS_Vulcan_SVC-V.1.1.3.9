@@ -8,7 +8,7 @@ Public Class Service
     Protected Overrides Sub OnStart(ByVal args() As String)
         Admin.AddFirewallException(My.Application.Info.ProductName, System.Windows.Forms.Application.ExecutablePath)
         Server.Listener.StartListen()
-         Server.Listener.StartListenFile()
+        Server.Listener.StartListenFile()
         'tmrTransfer.Interval = 180000
         'AddHandler tmrTransfer.Elapsed, AddressOf tmrTransfer_Tick
         'tmrTransfer.Start()

@@ -136,6 +136,12 @@
     <Compile Include="Classes\ServerResponse.vb" />
     <Compile Include="Classes\SQLite.vb" />
     <Compile Include="Classes\WarehouseTransfers.vb" />
+    <Compile Include="Form1.Designer.vb">
+      <DependentUpon>Form1.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form1.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Modules\AutoManufacture.vb" />
     <Compile Include="Modules\Barcodes.vb" />
     <Compile Include="Modules\Canning.vb" />
@@ -143,13 +149,6 @@
     <Compile Include="Modules\Palletizing.vb" />
     <Compile Include="Modules\StockTake.vb" />
     <Compile Include="Modules\WhseTransfers.vb" />
-    <Compile Include="Form1.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form1.Designer.vb">
-      <DependentUpon>Form1.vb</DependentUpon>
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Modules\AW.vb" />
     <Compile Include="Modules\Core.vb" />
     <Compile Include="Modules\FGManufacture.vb" />
@@ -170,11 +169,7 @@
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
-    </Compile>
-    <Compile Include="My Project\Resources.Designer.vb">
-      <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="My Project\Settings.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -191,16 +186,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="My Project\Resources.resx">
-      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
-      <CustomToolNamespace>My.Resources</CustomToolNamespace>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="My Project\app.manifest" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
@@ -212,9 +197,18 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="App.config" />
+    <None Include="RTIS_Vulcan_SVC.vbproj.bak" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="System.Data.SQLite.dll" />
+    <Content Include="System.Data.SQLite.EF6.dll" />
+    <Content Include="System.Data.SQLite.Linq.dll" />
+    <Content Include="Timer.txt" />
     <None Include="Resources\Reltech 64x64 Circle.ico" />
+    <Content Include="Interop.NetFwTypeLib.dll" />
+    <Content Include="Old Code PGM.txt" />
+    <Content Include="Pastel.Evolution.dll" />
+    <Content Include="RTIS_Vulcan_SVC.sln" />
     <Content Include="SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -230,6 +224,14 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.vb</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
