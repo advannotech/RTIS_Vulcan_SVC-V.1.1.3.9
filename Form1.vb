@@ -10,7 +10,7 @@ Public Class Form1
         Server.Listener.StartListenFile()
         tmrTransfer.Interval = 10000
         AddHandler tmrTransfer.Elapsed, AddressOf tmrTransfer_Tick
-        'tmrTransfer.Start()
+        'tmrTransfer.Start().
     End Sub
 
     Private Sub tmrTransfer_Tick(sender As Object, e As ElapsedEventArgs)
