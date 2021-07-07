@@ -8,14 +8,8 @@
     <Setting Name="EvoDB" Type="System.String" Scope="User">
       <Value Profile="(Default)">Cataler_SCN</Value>
     </Setting>
-    <Setting Name="EvoComDB" Type="System.String" Scope="User">
-      <Value Profile="(Default)">CAT_EvolutionCommon</Value>
-    </Setting>
     <Setting Name="Project" Type="System.String" Scope="User">
       <Value Profile="(Default)">A GF 100</Value>
-    </Setting>
-    <Setting Name="EvoComServer" Type="System.String" Scope="User">
-      <Value Profile="(Default)">MSI\PADDYSQL</Value>
     </Setting>
     <Setting Name="Port" Type="System.String" Scope="User">
       <Value Profile="(Default)">32017</Value>
@@ -43,6 +37,12 @@
     </Setting>
     <Setting Name="EvoServer" Type="System.String" Scope="User">
       <Value Profile="(Default)">localhost</Value>
+    </Setting>
+    <Setting Name="EvoComServer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">localhost</Value>
+    </Setting>
+    <Setting Name="EvoComDB" Type="System.String" Scope="User">
+      <Value Profile="(Default)">CAT_EvolutionCommon</Value>
     </Setting>
   </Settings>
 </SettingsFile>

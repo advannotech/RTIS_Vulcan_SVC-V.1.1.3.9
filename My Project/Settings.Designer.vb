@@ -80,18 +80,6 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("CAT_EvolutionCommon")>  _
-        Public Property EvoComDB() As String
-            Get
-                Return CType(Me("EvoComDB"),String)
-            End Get
-            Set
-                Me("EvoComDB") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("A GF 100")>  _
         Public Property Project() As String
             Get
@@ -99,18 +87,6 @@ Namespace My
             End Get
             Set
                 Me("Project") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("MSI\PADDYSQL")>  _
-        Public Property EvoComServer() As String
-            Get
-                Return CType(Me("EvoComServer"),String)
-            End Get
-            Set
-                Me("EvoComServer") = value
             End Set
         End Property
         
@@ -219,6 +195,30 @@ Namespace My
             End Get
             Set
                 Me("EvoServer") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("localhost")>  _
+        Public Property EvoComServer() As String
+            Get
+                Return CType(Me("EvoComServer"),String)
+            End Get
+            Set
+                Me("EvoComServer") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("CAT_EvolutionCommon")>  _
+        Public Property EvoComDB() As String
+            Get
+                Return CType(Me("EvoComDB"),String)
+            End Get
+            Set
+                Me("EvoComDB") = value
             End Set
         End Property
     End Class
