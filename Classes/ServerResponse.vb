@@ -10509,7 +10509,8 @@ Public Class ServerResponse
                 Try
                     Dim itemCode As String = ClientData.Split("|")(0)
                     Dim coatNum As String = ClientData.Split("|")(1)
-                    Server.Listener.SendResponse(ClientSocket, Zect.RTSQL.Retreive.Zect_GetCatalystSlurries(itemCode, coatNum))
+                    'Server.Listener.SendResponse(ClientSocket, Zect.RTSQL.Retreive.Zect_GetCatalystSlurries(itemCode, coatNum))
+                    Server.Listener.SendResponse(ClientSocket, Zect.RTSQL.Retreive.Zect_GetCatalystSlurries(itemCode))
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
@@ -11116,7 +11117,8 @@ Public Class ServerResponse
                 Try
                     Dim itemCode As String = ClientData.Split("|")(0)
                     Dim coatNum As String = ClientData.Split("|")(1)
-                    Server.Listener.SendResponse(ClientSocket, Zect.RTSQL.Retreive.Zect_GetCatalystSlurries(itemCode, coatNum))
+                    'Server.Listener.SendResponse(ClientSocket, Zect.RTSQL.Retreive.Zect_GetCatalystSlurries(itemCode, coatNum))
+                    Server.Listener.SendResponse(ClientSocket, Zect.RTSQL.Retreive.Zect_GetCatalystSlurries(itemCode))
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
