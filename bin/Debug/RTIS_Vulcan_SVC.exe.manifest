@@ -1843,14 +1843,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="RTIS_Vulcan_SVC.exe" size="1003552">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="RTIS_Vulcan_SVC.exe" size="1003040">
       <assemblyIdentity name="RTIS_Vulcan_SVC" version="1.1.3.14" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>uL/mJcuxnN3mxHLY+LjWykh0vblmXFs3arLOvbzHN0E=</dsig:DigestValue>
+        <dsig:DigestValue>VgoG7vqxcKnpmkeDFTURNHdR+h7ysTqZ/U20lcNX3Ls=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

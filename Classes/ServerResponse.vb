@@ -4642,38 +4642,32 @@ Public Class ServerResponse
                     Select Case whseFromOK.Split("*")(0)
                         Case "1"
                             Dim whseToOK As String = Transfers.RTSQL.Retreive.MBL_CheckWhseStockAso(itemCode, WhseTo)
-                            Select Case whseToOK.Split("*")(0)
+                            Dim tranferredIn As String = Unique.RTSQL.Retreive.MBL_GetItemTransferredOut(itemCode, lotNumber, qty, unq)
+                            Select Case tranferredIn.Split("*")(0)
                                 Case "1"
-
-                                    Dim tranferredIn As String = Unique.RTSQL.Retreive.MBL_GetItemTransferredOut(itemCode, lotNumber, qty, unq)
-                                    Select Case tranferredIn.Split("*")(0)
-                                        Case "1"
-                                            tranferredIn = tranferredIn.Remove(0, 2)
-                                            If Convert.ToBoolean(tranferredIn) = False Then
-                                                Dim transferSaved As String = Transfers.RTSQL.Insert.UI_InsertWhseTransfer(itemCode, lotNumber, WhseFrom, WhseTo, qty, username, procCode, transferDescription, "Pending")
-                                                Select Case transferSaved.Split("*")(0)
+                                    tranferredIn = tranferredIn.Remove(0, 2)
+                                    If Convert.ToBoolean(tranferredIn) = False Then
+                                        Dim transferSaved As String = Transfers.RTSQL.Insert.UI_InsertWhseTransfer(itemCode, lotNumber, WhseFrom, WhseTo, qty, username, procCode, transferDescription, "Pending")
+                                        Select Case transferSaved.Split("*")(0)
+                                            Case "1"
+                                                Dim transferLogged As String = Transfers.RTSQL.Insert.UI_whtTransferLog(itemCode, lotNumber, WhseFrom, WhseTo, qty.Replace(",", "."), username, procCode)
+                                                Select Case transferLogged.Split("*")(0)
                                                     Case "1"
-                                                        Dim transferLogged As String = Transfers.RTSQL.Insert.UI_whtTransferLog(itemCode, lotNumber, WhseFrom, WhseTo, qty.Replace(",", "."), username, procCode)
-                                                        Select Case transferLogged.Split("*")(0)
-                                                            Case "1"
-                                                                Server.Listener.SendResponse(ClientSocket, Unique.RTSQL.Update.MBL_UpdateItemTransferredOut(itemCode, lotNumber, qty, unq))
-                                                            Case "-1"
-                                                                Server.Listener.SendResponse(ClientSocket, transferLogged)
-                                                        End Select
+                                                        Server.Listener.SendResponse(ClientSocket, Unique.RTSQL.Update.MBL_UpdateItemTransferredOut(itemCode, lotNumber, qty, unq))
                                                     Case "-1"
-                                                        Server.Listener.SendResponse(ClientSocket, transferSaved)
+                                                        Server.Listener.SendResponse(ClientSocket, transferLogged)
                                                 End Select
+                                            Case "-1"
+                                                Server.Listener.SendResponse(ClientSocket, transferSaved)
+                                        End Select
 
-                                            Else
-                                                Server.Listener.SendResponse(ClientSocket, "0*The item has already been received!")
-                                            End If
-                                        Case "-1"
-                                            Server.Listener.SendResponse(ClientSocket, tranferredIn)
-                                    End Select
-
+                                    Else
+                                        Server.Listener.SendResponse(ClientSocket, "0*The item has already been received!")
+                                    End If
                                 Case "-1"
-                                    Server.Listener.SendResponse(ClientSocket, whseToOK)
+                                    Server.Listener.SendResponse(ClientSocket, tranferredIn)
                             End Select
+                            Server.Listener.SendResponse(ClientSocket, whseToOK)
                         Case "-1"
                             Server.Listener.SendResponse(ClientSocket, whseFromOK)
                     End Select

@@ -212,7 +212,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("CAT_EvolutionCommon")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("EvolutionCommon")>  _
         Public Property EvoComDB() As String
             Get
                 Return CType(Me("EvoComDB"),String)

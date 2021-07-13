@@ -42,7 +42,7 @@
       <Value Profile="(Default)">localhost</Value>
     </Setting>
     <Setting Name="EvoComDB" Type="System.String" Scope="User">
-      <Value Profile="(Default)">CAT_EvolutionCommon</Value>
+      <Value Profile="(Default)">EvolutionCommon</Value>
     </Setting>
   </Settings>
 </SettingsFile>
