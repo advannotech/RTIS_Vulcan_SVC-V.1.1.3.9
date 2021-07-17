@@ -106,7 +106,8 @@ Public Class PowderPrep
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
                     Dim sqlComm As New SqlCommand("SELECT [iLineID],[vItemCode],[vItemDesc],[vLotDesc],[dQty],[dtDateAdded]
-                                                FROM [tbl_RTIS_Powder_Prep] WHERE [bManufactured] = '0'", sqlConn)
+                                                FROM [tbl_RTIS_Powder_Prep] WHERE [bManufactured] = '0'
+                                                ORDER BY [dtDateAdded] DESC", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
