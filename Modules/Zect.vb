@@ -317,6 +317,7 @@ Public Class Zect
                     Return ExHandler.returnErrorEx(ex)
                 End Try
             End Function
+
             Public Shared Function Zect_CheckJobOnLine(ByVal whseCode As String) As String
                 Try
                     Dim ReturnData As String = ""
@@ -1513,7 +1514,7 @@ Public Class Zect
 												 INNER JOIN [WhseMst] w ON w.[WhseLink] = lq.[iWarehouseID]
                                                  INNER JOIN [StkItem] s ON s.[StockLink] = l.[iStockID]
                                                  INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Main] rl ON rl.[vLotNumber] COLLATE Latin1_General_CI_AS = l.[cLotDescription] AND rl.[vItemCode] = s.[Code]
-												 WHERE s.[Code] = @1 AND w.[Code] = @2 AND rl.[vTankType] = 'TNK'  AND lq.[fQtyOnHand]  <> 0 AND rl.[bTransferred] = 1 OR ISNULL(rl.[bReceived], 0)  = 0 AND rl.[dSolidity] IS NOT NULL 
+												 WHERE s.[Code] = @1 AND w.[Code] = @2 AND rl.[vTankType] = 'TNK'  AND lq.[fQtyOnHand]  > 0 AND rl.[dSolidity] >0 
 												 UNION
 												 SELECT DISTINCT 'Mobile Tank', rd.vTankCode, l.[cLotDescription], 'MTNK', rd.[dFinalWetWeight], rd.[dDryWeight] FROM [_etblLotTrackingQty] lq
                                                  INNER JOIN [_etblLotTracking] l ON l.[idLotTracking] = lq.[iLotTrackingID] 
@@ -1522,7 +1523,7 @@ Public Class Zect
                                                  INNER JOIN [StkItem] s ON s.[StockLink] = l.[iStockID]
                                                  INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Main] rl ON rl.[vLotNumber] COLLATE Latin1_General_CI_AS = l.[cLotDescription] AND rl.[vItemCode] = s.[Code]
 												 INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Decant] rd ON rd.[iHeaderID] = rl.[iLineID] 
-												 WHERE s.[Code] = @1 AND w.[Code] = @2 AND rl.[vTankType] = 'BTNK'  AND lq.[fQtyOnHand]  <> 0 AND rd.[bTransferred] = 1 AND ISNULL(rd.[bReceived], 0)  = 0 AND rd.[dSolidity] IS NOT NULL ", sqlConn)
+												 WHERE s.[Code] = @1 AND w.[Code] = @2 AND rl.[vTankType] = 'BTNK'  AND lq.[fQtyOnHand]  > 0 AND rd.[dSolidity] >0 ", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", code))
                     sqlComm.Parameters.Add(New SqlParameter("@2", whse))
                     sqlConn.Open()
