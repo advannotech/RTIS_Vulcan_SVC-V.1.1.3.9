@@ -91,7 +91,7 @@ il.[idInvCountLines] AS [gclineID]
 , ROUND(il.[fSystemQty], 5) AS [gcSystem]
 , CASE WHEN(il.[fCountQty] = il.[fCountQty2])  
 THEN CAST([dbo].[fn_CalculateVariance]([dbo].[fn_GetDifference](il.[fCountQty],il.[fSystemQty]), [dbo].[fn_GetTolerance](s.[ItemGroup])) AS VARCHAR(50))
-ELSE 'SV: ' + CAST([dbo].[fn_GetDifference](il.[fCountQty],il.[fSystemQty]) AS VARCHAR(50)) END AS [gcVarience]
+ELSE 'SV: ' + CAST(CAST([dbo].[fn_GetDifference](il.[fCountQty],il.[fSystemQty]) AS FLOAT) AS VARCHAR(50)) END AS [gcVarience]
 , w.[Code] AS [gcWhseCode]
 , w.[Name] AS [gcWhseName]
 , il.[bIsCounted] AS [gcIsCounted]
@@ -119,10 +119,10 @@ WHERE [iInvCountID] = 131
 
 -- update the variance expression
 UPDATE [RTIS_InvCountLines]
-SET [fCountQty] = 1303.69694,
-[fCountQty2] = 1303.69694,
-[fSystemQty] = 1305.69699
-WHERE [idInvCountLines] = 327
+SET [fCountQty] = 1.87123,
+[fCountQty2] = 1.87123,
+[fSystemQty] = 2
+WHERE [idInvCountLines] = 340
 
 
 

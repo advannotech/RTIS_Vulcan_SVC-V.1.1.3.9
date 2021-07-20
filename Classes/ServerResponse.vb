@@ -7660,8 +7660,8 @@ Public Class ServerResponse
                                     stUnqs = stUnqs.Remove(0, 2)
                                     Dim stUnq1 = stUnqs.Split("|")(0)
                                     Dim stUnq2 = stUnqs.Split("|")(1)
-                                    If Convert.ToBoolean(isRecount) = False Then
-                                        If Convert.ToBoolean(isSingleScanner) = False Then
+                                    'If Convert.ToBoolean(isRecount) = False Then
+                                    If Convert.ToBoolean(isSingleScanner) = False Then
                                             If CLng(scannerID) Mod 2 = 0 Then
                                                 'Even
                                                 If stUnq2 <> stNum Then
@@ -7684,7 +7684,7 @@ Public Class ServerResponse
                                                 Server.Listener.SendResponse(ClientSocket, "-1*Item already scanned on this stock take")
                                             End If
                                         End If
-                                    Else
+                                        'Else
                                         If stUnq1 <> stNum And stUnq2 <> stNum Then
                                             Dim invalidatedLineFound As String = StockTake.RTSQL.Retreive.MBL_checkRT2dForRecount(headerId, RT2D)
                                             Select Case invalidatedLineFound.Split("*")(0)
@@ -7703,7 +7703,7 @@ Public Class ServerResponse
                                         Else
                                             Server.Listener.SendResponse(ClientSocket, "-1*Item already scanned on this stock take")
                                         End If
-                                    End If
+                                    'End If
                                 Case "0"
                                     Server.Listener.SendResponse(ClientSocket, stUnqs)
                                 Case "-1"
@@ -7749,7 +7749,7 @@ Public Class ServerResponse
                                             Dim count1 As Decimal = Convert.ToDecimal(ticketCounts.Split("|")(0).Replace(",", sep).Replace(".", sep))
                                             Dim count2 As Decimal = Convert.ToDecimal(ticketCounts.Split("|")(1).Replace(",", sep).Replace(".", sep))
                                             Dim ticketUnq As String = ticketCounts.Split("|")(2)
-                                            If Convert.ToBoolean(isSingleScanner) = False Then
+                                            If Convert.ToBoolean(isSingleScanner) = True Then
                                                 If CLng(scannerID) Mod 2 = 0 Then
                                                     'Even
                                                     If ticketUnq.Contains(itemCode) And ticketUnq.Contains(lotNumber) And ticketUnq.Contains(qty) And ticketUnq.Contains(unq) Then
@@ -7811,7 +7811,7 @@ Public Class ServerResponse
                                                         Case "1"
                                                             ticketUnq = ticketUnq.Remove(0, 2)
                                                             If ticketNo = ticketUnq Or ticketUnq = String.Empty Then
-                                                                If Convert.ToBoolean(isSingleScanner) = False Then
+                                                                If Convert.ToBoolean(isSingleScanner) = True Then
                                                                     If CLng(scannerID) Mod 2 = 0 Then
                                                                         'Even
                                                                         Dim ticketLogInserted As String = StockTake.RTSQL.Insert.MBL_InsertTicketLog2(headerId, ticketNo, qty, username, "RT2D", RT2D)
@@ -8221,7 +8221,7 @@ Public Class ServerResponse
                                                 Dim count1 As Decimal = Convert.ToDecimal(ticketCounts.Split("|")(0).Replace(",", sep).Replace(".", sep))
                                                 Dim count2 As Decimal = Convert.ToDecimal(ticketCounts.Split("|")(1).Replace(",", sep).Replace(".", sep))
                                                 Dim ticketUnq As String = ticketCounts.Split("|")(2)
-                                                If Convert.ToBoolean(isSingleScanner) = False Then
+                                                If Convert.ToBoolean(isSingleScanner) = True Then
                                                     If CLng(scannerID) Mod 2 = 0 Then
                                                         'Even
                                                         If ticketUnq = RT2D Then
@@ -8308,7 +8308,7 @@ Public Class ServerResponse
                                                             Case "1"
                                                                 ticketUnq = ticketUnq.Remove(0, 2)
                                                                 If ticketNo = ticketUnq Or ticketUnq = String.Empty Then
-                                                                    If Convert.ToBoolean(isSingleScanner) = False Then
+                                                                    If Convert.ToBoolean(isSingleScanner) = True Then
                                                                         If CLng(scannerID) Mod 2 = 0 Then
                                                                             'Even
                                                                             Dim updateQuery As String = String.Empty
@@ -8611,15 +8611,15 @@ Public Class ServerResponse
                                                         Dim count1 As Decimal = Convert.ToDecimal(ticketCounts.Split("|")(0).Replace(",", sep).Replace(".", sep))
                                                         Dim count2 As Decimal = Convert.ToDecimal(ticketCounts.Split("|")(1).Replace(",", sep).Replace(".", sep))
                                                         Dim ticketUnq As String = ticketCounts.Split("|")(2)
-                                                        If Convert.ToBoolean(isSingleScanner) = False Then
+                                                        If Convert.ToBoolean(isSingleScanner) = True Then
                                                             If CLng(scannerID) Mod 2 = 0 Then
                                                                 If ticketUnq = RT2D Then
                                                                     If count1 <> 0 And count2 = 0 Then
                                                                         Dim updateQuery As String = String.Empty
                                                                         For Each unqBarcode As String In allPalletUnqs
-                                                                             If unqBarcode <> String.Empty Then
+                                                                            If unqBarcode <> String.Empty Then
                                                                                 updateQuery += String.Format("UPDATE [tbl_unqBarcodes] SET [StockTake2] = '{1}' WHERE [vUnqBarcode] ='{0}' " + Environment.NewLine, unqBarcode, stNum)
-                                                                             End If
+                                                                            End If
                                                                         Next
                                                                         Dim batchUpdated As String = StockTake.RTSQL.ExecuteQuery(updateQuery)
                                                                         Select Case batchUpdated.Split("*")(0)
@@ -8698,7 +8698,7 @@ Public Class ServerResponse
 #End Region
                                                     Case "0"
 #Region "Insert"
-                                                        If Convert.ToBoolean(isSingleScanner) = False Then
+                                                        If Convert.ToBoolean(isSingleScanner) = True Then
                                                             If CLng(scannerID) Mod 2 = 0 Then
                                                                 'Even
                                                                 Dim updateQuery As String = String.Empty
@@ -8716,7 +8716,7 @@ Public Class ServerResponse
                                                                             Case "1"
                                                                                 Dim updated As String = StockTake.RTSQL.Update.MBL_UpdateRTStockTakeItem2_Lot(stNum, itemCode, whsecode, lotNumber, qty)
                                                                                 Select Case updated.Split("*")(0)
-                                                                                    Case "1" 
+                                                                                    Case "1"
                                                                                         Server.Listener.SendResponse(ClientSocket, Unique.RTSQL.Update.MBL_UpdatePalletST2(RT2D, stNum))
                                                                                     Case Else
                                                                                         Server.Listener.SendResponse(ClientSocket, updated)
@@ -9002,7 +9002,7 @@ Public Class ServerResponse
 
                                     If ticketValid = True And isRecount = False Then
 #Region "Update Ticket"
-                                        If isSingleScanner = False Then
+                                        If isSingleScanner = True Then
                                             If CLng(scannerID) Mod 2 = 0 Then
                                                 'Even
                                                 If ticketUnq = trolleyCode Then
@@ -9060,7 +9060,7 @@ Public Class ServerResponse
                                                     Case "1"
                                                         ticketUnq = ticketUnq.Remove(0, 2)
                                                         If ticketNo = ticketUnq Or ticketUnq = String.Empty Then
-                                                            If isSingleScanner = False Then
+                                                            If isSingleScanner = True Then
                                                                 If CLng(scannerID) Mod 2 = 0 Then
                                                                     'Even
                                                                     Dim ticketLogInserted As String = StockTake.RTSQL.Insert.MBL_InsertTicketLog2(headerId, ticketNo, qty, username, "Fresh Slurry", trolleyCode)
@@ -9290,7 +9290,7 @@ Public Class ServerResponse
                                     Dim ticketValid As Boolean = Convert.ToBoolean(ticketRecord.Split("|")(3))
                                     If ticketValid = True And isRecount = False Then
 #Region "Update Ticket"
-                                        If isSingleScanner = False Then
+                                        If isSingleScanner = True Then
                                             If CLng(scannerID) Mod 2 = 0 Then
                                                 'Even
                                                 If ticketUnq = tankCode Then
@@ -9348,7 +9348,7 @@ Public Class ServerResponse
                                                     Case "1"
                                                         ticketUnq = ticketUnq.Remove(0, 2)
                                                         If ticketNo = ticketUnq Or ticketUnq = String.Empty Then
-                                                            If isSingleScanner = False Then
+                                                            If isSingleScanner = True Then
                                                                 If CLng(scannerID) Mod 2 = 0 Then
                                                                     'Even
                                                                     Dim ticketLogInserted As String = StockTake.RTSQL.Insert.MBL_InsertTicketLog2(headerId, ticketNo, qty, username, "Mixed Slurry Tank", tankCode)
@@ -9576,7 +9576,7 @@ Public Class ServerResponse
                                     Dim ticketValid As Boolean = Convert.ToBoolean(ticketRecord.Split("|")(3))
                                     If ticketValid = True And isRecount = False Then
 #Region "Update Ticket"
-                                        If isSingleScanner = False Then
+                                        If isSingleScanner = True Then
                                             If CLng(scannerID) Mod 2 = 0 Then
                                                 'Even
                                                 If ticketUnq = tankCode Then
@@ -9634,7 +9634,7 @@ Public Class ServerResponse
                                                     Case "1"
                                                         ticketUnq = ticketUnq.Remove(0, 2)
                                                         If ticketNo = ticketUnq Or ticketUnq = String.Empty Then
-                                                            If isSingleScanner = False Then
+                                                            If isSingleScanner = True Then
                                                                 If CLng(scannerID) Mod 2 = 0 Then
                                                                     'Even
                                                                     Dim ticketLogInserted As String = StockTake.RTSQL.Insert.MBL_InsertTicketLog2(headerId, ticketNo, qty, username, "Mixed Slurry Tank", tankCode)
@@ -9834,7 +9834,7 @@ Public Class ServerResponse
                                     Dim ticketValid As Boolean = Convert.ToBoolean(ticketRecord.Split("|")(3))
                                     If ticketValid = True And isRecount = False Then
 #Region "Update Ticket"
-                                        If isSingleScanner = False Then
+                                        If isSingleScanner = True Then
                                             If CLng(scannerID) Mod 2 = 0 Then
                                                 'Even
                                                 If ticketUnq = contCode Then
@@ -9892,7 +9892,7 @@ Public Class ServerResponse
                                                     Case "1"
                                                         ticketUnq = ticketUnq.Remove(0, 2)
                                                         If ticketNo = ticketUnq Or ticketUnq = String.Empty Then
-                                                            If isSingleScanner = False Then
+                                                            If isSingleScanner = True Then
                                                                 If CLng(scannerID) Mod 2 = 0 Then
                                                                     'Even
                                                                     Dim ticketLogInserted As String = StockTake.RTSQL.Insert.MBL_InsertTicketLog2(headerId, ticketNo, qty, username, "PGM Container", contCode)
@@ -9999,7 +9999,7 @@ Public Class ServerResponse
                                     Dim ticketValid As Boolean = Convert.ToBoolean(ticketRecord.Split("|")(3))
                                     If ticketValid = True And isRecount = False Then
 #Region "Update Ticket"
-                                        If isSingleScanner = False Then
+                                        If isSingleScanner = True Then
                                             If CLng(scannerID) Mod 2 = 0 Then
                                                 'Even
                                                 If ticketUnq = unq Then
@@ -10052,7 +10052,7 @@ Public Class ServerResponse
                                         Case "1"
                                             If isRecount = False Then
 #Region "Insert New Ticket"
-                                                If isSingleScanner = False Then
+                                                If isSingleScanner = True Then
                                                     If CLng(scannerID) Mod 2 = 0 Then
                                                         'Even
                                                         Dim ticketLogInserted As String = StockTake.RTSQL.Insert.MBL_InsertTicketLog2(headerId, ticketNo, qty, username, "Powder", unq)
@@ -10147,7 +10147,7 @@ Public Class ServerResponse
                                     Dim ticketValid As Boolean = Convert.ToBoolean(ticketRecord.Split("|")(3))
                                     If ticketValid = True And isRecount = False Then
 #Region "Update Ticket"
-                                        If isSingleScanner = False Then
+                                        If isSingleScanner = True Then
                                             If CLng(scannerID) Mod 2 = 0 Then
                                                 'Even
                                                 If count1 <> 0 And count2 = 0 Then
@@ -10192,7 +10192,7 @@ Public Class ServerResponse
                                         Case "1"
                                             If isRecount = False Then
 #Region "Insert Ticket"
-                                                If isSingleScanner = False Then
+                                                If isSingleScanner = True Then
                                                     If CLng(scannerID) Mod 2 = 0 Then
                                                         'Even
                                                         Dim ticketLogInserted As String = StockTake.RTSQL.Insert.MBL_InsertTicketLog2(headerId, ticketNo, qty, username, "Manual", "NA - Manual Count")
