@@ -1747,3 +1747,4 @@ C:\Users\advannotechdev1\source\repos\lifasibiya\RTIS_Vulcan_SVC-V.1.1.3.9\obj\D
 C:\Users\advannotechdev1\source\repos\lifasibiya\RTIS_Vulcan_SVC-V.1.1.3.9\obj\Debug\RTIS_Vulcan_SVC.exe
 C:\Users\advannotechdev1\source\repos\lifasibiya\RTIS_Vulcan_SVC-V.1.1.3.9\obj\Debug\RTIS_Vulcan_SVC.xml
 C:\Users\advannotechdev1\source\repos\lifasibiya\RTIS_Vulcan_SVC-V.1.1.3.9\obj\Debug\RTIS_Vulcan_SVC.pdb
+C:\Users\advannotechdev1\source\repos\lifasibiya\RTIS_Vulcan_SVC-V.1.1.3.9\obj\Debug\RTIS_Vulcan_SVC.vbprojAssemblyReference.cache

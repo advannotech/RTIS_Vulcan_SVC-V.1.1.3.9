@@ -10549,6 +10549,7 @@ Public Class ServerResponse
                     Dim slurryDry As String = ClientData.Split("|")(12)
 
 
+
                     Dim checkJobRunning As String = Zect.RTSQL.Retreive.Zect_CheckJobOnLine(whseTo)
 
                     Select Case checkJobRunning.Split("*")(0)

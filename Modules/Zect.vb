@@ -318,6 +318,36 @@ Public Class Zect
                 End Try
             End Function
 
+            'Public Shared Function Zect_CheckRunningJobOnline(ByVal whseCode As String) As String
+            '    Try
+            '        Dim ReturnData As String = ""
+            '        Dim sqlConn As New SqlConnection(RTString)
+            '        Dim sqlComm As New SqlCommand(" SELECT [vJobUnq] FROM [tbl_RTIS_Zect_Jobs] WHERE [bJobRunning] = 1 AND [vJobUnq] = @1", sqlConn)
+            '        sqlComm.Parameters.Add(New SqlParameter("@1", whseCode))
+            '        sqlConn.Open()
+            '        Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
+            '        While sqlReader.Read()
+            '            ReturnData = Convert.ToString(sqlReader.Item(0))
+            '        End While
+            '        sqlReader.Close()
+            '        sqlComm.Dispose()
+            '        sqlConn.Close()
+
+            '        If ReturnData <> "" Then
+            '            Return "0*A job is running on this line, please close it and try again"
+            '        Else
+            '            Return "1*No jobs running"
+            '        End If
+            '    Catch ex As Exception
+            '        If ex.Message = "Invalid attempt to read when no data is present." Then
+            '            Return "1*No jobs running"
+            '        Else
+            '            EventLog.WriteEntry("RTIS Vulcan SVC", "Zect_CheckJobOnLine: " + ex.ToString())
+            '            Return ExHandler.returnErrorEx(ex)
+            '        End If
+            '    End Try
+            'End Function
+
             Public Shared Function Zect_CheckJobOnLine(ByVal whseCode As String) As String
                 Try
                     Dim ReturnData As String = ""
