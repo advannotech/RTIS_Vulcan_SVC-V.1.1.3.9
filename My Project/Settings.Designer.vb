@@ -56,30 +56,6 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("CAT_RTIS")>  _
-        Public Property RTDB() As String
-            Get
-                Return CType(Me("RTDB"),String)
-            End Get
-            Set
-                Me("RTDB") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Cataler_SCN")>  _
-        Public Property EvoDB() As String
-            Get
-                Return CType(Me("EvoDB"),String)
-            End Get
-            Set
-                Me("EvoDB") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("A GF 100")>  _
         Public Property Project() As String
             Get
@@ -104,79 +80,19 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("sa")>  _
-        Public Property RTUser() As String
+         Global.System.Configuration.DefaultSettingValueAttribute("EvolutionCommon")>  _
+        Public Property EvoComDB() As String
             Get
-                Return CType(Me("RTUser"),String)
+                Return CType(Me("EvoComDB"),String)
             End Get
             Set
-                Me("RTUser") = value
+                Me("EvoComDB") = value
             End Set
         End Property
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("sa")>  _
-        Public Property EvoUser() As String
-            Get
-                Return CType(Me("EvoUser"),String)
-            End Get
-            Set
-                Me("EvoUser") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("sa")>  _
-        Public Property EvoComUser() As String
-            Get
-                Return CType(Me("EvoComUser"),String)
-            End Get
-            Set
-                Me("EvoComUser") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("62017")>  _
-        Public Property EvoComPassword() As String
-            Get
-                Return CType(Me("EvoComPassword"),String)
-            End Get
-            Set
-                Me("EvoComPassword") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("62017")>  _
-        Public Property RTPassword() As String
-            Get
-                Return CType(Me("RTPassword"),String)
-            End Get
-            Set
-                Me("RTPassword") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("62017")>  _
-        Public Property EvoPassword() As String
-            Get
-                Return CType(Me("EvoPassword"),String)
-            End Get
-            Set
-                Me("EvoPassword") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("localhost")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("CATALER2")>  _
         Public Property RTServer() As String
             Get
                 Return CType(Me("RTServer"),String)
@@ -188,7 +104,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("localhost")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("CATALER2")>  _
         Public Property EvoServer() As String
             Get
                 Return CType(Me("EvoServer"),String)
@@ -200,7 +116,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("localhost")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("CATALER2")>  _
         Public Property EvoComServer() As String
             Get
                 Return CType(Me("EvoComServer"),String)
@@ -212,13 +128,97 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("EvolutionCommon")>  _
-        Public Property EvoComDB() As String
+         Global.System.Configuration.DefaultSettingValueAttribute("Reltech")>  _
+        Public Property RTUser() As String
             Get
-                Return CType(Me("EvoComDB"),String)
+                Return CType(Me("RTUser"),String)
             End Get
             Set
-                Me("EvoComDB") = value
+                Me("RTUser") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Reltech")>  _
+        Public Property EvoUser() As String
+            Get
+                Return CType(Me("EvoUser"),String)
+            End Get
+            Set
+                Me("EvoUser") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Reltech")>  _
+        Public Property EvoComUser() As String
+            Get
+                Return CType(Me("EvoComUser"),String)
+            End Get
+            Set
+                Me("EvoComUser") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("R3lt3ch!4")>  _
+        Public Property EvoComPassword() As String
+            Get
+                Return CType(Me("EvoComPassword"),String)
+            End Get
+            Set
+                Me("EvoComPassword") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("R3lt3ch!4")>  _
+        Public Property RTPassword() As String
+            Get
+                Return CType(Me("RTPassword"),String)
+            End Get
+            Set
+                Me("RTPassword") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("R3lt3ch!4")>  _
+        Public Property EvoPassword() As String
+            Get
+                Return CType(Me("EvoPassword"),String)
+            End Get
+            Set
+                Me("EvoPassword") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("CAT_RTIS_Test")>  _
+        Public Property RTDB() As String
+            Get
+                Return CType(Me("RTDB"),String)
+            End Get
+            Set
+                Me("RTDB") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Cataler_SCN_Test")>  _
+        Public Property EvoDB() As String
+            Get
+                Return CType(Me("EvoDB"),String)
+            End Get
+            Set
+                Me("EvoDB") = value
             End Set
         End Property
     End Class
