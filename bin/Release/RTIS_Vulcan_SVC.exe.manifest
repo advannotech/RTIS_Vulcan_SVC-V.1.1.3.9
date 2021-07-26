@@ -1850,7 +1850,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>3wX/AfuuSYfXgjDkwtep3PMcffBBfxfIhXB4W1dGl34=</dsig:DigestValue>
+        <dsig:DigestValue>q51r7OnPkTUxUyUhH/H3hgsGjw7y3dts6Hkd6uPdsM0=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -1899,13 +1899,13 @@
       <dsig:DigestValue>g+fc1S3eRQoAR5k1MDAUu4Q/wE5l5t25imLWI/RNyAk=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="RTIS_Vulcan_SVC.exe.config" size="2544">
+  <file name="RTIS_Vulcan_SVC.exe.config" size="2561">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>m8tQP3P8X1cGttC5/XCIGskBylFnQBijw3zeD+1Q2gI=</dsig:DigestValue>
+      <dsig:DigestValue>VfrhFJYZ1IcwBmWvZ24Iiy5Lkcu1A+7HM+7AD76zDdA=</dsig:DigestValue>
     </hash>
   </file>
   <file name="SQLite.Interop.dll" size="1155584">
