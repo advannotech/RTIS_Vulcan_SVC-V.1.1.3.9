@@ -277,7 +277,7 @@ Public Class WhseTransfers
 ,'false' AS [bChanged]
                                                     FROM [tbl_WHTPending] wt
 INNER JOIN [tbl_ProcNames] pr ON wt.[vProcess]  = [vProcName]
-                                                    WHERE [vProcess] LIKE @1
+                                                    WHERE wt.[vStatus] LIKE @1
 													UNION
 													SELECT  wt.[iLineID]
 													,[vItemCode]
@@ -296,7 +296,7 @@ INNER JOIN [tbl_ProcNames] pr ON wt.[vProcess]  = [vProcName]
 ,'false' AS [bChanged]
 													FROM [tbl_WHTCompleted] wt
 INNER JOIN [tbl_ProcNames] pr ON wt.[vProcess]  = [vProcName]
-													WHERE [vProcess] LIKE @1", sqlConn)
+													ORDER BY [dtDateTransfered] DESC", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", "%" + process + "%"))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
