@@ -56,8 +56,8 @@ Public Class Server
             Try
                 Dim ThisIPAddress As IPAddress
                 ThisIPAddress = IPAddress.Parse(GetIPv4Address)
-                EventLog.WriteEntry(NameOf(RTIS_Vulcan_SVC), "Listener strated listening on " & ThisIPAddress.ToString() & " on port " & My.Settings.Port)
-                Dim Listener As TcpListener = New TcpListener(ThisIPAddress, Convert.ToInt32(My.Settings.Port))
+                EventLog.WriteEntry(NameOf(RTIS_Vulcan_SVC), "Listener strated listening on " & ThisIPAddress.ToString() & " on port " & Convert.ToInt32(My.Settings.Port) + 1)
+                Dim Listener As TcpListener = New TcpListener(ThisIPAddress, Convert.ToInt32(My.Settings.Port) + 1)
                 AllListeners.Add(Listener)
                 Listener.Start()
 
@@ -137,7 +137,6 @@ Public Class Server
                 'Next
 
                 ClientMsg = UTF8Encoding.UTF8.GetString(byteData).Replace(vbNullChar, String.Empty)
-                EventLog.WriteEntry("RTIS Client", ClientMsg)
                 ServerResponse.Determine(ClientMsg, ThisSocket)
             Catch ex As Exception
                 'EventLog.WriteEntry("RTIS Vulcan SVC", "StartReceive Error: " & ex.Message)
