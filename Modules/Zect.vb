@@ -1569,7 +1569,7 @@ Public Class Zect
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
                     Dim sqlComm As New SqlCommand(" SELECT [Code] FROM [StkItem]
-                                                    WHERE [Code] LIKE @1", sqlConn)
+                                                    WHERE [Code] = @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
