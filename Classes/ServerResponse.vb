@@ -5074,6 +5074,21 @@ Public Class ServerResponse
                     Dim transferType As String = ClientData.Split("|")(5)
                     Dim whseTo As String = String.Empty '"WIP-FS"
                     Dim whseDest As String = String.Empty
+
+                    Dim procCode As String = "PGM"
+                    Dim transferDescription As String = "PGM Transfer to IT"
+                    'Select Case procCode
+                    '    Case "PPtFS"
+                    '        transferDescription = "Powder Prep Transfer from IT"
+                    '    Case "FStMS"
+                    '        transferDescription = "Fresh Slurry Transfer from IT"
+                    '    Case "MStZECT"
+                    '        transferDescription = "MIxed Slurry Transfer from IT"
+                    '    Case "AW"
+                    '        transferDescription = "AW Transfer from IT"
+                    '    Case "Canning"
+                    '        transferDescription = "Canning Transfer from IT"
+                    'End Select
                     Select Case transferType
                         Case "VW"
                             whseTo = PGM.RTSQL.Retreive.PGM_GetVWWIPLoc()
@@ -5139,12 +5154,14 @@ Public Class ServerResponse
                                                                                         Dim headerUpdated As String = PGM.RTSQL.Update.PGM_updateHeaderQtyOut(itemCode, lotNumber, qty, whseFrom)
                                                                                         Select Case headerUpdated.Split("*")(0)
                                                                                             Case "1"
-                                                                                                Dim transferred As String = Transfers.RTSQL.Insert.UI_InsertFGWhseTransfer(itemCode, lotNumber, whseFrom, whseTo, qty.Replace(",", "."), username, "PGM")
-                                                                                                Select Case transferred.Split("*")(0)
+                                                                                                'Dim transferred As String = Transfers.RTSQL.Insert.UI_InsertFGWhseTransfer(itemCode, lotNumber, whseFrom, whseTo, qty.Replace(",", "."), username, "PGM")
+                                                                                                Dim transferSaved As String = Transfers.RTSQL.Insert.UI_InsertWhseTransfer(itemCode, lotNumber, whseFrom, whseTo, qty, username, procCode, transferDescription, "Pending")
+
+                                                                                                Select Case transferSaved.Split("*")(0)
                                                                                                     Case "1"
                                                                                                         Server.Listener.SendResponse(ClientSocket, Transfers.RTSQL.Insert.UI_whtTransferLog(itemCode, batch, whseFrom, whseTo, qty.Replace(",", "."), username, "PGM"))
                                                                                                     Case "-1"
-                                                                                                        Server.Listener.SendResponse(ClientSocket, transferred)
+                                                                                                        Server.Listener.SendResponse(ClientSocket, transferSaved)
                                                                                                 End Select
                                                                                             Case "-1"
                                                                                                 Server.Listener.SendResponse(ClientSocket, headerUpdated)
@@ -6509,7 +6526,20 @@ Public Class ServerResponse
                             transferDescription = "Fresh Slurry Transfer from IT"
                         Case "MStZECT"
                             transferDescription = "MIxed Slurry Transfer from IT"
+                        Case "AW"
+                            transferDescription = "AW Transfer from IT"
+                        Case "Canning"
+                            transferDescription = "Canning Transfer from IT"
                     End Select
+
+                    'Select Case procCode
+                    '    Case "PPtFS"
+                    '        transferDescription = "Powder Prep Transfer from IT"
+                    '    Case "FStMS"
+                    '        transferDescription = "Fresh Slurry Transfer from IT"
+                    '    Case "MStZECT"
+                    '        transferDescription = "MIxed Slurry Transfer from IT"
+                    'End Select
 
                     Dim headerID As String = PGM.RTSQL.Retreive.PGM_GetPGMHeaderID(itemCode, lotNumber)
                     Select Case headerID.Split("*")(0)
@@ -6526,7 +6556,9 @@ Public Class ServerResponse
                                                 Dim whseToOK As String = Transfers.RTSQL.Retreive.MBL_CheckWhseStockAso(itemCode, WhseTo)
                                                 Select Case whseToOK.Split("*")(0)
                                                     Case "1"
+                                                        'Dim transferSaved As String = Transfers.RTSQL.Insert.UI_InsertFGWhseTransfer(itemCode, lotNumber, WhseFrom, WhseTo, qty, username, procCode)
                                                         Dim transferSaved As String = Transfers.RTSQL.Insert.UI_InsertWhseTransfer(itemCode, lotNumber, WhseFrom, WhseTo, qty, username, procCode, transferDescription, "Pending")
+
                                                         Select Case transferSaved.Split("*")(0)
                                                             Case "1"
                                                                 Dim transferLogged As String = Transfers.RTSQL.Insert.UI_whtTransferLog(itemCode, lotNumber, WhseFrom, WhseTo, qty.Replace(",", "."), username, procCode)
@@ -6748,6 +6780,10 @@ Public Class ServerResponse
                     Dim dqty As Double = Convert.ToDouble(qty) / 10000
                     qty = Convert.ToString(dqty)
 
+                    Dim procCode As String = "PPtFS"
+                    Dim transferDescription As String = "Powder Prep Transfer to IT"
+
+
                     Dim whseTo As String = Transfers.RTSQL.Retreive.MBL_GetPowderPrepWhes()
                     Select Case whseTo.Split("*")(0)
                         Case "1"
@@ -6758,9 +6794,11 @@ Public Class ServerResponse
                                     Dim whseToOK As String = Transfers.RTSQL.Retreive.MBL_CheckWhseStockAso(itemCode, whseTo)
                                     Select Case whseToOK.Split("*")(0)
                                         Case "1"
-                                            Dim transferComplete As String = Transfers.RTSQL.Insert.UI_InsertFGWhseTransfer(itemCode, lot, whseFrom, whseTo, qty, userName, "PPtFS")
+                                            'Dim transferComplete As String = Transfers.RTSQL.Insert.UI_InsertFGWhseTransfer(itemCode, lot, whseFrom, whseTo, qty, userName, "PPtFS")
+                                            Dim transferSaved As String = Transfers.RTSQL.Insert.UI_InsertWhseTransfer(itemCode, lot, whseFrom, whseTo, qty, userName, procCode, transferDescription, "Pending")
+
                                             'Dim transferComplete As String = Transfers.EvolutionSDK.CTransferItem(orderNum, whseFrom, whseTo, itemCode, lot, qty)
-                                            Select Case transferComplete.Split("*")(0)
+                                            Select Case transferSaved.Split("*")(0)
                                                 Case "1"
                                                     Dim transferRecorded As String = Transfers.RTSQL.Insert.UI_whtTransferLog(itemCode, lot, whseFrom, whseTo, qty, userName, "PPtFS")
                                                     Select Case transferRecorded.Split("*")(0)
@@ -6770,7 +6808,7 @@ Public Class ServerResponse
                                                             Server.Listener.SendResponse(ClientSocket, transferRecorded)
                                                     End Select
                                                 Case "-1"
-                                                    Server.Listener.SendResponse(ClientSocket, transferComplete)
+                                                    Server.Listener.SendResponse(ClientSocket, transferSaved)
                                             End Select
                                         Case "-1"
                                             Server.Listener.SendResponse(ClientSocket, whseToOK)
