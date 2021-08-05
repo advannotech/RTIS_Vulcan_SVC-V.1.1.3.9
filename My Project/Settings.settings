@@ -17,15 +17,6 @@
     <Setting Name="EvoComDB" Type="System.String" Scope="User">
       <Value Profile="(Default)">EvolutionCommon</Value>
     </Setting>
-    <Setting Name="RTServer" Type="System.String" Scope="User">
-      <Value Profile="(Default)">localhost</Value>
-    </Setting>
-    <Setting Name="EvoServer" Type="System.String" Scope="User">
-      <Value Profile="(Default)">localhost</Value>
-    </Setting>
-    <Setting Name="EvoComServer" Type="System.String" Scope="User">
-      <Value Profile="(Default)">localhost</Value>
-    </Setting>
     <Setting Name="RTUser" Type="System.String" Scope="User">
       <Value Profile="(Default)">sa</Value>
     </Setting>
@@ -43,6 +34,15 @@
     </Setting>
     <Setting Name="EvoPassword" Type="System.String" Scope="User">
       <Value Profile="(Default)">62017</Value>
+    </Setting>
+    <Setting Name="RTServer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">LIFA</Value>
+    </Setting>
+    <Setting Name="EvoServer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">LIFA</Value>
+    </Setting>
+    <Setting Name="EvoComServer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">LIFA</Value>
     </Setting>
   </Settings>
 </SettingsFile>
