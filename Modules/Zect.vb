@@ -62,9 +62,8 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [iLIneID], [vJobUnq], [vCatalystCode], [vLotNumber], [dQty], [dQtyManuf], [dtStarted], [vZectLine], [bJobRunning] ,[vUserStarted] ,[dtStopped] ,[vUserStopped] ,[dtSReopened] ,[vUserReopened]
-                                                    FROM [tbl_RTIS_Zect_Jobs] WHERE [dtStarted] BETWEEN @1 AND @2
-                                                    ORDER BY [dtStarted] DESC", sqlConn)
+                    Dim sqlComm As New SqlCommand("  SELECT [iLIneID], [vJobUnq], [vCatalystCode], [vLotNumber], [dQty], [dQtyManuf], [dtStarted], [vZectLine], [bJobRunning] ,[vUserStarted] ,[dtStopped] ,[vUserStopped] ,[dtSReopened] ,[vUserReopened]
+                                                     FROM [tbl_RTIS_Zect_Jobs] WHERE [dtStarted] BETWEEN @1 AND @2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", dateFrom))
                     sqlComm.Parameters.Add(New SqlParameter("@2", dateTo))
                     sqlConn.Open()
@@ -236,14 +235,39 @@ Public Class Zect
 #End Region
 
 #Region "Tablet"
-            Public Shared Function Zect_GetCatalystSlurries(ByVal itemCode As String, ByVal coatNum As String)
+            'Public Shared Function Zect_GetCatalystSlurries(ByVal itemCode As String, ByVal coatNum As String)
+            '    Try
+            '        Dim ReturnData As String = ""
+            '        Dim sqlConn As New SqlConnection(RTString)
+            '        Dim sqlComm As New SqlCommand(" SELECT [vRMCode] FROM [tbl_RTIS_Zect_Raws]
+            '                                        WHERE [vCatalystCode] LIKE @1 AND [vCatalystCode] LIKE @2 AND ([vRMCode] LIKE 'TSP%' OR [vRMCode] LIKE 'VSP%')", sqlConn)
+            '        sqlComm.Parameters.Add(New SqlParameter("@1", itemCode + "%"))
+            '        sqlComm.Parameters.Add(New SqlParameter("@2", "%" + coatNum + "%"))
+            '        sqlConn.Open()
+            '        Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
+            '        While sqlReader.Read()
+            '            ReturnData &= Convert.ToString(sqlReader.Item(0)) + "~"
+            '        End While
+            '        sqlReader.Close()
+            '        sqlComm.Dispose()
+            '        sqlConn.Close()
+            '        If ReturnData <> String.Empty Then
+            '            Return "1*" + ReturnData
+            '        Else
+            '            Return "0*No coats found for catalyst!"
+            '        End If
+            '    Catch ex As Exception
+            '        EventLog.WriteEntry("RTIS Vulcan SVC", "Zect_GetCatalystCoats: " + ex.ToString())
+            '        Return ExHandler.returnErrorEx(ex)
+            '    End Try
+            'End Function
+            Public Shared Function Zect_GetCatalystSlurries(ByVal itemCode As String)
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
                     Dim sqlComm As New SqlCommand(" SELECT [vRMCode] FROM [tbl_RTIS_Zect_Raws]
-                                                    WHERE [vCatalystCode] LIKE @1 AND [vCatalystCode] LIKE @2 AND ([vRMCode] LIKE 'TSP%' OR [vRMCode] LIKE 'VSP%')", sqlConn)
+                                                    WHERE [vCatalystCode] LIKE @1 AND ([vRMCode] LIKE 'TSP%' OR [vRMCode] LIKE 'VSP%')", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode + "%"))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", "%" + coatNum + "%"))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -293,6 +317,37 @@ Public Class Zect
                     Return ExHandler.returnErrorEx(ex)
                 End Try
             End Function
+
+            'Public Shared Function Zect_CheckRunningJobOnline(ByVal whseCode As String) As String
+            '    Try
+            '        Dim ReturnData As String = ""
+            '        Dim sqlConn As New SqlConnection(RTString)
+            '        Dim sqlComm As New SqlCommand(" SELECT [vJobUnq] FROM [tbl_RTIS_Zect_Jobs] WHERE [bJobRunning] = 1 AND [vJobUnq] = @1", sqlConn)
+            '        sqlComm.Parameters.Add(New SqlParameter("@1", whseCode))
+            '        sqlConn.Open()
+            '        Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
+            '        While sqlReader.Read()
+            '            ReturnData = Convert.ToString(sqlReader.Item(0))
+            '        End While
+            '        sqlReader.Close()
+            '        sqlComm.Dispose()
+            '        sqlConn.Close()
+
+            '        If ReturnData <> "" Then
+            '            Return "0*A job is running on this line, please close it and try again"
+            '        Else
+            '            Return "1*No jobs running"
+            '        End If
+            '    Catch ex As Exception
+            '        If ex.Message = "Invalid attempt to read when no data is present." Then
+            '            Return "1*No jobs running"
+            '        Else
+            '            EventLog.WriteEntry("RTIS Vulcan SVC", "Zect_CheckJobOnLine: " + ex.ToString())
+            '            Return ExHandler.returnErrorEx(ex)
+            '        End If
+            '    End Try
+            'End Function
+
             Public Shared Function Zect_CheckJobOnLine(ByVal whseCode As String) As String
                 Try
                     Dim ReturnData As String = ""
@@ -309,7 +364,7 @@ Public Class Zect
                     sqlConn.Close()
 
                     If ReturnData <> "" Then
-                        Return "0*The is already a job running on this line, please close it and try again"
+                        Return "0*There is already a job running on this line, please close it and try again"
                     Else
                         Return "1*No jobs running"
                     End If
@@ -1467,13 +1522,29 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
+                    '       Dim sqlComm As New SqlCommand("SELECT DISTINCT 'Large Tank', rl.vTankCode, l.[cLotDescription], 'TNK', rl.[dWetWeight], rl.[dDryWeight] FROM [_etblLotTrackingQty] lq
+                    '                                    INNER JOIN [_etblLotTracking] l ON l.[idLotTracking] = lq.[iLotTrackingID] 
+                    '                                    INNER JOIN [_etblLotStatus] ls ON l.[iLotStatusID] = ls.[idLotStatus]
+                    'INNER JOIN [WhseMst] w ON w.[WhseLink] = lq.[iWarehouseID]
+                    '                                    INNER JOIN [StkItem] s ON s.[StockLink] = l.[iStockID]
+                    '                                    INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Main] rl ON rl.[vLotNumber] COLLATE Latin1_General_CI_AS = l.[cLotDescription] AND rl.[vItemCode] = s.[Code]
+                    'WHERE s.[Code] = @1 AND w.[Code] = @2 AND rl.[vTankType] = 'TNK'  AND lq.[fQtyOnHand]  <> 0 AND rl.[bTransferred] = 1 AND ISNULL(rl.[bReceived], 0)  = 0 AND rl.[dSolidity] IS NOT NULL 
+                    'UNION
+                    'SELECT DISTINCT 'Mobile Tank', rd.vTankCode, l.[cLotDescription], 'MTNK', rd.[dFinalWetWeight], rd.[dDryWeight] FROM [_etblLotTrackingQty] lq
+                    '                                    INNER JOIN [_etblLotTracking] l ON l.[idLotTracking] = lq.[iLotTrackingID] 
+                    '                                    INNER JOIN [_etblLotStatus] ls ON l.[iLotStatusID] = ls.[idLotStatus]
+                    'INNER JOIN [WhseMst] w ON w.[WhseLink] = lq.[iWarehouseID]
+                    '                                    INNER JOIN [StkItem] s ON s.[StockLink] = l.[iStockID]
+                    '                                    INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Main] rl ON rl.[vLotNumber] COLLATE Latin1_General_CI_AS = l.[cLotDescription] AND rl.[vItemCode] = s.[Code]
+                    'INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Decant] rd ON rd.[iHeaderID] = rl.[iLineID] 
+                    'WHERE s.[Code] = @1 AND w.[Code] = @2 AND rl.[vTankType] = 'BTNK'  AND lq.[fQtyOnHand]  <> 0 AND rd.[bTransferred] = 1 AND ISNULL(rd.[bReceived], 0)  = 0 AND rd.[dSolidity] IS NOT NULL ", sqlConn)
                     Dim sqlComm As New SqlCommand("SELECT DISTINCT 'Large Tank', rl.vTankCode, l.[cLotDescription], 'TNK', rl.[dWetWeight], rl.[dDryWeight] FROM [_etblLotTrackingQty] lq
                                                  INNER JOIN [_etblLotTracking] l ON l.[idLotTracking] = lq.[iLotTrackingID] 
                                                  INNER JOIN [_etblLotStatus] ls ON l.[iLotStatusID] = ls.[idLotStatus]
 												 INNER JOIN [WhseMst] w ON w.[WhseLink] = lq.[iWarehouseID]
                                                  INNER JOIN [StkItem] s ON s.[StockLink] = l.[iStockID]
                                                  INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Main] rl ON rl.[vLotNumber] COLLATE Latin1_General_CI_AS = l.[cLotDescription] AND rl.[vItemCode] = s.[Code]
-												 WHERE s.[Code] = @1 AND w.[Code] = @2 AND rl.[vTankType] = 'TNK'  AND lq.[fQtyOnHand]  <> 0 AND rl.[bTransferred] = 1 AND ISNULL(rl.[bReceived], 0)  = 0 AND rl.[dSolidity] IS NOT NULL 
+												 WHERE s.[Code] = @1 AND w.[Code] = @2 AND rl.[vTankType] = 'TNK'  AND lq.[fQtyOnHand]  > 0 AND rl.[dSolidity] >0 
 												 UNION
 												 SELECT DISTINCT 'Mobile Tank', rd.vTankCode, l.[cLotDescription], 'MTNK', rd.[dFinalWetWeight], rd.[dDryWeight] FROM [_etblLotTrackingQty] lq
                                                  INNER JOIN [_etblLotTracking] l ON l.[idLotTracking] = lq.[iLotTrackingID] 
@@ -1482,9 +1553,7 @@ Public Class Zect
                                                  INNER JOIN [StkItem] s ON s.[StockLink] = l.[iStockID]
                                                  INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Main] rl ON rl.[vLotNumber] COLLATE Latin1_General_CI_AS = l.[cLotDescription] AND rl.[vItemCode] = s.[Code]
 												 INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Decant] rd ON rd.[iHeaderID] = rl.[iLineID] 
-												 WHERE s.[Code] = @1 AND w.[Code] = @2 AND rl.[vTankType] = 'BTNK'  AND lq.[fQtyOnHand]  <> 0 AND rd.[bTransferred] = 1 AND ISNULL(rd.[bReceived], 0)  = 0 AND rd.[dSolidity] IS NOT NULL ", sqlConn)
-
-
+												 WHERE s.[Code] = @1 AND w.[Code] = @2 AND rl.[vTankType] = 'BTNK'  AND lq.[fQtyOnHand]  > 0 AND rd.[dSolidity] >0 ", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", code))
                     sqlComm.Parameters.Add(New SqlParameter("@2", whse))
                     sqlConn.Open()

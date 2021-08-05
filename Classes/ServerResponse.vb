@@ -10509,7 +10509,8 @@ Public Class ServerResponse
                 Try
                     Dim itemCode As String = ClientData.Split("|")(0)
                     Dim coatNum As String = ClientData.Split("|")(1)
-                    Server.Listener.SendResponse(ClientSocket, Zect.RTSQL.Retreive.Zect_GetCatalystSlurries(itemCode, coatNum))
+                    'Server.Listener.SendResponse(ClientSocket, Zect.RTSQL.Retreive.Zect_GetCatalystSlurries(itemCode, coatNum))
+                    Server.Listener.SendResponse(ClientSocket, Zect.RTSQL.Retreive.Zect_GetCatalystSlurries(itemCode))
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
@@ -10531,6 +10532,7 @@ Public Class ServerResponse
                 End Try
             Case "*OPENZECTJOBCARDWITHSLURRYTANK*"
                 Try
+
                     Dim checkSheet As String = ClientData.Split("|")(0)
                     Dim coatNum As String = ClientData.Split("|")(1)
                     Dim lotNumber As String = ClientData.Split("|")(2)
@@ -10546,7 +10548,10 @@ Public Class ServerResponse
                     Dim slurryWet As String = ClientData.Split("|")(11)
                     Dim slurryDry As String = ClientData.Split("|")(12)
 
+
+
                     Dim checkJobRunning As String = Zect.RTSQL.Retreive.Zect_CheckJobOnLine(whseTo)
+
                     Select Case checkJobRunning.Split("*")(0)
                         Case "1"
                             Dim itemCode As String = Zect.Evoltion.Retreive.Zect_GetItemCode(checkSheet, coatNum)
@@ -11116,7 +11121,8 @@ Public Class ServerResponse
                 Try
                     Dim itemCode As String = ClientData.Split("|")(0)
                     Dim coatNum As String = ClientData.Split("|")(1)
-                    Server.Listener.SendResponse(ClientSocket, Zect.RTSQL.Retreive.Zect_GetCatalystSlurries(itemCode, coatNum))
+                    'Server.Listener.SendResponse(ClientSocket, Zect.RTSQL.Retreive.Zect_GetCatalystSlurries(itemCode, coatNum))
+                    Server.Listener.SendResponse(ClientSocket, Zect.RTSQL.Retreive.Zect_GetCatalystSlurries(itemCode))
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
