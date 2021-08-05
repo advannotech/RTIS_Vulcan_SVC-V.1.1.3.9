@@ -7,14 +7,14 @@
     <framework targetVersion="4.5.2" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="RTIS_Vulcan_SVC.exe.manifest" size="116029">
+    <dependentAssembly dependencyType="install" codebase="RTIS_Vulcan_SVC.exe.manifest" size="116030">
       <assemblyIdentity name="RTIS_Vulcan_SVC.exe" version="1.0.0.0" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>VgsdrQwU7AGAUkONA2VM62e3QJxbgzcO344tLhXEiCY=</dsig:DigestValue>
+        <dsig:DigestValue>udQFq7spUdLjq2R9zd9pigkn9/UU8AZvGev+sWgWSE4=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
