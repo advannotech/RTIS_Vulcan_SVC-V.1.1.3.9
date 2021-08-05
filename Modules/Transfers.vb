@@ -509,9 +509,17 @@ Public Class Transfers
                     '                                    INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = wl.iWhse_Link
                     '                                    WHERE wl.iWhse_Link !=w.WhseLink) AND wl.bEnabled=1", sqlConn)
 
-                    Dim sqlComm As New SqlCommand("    SELECT w.[Code], w.[Name] FROM [RTIS_WarehouseLookUp_MStZect] wl
-                                                       INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
-                                                       WHERE [bEnabled] = 1", sqlConn)
+                    'Dim sqlComm As New SqlCommand("    SELECT w.[Code], w.[Name] FROM [RTIS_WarehouseLookUp_MStZect] wl
+                    '                                   INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
+                    '                                   WHERE [bEnabled] = 1", sqlConn)
+
+                    Dim sqlComm As New SqlCommand("SELECT w.[Code], w.[Name] FROM [RTIS_WarehouseLookUp_MStZect] wl
+                    INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
+                                                    WHERE w.[Code] NOT IN (
+                                                    SELECT w.[Code] 
+                                                    FROM [RTIS_WarehouseLookUp_MStZect] wl
+                                                    INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
+                                                    WHERE wl.[iWhse_Link] !=w.WhseLink) AND wl.bEnabled=1", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
