@@ -1544,7 +1544,7 @@ Public Class Zect
 												 INNER JOIN [WhseMst] w ON w.[WhseLink] = lq.[iWarehouseID]
                                                  INNER JOIN [StkItem] s ON s.[StockLink] = l.[iStockID]
                                                  INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Main] rl ON rl.[vLotNumber] COLLATE Latin1_General_CI_AS = l.[cLotDescription] AND rl.[vItemCode] = s.[Code]
-												 WHERE s.[Code] = @1 AND w.[Code] = @2 AND rl.[vTankType] = 'TNK'  AND lq.[fQtyOnHand]  > 0 AND rl.[dSolidity] >0 
+												 WHERE s.[Code] = @1 AND w.[Code] = @2 AND  rl.[vTankType] = 'TNK'  AND lq.[fQtyOnHand]  > 0 AND rl.[bTransferred] IS NOT NULL AND rl.[bReceived] IS NOT NULL AND rl.[dSolidity] >0 
 												 UNION
 												 SELECT DISTINCT 'Mobile Tank', rd.vTankCode, l.[cLotDescription], 'MTNK', rd.[dFinalWetWeight], rd.[dDryWeight] FROM [_etblLotTrackingQty] lq
                                                  INNER JOIN [_etblLotTracking] l ON l.[idLotTracking] = lq.[iLotTrackingID] 
@@ -1553,7 +1553,7 @@ Public Class Zect
                                                  INNER JOIN [StkItem] s ON s.[StockLink] = l.[iStockID]
                                                  INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Main] rl ON rl.[vLotNumber] COLLATE Latin1_General_CI_AS = l.[cLotDescription] AND rl.[vItemCode] = s.[Code]
 												 INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Decant] rd ON rd.[iHeaderID] = rl.[iLineID] 
-												 WHERE s.[Code] = @1 AND w.[Code] = @2 AND rl.[vTankType] = 'BTNK'  AND lq.[fQtyOnHand]  > 0 AND rd.[dSolidity] >0 ", sqlConn)
+												 WHERE s.[Code] = @1 AND w.[Code] = @2 AND rl.[vTankType] = 'BTNK' AND lq.[fQtyOnHand]  > 0 AND rd.[bTransferred] IS NOT NULL AND rl.[bReceived] IS NOT NULL AND rl.[dSolidity] >0  ", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", code))
                     sqlComm.Parameters.Add(New SqlParameter("@2", whse))
                     sqlConn.Open()
