@@ -39,23 +39,24 @@ GO
 
 
 
-
 IF (OBJECT_ID('[dbo].[fn_CalculateVariance]') IS NOT NULL)
 	DROP FUNCTION [dbo].[fn_CalculateVariance]
 GO
 
-CREATE FUNCTION [dbo].[fn_CalculateVariance](@diff FLOAT, @tolerance DECIMAL(18,5))
-RETURNS DECIMAL(18,5)
+CREATE FUNCTION [dbo].[fn_CalculateVariance](@diff DECIMAL(18,5), @tolerance DECIMAL(18,5))
+RETURNS FLOAT
 BEGIN
-DECLARE @variance DECIMAL(18,5)
+DECLARE @variance DECIMAL(18,5), @start INT
 
-	IF ABS(@diff) >= @tolerance
+	IF (@diff BETWEEN -(@tolerance) AND @tolerance) AND (@diff NOT IN (-(@tolerance),@tolerance))
 		SET @variance = 0
 	ELSE
 		SET @variance = @diff
 RETURN @variance
+	
 END
 GO
+
 
 
 
@@ -69,46 +70,64 @@ RETURNS DECIMAL(18,5)
 BEGIN
 DECLARE @diff DECIMAL(18,5)
 
-	IF @count1 >= @sysCount
-		SET @diff = @count1 - @sysCount
-	ELSE
-		SET @diff = @sysCount - @count1
-RETURN @diff
+	SET @diff = @count1 - @sysCount
+RETURN @diff 
 END
 GO
 
 
 
+-- query from CATscan UI, you'll find it on DirectQueries.cs
+
+SELECT
+il.[idInvCountLines] AS [gclineID]
+,s.[Code] AS [gcItemCode]
+, s.[Bar_Code] AS [gcBarcode]
+, s.[Description_1] AS [gcItemDesc]
+, b.[cBinLocationName] AS [gcBin]
+, l.[cLotDescription] AS [gcLot]
+, ROUND(il.[fCountQty], 5) AS [gcCounted]
+, ROUND(il.[fCountQty2], 5) AS [gcCounted2]
+, ROUND(il.[fSystemQty], 5) AS [gcSystem]
+, CASE WHEN(il.[fCountQty] = il.[fCountQty2])  
+THEN CAST([dbo].[fn_CalculateVariance]([dbo].[fn_GetDifference](il.[fCountQty],il.[fSystemQty]), [dbo].[fn_GetTolerance](s.[ItemGroup])) AS VARCHAR(50))
+ELSE 'SV: ' + CAST(CAST([dbo].[fn_GetDifference](il.[fCountQty],il.[fSystemQty]) AS FLOAT) AS VARCHAR(50)) END AS [gcVarience]
+, w.[Code] AS [gcWhseCode]
+, w.[Name] AS [gcWhseName]
+, il.[bIsCounted] AS [gcIsCounted]
+, il.[bOnST] AS [gcOnST]
+FROM[RTIS_InvCountLines] il
+INNER JOIN[RTIS_InvCount] i ON i.[idInvCount] = [iInvCountID]
+INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[StockLink] = il.[iStockID]
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = il.[iWarehouseID]
+LEFT JOIN [Cataler_SCN].[dbo].[_etblLotTracking] l ON il.[iLotTrackingID] = l.[idLotTracking]
+LEFT JOIN [Cataler_SCN].[dbo].[_btblBINLocation] b ON il.[iBinLocationId] = b.[idBinLocation]
+WHERE i.[cInvCountNo] = 'STK0131'  
+ORDER BY
+CASE WHEN(il.[fSystemQty] - il.[fCountQty]) < 0 THEN il.[fCountQty]
+WHEN(il.[fCountQty] - il.[fSystemQty]) < 0 THEN il.[fCountQty] END DESC
 
 
-SELECT [dbo].[fn_CalculateVariance]([dbo].[fn_GetDifference](0, 6.999), null)
+
+-------------------------------------------------------------------------------------
+
+
+
+SELECT * FROM [RTIS_InvCountLines]
+WHERE [iInvCountID] = 131
+
+
+-- update the variance expression
+UPDATE [RTIS_InvCountLines]
+SET [fCountQty] = 1.87123,
+[fCountQty2] = 1.87123,
+[fSystemQty] = 2
+WHERE [idInvCountLines] = 340
 
 
 
 
-
-select ABS(-6) AS result
-
-
-
-BEGIN
-IF 0.00005 >= 0.00001
-	SELECT 'YES'
-ELSE 
-	SELECT 'NO'
-END
-
-
-
-
-
-if ABS(0.00005) <= null
-	select 'yes'
-else
-	select 'no'
-
-
-
+----------------
 
 
 

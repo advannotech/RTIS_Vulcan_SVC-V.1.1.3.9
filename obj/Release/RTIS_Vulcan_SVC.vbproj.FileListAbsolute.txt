@@ -1890,6 +1890,8 @@ C:\Users\advannotechdev2\Documents\Cataler\SVC\RTIS_Vulcan_SVC V.1.1.3.9\bin\Rel
 C:\Users\advannotechdev2\Documents\Cataler\SVC\RTIS_Vulcan_SVC V.1.1.3.9\bin\Release\es\DevExpress.Diagram.v20.2.Core.resources.dll
 C:\Users\advannotechdev2\Documents\Cataler\SVC\RTIS_Vulcan_SVC V.1.1.3.9\bin\Release\ja\DevExpress.Diagram.v20.2.Core.resources.dll
 C:\Users\advannotechdev2\Documents\Cataler\SVC\RTIS_Vulcan_SVC V.1.1.3.9\bin\Release\ru\DevExpress.Diagram.v20.2.Core.resources.dll
+C:\Users\advannotechdev2\Documents\Cataler\SVC\RTIS_Vulcan_SVC V.1.1.3.9\obj\Release\RTIS_Vulcan_SVC.Form1.resources
+C:\Users\advannotechdev2\Documents\Cataler\SVC\RTIS_Vulcan_SVC V.1.1.3.9\obj\Release\RTIS_Vulcan_SVC.vbproj.GenerateResource.cache
 C:\Users\advannotechdev2\Documents\Cataler\SVC\RTIS_Vulcan_SVC V.1.1.3.9\obj\Release\RTIS_Vulcan_SVC.vbproj.CoreCompileInputs.cache
 C:\Users\advannotechdev2\Documents\Cataler\SVC\RTIS_Vulcan_SVC V.1.1.3.9\obj\Release\RTIS_Vulcan_SVC.exe.manifest
 C:\Users\advannotechdev2\Documents\Cataler\SVC\RTIS_Vulcan_SVC V.1.1.3.9\obj\Release\RTIS_Vulcan_SVC.application
