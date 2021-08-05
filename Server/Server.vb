@@ -35,19 +35,19 @@ Public Class Server
             Try
                 Dim ThisIPAddress As IPAddress
                 ThisIPAddress = IPAddress.Parse(GetIPv4Address)
-                EventLog.WriteEntry("RTIS Odin", "Listener strated listening on " & ThisIPAddress.ToString() & " on port " & My.Settings.Port)
+                EventLog.WriteEntry("RTIS Odin ", "Listener strated listening on " & ThisIPAddress.ToString() & " on port " & My.Settings.Port)
                 Dim Listener As TcpListener = New TcpListener(ThisIPAddress, Convert.ToInt32(My.Settings.Port))
                 AllListeners.Add(Listener)
                 Listener.Start()
 
                 Do Until CloseSocket = True
                     Dim ListenSoc As Socket
-                    ListenSoc = Listener.AcceptSocket
+                    ListenSoc = Listener.AcceptSocket()
                     Dim t As New Thread(AddressOf StartReceive)
                     t.Start(ListenSoc)
                 Loop
             Catch ex As Exception
-                EventLog.WriteEntry("RTIS Vulcan SVC", "ListenThread Error: " & ex.Message)
+                EventLog.WriteEntry("RTIS Vulcan SVC", "ListenThread Error: " & ex.Message, EventLogEntryType.Error)
                 Thread.Sleep(5000)
                 ListenThread()
             End Try
@@ -56,8 +56,8 @@ Public Class Server
             Try
                 Dim ThisIPAddress As IPAddress
                 ThisIPAddress = IPAddress.Parse(GetIPv4Address)
-                EventLog.WriteEntry(NameOf(RTIS_Vulcan_SVC), "Listener strated listening on " & ThisIPAddress.ToString() & " on port " & My.Settings.Port)
-                Dim Listener As TcpListener = New TcpListener(ThisIPAddress, Convert.ToInt32(My.Settings.Port))
+                EventLog.WriteEntry(NameOf(RTIS_Vulcan_SVC), "Listener strated listening on " & ThisIPAddress.ToString() & " on port " & Convert.ToInt32(My.Settings.Port) + 1)
+                Dim Listener As TcpListener = New TcpListener(ThisIPAddress, Convert.ToInt32(My.Settings.Port) + 1)
                 AllListeners.Add(Listener)
                 Listener.Start()
 
