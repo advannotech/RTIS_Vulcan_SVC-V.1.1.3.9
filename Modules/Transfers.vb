@@ -503,15 +503,30 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    'Dim sqlComm As New SqlCommand("WHERE [bEnabled] = 1SELECT w.[Code], w.[Name] FROM [RTIS_WarehouseLookUp_MStZect] wl
-                    '                                    INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = wl.iWhse_Link
-                    '                                    WHERE w.[Code] NOT IN (SELECT w.[Code] FROM [RTIS_WarehouseLookUp_MStZect] wl
-                    '                                    INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = wl.iWhse_Link
-                    '                                    WHERE wl.iWhse_Link !=w.WhseLink) AND wl.bEnabled=1", sqlConn)
 
-                    Dim sqlComm As New SqlCommand("SELECT w.[Code], w.[Name] FROM [RTIS_WarehouseLookUp_MStZect] wl
-                                                       INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
-                                                       WHERE [bEnabled] = 1", sqlConn)
+
+                    'Dim sqlComm As New SqlCommand("    SELECT w.[Code], w.[Name] FROM [RTIS_WarehouseLookUp_MStZect] wl
+                    '                                   INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
+                    '                                   WHERE [bEnabled] = 1", sqlConn)
+
+                    Dim sqlComm As New SqlCommand("SELECT DISTINCT 'Large Tank', rl.vTankCode, l.[cLotDescription], 'TNK', rl.[dWetWeight], rl.[dDryWeight] FROM [_etblLotTrackingQty] lq
+                                                 INNER JOIN [_etblLotTracking] l ON l.[idLotTracking] = lq.[iLotTrackingID] 
+                                                 INNER JOIN [_etblLotStatus] ls ON l.[iLotStatusID] = ls.[idLotStatus]
+												 INNER JOIN [WhseMst] w ON w.[WhseLink] = lq.[iWarehouseID]
+                                                 INNER JOIN [StkItem] s ON s.[StockLink] = l.[iStockID]
+                                                 INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Main] rl ON rl.[vLotNumber] COLLATE Latin1_General_CI_AS = l.[cLotDescription] AND rl.[vItemCode] = s.[Code]
+												 WHERE s.[Code] = @1 AND w.[Code] = @2 AND rl.[vTankType] = 'TNK'  AND lq.[fQtyOnHand]  <> 0 AND rl.[bTransferred] = 1 AND ISNULL(rl.[bReceived], 0)  = 0 AND rl.[dSolidity] IS NOT NULL 
+												 UNION
+												 SELECT DISTINCT 'Mobile Tank', rd.vTankCode, l.[cLotDescription], 'MTNK', rd.[dFinalWetWeight], rd.[dDryWeight] FROM [_etblLotTrackingQty] lq
+                                                 INNER JOIN [_etblLotTracking] l ON l.[idLotTracking] = lq.[iLotTrackingID] 
+                                                 INNER JOIN [_etblLotStatus] ls ON l.[iLotStatusID] = ls.[idLotStatus]
+												 INNER JOIN [WhseMst] w ON w.[WhseLink] = lq.[iWarehouseID]
+                                                 INNER JOIN [StkItem] s ON s.[StockLink] = l.[iStockID]
+                                                 INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Main] rl ON rl.[vLotNumber] COLLATE Latin1_General_CI_AS = l.[cLotDescription] AND rl.[vItemCode] = s.[Code]
+												 INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Decant] rd ON rd.[iHeaderID] = rl.[iLineID] 
+												 WHERE s.[Code] = @1 AND w.[Code] = @2 AND rl.[vTankType] = 'BTNK'  AND lq.[fQtyOnHand]  <> 0 AND rd.[bTransferred] = 1 AND ISNULL(rd.[bReceived], 0)  = 0 AND rd.[dSolidity] IS NOT NULL ", sqlConn)
+
+
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -1035,7 +1050,7 @@ Public Class Transfers
                     Dim sqlComm As New SqlCommand(" INSERT INTO [tbl_WHTFGRequests]
                                                     ([vItemCode], [vLotNumber], [vWarehouse_From], [vWarehouse_To], [dQtyTransfered], [dtDateTransfered], [vUsername], [vProcess])
                                                     VALUES
-                                                    (@1, @2, @3, @4, @5, GETDATE(), @6, @7) ", sqlConn)
+                                                    (@1, @2, @3, @4, CONVERT(DECIMAL,@5), GETDATE(), @6, @7) ", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", lotNum))
                     sqlComm.Parameters.Add(New SqlParameter("@3", whseFrom))
@@ -1060,7 +1075,7 @@ Public Class Transfers
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
                     Dim sqlComm As New SqlCommand("INSERT INTO [stbl_WHTLog] ([vItemCode], [vLotNumber], [vWarehouse_From], [vWarehouse_To], [dQtyTransfered], [vUsername], [vProcess], [dtDateTransfered])
-                                                                               VALUES (@1, @2, @3, @4, @5, @6, @7, GETDATE())", sqlConn)
+                                                                               VALUES (@1, @2, @3, @4, CONVERT(DECIMAL,@5), @6, @7, GETDATE())", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", lotNum))
                     sqlComm.Parameters.Add(New SqlParameter("@3", whseFrom))
