@@ -62,8 +62,9 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT [iLIneID], [vJobUnq], [vCatalystCode], [vLotNumber], [dQty], [dQtyManuf], [dtStarted], [vZectLine], [bJobRunning] ,[vUserStarted] ,[dtStopped] ,[vUserStopped] ,[dtSReopened] ,[vUserReopened]
-                                                     FROM [tbl_RTIS_Zect_Jobs] WHERE [dtStarted] BETWEEN @1 AND @2", sqlConn)
+                    Dim sqlComm As New SqlCommand("SELECT [iLIneID], [vJobUnq], [vCatalystCode], [vLotNumber], [dQty], [dQtyManuf], [dtStarted], [vZectLine], [bJobRunning] ,[vUserStarted] ,[dtStopped] ,[vUserStopped] ,[dtSReopened] ,[vUserReopened]
+                                                    FROM [tbl_RTIS_Zect_Jobs] WHERE [dtStarted] BETWEEN @1 AND @2
+                                                    ORDER BY [dtStarted] DESC", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", dateFrom))
                     sqlComm.Parameters.Add(New SqlParameter("@2", dateTo))
                     sqlConn.Open()
@@ -1482,6 +1483,8 @@ Public Class Zect
                                                  INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Main] rl ON rl.[vLotNumber] COLLATE Latin1_General_CI_AS = l.[cLotDescription] AND rl.[vItemCode] = s.[Code]
 												 INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Decant] rd ON rd.[iHeaderID] = rl.[iLineID] 
 												 WHERE s.[Code] = @1 AND w.[Code] = @2 AND rl.[vTankType] = 'BTNK'  AND lq.[fQtyOnHand]  <> 0 AND rd.[bTransferred] = 1 AND ISNULL(rd.[bReceived], 0)  = 0 AND rd.[dSolidity] IS NOT NULL ", sqlConn)
+
+
                     sqlComm.Parameters.Add(New SqlParameter("@1", code))
                     sqlComm.Parameters.Add(New SqlParameter("@2", whse))
                     sqlConn.Open()
