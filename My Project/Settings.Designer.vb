@@ -200,7 +200,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("CAT_RTIS")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("CAT_RTIS_Test")>  _
         Public Property RTDB() As String
             Get
                 Return CType(Me("RTDB"),String)
@@ -212,7 +212,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Cataler_SCN")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Cataler_SCN_Test")>  _
         Public Property EvoDB() As String
             Get
                 Return CType(Me("EvoDB"),String)

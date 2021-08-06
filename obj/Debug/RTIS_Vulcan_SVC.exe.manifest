@@ -1843,22 +1843,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-<<<<<<< HEAD
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="RTIS_Vulcan_SVC.exe" size="999456">
-=======
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="RTIS_Vulcan_SVC.exe" size="1000992">
->>>>>>> ce95e8007a1356ad1bfdb280d507b0eab8702c0c
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="RTIS_Vulcan_SVC.exe" size="1005088">
       <assemblyIdentity name="RTIS_Vulcan_SVC" version="1.1.3.14" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-<<<<<<< HEAD
-        <dsig:DigestValue>CRf/5Mibd/2dQbIy7DP/JmureGUL2fW5x/mgIvitkKo=</dsig:DigestValue>
-=======
-        <dsig:DigestValue>ERBPrVbkSsBfP8Jb63M/O7dEEiNCeLI/8sMbTmn69Ak=</dsig:DigestValue>
->>>>>>> ce95e8007a1356ad1bfdb280d507b0eab8702c0c
+        <dsig:DigestValue>5i74sqMpPEzpUYEUzJC5kDuTouGajaKbnuE5a3Rr6kw=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

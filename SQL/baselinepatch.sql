@@ -119,8 +119,8 @@ WHERE [iInvCountID] = 131
 
 -- update the variance expression
 UPDATE [RTIS_InvCountLines]
-SET [fCountQty] = 1.87123,
-[fCountQty2] = 1.87123,
+SET [fCountQty] = 1.95123,
+[fCountQty2] = 1.95123,
 [fSystemQty] = 2
 WHERE [idInvCountLines] = 340
 
@@ -130,6 +130,12 @@ WHERE [idInvCountLines] = 340
 ----------------
 
 
+
+--IF (@diff BETWEEN -(@tolerance) AND @tolerance) AND (@diff NOT IN (-(@tolerance),@tolerance))
+IF (0.05 BETWEEN -(0.05) AND 0.05) AND (0.05 NOT IN (-(0.05),0.05))
+	SELECT 'Unacceptable'
+ELSE
+	SELECT 'Acceptable'
 
 
 

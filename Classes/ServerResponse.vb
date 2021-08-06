@@ -791,11 +791,11 @@ Public Class ServerResponse
                             Case "t"
                                 Dim transferredStartDate As String = ClientData.Split("|")(3)
                                 Dim transferredEndDate As String = ClientData.Split("|")(4)
-                                transferredDate = String.Format("AND [dtDateTransfered] >= '{0}' AND [dtDateTransfered] <= '{1}'", transferredStartDate.Replace("t", ""), transferredEndDate)
+                                transferredDate = String.Format("AND [dtDateTransfered] >= '{0}' BETWEEN '{1}'", transferredStartDate.Replace("t", ""), transferredEndDate)
                             Case "f"
                                 Dim failedStartDate As String = ClientData.Split("|")(3)
                                 Dim failedEndDate As String = ClientData.Split("|")(4)
-                                failedDate = String.Format("AND [dtDateFailed] >= '{0}' AND [dtDateFailed] <= '{1}'", failedStartDate.Replace("f", ""), failedEndDate)
+                                failedDate = String.Format("AND [dtDateFailed] >= '{0}' BETWEEN '{1}'", failedStartDate.Replace("f", ""), failedEndDate)
                         End Select
                     End If
 
