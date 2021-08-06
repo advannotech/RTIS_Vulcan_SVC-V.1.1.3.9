@@ -717,7 +717,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT TOP 1 ISNULL([bReceived], 0) FROM [ltbl_RTIS_PGM_Trans] WHERE [vContainer] = @1 AND [iHeaderID] = @2 ORDER BY [iLineID] DESC", sqlConn)
+                    Dim sqlComm As New SqlCommand("SELECT TOP 1 [bReceived] FROM [ltbl_RTIS_PGM_Trans] WHERE [vContainer] = @1 AND [iHeaderID] = @2 ORDER BY [iLineID] DESC", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", container))
                     sqlComm.Parameters.Add(New SqlParameter("@2", headerID))
                     sqlConn.Open()

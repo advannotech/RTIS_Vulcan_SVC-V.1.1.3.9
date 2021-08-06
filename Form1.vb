@@ -22,7 +22,11 @@ Public Class Form1
             Dim intRandomNumber = rand.Next(lower, upper)
             tmrTransfer.Interval = intRandomNumber
             triggerd = True
-            proccessWhseTransfers()
+
+            Server.Listener.StartListen()
+
+
+            ''proccessWhseTransfers()
         End If
     End Sub
 
