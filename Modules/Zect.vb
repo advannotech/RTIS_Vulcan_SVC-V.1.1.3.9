@@ -1678,8 +1678,6 @@ Public Class Zect
                                                     INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Decant] rd ON rd.[iHeaderID] = rl.[iLineID]
                                                     WHERE s.[Code] = @1 AND w.[Code] = @2 AND rl.[vTankType] = 'BTNK' AND lq.[fQtyOnHand]  > 0 AND rd.[bTransferred] IS NOT NULL AND rl.[bReceived] IS NOT NULL AND rl.[dSolidity] >0 ", sqlConn)
 
-
-
                     sqlComm.Parameters.Add(New SqlParameter("@1", code))
                     sqlComm.Parameters.Add(New SqlParameter("@2", whse))
                     sqlConn.Open()
