@@ -1,0 +1,379 @@
+/// <XRTypeInfo>
+///   <AssemblyFullName>RTIS_Vulcan_UI, Version=1.1.2.11, Culture=neutral, PublicKeyToken=null</AssemblyFullName>
+///   <AssemblyLocation>C:\Program Files (x86)\RTIS\RTIS Vulcan UI\RTIS_Vulcan_UI.exe</AssemblyLocation>
+///   <TypeName>RTIS_Vulcan_UI.Labels.prntZectLabel</TypeName>
+///   <Localization>en-US</Localization>
+///   <Version>16.2</Version>
+///   <References>
+///     <Reference Path="C:\Program Files (x86)\RTIS\RTIS Vulcan UI\RTIS_Vulcan_UI.exe" />
+///     <Reference Path="C:\Program Files (x86)\RTIS\RTIS Vulcan UI\DevExpress.XtraReports.v16.2.Extensions.dll" />
+///     <Reference Path="C:\Program Files (x86)\RTIS\RTIS Vulcan UI\DevExpress.Utils.v16.2.UI.dll" />
+///     <Reference Path="C:\Program Files (x86)\RTIS\RTIS Vulcan UI\DevExpress.Utils.v16.2.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System.Windows.Forms\v4.0_4.0.0.0__b77a5c561934e089\System.Windows.Forms.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System.Drawing\v4.0_4.0.0.0__b03f5f7f11d50a3a\System.Drawing.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System\v4.0_4.0.0.0__b77a5c561934e089\System.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System.Configuration\v4.0_4.0.0.0__b03f5f7f11d50a3a\System.Configuration.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System.Xml\v4.0_4.0.0.0__b77a5c561934e089\System.Xml.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System.Data.SqlXml\v4.0_4.0.0.0__b77a5c561934e089\System.Data.SqlXml.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System.Security\v4.0_4.0.0.0__b03f5f7f11d50a3a\System.Security.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_MSIL\Accessibility\v4.0_4.0.0.0__b03f5f7f11d50a3a\Accessibility.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System.Deployment\v4.0_4.0.0.0__b03f5f7f11d50a3a\System.Deployment.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System.Core\v4.0_4.0.0.0__b77a5c561934e089\System.Core.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System.Numerics\v4.0_4.0.0.0__b77a5c561934e089\System.Numerics.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System.Runtime.Serialization.Formatters.Soap\v4.0_4.0.0.0__b03f5f7f11d50a3a\System.Runtime.Serialization.Formatters.Soap.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System.ComponentModel.DataAnnotations\v4.0_4.0.0.0__31bf3856ad364e35\System.ComponentModel.DataAnnotations.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_32\PresentationCore\v4.0_4.0.0.0__31bf3856ad364e35\PresentationCore.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_MSIL\WindowsBase\v4.0_4.0.0.0__31bf3856ad364e35\WindowsBase.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System.Xaml\v4.0_4.0.0.0__b77a5c561934e089\System.Xaml.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_MSIL\UIAutomationProvider\v4.0_4.0.0.0__31bf3856ad364e35\UIAutomationProvider.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_MSIL\UIAutomationTypes\v4.0_4.0.0.0__31bf3856ad364e35\UIAutomationTypes.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System.Windows.Input.Manipulations\v4.0_4.0.0.0__b77a5c561934e089\System.Windows.Input.Manipulations.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System.Runtime.Remoting\v4.0_4.0.0.0__b77a5c561934e089\System.Runtime.Remoting.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_32\System.Web\v4.0_4.0.0.0__b03f5f7f11d50a3a\System.Web.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_MSIL\Microsoft.Build.Framework\v4.0_4.0.0.0__b03f5f7f11d50a3a\Microsoft.Build.Framework.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System.Runtime.Caching\v4.0_4.0.0.0__b03f5f7f11d50a3a\System.Runtime.Caching.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_32\System.Data\v4.0_4.0.0.0__b77a5c561934e089\System.Data.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_32\System.Transactions\v4.0_4.0.0.0__b77a5c561934e089\System.Transactions.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_32\System.EnterpriseServices\v4.0_4.0.0.0__b03f5f7f11d50a3a\System.EnterpriseServices.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System.DirectoryServices\v4.0_4.0.0.0__b03f5f7f11d50a3a\System.DirectoryServices.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System.Web.ApplicationServices\v4.0_4.0.0.0__31bf3856ad364e35\System.Web.ApplicationServices.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System.Web.Services\v4.0_4.0.0.0__b03f5f7f11d50a3a\System.Web.Services.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System.Design\v4.0_4.0.0.0__b03f5f7f11d50a3a\System.Design.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System.Drawing.Design\v4.0_4.0.0.0__b03f5f7f11d50a3a\System.Drawing.Design.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_32\System.Data.OracleClient\v4.0_4.0.0.0__b77a5c561934e089\System.Data.OracleClient.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System.Web.RegularExpressions\v4.0_4.0.0.0__b03f5f7f11d50a3a\System.Web.RegularExpressions.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_MSIL\Microsoft.Build.Utilities.v4.0\v4.0_4.0.0.0__b03f5f7f11d50a3a\Microsoft.Build.Utilities.v4.0.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System.DirectoryServices.Protocols\v4.0_4.0.0.0__b03f5f7f11d50a3a\System.DirectoryServices.Protocols.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_MSIL\Microsoft.Build.Tasks.v4.0\v4.0_4.0.0.0__b03f5f7f11d50a3a\Microsoft.Build.Tasks.v4.0.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System.ServiceProcess\v4.0_4.0.0.0__b03f5f7f11d50a3a\System.ServiceProcess.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System.Configuration.Install\v4.0_4.0.0.0__b03f5f7f11d50a3a\System.Configuration.Install.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System.Runtime.Serialization\v4.0_4.0.0.0__b77a5c561934e089\System.Runtime.Serialization.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System.ServiceModel.Internals\v4.0_4.0.0.0__31bf3856ad364e35\System.ServiceModel.Internals.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_MSIL\SMDiagnostics\v4.0_4.0.0.0__b77a5c561934e089\SMDiagnostics.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_MSIL\UIAutomationClient\v4.0_4.0.0.0__31bf3856ad364e35\UIAutomationClient.dll" />
+///     <Reference Path="C:\Program Files (x86)\RTIS\RTIS Vulcan UI\DevExpress.XtraBars.v16.2.dll" />
+///     <Reference Path="C:\Program Files (x86)\RTIS\RTIS Vulcan UI\DevExpress.XtraEditors.v16.2.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System.Data.Linq\v4.0_4.0.0.0__b77a5c561934e089\System.Data.Linq.dll" />
+///     <Reference Path="C:\Windows\Microsoft.Net\assembly\GAC_MSIL\System.Xml.Linq\v4.0_4.0.0.0__b77a5c561934e089\System.Xml.Linq.dll" />
+///     <Reference Path="C:\Program Files (x86)\RTIS\RTIS Vulcan UI\DevExpress.XtraTreeList.v16.2.dll" />
+///     <Reference Path="C:\Program Files (x86)\RTIS\RTIS Vulcan UI\DevExpress.XtraLayout.v16.2.dll" />
+///     <Reference Path="C:\Program Files (x86)\RTIS\RTIS Vulcan UI\DevExpress.XtraRichEdit.v16.2.dll" />
+///     <Reference Path="C:\Program Files (x86)\RTIS\RTIS Vulcan UI\DevExpress.XtraPrinting.v16.2.dll" />
+///     <Reference Path="C:\Program Files (x86)\RTIS\RTIS Vulcan UI\DevExpress.XtraGrid.v16.2.dll" />
+///     <Reference Path="C:\Program Files (x86)\RTIS\RTIS Vulcan UI\DevExpress.Pdf.v16.2.Core.dll" />
+///     <Reference Path="C:\Program Files (x86)\RTIS\RTIS Vulcan UI\DevExpress.XtraVerticalGrid.v16.2.dll" />
+///     <Reference Path="C:\Program Files (x86)\RTIS\RTIS Vulcan UI\DevExpress.DataAccess.v16.2.UI.dll" />
+///     <Reference Path="C:\Program Files (x86)\RTIS\RTIS Vulcan UI\DevExpress.Diagram.v16.2.Core.dll" />
+///     <Reference Path="C:\Program Files (x86)\RTIS\RTIS Vulcan UI\DevExpress.XtraDiagram.v16.2.dll" />
+///     <Reference Path="C:\Program Files (x86)\RTIS\RTIS Vulcan UI\DevExpress.CodeParser.v16.2.dll" />
+///     <Reference Path="C:\Program Files (x86)\RTIS\RTIS Vulcan UI\DevExpress.XtraCharts.v16.2.Extensions.dll" />
+///     <Reference Path="C:\Program Files (x86)\RTIS\RTIS Vulcan UI\DevExpress.XtraCharts.v16.2.Wizard.dll" />
+///     <Reference Path="C:\Program Files (x86)\RTIS\RTIS Vulcan UI\DevExpress.XtraNavBar.v16.2.dll" />
+///     <Reference Path="C:\Program Files (x86)\RTIS\RTIS Vulcan UI\DevExpress.XtraPivotGrid.v16.2.dll" />
+///     <Reference Path="C:\Program Files (x86)\RTIS\RTIS Vulcan UI\System.Data.SQLite.dll" />
+///   </References>
+///   <Resources>
+///     <Resource Name="XtraReportSerialization.prntZectLabel">
+/// zsrvvgEAAACRAAAAbFN5c3RlbS5SZXNvdXJjZXMuUmVzb3VyY2VSZWFkZXIsIG1zY29ybGliLCBWZXJzaW9uPTQuMC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjc3YTVjNTYxOTM0ZTA4OSNTeXN0ZW0uUmVzb3VyY2VzLlJ1bnRpbWVSZXNvdXJjZVNldAIAAAAAAAAAAAAAAFBBRFBBRFC0AAAA</Resource>
+///   </Resources>
+/// </XRTypeInfo>
+namespace XtraReportSerialization {
+    
+    public class prntZectLabel : DevExpress.XtraReports.UI.XtraReport {
+        private DevExpress.XtraReports.Parameters.Parameter _Description3;
+        private DevExpress.XtraReports.Parameters.Parameter _bin;
+        private DevExpress.XtraReports.UI.DetailBand Detail;
+        private DevExpress.XtraReports.UI.XRLabel label3;
+        private DevExpress.XtraReports.Parameters.Parameter _Lot;
+        private DevExpress.XtraReports.UI.XRLabel label2;
+        private DevExpress.XtraReports.Parameters.Parameter _Description1;
+        private DevExpress.XtraReports.UI.XRBarCode barCode1;
+        private DevExpress.XtraReports.Parameters.Parameter _RT2D;
+        private DevExpress.XtraReports.UI.XRLabel label1;
+        private DevExpress.XtraReports.Parameters.Parameter _ItemCode;
+        private DevExpress.XtraReports.Parameters.Parameter _barcode;
+        private DevExpress.XtraReports.UI.BottomMarginBand BottomMargin;
+        private DevExpress.XtraReports.Parameters.Parameter _Date;
+        private DevExpress.XtraReports.Parameters.Parameter _SimpleCode;
+        private DevExpress.XtraReports.Parameters.Parameter _Group;
+        private DevExpress.XtraReports.Parameters.Parameter _CatalystCode;
+        private DevExpress.XtraReports.Parameters.Parameter _Serial;
+        private DevExpress.XtraReports.UI.TopMarginBand TopMargin;
+        private DevExpress.XtraReports.Parameters.Parameter _ZectLine;
+        private DevExpress.XtraReports.Parameters.Parameter _Slurry;
+        private DevExpress.XtraReports.Parameters.Parameter _Description2;
+        private DevExpress.XtraReports.Parameters.Parameter _Qty;
+        private DevExpress.XtraReports.Parameters.Parameter _Coat;
+        private System.Resources.ResourceManager _resources;
+        private string _resourceString;
+        public prntZectLabel() {
+            this._resourceString = DevExpress.XtraReports.Serialization.XRResourceManager.GetResourceFor("XtraReportSerialization.prntZectLabel");
+            this.InitializeComponent();
+        }
+        private System.Resources.ResourceManager resources {
+            get {
+                if (_resources == null) {
+                    this._resources = new DevExpress.XtraReports.Serialization.XRResourceManager(this._resourceString);
+                }
+                return this._resources;
+            }
+        }
+        private void InitializeComponent() {
+            DevExpress.XtraPrinting.BarCode.DataMatrixGenerator dataMatrixGenerator1 = new DevExpress.XtraPrinting.BarCode.DataMatrixGenerator();
+            this._Description3 = new DevExpress.XtraReports.Parameters.Parameter();
+            this._bin = new DevExpress.XtraReports.Parameters.Parameter();
+            this.Detail = new DevExpress.XtraReports.UI.DetailBand();
+            this._barcode = new DevExpress.XtraReports.Parameters.Parameter();
+            this.BottomMargin = new DevExpress.XtraReports.UI.BottomMarginBand();
+            this._Date = new DevExpress.XtraReports.Parameters.Parameter();
+            this._SimpleCode = new DevExpress.XtraReports.Parameters.Parameter();
+            this._Group = new DevExpress.XtraReports.Parameters.Parameter();
+            this._RT2D = new DevExpress.XtraReports.Parameters.Parameter();
+            this._CatalystCode = new DevExpress.XtraReports.Parameters.Parameter();
+            this._Lot = new DevExpress.XtraReports.Parameters.Parameter();
+            this._Serial = new DevExpress.XtraReports.Parameters.Parameter();
+            this.TopMargin = new DevExpress.XtraReports.UI.TopMarginBand();
+            this._ZectLine = new DevExpress.XtraReports.Parameters.Parameter();
+            this._Slurry = new DevExpress.XtraReports.Parameters.Parameter();
+            this._Description1 = new DevExpress.XtraReports.Parameters.Parameter();
+            this._ItemCode = new DevExpress.XtraReports.Parameters.Parameter();
+            this._Description2 = new DevExpress.XtraReports.Parameters.Parameter();
+            this._Qty = new DevExpress.XtraReports.Parameters.Parameter();
+            this._Coat = new DevExpress.XtraReports.Parameters.Parameter();
+            this.label1 = new DevExpress.XtraReports.UI.XRLabel();
+            this.barCode1 = new DevExpress.XtraReports.UI.XRBarCode();
+            this.label2 = new DevExpress.XtraReports.UI.XRLabel();
+            this.label3 = new DevExpress.XtraReports.UI.XRLabel();
+            ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
+            // 
+            // _Description3
+            // 
+            this._Description3.Description = "Description 3";
+            this._Description3.Name = "_Description3";
+            this._Description3.Visible = false;
+            // 
+            // _bin
+            // 
+            this._bin.Description = "Bin";
+            this._bin.Name = "_bin";
+            this._bin.Visible = false;
+            // 
+            // Detail
+            // 
+            this.Detail.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
+                        this.label3,
+                        this.label2,
+                        this.barCode1,
+                        this.label1});
+            this.Detail.Dpi = 254F;
+            this.Detail.HeightF = 500F;
+            this.Detail.Name = "Detail";
+            this.Detail.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 254F);
+            this.Detail.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
+            // 
+            // _barcode
+            // 
+            this._barcode.Description = "Barcode";
+            this._barcode.Name = "_barcode";
+            this._barcode.Visible = false;
+            // 
+            // BottomMargin
+            // 
+            this.BottomMargin.Dpi = 254F;
+            this.BottomMargin.HeightF = 2.540058F;
+            this.BottomMargin.Name = "BottomMargin";
+            this.BottomMargin.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 254F);
+            this.BottomMargin.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
+            // 
+            // _Date
+            // 
+            this._Date.Description = "Date";
+            this._Date.Name = "_Date";
+            this._Date.Visible = false;
+            // 
+            // _SimpleCode
+            // 
+            this._SimpleCode.Description = "Simple Code";
+            this._SimpleCode.Name = "_SimpleCode";
+            this._SimpleCode.Visible = false;
+            // 
+            // _Group
+            // 
+            this._Group.Description = "Group";
+            this._Group.Name = "_Group";
+            this._Group.Visible = false;
+            // 
+            // _RT2D
+            // 
+            this._RT2D.Description = "RT2D Barcode";
+            this._RT2D.Name = "_RT2D";
+            this._RT2D.Visible = false;
+            // 
+            // _CatalystCode
+            // 
+            this._CatalystCode.Description = "Catalyst Code";
+            this._CatalystCode.Name = "_CatalystCode";
+            this._CatalystCode.Visible = false;
+            // 
+            // _Lot
+            // 
+            this._Lot.Description = "Lot Number";
+            this._Lot.Name = "_Lot";
+            this._Lot.Visible = false;
+            // 
+            // _Serial
+            // 
+            this._Serial.Description = "Serial Number";
+            this._Serial.Name = "_Serial";
+            this._Serial.Visible = false;
+            // 
+            // TopMargin
+            // 
+            this.TopMargin.Dpi = 254F;
+            this.TopMargin.HeightF = 0F;
+            this.TopMargin.Name = "TopMargin";
+            this.TopMargin.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 254F);
+            this.TopMargin.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
+            // 
+            // _ZectLine
+            // 
+            this._ZectLine.Description = "Zect Line";
+            this._ZectLine.Name = "_ZectLine";
+            this._ZectLine.Visible = false;
+            // 
+            // _Slurry
+            // 
+            this._Slurry.Description = "Slurry";
+            this._Slurry.Name = "_Slurry";
+            this._Slurry.Visible = false;
+            // 
+            // _Description1
+            // 
+            this._Description1.Description = "Description 1";
+            this._Description1.Name = "_Description1";
+            this._Description1.Visible = false;
+            // 
+            // _ItemCode
+            // 
+            this._ItemCode.Description = "Item Code";
+            this._ItemCode.Name = "_ItemCode";
+            this._ItemCode.Visible = false;
+            // 
+            // _Description2
+            // 
+            this._Description2.Description = "Description 2";
+            this._Description2.Name = "_Description2";
+            this._Description2.Visible = false;
+            // 
+            // _Qty
+            // 
+            this._Qty.Description = "Qty";
+            this._Qty.Name = "_Qty";
+            this._Qty.Visible = false;
+            // 
+            // _Coat
+            // 
+            this._Coat.Description = "Coat";
+            this._Coat.Name = "_Coat";
+            this._Coat.Visible = false;
+            // 
+            // label1
+            // 
+            this.label1.Angle = 90F;
+            this.label1.DataBindings.AddRange(new DevExpress.XtraReports.UI.XRBinding[] {
+                        new DevExpress.XtraReports.UI.XRBinding(this._ItemCode, "Text", "")});
+            this.label1.Dpi = 254F;
+            this.label1.Font = new System.Drawing.Font("Calibri", 9F, System.Drawing.FontStyle.Bold);
+            this.label1.LocationFloat = new DevExpress.Utils.PointFloat(299.2706F, 25.00001F);
+            this.label1.Name = "label1";
+            this.label1.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 5, 0, 0, 254F);
+            this.label1.SizeF = new System.Drawing.SizeF(95.24994F, 450F);
+            this.label1.StylePriority.UseFont = false;
+            this.label1.StylePriority.UseTextAlignment = false;
+            this.label1.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            // 
+            // barCode1
+            // 
+            this.barCode1.AutoModule = true;
+            this.barCode1.BarCodeOrientation = DevExpress.XtraPrinting.BarCode.BarCodeOrientation.RotateLeft;
+            this.barCode1.DataBindings.AddRange(new DevExpress.XtraReports.UI.XRBinding[] {
+                        new DevExpress.XtraReports.UI.XRBinding(this._RT2D, "Text", "")});
+            this.barCode1.Dpi = 254F;
+            this.barCode1.LocationFloat = new DevExpress.Utils.PointFloat(431.5622F, 157.2917F);
+            this.barCode1.Module = 10F;
+            this.barCode1.Name = "barCode1";
+            this.barCode1.Padding = new DevExpress.XtraPrinting.PaddingInfo(25, 25, 0, 0, 254F);
+            this.barCode1.ShowText = false;
+            this.barCode1.SizeF = new System.Drawing.SizeF(238.1251F, 168.04F);
+            this.barCode1.Symbology = dataMatrixGenerator1;
+            // 
+            // label2
+            // 
+            this.label2.Angle = 90F;
+            this.label2.DataBindings.AddRange(new DevExpress.XtraReports.UI.XRBinding[] {
+                        new DevExpress.XtraReports.UI.XRBinding(this._Description1, "Text", "")});
+            this.label2.Dpi = 254F;
+            this.label2.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Bold);
+            this.label2.LocationFloat = new DevExpress.Utils.PointFloat(686.8333F, 25.00001F);
+            this.label2.Name = "label2";
+            this.label2.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 5, 0, 0, 254F);
+            this.label2.SizeF = new System.Drawing.SizeF(129.6458F, 450F);
+            this.label2.StylePriority.UseFont = false;
+            this.label2.StylePriority.UseTextAlignment = false;
+            this.label2.Text = "label2";
+            this.label2.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            // 
+            // label3
+            // 
+            this.label3.Angle = 90F;
+            this.label3.DataBindings.AddRange(new DevExpress.XtraReports.UI.XRBinding[] {
+                        new DevExpress.XtraReports.UI.XRBinding(this._Lot, "Text", "")});
+            this.label3.Dpi = 254F;
+            this.label3.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Bold);
+            this.label3.LocationFloat = new DevExpress.Utils.PointFloat(832.3542F, 25.00001F);
+            this.label3.Name = "label3";
+            this.label3.Padding = new DevExpress.XtraPrinting.PaddingInfo(5, 5, 0, 0, 254F);
+            this.label3.SizeF = new System.Drawing.SizeF(129.6458F, 450F);
+            this.label3.StylePriority.UseFont = false;
+            this.label3.StylePriority.UseTextAlignment = false;
+            this.label3.TextAlignment = DevExpress.XtraPrinting.TextAlignment.MiddleCenter;
+            // 
+            // prntZectLabel
+            // 
+            this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
+                        this.Detail,
+                        this.TopMargin,
+                        this.BottomMargin});
+            this.DisplayName = "Zect";
+            this.Dpi = 254F;
+            this.Margins = new System.Drawing.Printing.Margins(5, 8, 0, 3);
+            this.Name = "prntZectLabel";
+            this.PageHeight = 500;
+            this.PageWidth = 1000;
+            this.PaperKind = System.Drawing.Printing.PaperKind.Custom;
+            this.Parameters.AddRange(new DevExpress.XtraReports.Parameters.Parameter[] {
+                        this._barcode,
+                        this._bin,
+                        this._Date,
+                        this._Description1,
+                        this._Description2,
+                        this._Description3,
+                        this._Group,
+                        this._ItemCode,
+                        this._Lot,
+                        this._Qty,
+                        this._RT2D,
+                        this._Serial,
+                        this._SimpleCode,
+                        this._ZectLine,
+                        this._CatalystCode,
+                        this._Coat,
+                        this._Slurry});
+            this.ReportUnit = DevExpress.XtraReports.UI.ReportUnit.TenthsOfAMillimeter;
+            this.ShowPrintMarginsWarning = false;
+            this.SnapGridSize = 25F;
+            this.Version = "16.2";
+            ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
+        }
+    }
+}

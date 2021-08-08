@@ -1843,14 +1843,22 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="RTIS_Vulcan_SVC.exe" size="960544">
+<<<<<<< HEAD
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="RTIS_Vulcan_SVC.exe" size="962592">
+=======
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="RTIS_Vulcan_SVC.exe" size="963616">
+>>>>>>> ea710fbf1d168c9b8f2b03bca8fcb9b5835968a3
       <assemblyIdentity name="RTIS_Vulcan_SVC" version="1.1.3.14" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>f7ACW7DrGQeyVd76/zuA8VlAY3E6lfrGu1L9VVLK2xI=</dsig:DigestValue>
+<<<<<<< HEAD
+        <dsig:DigestValue>r7UAwjzvZ4dwXtb4zAeoErlA1MZggal8FwpcZ3eQ1vA=</dsig:DigestValue>
+=======
+        <dsig:DigestValue>k5B/A536QtGgV3dosKtPymupMuZmP8M61N6db2AmdyA=</dsig:DigestValue>
+>>>>>>> ea710fbf1d168c9b8f2b03bca8fcb9b5835968a3
       </hash>
     </dependentAssembly>
   </dependency>
@@ -1899,13 +1907,21 @@
       <dsig:DigestValue>g+fc1S3eRQoAR5k1MDAUu4Q/wE5l5t25imLWI/RNyAk=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="RTIS_Vulcan_SVC.exe.config" size="2550">
+<<<<<<< HEAD
+  <file name="RTIS_Vulcan_SVC.exe.config" size="2561">
+=======
+  <file name="RTIS_Vulcan_SVC.exe.config" size="2522">
+>>>>>>> ea710fbf1d168c9b8f2b03bca8fcb9b5835968a3
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>Gjmg/DQLcHvsDIxZnJrRWH6gY18j0wp+L+Twk/Fd6UM=</dsig:DigestValue>
+<<<<<<< HEAD
+      <dsig:DigestValue>FjPlORacLdRJj8zjQoxQEu1zYTKsiq2ZfnBTnfm2hds=</dsig:DigestValue>
+=======
+      <dsig:DigestValue>gKfpScG4EkXgmJ9WbD2ymwQ1ffjWxeurY2AU0bQlB+4=</dsig:DigestValue>
+>>>>>>> ea710fbf1d168c9b8f2b03bca8fcb9b5835968a3
     </hash>
   </file>
   <file name="SQLite.Interop.dll" size="1155584">

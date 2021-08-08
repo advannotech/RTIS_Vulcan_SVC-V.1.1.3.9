@@ -6,13 +6,13 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{FB689BF8-E82C-43AF-B561-2E23AEA8B051}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <StartupObject>RTIS_Vulcan_SVC.Service</StartupObject>
+    <StartupObject>RTIS_Vulcan_SVC.My.MyApplication</StartupObject>
     <RootNamespace>RTIS_Vulcan_SVC</RootNamespace>
     <AssemblyName>RTIS_Vulcan_SVC</AssemblyName>
     <FileAlignment>512</FileAlignment>
-    <MyType>Console</MyType>
+    <MyType>WindowsForms</MyType>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>C:\inetpub\wwwroot\svc\</PublishUrl>
     <Install>true</Install>
@@ -150,6 +150,12 @@
     <Compile Include="Classes\ServerResponse.vb" />
     <Compile Include="Classes\SQLite.vb" />
     <Compile Include="Classes\WarehouseTransfers.vb" />
+    <Compile Include="Form1.Designer.vb">
+      <DependentUpon>Form1.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form1.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Modules\AutoManufacture.vb" />
     <Compile Include="Modules\Barcodes.vb" />
     <Compile Include="Modules\Canning.vb" />
@@ -224,6 +230,11 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.vb</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
