@@ -1551,6 +1551,9 @@ D:\Reltech Solutions\GIT\Cataler\SVC\RTIS_Vulcan_SVC V.1.1.3.9\obj\Debug\RTIS_Vu
 D:\Reltech Solutions\GIT\Cataler\SVC\RTIS_Vulcan_SVC V.1.1.3.9\obj\Debug\RTIS_Vulcan_SVC.xml
 D:\Reltech Solutions\GIT\Cataler\SVC\RTIS_Vulcan_SVC V.1.1.3.9\obj\Debug\RTIS_Vulcan_SVC.pdb
 D:\Reltech Solutions\GIT\Cataler\SVC\RTIS_Vulcan_SVC V.1.1.3.9\obj\Debug\RTIS_Vulcan_SVC.vbprojAssemblyReference.cache
+C:\Users\advannotechdev2\Documents\Cataler\SVC\RTIS_Vulcan_SVC V.1.1.3.9\obj\Debug\RTIS_Vulcan_SVC.Form1.resources
+C:\Users\advannotechdev2\Documents\Cataler\SVC\RTIS_Vulcan_SVC V.1.1.3.9\obj\Debug\RTIS_Vulcan_SVC.vbproj.GenerateResource.cache
+C:\Users\advannotechdev2\Documents\Cataler\SVC\RTIS_Vulcan_SVC V.1.1.3.9\obj\Debug\RTIS_Vulcan_SVC.vbproj.CoreCompileInputs.cache
 C:\Users\advannotechdev2\Documents\Cataler\SVC\RTIS_Vulcan_SVC V.1.1.3.9\bin\Debug\SQLite.Interop.dll
 C:\Users\advannotechdev2\Documents\Cataler\SVC\RTIS_Vulcan_SVC V.1.1.3.9\bin\Debug\RTIS_Vulcan_SVC.exe.config
 C:\Users\advannotechdev2\Documents\Cataler\SVC\RTIS_Vulcan_SVC V.1.1.3.9\bin\Debug\RTIS_Vulcan_SVC.exe.manifest
@@ -1742,9 +1745,6 @@ C:\Users\advannotechdev2\Documents\Cataler\SVC\RTIS_Vulcan_SVC V.1.1.3.9\bin\Deb
 C:\Users\advannotechdev2\Documents\Cataler\SVC\RTIS_Vulcan_SVC V.1.1.3.9\bin\Debug\es\DevExpress.Diagram.v20.2.Core.resources.dll
 C:\Users\advannotechdev2\Documents\Cataler\SVC\RTIS_Vulcan_SVC V.1.1.3.9\bin\Debug\ja\DevExpress.Diagram.v20.2.Core.resources.dll
 C:\Users\advannotechdev2\Documents\Cataler\SVC\RTIS_Vulcan_SVC V.1.1.3.9\bin\Debug\ru\DevExpress.Diagram.v20.2.Core.resources.dll
-C:\Users\advannotechdev2\Documents\Cataler\SVC\RTIS_Vulcan_SVC V.1.1.3.9\obj\Debug\RTIS_Vulcan_SVC.Form1.resources
-C:\Users\advannotechdev2\Documents\Cataler\SVC\RTIS_Vulcan_SVC V.1.1.3.9\obj\Debug\RTIS_Vulcan_SVC.vbproj.GenerateResource.cache
-C:\Users\advannotechdev2\Documents\Cataler\SVC\RTIS_Vulcan_SVC V.1.1.3.9\obj\Debug\RTIS_Vulcan_SVC.vbproj.CoreCompileInputs.cache
 C:\Users\advannotechdev2\Documents\Cataler\SVC\RTIS_Vulcan_SVC V.1.1.3.9\obj\Debug\RTIS_Vulcan_SVC.exe.manifest
 C:\Users\advannotechdev2\Documents\Cataler\SVC\RTIS_Vulcan_SVC V.1.1.3.9\obj\Debug\RTIS_Vulcan_SVC.application
 C:\Users\advannotechdev2\Documents\Cataler\SVC\RTIS_Vulcan_SVC V.1.1.3.9\obj\Debug\RTIS_Vulcan_SVC.vbproj.CopyComplete

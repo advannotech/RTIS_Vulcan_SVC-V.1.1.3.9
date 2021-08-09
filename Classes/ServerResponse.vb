@@ -791,7 +791,7 @@ Public Class ServerResponse
                             Case "t"
                                 Dim transferredStartDate As String = ClientData.Split("|")(3)
                                 Dim transferredEndDate As String = ClientData.Split("|")(4)
-                                transferredDate = String.Format("AND [dtDateTransfered] >= '{0}' AND [dtDateTransfered] <= '{1}'", transferredStartDate.Replace("t", ""), transferredEndDate)
+                                transferredDate = String.Format("AND [dtDateTransfered] BETWEEN '{0}' AND '{1}'", transferredStartDate.Replace("t", ""), transferredEndDate)
                             Case "f"
                                 Dim failedStartDate As String = ClientData.Split("|")(3)
                                 Dim failedEndDate As String = ClientData.Split("|")(4)
@@ -823,7 +823,28 @@ Public Class ServerResponse
                 Try
                     Dim process As String = ClientData.Split("|")(0)
                     Dim rows As String = ClientData.Split("|")(1)
-                    Server.Listener.SendResponse(ClientSocket, WhseTransfers.RTSQL.Retreive.UI_getWhtLInesAll(process, rows))
+                    Dim transferredDate As String = String.Empty
+                    Dim failedDate As String = String.Empty
+                    Dim charIndex As Integer = 2
+
+                    If ClientData.Split("|").Length = 4 Then
+                        Select Case ClientData.Split("|")(charIndex).Substring(0, 1)
+                            Case "t"
+                                Dim transferredStartDate As String = ClientData.Split("|")(2)
+                                Dim transferredEndDate As String = ClientData.Split("|")(3)
+                                transferredDate = String.Format("WHERE [dtDateTransfered] BETWEEN '{0}' AND '{1}'", transferredStartDate.Replace("t", ""), transferredEndDate)
+                        End Select
+                    End If
+                    Dim appendOperator As String = ""
+
+                    If transferredDate = "" Then
+                        appendOperator = "WHERE"
+                    Else
+                        appendOperator = "AND"
+                    End If
+
+                    process = String.Format(" {0} pr.[vProcName] LIKE '%{1}%'", appendOperator, process)
+                    Server.Listener.SendResponse(ClientSocket, WhseTransfers.RTSQL.Retreive.UI_getWhtLInesAll(process, rows, transferredDate))
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
@@ -831,7 +852,29 @@ Public Class ServerResponse
                 Try
                     Dim process As String = ClientData.Split("|")(0)
                     Dim rows As String = ClientData.Split("|")(1)
-                    Server.Listener.SendResponse(ClientSocket, WhseTransfers.RTSQL.Retreive.UI_getWhtLInesPosted(process, rows))
+                    Dim transferredDate As String = String.Empty
+                    Dim failedDate As String = String.Empty
+                    Dim charIndex As Integer = 2
+
+                    If ClientData.Split("|").Length = 4 Then
+                        Select Case ClientData.Split("|")(charIndex).Substring(0, 1)
+                            Case "t"
+                                Dim transferredStartDate As String = ClientData.Split("|")(2)
+                                Dim transferredEndDate As String = ClientData.Split("|")(3)
+                                transferredDate = String.Format("WHERE [dtDateTransfered] BETWEEN '{0}' AND '{1}'", transferredStartDate.Replace("t", ""), transferredEndDate)
+                        End Select
+                    End If
+
+                    Dim appendOperator As String = ""
+
+                    If transferredDate = "" Then
+                        appendOperator = "WHERE"
+                    Else
+                        appendOperator = "AND"
+                    End If
+
+                    process = String.Format(" {0} pr.[vProcName] LIKE '%{1}%'", appendOperator, process)
+                    Server.Listener.SendResponse(ClientSocket, WhseTransfers.RTSQL.Retreive.UI_getWhtLInesPosted(process, rows, transferredDate))
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try

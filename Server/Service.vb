@@ -29,6 +29,7 @@ Public Class Service
 
     Public Sub proccessWhseTransfers()
         Try
+            EventLog.WriteEntry("RTIS Vulcan SVC", "proccessWhseTransfers did enter")
             Dim timerTriggered = WarehouseTransfers.GetWHTriggered()
             Select Case timerTriggered.Split("*")(0)
                 Case "1"
@@ -38,6 +39,7 @@ Public Class Service
                         Select Case setToTrue.Split("*")(0)
                             Case "1"
                                 WarehouseTransfers.proccessWhseTransfers()
+                                EventLog.WriteEntry("RTIS Vulcan SVC", "proccessWhseTransfers: After being called")
                                 ' WarehouseTransfers.SetWHTriggeredFalse()
                                 triggerd = False
                                 tmrTransfer.Start()
