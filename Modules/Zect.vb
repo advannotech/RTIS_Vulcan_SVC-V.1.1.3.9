@@ -242,7 +242,7 @@ Public Class Zect
                     Dim sqlConn As New SqlConnection(RTString)
                     Dim sqlComm As New SqlCommand(" SELECT [vRMCode] FROM [tbl_RTIS_Zect_Raws]
                                                     WHERE [vCatalystCode] LIKE @1 AND [vCatalystCode] LIKE @2 AND ([vRMCode] LIKE 'TSP%' OR [vRMCode] LIKE 'VSP%')", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", itemCode + "%"))
+                    sqlComm.Parameters.Add(New SqlParameter("@1", "%" + itemCode + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@2", "%" + coatNum + "%"))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -1442,7 +1442,7 @@ Public Class Zect
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
                     Dim sqlComm As New SqlCommand("   SELECT [Code] FROM [StkItem] WHERE [Code] LIKE @1 AND [Code] LIKE @2", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", catalyst + "%"))
+                    sqlComm.Parameters.Add(New SqlParameter("@1", "%" + catalyst + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@2", "%" + coatNum + "%"))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
