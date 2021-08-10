@@ -795,7 +795,7 @@ Public Class ServerResponse
                             Case "f"
                                 Dim failedStartDate As String = ClientData.Split("|")(3)
                                 Dim failedEndDate As String = ClientData.Split("|")(4)
-                                failedDate = String.Format("AND [dtDateFailed] >= '{0}' AND [dtDateFailed] <= '{1}'", failedStartDate.Replace("f", ""), failedEndDate)
+                                failedDate = String.Format("AND [dtDateFailed] BETWEEN '{0}' AND '{1}'", failedStartDate.Replace("f", ""), failedEndDate)
                         End Select
                     End If
 
@@ -809,7 +809,7 @@ Public Class ServerResponse
                                 Case "f"
                                     Dim failedStartDate As String = ClientData.Split("|")(5)
                                     Dim failedEndDate As String = ClientData.Split("|")(6)
-                                    failedDate = String.Format("AND [dtDateFailed] >= '{0}' BETWEEN '{1}'", failedStartDate.Replace("f", ""), failedEndDate)
+                                    failedDate = String.Format("AND [dtDateFailed] BETWEEN '{0}' AND '{1}'", failedStartDate.Replace("f", ""), failedEndDate)
                             End Select
                             charIndex = charIndex + 1
                         Next

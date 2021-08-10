@@ -2,12 +2,6 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="My" GeneratedClassName="MySettings" UseMySettingsClassName="true">
   <Profiles />
   <Settings>
-    <Setting Name="RTDB" Type="System.String" Scope="User">
-      <Value Profile="(Default)">CAT_RTIS</Value>
-    </Setting>
-    <Setting Name="EvoDB" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Cataler_SCN</Value>
-    </Setting>
     <Setting Name="Project" Type="System.String" Scope="User">
       <Value Profile="(Default)">A GF 100</Value>
     </Setting>
@@ -43,6 +37,12 @@
     </Setting>
     <Setting Name="EvoComServer" Type="System.String" Scope="User">
       <Value Profile="(Default)">CATALER2</Value>
+    </Setting>
+    <Setting Name="RTDB" Type="System.String" Scope="User">
+      <Value Profile="(Default)">CAT_RTIS_Test</Value>
+    </Setting>
+    <Setting Name="EvoDB" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Cataler_SCN_Test</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -101,7 +101,7 @@ Public Class WhseTransfers
                                                     INNER JOIN [tbl_ProcNames] pr ON wt.[vProcess]  = [vProcName]
                                                     WHERE [vStatus] LIKE @1 AND [vProcess] LIKE @2
                                                     " + transferredDate + failedDate + "
-                                                    ORDER BY [iLineID] DESC", sqlConn)
+                                                    ORDER BY [dtDateTransfered] DESC", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", "%" + status + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@2", "%" + process + "%"))
                     sqlConn.Open()

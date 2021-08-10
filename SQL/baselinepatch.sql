@@ -119,8 +119,8 @@ WHERE [iInvCountID] = 131
 
 -- update the variance expression
 UPDATE [RTIS_InvCountLines]
-SET [fCountQty] = 1.87123,
-[fCountQty2] = 1.87123,
+SET [fCountQty] = 1.95123,
+[fCountQty2] = 1.95123,
 [fSystemQty] = 2
 WHERE [idInvCountLines] = 340
 
@@ -128,6 +128,20 @@ WHERE [idInvCountLines] = 340
 
 
 ----------------
+
+
+
+
+SELECT * FROM [RTIS_InvCountLines]
+WHERE [iInvCountID] = 131
+
+
+-- update the variance expression
+UPDATE [RTIS_InvCountLines]
+SET [fCountQty] = 2,
+[fCountQty2] = 2,
+[fSystemQty] = 1.87123 
+WHERE [idInvCountLines] = 340
 
 
 
