@@ -10,7 +10,7 @@ Imports System.Runtime.InteropServices
 
 <Assembly: AssemblyTitle("RTIS_Vulcan_SVC")>
 <Assembly: AssemblyDescription("")>
-<Assembly: AssemblyCompany("")>
+<Assembly: AssemblyCompany("Advannotech  Solutions")>
 <Assembly: AssemblyProduct("RTIS_Vulcan_SVC")>
 <Assembly: AssemblyCopyright("Copyright ©  2018")>
 <Assembly: AssemblyTrademark("")>
