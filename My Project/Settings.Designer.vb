@@ -116,8 +116,13 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+<<<<<<< HEAD
          Global.System.Configuration.DefaultSettingValueAttribute("CATALER2")>  _
         Public Property EvoComServer() As String
+=======
+         Global.System.Configuration.DefaultSettingValueAttribute("Reltech")>  _
+        Public Property RTUser() As String
+>>>>>>> 05526b5f42d743be644cbbc39c3d55a9dc1547d0
             Get
                 Return CType(Me("EvoComServer"),String)
             End Get
@@ -128,8 +133,13 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+<<<<<<< HEAD
          Global.System.Configuration.DefaultSettingValueAttribute("CATALER2")>  _
         Public Property RTServer() As String
+=======
+         Global.System.Configuration.DefaultSettingValueAttribute("Reltech")>  _
+        Public Property EvoUser() As String
+>>>>>>> 05526b5f42d743be644cbbc39c3d55a9dc1547d0
             Get
                 Return CType(Me("RTServer"),String)
             End Get
@@ -140,8 +150,13 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+<<<<<<< HEAD
          Global.System.Configuration.DefaultSettingValueAttribute("CATALER2")>  _
         Public Property EvoServer() As String
+=======
+         Global.System.Configuration.DefaultSettingValueAttribute("Reltech")>  _
+        Public Property EvoComUser() As String
+>>>>>>> 05526b5f42d743be644cbbc39c3d55a9dc1547d0
             Get
                 Return CType(Me("EvoServer"),String)
             End Get
@@ -188,8 +203,13 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+<<<<<<< HEAD
          Global.System.Configuration.DefaultSettingValueAttribute("EvolutionCommon")>  _
         Public Property EvoComDB() As String
+=======
+         Global.System.Configuration.DefaultSettingValueAttribute("localhost")>  _
+        Public Property RTServer() As String
+>>>>>>> 05526b5f42d743be644cbbc39c3d55a9dc1547d0
             Get
                 Return CType(Me("EvoComDB"),String)
             End Get
@@ -200,8 +220,13 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+<<<<<<< HEAD
          Global.System.Configuration.DefaultSettingValueAttribute("CAT_RTIS_Test")>  _
         Public Property RTDB() As String
+=======
+         Global.System.Configuration.DefaultSettingValueAttribute("localhost")>  _
+        Public Property EvoServer() As String
+>>>>>>> 05526b5f42d743be644cbbc39c3d55a9dc1547d0
             Get
                 Return CType(Me("RTDB"),String)
             End Get
@@ -212,8 +237,13 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+<<<<<<< HEAD
          Global.System.Configuration.DefaultSettingValueAttribute("Cataler_SCN_Test")>  _
         Public Property EvoDB() As String
+=======
+         Global.System.Configuration.DefaultSettingValueAttribute("localhost")>  _
+        Public Property EvoComServer() As String
+>>>>>>> 05526b5f42d743be644cbbc39c3d55a9dc1547d0
             Get
                 Return CType(Me("EvoDB"),String)
             End Get
