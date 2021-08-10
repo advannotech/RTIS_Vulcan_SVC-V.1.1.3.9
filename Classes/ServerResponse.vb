@@ -789,13 +789,13 @@ Public Class ServerResponse
                     If ClientData.Split("|").Length = 5 Then
                         Select Case ClientData.Split("|")(charIndex).Substring(0, 1)
                             Case "t"
-                                Dim transferredStartDate As String = ClientData.Split("|")(3)
-                                Dim transferredEndDate As String = ClientData.Split("|")(4)
-                                transferredDate = String.Format("AND [dtDateTransfered] >= '{0}' AND [dtDateTransfered] <= '{1}'", transferredStartDate.Replace("t", ""), transferredEndDate)
+                                Dim transferredStartDate As String = ClientData.Split("|")(3) + " 00:00:29.317"
+                                Dim transferredEndDate As String = ClientData.Split("|")(4) + " 23:59:29.317"
+                                transferredDate = String.Format("AND [dtDateTransfered] BETWEEN '{0}' AND '{1}'", transferredStartDate.Replace("t", ""), transferredEndDate)
                             Case "f"
-                                Dim failedStartDate As String = ClientData.Split("|")(3)
-                                Dim failedEndDate As String = ClientData.Split("|")(4)
-                                failedDate = String.Format("AND [dtDateFailed] >= '{0}' BETWEEN '{1}'", failedStartDate.Replace("f", ""), failedEndDate)
+                                Dim failedStartDate As String = ClientData.Split("|")(3) + " 00:00:29.317"
+                                Dim failedEndDate As String = ClientData.Split("|")(4) + " 23:59:29.317"
+                                failedDate = String.Format("AND [dtDateFailed] BETWEEN '{0}' AND '{1}'", failedStartDate.Replace("f", ""), failedEndDate)
                         End Select
                     End If
 
@@ -803,13 +803,13 @@ Public Class ServerResponse
                         For index = 1 To ClientData.Split("|").Length - 3
                             Select Case ClientData.Split("|")(charIndex).Substring(0, 1)
                                 Case "t"
-                                    Dim transferredStartDate As String = ClientData.Split("|")(3)
-                                    Dim transferredEndDate As String = ClientData.Split("|")(4)
-                                    transferredDate = String.Format("AND [dtDateTransfered] >= '{0}' BETWEEN '{1}'", transferredStartDate.Replace("t", ""), transferredEndDate)
+                                    Dim transferredStartDate As String = ClientData.Split("|")(3) + " 00:00:29.317"
+                                    Dim transferredEndDate As String = ClientData.Split("|")(4) + " 23:59:29.317"
+                                    transferredDate = String.Format("AND [dtDateTransfered] BETWEEN '{0}' AND '{1}'", transferredStartDate.Replace("t", ""), transferredEndDate)
                                 Case "f"
-                                    Dim failedStartDate As String = ClientData.Split("|")(5)
-                                    Dim failedEndDate As String = ClientData.Split("|")(6)
-                                    failedDate = String.Format("AND [dtDateFailed] >= '{0}' BETWEEN '{1}'", failedStartDate.Replace("f", ""), failedEndDate)
+                                    Dim failedStartDate As String = ClientData.Split("|")(5) + " 00:00:29.317"
+                                    Dim failedEndDate As String = ClientData.Split("|")(6) + " 23:59:29.317"
+                                    failedDate = String.Format("AND [dtDateFailed] BETWEEN '{0}' AND '{1}'", failedStartDate.Replace("f", ""), failedEndDate)
                             End Select
                             charIndex = charIndex + 1
                         Next
@@ -830,9 +830,9 @@ Public Class ServerResponse
                     If ClientData.Split("|").Length = 4 Then
                         Select Case ClientData.Split("|")(charIndex).Substring(0, 1)
                             Case "t"
-                                Dim transferredStartDate As String = ClientData.Split("|")(2)
-                                Dim transferredEndDate As String = ClientData.Split("|")(3)
-                                transferredDate = String.Format("WHERE [dtDateTransfered] BETWEEN '{0}' AND '{1}'", transferredStartDate.Replace("t", ""), transferredEndDate)
+                                Dim transferredStartDate As String = ClientData.Split("|")(2) + " 00:00:29.317"
+                                Dim transferredEndDate As String = ClientData.Split("|")(3) + " 23:59:29.317"
+                                transferredDate = String.Format("WHERE [dtDateTransfered] BETWEEN '{0}' AND '{1}'", transferredStartDate.Replace("t", ""), transferredEndDate.Replace("t", ""))
                         End Select
                     End If
                     Dim appendOperator As String = ""
@@ -859,8 +859,8 @@ Public Class ServerResponse
                     If ClientData.Split("|").Length = 4 Then
                         Select Case ClientData.Split("|")(charIndex).Substring(0, 1)
                             Case "t"
-                                Dim transferredStartDate As String = ClientData.Split("|")(2)
-                                Dim transferredEndDate As String = ClientData.Split("|")(3)
+                                Dim transferredStartDate As String = ClientData.Split("|")(2) + " 00:00:29.317"
+                                Dim transferredEndDate As String = ClientData.Split("|")(3) + " 23:59:29.317"
                                 transferredDate = String.Format("WHERE [dtDateTransfered] BETWEEN '{0}' AND '{1}'", transferredStartDate.Replace("t", ""), transferredEndDate)
                         End Select
                     End If

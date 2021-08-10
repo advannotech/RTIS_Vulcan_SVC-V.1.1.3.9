@@ -1850,7 +1850,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>JdM9cYWBID2T4+q8kuZkxxh2KoNLJ1KyGz1pEwhkWuM=</dsig:DigestValue>
+        <dsig:DigestValue>uan6zb0tI+2vHwAnKtlh1MwPhLLkltF1rHfellSxOOw=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -1905,7 +1905,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>6y4W/WRnovjseus5S0WoeuWI2lXajxJX6+2FwmvU7Q8=</dsig:DigestValue>
+      <dsig:DigestValue>eJm89Dh0pkyi3bhnyRVrg+Ub5/yG/A0EQV57++VdEHg=</dsig:DigestValue>
     </hash>
   </file>
   <file name="SQLite.Interop.dll" size="1155584">
