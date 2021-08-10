@@ -49,14 +49,13 @@
       <Value Profile="(Default)">Cataler_SCN_Test</Value>
 =======
     <Setting Name="RTServer" Type="System.String" Scope="User">
-      <Value Profile="(Default)">localhost</Value>
+      <Value Profile="(Default)">CATALER2</Value>
     </Setting>
     <Setting Name="EvoServer" Type="System.String" Scope="User">
-      <Value Profile="(Default)">localhost</Value>
+      <Value Profile="(Default)">CATALER2</Value>
     </Setting>
     <Setting Name="EvoComServer" Type="System.String" Scope="User">
-      <Value Profile="(Default)">localhost</Value>
->>>>>>> 05526b5f42d743be644cbbc39c3d55a9dc1547d0
+      <Value Profile="(Default)">CATALER2</Value>
     </Setting>
   </Settings>
 </SettingsFile>
