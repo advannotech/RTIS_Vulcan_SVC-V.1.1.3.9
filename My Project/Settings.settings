@@ -20,15 +20,6 @@
     <Setting Name="EvoComUser" Type="System.String" Scope="User">
       <Value Profile="(Default)">Reltech</Value>
     </Setting>
-    <Setting Name="EvoComServer" Type="System.String" Scope="User">
-      <Value Profile="(Default)">CATALER2</Value>
-    </Setting>
-    <Setting Name="RTServer" Type="System.String" Scope="User">
-      <Value Profile="(Default)">CATALER2</Value>
-    </Setting>
-    <Setting Name="EvoServer" Type="System.String" Scope="User">
-      <Value Profile="(Default)">CATALER2</Value>
-    </Setting>
     <Setting Name="EvoComPassword" Type="System.String" Scope="User">
       <Value Profile="(Default)">R3lt3ch!4</Value>
     </Setting>
@@ -39,10 +30,19 @@
       <Value Profile="(Default)">R3lt3ch!4</Value>
     </Setting>
     <Setting Name="RTDB" Type="System.String" Scope="User">
-      <Value Profile="(Default)">CAT_RTIS</Value>
+      <Value Profile="(Default)">CAT_RTIS_Test</Value>
     </Setting>
     <Setting Name="EvoDB" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Cataler_SCN</Value>
+      <Value Profile="(Default)">Cataler_SCN_Test</Value>
+    </Setting>
+    <Setting Name="EvoComServer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">localhost</Value>
+    </Setting>
+    <Setting Name="RTServer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">localhost</Value>
+    </Setting>
+    <Setting Name="EvoServer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">localhost</Value>
     </Setting>
   </Settings>
 </SettingsFile>

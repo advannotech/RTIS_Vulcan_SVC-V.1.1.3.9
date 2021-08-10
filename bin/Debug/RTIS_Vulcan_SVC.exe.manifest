@@ -1843,22 +1843,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-<<<<<<< HEAD
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="RTIS_Vulcan_SVC.exe" size="1005088">
-=======
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="RTIS_Vulcan_SVC.exe" size="1008160">
->>>>>>> 05526b5f42d743be644cbbc39c3d55a9dc1547d0
       <assemblyIdentity name="RTIS_Vulcan_SVC" version="1.1.3.14" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-<<<<<<< HEAD
-        <dsig:DigestValue>5i74sqMpPEzpUYEUzJC5kDuTouGajaKbnuE5a3Rr6kw=</dsig:DigestValue>
-=======
-        <dsig:DigestValue>N4Au2qFAAUEqu5VofPk38G91K60rmWNNUGFp7CduNPk=</dsig:DigestValue>
->>>>>>> 05526b5f42d743be644cbbc39c3d55a9dc1547d0
+        <dsig:DigestValue>LDsN0Q9/KpV9Ln1sUYaEPBD7s9QgtO4aFahvlJbTGE8=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -1907,21 +1899,13 @@
       <dsig:DigestValue>g+fc1S3eRQoAR5k1MDAUu4Q/wE5l5t25imLWI/RNyAk=</dsig:DigestValue>
     </hash>
   </file>
-<<<<<<< HEAD
-  <file name="RTIS_Vulcan_SVC.exe.config" size="2561">
-=======
-  <file name="RTIS_Vulcan_SVC.exe.config" size="2564">
->>>>>>> 05526b5f42d743be644cbbc39c3d55a9dc1547d0
+  <file name="RTIS_Vulcan_SVC.exe.config" size="2574">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-<<<<<<< HEAD
-      <dsig:DigestValue>FjPlORacLdRJj8zjQoxQEu1zYTKsiq2ZfnBTnfm2hds=</dsig:DigestValue>
-=======
-      <dsig:DigestValue>qsyMoV8AZIGnzc+dbL1m3hNRVbSS4qQRXUYn4xPd8TE=</dsig:DigestValue>
->>>>>>> 05526b5f42d743be644cbbc39c3d55a9dc1547d0
+      <dsig:DigestValue>uGsWxFufsSjJCcCIfIcAQRPtY9F3NBHX2V7ntb54RE0=</dsig:DigestValue>
     </hash>
   </file>
   <file name="SQLite.Interop.dll" size="1155584">
