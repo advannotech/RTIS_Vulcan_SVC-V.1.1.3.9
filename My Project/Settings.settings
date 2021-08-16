@@ -11,9 +11,6 @@
     <Setting Name="Port" Type="System.String" Scope="User">
       <Value Profile="(Default)">32017</Value>
     </Setting>
-    <Setting Name="RTDB" Type="System.String" Scope="User">
-      <Value Profile="(Default)">CAT_RTIS</Value>
-    </Setting>
     <Setting Name="EvoDB" Type="System.String" Scope="User">
       <Value Profile="(Default)">Cataler_SCN</Value>
     </Setting>
@@ -43,6 +40,9 @@
     </Setting>
     <Setting Name="EvoServer" Type="System.String" Scope="User">
       <Value Profile="(Default)">localhost</Value>
+    </Setting>
+    <Setting Name="RTDB" Type="System.String" Scope="User">
+      <Value Profile="(Default)">CAT_RTIS</Value>
     </Setting>
   </Settings>
 </SettingsFile>
