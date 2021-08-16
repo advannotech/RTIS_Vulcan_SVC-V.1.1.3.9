@@ -789,13 +789,13 @@ Public Class ServerResponse
                     If ClientData.Split("|").Length = 5 Then
                         Select Case ClientData.Split("|")(charIndex).Substring(0, 1)
                             Case "t"
-                                Dim transferredStartDate As String = ClientData.Split("|")(3)
-                                Dim transferredEndDate As String = ClientData.Split("|")(4)
-                                transferredDate = String.Format("AND [dtDateTransfered] >= '{0}' AND [dtDateTransfered] <= '{1}'", transferredStartDate.Replace("t", ""), transferredEndDate)
+                                Dim transferredStartDate As String = ClientData.Split("|")(3) + " 00:00:29.317"
+                                Dim transferredEndDate As String = ClientData.Split("|")(4) + " 23:59:29.317"
+                                transferredDate = String.Format("AND [dtDateTransfered] BETWEEN '{0}' AND '{1}'", transferredStartDate.Replace("t", ""), transferredEndDate)
                             Case "f"
-                                Dim failedStartDate As String = ClientData.Split("|")(3)
-                                Dim failedEndDate As String = ClientData.Split("|")(4)
-                                failedDate = String.Format("AND [dtDateFailed] >= '{0}' AND [dtDateFailed] <= '{1}'", failedStartDate.Replace("f", ""), failedEndDate)
+                                Dim failedStartDate As String = ClientData.Split("|")(3) + " 00:00:29.317"
+                                Dim failedEndDate As String = ClientData.Split("|")(4) + " 23:59:29.317"
+                                failedDate = String.Format("AND [dtDateFailed] BETWEEN '{0}' AND '{1}'", failedStartDate.Replace("f", ""), failedEndDate)
                         End Select
                     End If
 
@@ -803,13 +803,13 @@ Public Class ServerResponse
                         For index = 1 To ClientData.Split("|").Length - 3
                             Select Case ClientData.Split("|")(charIndex).Substring(0, 1)
                                 Case "t"
-                                    Dim transferredStartDate As String = ClientData.Split("|")(3)
-                                    Dim transferredEndDate As String = ClientData.Split("|")(4)
-                                    transferredDate = String.Format("AND [dtDateTransfered] >= '{0}' BETWEEN '{1}'", transferredStartDate.Replace("t", ""), transferredEndDate)
+                                    Dim transferredStartDate As String = ClientData.Split("|")(3) + " 00:00:29.317"
+                                    Dim transferredEndDate As String = ClientData.Split("|")(4) + " 23:59:29.317"
+                                    transferredDate = String.Format("AND [dtDateTransfered] BETWEEN '{0}' AND '{1}'", transferredStartDate.Replace("t", ""), transferredEndDate)
                                 Case "f"
-                                    Dim failedStartDate As String = ClientData.Split("|")(5)
-                                    Dim failedEndDate As String = ClientData.Split("|")(6)
-                                    failedDate = String.Format("AND [dtDateFailed] >= '{0}' BETWEEN '{1}'", failedStartDate.Replace("f", ""), failedEndDate)
+                                    Dim failedStartDate As String = ClientData.Split("|")(5) + " 00:00:29.317"
+                                    Dim failedEndDate As String = ClientData.Split("|")(6) + " 23:59:29.317"
+                                    failedDate = String.Format("AND [dtDateFailed] BETWEEN '{0}' AND '{1}'", failedStartDate.Replace("f", ""), failedEndDate)
                             End Select
                             charIndex = charIndex + 1
                         Next
@@ -823,7 +823,28 @@ Public Class ServerResponse
                 Try
                     Dim process As String = ClientData.Split("|")(0)
                     Dim rows As String = ClientData.Split("|")(1)
-                    Server.Listener.SendResponse(ClientSocket, WhseTransfers.RTSQL.Retreive.UI_getWhtLInesAll(process, rows))
+                    Dim transferredDate As String = String.Empty
+                    Dim failedDate As String = String.Empty
+                    Dim charIndex As Integer = 2
+
+                    If ClientData.Split("|").Length = 4 Then
+                        Select Case ClientData.Split("|")(charIndex).Substring(0, 1)
+                            Case "t"
+                                Dim transferredStartDate As String = ClientData.Split("|")(2) + " 00:00:29.317"
+                                Dim transferredEndDate As String = ClientData.Split("|")(3) + " 23:59:29.317"
+                                transferredDate = String.Format("WHERE [dtDateTransfered] BETWEEN '{0}' AND '{1}'", transferredStartDate.Replace("t", ""), transferredEndDate.Replace("t", ""))
+                        End Select
+                    End If
+                    Dim appendOperator As String = ""
+
+                    If transferredDate = "" Then
+                        appendOperator = "WHERE"
+                    Else
+                        appendOperator = "AND"
+                    End If
+
+                    process = String.Format(" {0} pr.[vProcName] LIKE '%{1}%'", appendOperator, process)
+                    Server.Listener.SendResponse(ClientSocket, WhseTransfers.RTSQL.Retreive.UI_getWhtLInesAll(process, rows, transferredDate))
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
@@ -831,7 +852,29 @@ Public Class ServerResponse
                 Try
                     Dim process As String = ClientData.Split("|")(0)
                     Dim rows As String = ClientData.Split("|")(1)
-                    Server.Listener.SendResponse(ClientSocket, WhseTransfers.RTSQL.Retreive.UI_getWhtLInesPosted(process, rows))
+                    Dim transferredDate As String = String.Empty
+                    Dim failedDate As String = String.Empty
+                    Dim charIndex As Integer = 2
+
+                    If ClientData.Split("|").Length = 4 Then
+                        Select Case ClientData.Split("|")(charIndex).Substring(0, 1)
+                            Case "t"
+                                Dim transferredStartDate As String = ClientData.Split("|")(2) + " 00:00:29.317"
+                                Dim transferredEndDate As String = ClientData.Split("|")(3) + " 23:59:29.317"
+                                transferredDate = String.Format("WHERE [dtDateTransfered] BETWEEN '{0}' AND '{1}'", transferredStartDate.Replace("t", ""), transferredEndDate)
+                        End Select
+                    End If
+
+                    Dim appendOperator As String = ""
+
+                    If transferredDate = "" Then
+                        appendOperator = "WHERE"
+                    Else
+                        appendOperator = "AND"
+                    End If
+
+                    process = String.Format(" {0} pr.[vProcName] LIKE '%{1}%'", appendOperator, process)
+                    Server.Listener.SendResponse(ClientSocket, WhseTransfers.RTSQL.Retreive.UI_getWhtLInesPosted(process, rows, transferredDate))
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
@@ -992,28 +1035,28 @@ Public Class ServerResponse
 
 #Region "Administration"
             Case "*ADDCMSVALUE*"
-                Try 
-                    Dim value as string = ClientData.Split("|")(0)
-                        
-                    dim valueType as string = ClientData.Split("|")(1)
-                    Dim valueFound As String= POReceiving.RTSQL.Retreive.UI_CheckCMSValue(value, valueType)
+                Try
+                    Dim value As String = ClientData.Split("|")(0)
+
+                    Dim valueType As String = ClientData.Split("|")(1)
+                    Dim valueFound As String = POReceiving.RTSQL.Retreive.UI_CheckCMSValue(value, valueType)
                     Select Case valueFound.Split("*")(0)
                         Case "1"
-                            Server.Listener.SendResponse(ClientSocket,  POReceiving.RTSQL.Insert.UI_AddCMSRecord(value, valueType))
+                            Server.Listener.SendResponse(ClientSocket, POReceiving.RTSQL.Insert.UI_AddCMSRecord(value, valueType))
                         Case Else
                             Server.Listener.SendResponse(ClientSocket, valueFound)
-                    End Select  
+                    End Select
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
-            case "*GETCMSITEMS*"
-                Try 
+            Case "*GETCMSITEMS*"
+                Try
                     Server.Listener.SendResponse(ClientSocket, POReceiving.RTSQL.Retreive.UI_GetCMSItems())
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
-            case "*GETCMSUOMS*"
-                Try 
+            Case "*GETCMSUOMS*"
+                Try
                     Server.Listener.SendResponse(ClientSocket, POReceiving.RTSQL.Retreive.UI_GetCMSUOMs())
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
@@ -1028,7 +1071,7 @@ Public Class ServerResponse
 #End Region
 
 #Region "Management"
-            Case  "*GETITEMCMSHEADERS*"
+            Case "*GETITEMCMSHEADERS*"
                 Try
                     Server.Listener.SendResponse(ClientSocket, POReceiving.RTSQL.Retreive.UI_GetItemCMSHeaders)
                 Catch ex As Exception
@@ -1048,15 +1091,15 @@ Public Class ServerResponse
                 End Try
             Case "*ADDCMSDOCUMENT*"
                 Try
-                    Dim headerInfo as String = ClientData.Split("*")(0)
-                    dim stockID as string = headerInfo.Split("|")(0)
+                    Dim headerInfo As String = ClientData.Split("*")(0)
+                    Dim stockID As String = headerInfo.Split("|")(0)
                     Dim code As String = headerInfo.Split("|")(1)
                     Dim userName As String = headerInfo.Split("|")(2)
-                    Dim lineInfo as String = ClientData.Split("*")(1)
+                    Dim lineInfo As String = ClientData.Split("*")(1)
                     Dim headerCreated As String = POReceiving.RTSQL.Insert.UI_AddCMSDocHeader(stockID, code, userName, "1")
                     Select Case headerCreated.Split("*")(0)
                         Case "1"
-                            dim headerID = headerCreated.Remove(0, 2)
+                            Dim headerID = headerCreated.Remove(0, 2)
                             Dim query As String = "INSERT INTO [COA].[ltbl_CMS_Docs] ([iHeaderID], [vItem], [vUnit], [vOperator], [dValue1], [dValue2], [vInspection]) VALUES "
                             For Each l As String In lineInfo.Split("~")
                                 If l <> String.Empty Then
@@ -1071,7 +1114,7 @@ Public Class ServerResponse
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
-            Case  "*GETITEMCMSAPPROVALS*"
+            Case "*GETITEMCMSAPPROVALS*"
                 Try
                     Server.Listener.SendResponse(ClientSocket, POReceiving.RTSQL.Retreive.UI_GetItemCMSApprovals)
                 Catch ex As Exception
@@ -1079,23 +1122,23 @@ Public Class ServerResponse
                 End Try
             Case "*GETCMSAPPROVALLINES*"
                 Try
-                    Dim headerID as String = ClientData
+                    Dim headerID As String = ClientData
                     Server.Listener.SendResponse(ClientSocket, POReceiving.RTSQL.Retreive.UI_GetItemCMSApprovalLines(headerID))
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
             Case "*APPROVECMSDOCUMENT*"
-                try                
+                Try
                     Dim itemCode = ClientData.split("|")(0)
                     Dim username As String = ClientData.split("|")(1)
                     Dim lineID As String = ClientData.split("|")(2)
                     Dim stockLink As String = ClientData.Split("|")(3)
                     Dim version As String = ClientData.Split("|")(4)
 
-                    Dim sign As Image = new Bitmap(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\RSC\Signatures\" + itemCode + ".png")
+                    Dim sign As Image = New Bitmap(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\RSC\Signatures\" + itemCode + ".png")
                     Dim memStrem = New MemoryStream()
                     sign.Save(memStrem, System.Drawing.Imaging.ImageFormat.Png)
-                    Dim imageByteArry() As Byte = memStrem.ToArray()                   
+                    Dim imageByteArry() As Byte = memStrem.ToArray()
                     Dim appoverd As String = POReceiving.RTSQL.Update.UI_UpdateCMSApproved(lineID, imageByteArry, username)
                     Select Case appoverd.Split("*")(0)
                         Case "1"
@@ -1123,7 +1166,7 @@ Public Class ServerResponse
                                             deheadQuery += $"DELETE FROM [COA].[htbl_CMS_Docs] WHERE [iLineID] = {headID}" + Environment.NewLine
                                             delineQuery += $"DELETE FROM [COA].[ltbl_CMS_Docs] WHERE [iHeaderID] = {headID}" + Environment.NewLine
                                         End If
-                                    Next    
+                                    Next
 
                                     Dim headersInserted As String = POReceiving.RTSQL.ExecuteQuery(headerQuery)
                                     Select Case headersInserted.Split("*")(0)
@@ -1133,7 +1176,7 @@ Public Class ServerResponse
                                                 Case "1"
                                                     Dim headersDeleted As String = POReceiving.RTSQL.ExecuteQuery(deheadQuery)
                                                     Select Case headersDeleted.Split("*")(0)
-                                                         Case "1"
+                                                        Case "1"
                                                             Server.Listener.SendResponse(ClientSocket, POReceiving.RTSQL.ExecuteQuery(delineQuery))
                                                         Case Else
                                                             Server.Listener.SendResponse(ClientSocket, headersDeleted)
@@ -1142,7 +1185,7 @@ Public Class ServerResponse
                                                     Server.Listener.SendResponse(ClientSocket, linesInserted)
                                             End Select
                                         Case Else
-                                             Server.Listener.SendResponse(ClientSocket, headersInserted)
+                                            Server.Listener.SendResponse(ClientSocket, headersInserted)
                                     End Select
                                 Case "0"
                                     Server.Listener.SendResponse(ClientSocket, "1*Success")
@@ -1158,14 +1201,14 @@ Public Class ServerResponse
             Case "*GETCMSAPPROVALIMAGE*"
                 Try
                     Dim itemCode As String = ClientData
-                    Dim imageeFound As String = POReceiving.RTSQL.Retreive.UI_GetCMSApprovalImagee(itemCode)                    
+                    Dim imageeFound As String = POReceiving.RTSQL.Retreive.UI_GetCMSApprovalImagee(itemCode)
                     Server.Listener.SendResponseFile(ClientSocket, "1*Success", Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\RSC\Signatures\" + itemCode + ".png")
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
             Case "*GETCMSAPPROVALLINESVIEW*"
                 Try
-                    Dim headerID as String = ClientData
+                    Dim headerID As String = ClientData
                     Server.Listener.SendResponse(ClientSocket, POReceiving.RTSQL.Retreive.UI_GetItemCMSApprovalLinesViww(headerID))
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
@@ -1181,23 +1224,23 @@ Public Class ServerResponse
                 End Try
             Case "*GETCMSEDITLINES*"
                 Try
-                    Dim headerID as String = ClientData
+                    Dim headerID As String = ClientData
                     Server.Listener.SendResponse(ClientSocket, POReceiving.RTSQL.Retreive.UI_GetItemCMSApprovalLinesEdit(headerID))
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
-           Case "*CREATENEWDOCVERSION*"
-                Try 
-                    Dim headerInfo as String = ClientData.Split("*")(0)
-                    dim stockID as string = headerInfo.Split("|")(0)
+            Case "*CREATENEWDOCVERSION*"
+                Try
+                    Dim headerInfo As String = ClientData.Split("*")(0)
+                    Dim stockID As String = headerInfo.Split("|")(0)
                     Dim code As String = headerInfo.Split("|")(1)
                     Dim userName As String = headerInfo.Split("|")(2)
                     Dim docVersion As Int32 = Convert.ToInt32(headerInfo.Split("|")(3))
-                    Dim lineInfo as String = ClientData.Split("*")(1)
+                    Dim lineInfo As String = ClientData.Split("*")(1)
                     Dim headerCreated As String = POReceiving.RTSQL.Insert.UI_AddCMSDocHeader(stockID, code, userName, Convert.ToString(docVersion + 1))
                     Select Case headerCreated.Split("*")(0)
                         Case "1"
-                            dim headerID = headerCreated.Remove(0, 2)
+                            Dim headerID = headerCreated.Remove(0, 2)
                             Dim query As String = "INSERT INTO [COA].[ltbl_CMS_Docs] ([iHeaderID], [vItem], [vUnit], [vOperator], [dValue1], [dValue2], [vInspection]) VALUES "
                             For Each l As String In lineInfo.Split("~")
                                 If l <> String.Empty Then
@@ -1212,10 +1255,10 @@ Public Class ServerResponse
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
-           Case "*EDITEXISTINGDOCUMENT*"
-                Try 
-                    Dim headerID as String = ClientData.Split("*")(0)
-                    Dim lineInfo as String = ClientData.Split("*")(1)
+            Case "*EDITEXISTINGDOCUMENT*"
+                Try
+                    Dim headerID As String = ClientData.Split("*")(0)
+                    Dim lineInfo As String = ClientData.Split("*")(1)
                     Dim headerUpdated As String = POReceiving.RTSQL.Update.UI_UpdateCMSEdited(headerID)
                     Select Case headerUpdated.Split("*")(0)
                         Case "1"
@@ -1239,24 +1282,24 @@ Public Class ServerResponse
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
-           Case "*DELETECMSDOCUMENT*"
+            Case "*DELETECMSDOCUMENT*"
                 Try
-                    Dim headerID as String = ClientData
+                    Dim headerID As String = ClientData
                     Dim hDeleted As String = POReceiving.RTSQL.Delete.UI_DeleteCMSHeader(headerID)
                     Select Case hDeleted.Split("*")(0)
                         Case "1"
-                            Server.Listener.SendResponse(ClientSocket,  POReceiving.RTSQL.Delete.UI_DeleteCMSLines(headerID)) 
+                            Server.Listener.SendResponse(ClientSocket, POReceiving.RTSQL.Delete.UI_DeleteCMSLines(headerID))
                         Case Else
                             Server.Listener.SendResponse(ClientSocket, hDeleted)
                     End Select
-                    
+
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
 #End Region
 
 #Region "Archive"
-            Case  "*GETCMSARCHIVEHEADERS*"
+            Case "*GETCMSARCHIVEHEADERS*"
                 Try
                     Server.Listener.SendResponse(ClientSocket, POReceiving.RTSQL.Retreive.UI_GetCMSArchiveHeaders)
                 Catch ex As Exception
@@ -1264,7 +1307,7 @@ Public Class ServerResponse
                 End Try
             Case "*GETCMSARCHIVELINES*"
                 Try
-                    Dim headerID as String = ClientData
+                    Dim headerID As String = ClientData
                     Server.Listener.SendResponse(ClientSocket, POReceiving.RTSQL.Retreive.UI_GetItemCMSArchiveLines(headerID))
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
@@ -1272,8 +1315,8 @@ Public Class ServerResponse
             Case "*GETCMSARCHIVEIMAGE*"
                 Try
                     Dim lineID As String = ClientData.Split("|")(0)
-                    Dim itemCode As String = ClientData.Split("|")(1)            
-                    Dim imageeFound As String = POReceiving.RTSQL.Retreive.UI_GetCMSArchiveImage(lineID, itemCode)                    
+                    Dim itemCode As String = ClientData.Split("|")(1)
+                    Dim imageeFound As String = POReceiving.RTSQL.Retreive.UI_GetCMSArchiveImage(lineID, itemCode)
                     Server.Listener.SendResponseFile(ClientSocket, "1*Success", Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\RSC\Signatures\" + itemCode + ".png")
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
@@ -1938,7 +1981,7 @@ Public Class ServerResponse
                                                                             Server.Listener.SendResponse(ClientSocket, PGM.RTSQL.Update.UI_setPGMBatchManufactured(headerID, username))
                                                                         Else
                                                                             Server.Listener.SendResponse(ClientSocket, manufMessage)
-                                                                        End If                                                                        
+                                                                        End If
                                                                     Else
                                                                         Server.Listener.SendResponse(ClientSocket, "0*" + manufExec)
                                                                     End If
@@ -2008,7 +2051,7 @@ Public Class ServerResponse
                     Dim lotNumber As String = ClientData.Split("|")(1)
                     Dim location As String = ClientData.Split("|")(2)
                     Dim concentration As String = ClientData.Split("|")(3)
-                    Dim qty As string = ClientData.Split("|")(4)
+                    Dim qty As String = ClientData.Split("|")(4)
                     Dim username As String = ClientData.Split("|")(5)
                     Server.Listener.SendResponse(ClientSocket, PGM.RTSQL.Update.UI_updateContainerRem(itemCode, lotNumber, location, qty, username))
                 Catch ex As Exception
@@ -2181,7 +2224,7 @@ Public Class ServerResponse
                                                             Dim manufExec As String = AutoManufacture.Evolution.Update.UI_ProccessAutorManufacture_HL(manufHeaderID)
                                                             Select Case manufExec.Split("*")(0)
                                                                 Case "1"
-                                                                     manufExec = manufExec.Remove(0, 2)
+                                                                    manufExec = manufExec.Remove(0, 2)
                                                                     If (manufExec.Contains("rows affected") Or manufExec.Contains("Commands completed successfully.")) And manufExec <> String.Empty Then '
                                                                         Server.Listener.SendResponse(ClientSocket, PowderPrep.RTSQL.Update.UI_setPPManufactured(lineID, username))
                                                                         'Server.Listener.SendResponse(ClientSocket, manufExec)
@@ -2191,7 +2234,7 @@ Public Class ServerResponse
                                                                             Server.Listener.SendResponse(ClientSocket, PowderPrep.RTSQL.Update.UI_setPPManufactured(lineID, username))
                                                                         Else
                                                                             Server.Listener.SendResponse(ClientSocket, manufMessage)
-                                                                        End If                                                                        
+                                                                        End If
                                                                     Else
                                                                         Server.Listener.SendResponse(ClientSocket, "0*" + manufExec)
                                                                     End If
@@ -2229,8 +2272,8 @@ Public Class ServerResponse
             Case "*MANUALLYCLOSEPOWDER*"
                 Try
                     Dim lineID As String = ClientData.Split("|")(0)
-                    Dim username As String = ClientData.Split("|")(1)              
-                    Server.Listener.SendResponse(ClientSocket, PowderPrep.RTSQL.Update.UI_setPPManufacturedManual(lineID, username))                 
+                    Dim username As String = ClientData.Split("|")(1)
+                    Server.Listener.SendResponse(ClientSocket, PowderPrep.RTSQL.Update.UI_setPPManufacturedManual(lineID, username))
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
@@ -2367,7 +2410,7 @@ Public Class ServerResponse
                                                             Dim manufExec As String = AutoManufacture.Evolution.Update.UI_ProccessAutorManufacture_HL(manufHeaderID)
                                                             Select Case manufExec.Split("*")(0)
                                                                 Case "1"
-                                                                     manufExec = manufExec.Remove(0, 2)
+                                                                    manufExec = manufExec.Remove(0, 2)
                                                                     If (manufExec.Contains("rows affected") Or manufExec.Contains("Commands completed successfully.")) And manufExec <> String.Empty Then '
                                                                         Server.Listener.SendResponse(ClientSocket, FreshSlurry.RTSQL.Update.UI_setFSManufactured(lineID, username))
                                                                         'Server.Listener.SendResponse(ClientSocket, manufExec)
@@ -2377,7 +2420,7 @@ Public Class ServerResponse
                                                                             Server.Listener.SendResponse(ClientSocket, FreshSlurry.RTSQL.Update.UI_setFSManufactured(lineID, username))
                                                                         Else
                                                                             Server.Listener.SendResponse(ClientSocket, manufMessage)
-                                                                        End If                                                                        
+                                                                        End If
                                                                     Else
                                                                         Server.Listener.SendResponse(ClientSocket, "0*" + manufExec)
                                                                     End If
@@ -2624,14 +2667,14 @@ Public Class ServerResponse
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
             Case "*SAVEDMIXEDSLURRYJOURNALID*"
-                Try 
+                Try
                     Dim journalID As String = ClientData
                     Server.Listener.SendResponse(ClientSocket, MixedSlurry.RTSQL.Update.UI_EditMSJournalID(journalID))
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
             Case "*GETMIXEDSLURRIESFORMANUFACTURE*"
-                Try                  
+                Try
                     Server.Listener.SendResponse(ClientSocket, MixedSlurry.RTSQL.Retreive.UI_GetMixedSlurriesToManufacture())
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
@@ -2721,23 +2764,23 @@ Public Class ServerResponse
                             iJournalID = iJournalID.Remove(0, 2)
                             If iJournalID <> "0" Then
                                 Dim queryList As List(Of String) = New List(Of String)
-                            Dim AllFresh As String = MixedSlurry.RTSQL.Retreive.UI_GetAllMixedSlurryInputs_JournalOut(lineID)
-                            Select Case AllFresh.Split("*")(0)
-                                Case "1"
-                                    Dim Failed As Boolean = False
-                                    Dim FailureReason As String = String.Empty
-                                    For Each Fresh As String In AllFresh.Split("~")
-                                        If Fresh <> String.Empty Then
-                                            'Add Fresh Outs
-                                            Dim freshInfo As String() = Fresh.Split("|")
-                                            Dim trolly As String = freshInfo(0)
-                                            Dim code As String = freshInfo(1)
-                                            Dim desc As String = freshInfo(2)
-                                            Dim lot As String = freshInfo(3)
-                                            Dim qty As String = freshInfo(4)
-                                            Dim solDate As String = freshInfo(5)
-                                            Dim solidity As String = freshInfo(6)
-                                            Dim wetWeight As Decimal = Convert.ToDecimal(qty.Replace(",", sep).Replace(".", sep))
+                                Dim AllFresh As String = MixedSlurry.RTSQL.Retreive.UI_GetAllMixedSlurryInputs_JournalOut(lineID)
+                                Select Case AllFresh.Split("*")(0)
+                                    Case "1"
+                                        Dim Failed As Boolean = False
+                                        Dim FailureReason As String = String.Empty
+                                        For Each Fresh As String In AllFresh.Split("~")
+                                            If Fresh <> String.Empty Then
+                                                'Add Fresh Outs
+                                                Dim freshInfo As String() = Fresh.Split("|")
+                                                Dim trolly As String = freshInfo(0)
+                                                Dim code As String = freshInfo(1)
+                                                Dim desc As String = freshInfo(2)
+                                                Dim lot As String = freshInfo(3)
+                                                Dim qty As String = freshInfo(4)
+                                                Dim solDate As String = freshInfo(5)
+                                                Dim solidity As String = freshInfo(6)
+                                                Dim wetWeight As Decimal = Convert.ToDecimal(qty.Replace(",", sep).Replace(".", sep))
                                                 If solidity <> String.Empty Then
                                                     Dim dSol As Decimal = Convert.ToDecimal(solidity.Replace(",", sep).Replace(".", sep)) / 100
                                                     Dim dryWeight As String = Convert.ToString(wetWeight * dSol)
@@ -2761,12 +2804,12 @@ Public Class ServerResponse
                                                             'Select Case lotID.Split("*")(0)
                                                             '    Case "1"
                                                             '        lotID = lotID.Remove(0, 2)
-                                                                    
+
                                                             '    Case Else
                                                             '        Failed = True
                                                             '        FailureReason = lotID
                                                             'End Select
-                                                                                      
+
                                                         Case Else
                                                             Failed = True
                                                             FailureReason = stockInfo
@@ -2774,110 +2817,110 @@ Public Class ServerResponse
                                                 Else
                                                     Failed = True
                                                     FailureReason = "0*The solidity for lot " + lot + " has not been captured."
-                                                End If                                                                                     
-                                        End If
-                                    Next
+                                                End If
+                                            End If
+                                        Next
 
-                                    If Failed = False Then
-                                        Dim mixInfo As String = MixedSlurry.RTSQL.Retreive.UI_GetAllMixedSlurryManufInfo(lineID)
-                                        Select Case mixInfo.Split("*")(0)
-                                            Case "1"
+                                        If Failed = False Then
+                                            Dim mixInfo As String = MixedSlurry.RTSQL.Retreive.UI_GetAllMixedSlurryManufInfo(lineID)
+                                            Select Case mixInfo.Split("*")(0)
+                                                Case "1"
                                                     mixInfo = mixInfo.Remove(0, 2)
                                                     Dim allInfo As String() = mixInfo.Split("|")
-                                                Dim stockLink As String = allInfo(0)
-                                                Dim lotID As String = allInfo(1)
-                                                Dim lotNumber As String = allInfo(2)
-                                                Dim cost As String = allInfo(3)
-                                                Dim qty As String = allInfo(4)
-                                                Dim dtSol As String = allInfo(5)
-                                                Dim recQty As String = allInfo(6)
-                                                Dim recLot As String = allInfo(7)
-                                                Dim remQty As String = allInfo(8)
-                                                Dim remLot As String = allInfo(9)
-                                                Dim remSol As String = allInfo(10)
-                                                Dim recSol As String = allInfo(11)
+                                                    Dim stockLink As String = allInfo(0)
+                                                    Dim lotID As String = allInfo(1)
+                                                    Dim lotNumber As String = allInfo(2)
+                                                    Dim cost As String = allInfo(3)
+                                                    Dim qty As String = allInfo(4)
+                                                    Dim dtSol As String = allInfo(5)
+                                                    Dim recQty As String = allInfo(6)
+                                                    Dim recLot As String = allInfo(7)
+                                                    Dim remQty As String = allInfo(8)
+                                                    Dim remLot As String = allInfo(9)
+                                                    Dim remSol As String = allInfo(10)
+                                                    Dim recSol As String = allInfo(11)
                                                     If qty <> String.Empty Then
-                                                                        Dim query As String = "  INSERT INTO _etblInvJrBatchLines (iInvJrBatchID, iStockID, iWarehouseID, dTrDate, iTrCodeID,
+                                                        Dim query As String = "  INSERT INTO _etblInvJrBatchLines (iInvJrBatchID, iStockID, iWarehouseID, dTrDate, iTrCodeID,
                                                                         cReference, cDescription, fQtyIn, fQtyOut, fNewCost, iProjectID, bIsSerialItem, bIsLotItem, 
                                                                         iSNGroupID, iJobID, iLotID, cLotNumber, cLineNotes, iGLContraID, _etblInvJrBatchLines_iBranchID,
                                                                         iUnitsOfMeasureStockingID, iUnitsOfMeasureCategoryID, iUnitsOfMeasureID)
-                                                                        VALUES(" +iJournalID+ ", "+stockLink+", '10', GETDATE(), 83,
-                                                                        '', '– CS FRESH TO MIS',  "+qty.Replace(",", ".")+",0, "+cost.Replace(",", ".")+", 23, 0, 1, 
-                                                                        0, 0, 0, '"+lotNumber+"', '', 84199, 0,
+                                                                        VALUES(" + iJournalID + ", " + stockLink + ", '10', GETDATE(), 83,
+                                                                        '', '– CS FRESH TO MIS',  " + qty.Replace(",", ".") + ",0, " + cost.Replace(",", ".") + ", 23, 0, 1, 
+                                                                        0, 0, 0, '" + lotNumber + "', '', 84199, 0,
                                                                         0, 0, 0)
-                                                                        "       
-                                                                        Dim dSolRec As Decimal = Convert.ToDecimal(recSol.Replace(",", sep).Replace(".", sep)) / 100
-                                                                        Dim wetRec As Decimal = Convert.ToDecimal(recQty.Replace(",", sep).Replace(".", sep))
-                                                                        Dim dryWeightRec As String = Convert.ToString(wetRec * dSolRec)
-                                                                        Dim queryRec As String = "  INSERT INTO _etblInvJrBatchLines (iInvJrBatchID, iStockID, iWarehouseID, dTrDate, iTrCodeID,
+                                                                        "
+                                                        Dim dSolRec As Decimal = Convert.ToDecimal(recSol.Replace(",", sep).Replace(".", sep)) / 100
+                                                        Dim wetRec As Decimal = Convert.ToDecimal(recQty.Replace(",", sep).Replace(".", sep))
+                                                        Dim dryWeightRec As String = Convert.ToString(wetRec * dSolRec)
+                                                        Dim queryRec As String = "  INSERT INTO _etblInvJrBatchLines (iInvJrBatchID, iStockID, iWarehouseID, dTrDate, iTrCodeID,
                                                                         cReference, cDescription, fQtyIn, fQtyOut, fNewCost, iProjectID, bIsSerialItem, bIsLotItem, 
                                                                         iSNGroupID, iJobID, iLotID, cLotNumber, cLineNotes, iGLContraID, _etblInvJrBatchLines_iBranchID,
                                                                         iUnitsOfMeasureStockingID, iUnitsOfMeasureCategoryID, iUnitsOfMeasureID)
-                                                                        VALUES(" +iJournalID+ ", "+stockLink+", '10', GETDATE(), 83,
-                                                                        '', '– CS FRESH TO MIS',  0,"+dryWeightRec.Replace(",", ".")+", "+cost.Replace(",", ".")+", 23, 0, 1, 
-                                                                        0, 0, 0, '"+recLot+"', '', 84199, 0,
+                                                                        VALUES(" + iJournalID + ", " + stockLink + ", '10', GETDATE(), 83,
+                                                                        '', '– CS FRESH TO MIS',  0," + dryWeightRec.Replace(",", ".") + ", " + cost.Replace(",", ".") + ", 23, 0, 1, 
+                                                                        0, 0, 0, '" + recLot + "', '', 84199, 0,
                                                                         0, 0, 0)
-                                                                        "     
-                                                                        Dim dSolRem As Decimal = Convert.ToDecimal(remSol.Replace(",", sep).Replace(".", sep)) / 100
-                                                                        Dim wetRem As Decimal = Convert.ToDecimal(remQty.Replace(",", sep).Replace(".", sep))
-                                                                        Dim dryWeightRem As String = Convert.ToString(wetRem * dSolRem)
-                                                                        Dim queryRem As String = "  INSERT INTO _etblInvJrBatchLines (iInvJrBatchID, iStockID, iWarehouseID, dTrDate, iTrCodeID,
+                                                                        "
+                                                        Dim dSolRem As Decimal = Convert.ToDecimal(remSol.Replace(",", sep).Replace(".", sep)) / 100
+                                                        Dim wetRem As Decimal = Convert.ToDecimal(remQty.Replace(",", sep).Replace(".", sep))
+                                                        Dim dryWeightRem As String = Convert.ToString(wetRem * dSolRem)
+                                                        Dim queryRem As String = "  INSERT INTO _etblInvJrBatchLines (iInvJrBatchID, iStockID, iWarehouseID, dTrDate, iTrCodeID,
                                                                         cReference, cDescription, fQtyIn, fQtyOut, fNewCost, iProjectID, bIsSerialItem, bIsLotItem, 
                                                                         iSNGroupID, iJobID, iLotID, cLotNumber, cLineNotes, iGLContraID, _etblInvJrBatchLines_iBranchID,
                                                                         iUnitsOfMeasureStockingID, iUnitsOfMeasureCategoryID, iUnitsOfMeasureID)
-                                                                        VALUES(" +iJournalID+ ", "+stockLink+", '10', GETDATE(), 83,
-                                                                        '', '– CS FRESH TO MIS', 0, "+dryWeightRem.Replace(",", ".")+", "+cost.Replace(",", ".")+", 23, 0, 1, 
-                                                                        0, 0, 0, '"+remLot+"', '', 84199, 0,
+                                                                        VALUES(" + iJournalID + ", " + stockLink + ", '10', GETDATE(), 83,
+                                                                        '', '– CS FRESH TO MIS', 0, " + dryWeightRem.Replace(",", ".") + ", " + cost.Replace(",", ".") + ", 23, 0, 1, 
+                                                                        0, 0, 0, '" + remLot + "', '', 84199, 0,
                                                                         0, 0, 0)
-                                                                        "    
-                                                                        queryList.Add(query)
-                                                                        queryList.Add(queryRec)
-                                                                        queryList.Add(queryRem)
-                                                                        Dim manuf As String = MixedSlurry.RTSQL.ExecuteTransaction(queryList)
-                                                                        Select Case manuf.Split("*")(0)
-                                                                            Case "1"
-                                                                                Server.Listener.SendResponse(ClientSocket, MixedSlurry.RTSQL.Update.UI_UpdateMSManufactured(lineID, username))
-                                                                            Case Else
-                                                                                Server.Listener.SendResponse(ClientSocket, manuf)
-                                                                        End Select  
-                                                                    Else
-                                                                        Server.Listener.SendResponse(ClientSocket, "0*NO dry weight for the mixed slurry was found, has its solidity been set?")
-                                                                    End If  
-                                                'If lotID <> String.Empty Then
-                                                '        Dim lotIDrec As String = MixedSlurry.Evolution.Rereive.MBL_GetRecLotID(recLot, stockLink)
-                                                'Select Case lotIDrec.Split("*")(0)
-                                                '    Case "1"
-                                                '        lotIDrec =  lotIDrec.Remove(0, 2)  
-                                                '        Dim lotIDRem As String = MixedSlurry.Evolution.Rereive.MBL_GetRemLotID(remLot, stockLink)
-                                                '            Select Case lotIDRem.Split("*")(0)
-                                                '                Case "1"
-                                                '                    lotIDRem =  lotIDRem.Remove(0, 2)  
-                                                                    
-                                                '                Case Else
-                                                '                    Server.Listener.SendResponse(ClientSocket, lotIDRem)
-                                                '            End Select
-                                                '    Case Else
-                                                '        Server.Listener.SendResponse(ClientSocket, lotIDrec)
-                                                'End Select
-                                                'Else
-                                                '    Server.Listener.SendResponse(ClientSocket, "0*Lot " + lotNumber+ "wasnt found in evolution.")
-                                                'End If
+                                                                        "
+                                                        queryList.Add(query)
+                                                        queryList.Add(queryRec)
+                                                        queryList.Add(queryRem)
+                                                        Dim manuf As String = MixedSlurry.RTSQL.ExecuteTransaction(queryList)
+                                                        Select Case manuf.Split("*")(0)
+                                                            Case "1"
+                                                                Server.Listener.SendResponse(ClientSocket, MixedSlurry.RTSQL.Update.UI_UpdateMSManufactured(lineID, username))
+                                                            Case Else
+                                                                Server.Listener.SendResponse(ClientSocket, manuf)
+                                                        End Select
+                                                    Else
+                                                        Server.Listener.SendResponse(ClientSocket, "0*NO dry weight for the mixed slurry was found, has its solidity been set?")
+                                                    End If
+                                                    'If lotID <> String.Empty Then
+                                                    '        Dim lotIDrec As String = MixedSlurry.Evolution.Rereive.MBL_GetRecLotID(recLot, stockLink)
+                                                    'Select Case lotIDrec.Split("*")(0)
+                                                    '    Case "1"
+                                                    '        lotIDrec =  lotIDrec.Remove(0, 2)  
+                                                    '        Dim lotIDRem As String = MixedSlurry.Evolution.Rereive.MBL_GetRemLotID(remLot, stockLink)
+                                                    '            Select Case lotIDRem.Split("*")(0)
+                                                    '                Case "1"
+                                                    '                    lotIDRem =  lotIDRem.Remove(0, 2)  
 
-                                                
-                                                                                                                                                                                                  
-                                            Case Else
-                                                Server.Listener.SendResponse(ClientSocket, mixInfo)
-                                        End Select
-                                    Else
-                                        Server.Listener.SendResponse(ClientSocket, FailureReason)
-                                    End If
-                                    
-                                Case Else
-                                   Server.Listener.SendResponse(ClientSocket, AllFresh)
-                            End Select
-                            Else    
+                                                    '                Case Else
+                                                    '                    Server.Listener.SendResponse(ClientSocket, lotIDRem)
+                                                    '            End Select
+                                                    '    Case Else
+                                                    '        Server.Listener.SendResponse(ClientSocket, lotIDrec)
+                                                    'End Select
+                                                    'Else
+                                                    '    Server.Listener.SendResponse(ClientSocket, "0*Lot " + lotNumber+ "wasnt found in evolution.")
+                                                    'End If
+
+
+
+                                                Case Else
+                                                    Server.Listener.SendResponse(ClientSocket, mixInfo)
+                                            End Select
+                                        Else
+                                            Server.Listener.SendResponse(ClientSocket, FailureReason)
+                                        End If
+
+                                    Case Else
+                                        Server.Listener.SendResponse(ClientSocket, AllFresh)
+                                End Select
+                            Else
                                 Server.Listener.SendResponse(ClientSocket, "0*Please configure the mixed slurry journal ID")
-                            End If                           
+                            End If
                         Case Else
                             Server.Listener.SendResponse(ClientSocket, iJournalID)
                     End Select
@@ -3123,104 +3166,104 @@ Public Class ServerResponse
                         Case "1"
                             itemCode = itemCode.Remove(0, 2)
                             Dim totalQty As String = Zect.RTSQL.Retreive.UI_GetZECTBatchTotal(jobID)
-                    Select Case totalQty.Split("*")(0)
-                        Case "1"
-                            totalQty = totalQty.Remove(0, 2)
-
-                            Dim process As String = String.Empty
-                            If zectLine.Contains("2") Then
-                                process = "ZECT 2"
-                            Else
-                                process = "ZECT 1"
-                            End If
-
-                            Dim manufLocs As String = AutoManufacture.RTIS.Retreive.UI_GetManufLocations(process)
-                            Select Case manufLocs.Split("*")(0)
+                            Select Case totalQty.Split("*")(0)
                                 Case "1"
-                                    manufLocs = manufLocs.Remove(0, 2)
-                                    Dim src As String = manufLocs.Split("|")(0)
-                                    Dim dest As String = manufLocs.Split("|")(1)
+                                    totalQty = totalQty.Remove(0, 2)
 
-                                    Dim manufInserted As String = AutoManufacture.Evolution.Insert.UI_InsertAutorManufacture_H(itemCode, totalQty, src, dest, lotNumber)
-                                    Select Case manufInserted.Split("*")(0)
+                                    Dim process As String = String.Empty
+                                    If zectLine.Contains("2") Then
+                                        process = "ZECT 2"
+                                    Else
+                                        process = "ZECT 1"
+                                    End If
+
+                                    Dim manufLocs As String = AutoManufacture.RTIS.Retreive.UI_GetManufLocations(process)
+                                    Select Case manufLocs.Split("*")(0)
                                         Case "1"
-                                            Dim manufHeaderID As String = AutoManufacture.Evolution.Retreive.UI_GetAutoManufactureHeaderID(itemCode, totalQty, src, dest, lotNumber)
-                                            Select Case manufHeaderID.Split("*")(0)
+                                            manufLocs = manufLocs.Remove(0, 2)
+                                            Dim src As String = manufLocs.Split("|")(0)
+                                            Dim dest As String = manufLocs.Split("|")(1)
+
+                                            Dim manufInserted As String = AutoManufacture.Evolution.Insert.UI_InsertAutorManufacture_H(itemCode, totalQty, src, dest, lotNumber)
+                                            Select Case manufInserted.Split("*")(0)
                                                 Case "1"
-                                                    manufHeaderID = manufHeaderID.Remove(0, 2)
-                                                    Dim manufLines As String = Zect.RTSQL.Retreive.UI_GetZECTRawMaterials(jobID)
-                                                    Select Case manufLines.Split("*")(0)
+                                                    Dim manufHeaderID As String = AutoManufacture.Evolution.Retreive.UI_GetAutoManufactureHeaderID(itemCode, totalQty, src, dest, lotNumber)
+                                                    Select Case manufHeaderID.Split("*")(0)
                                                         Case "1"
-                                                            manufLines = manufLines.Remove(0, 2)
-                                                            Dim allManufLines As String() = manufLines.Split("~")
-                                                            Dim insertQuery As String = "INSERT INTO [__SLtbl_AMPDetail] ([ifkAMPHeaderID], [sComponentItemCode], [sComponentWarehouseCode],[sComponentLotNumber]) VALUES"
-                                                            For Each manufLine As String In allManufLines
-                                                                If manufLine <> String.Empty Then
-                                                                    Dim rCode As String = manufLine.Split("|")(0)
-                                                                    Dim rLot As String = manufLine.Split("|")(1)
-                                                                    insertQuery += Convert.ToString("( '" + manufHeaderID + "', '" + rCode + "', '" + src + "', '" + lotNumber + "'),")
-                                                                End If
-                                                            Next
-                                                            insertQuery = insertQuery.Remove(insertQuery.Length - 1, 1)
-
-                                                            Dim rawsInserted As String = AutoManufacture.Evolution.UI_ExecuteGeneric(insertQuery)
-                                                            Select Case rawsInserted.Split("*")(0)
+                                                            manufHeaderID = manufHeaderID.Remove(0, 2)
+                                                            Dim manufLines As String = Zect.RTSQL.Retreive.UI_GetZECTRawMaterials(jobID)
+                                                            Select Case manufLines.Split("*")(0)
                                                                 Case "1"
-                                                                    Dim manufExec As String = AutoManufacture.Evolution.Update.UI_ProccessAutorManufacture_HL(manufHeaderID)
-                                                                    Select Case manufExec.Split("*")(0)
+                                                                    manufLines = manufLines.Remove(0, 2)
+                                                                    Dim allManufLines As String() = manufLines.Split("~")
+                                                                    Dim insertQuery As String = "INSERT INTO [__SLtbl_AMPDetail] ([ifkAMPHeaderID], [sComponentItemCode], [sComponentWarehouseCode],[sComponentLotNumber]) VALUES"
+                                                                    For Each manufLine As String In allManufLines
+                                                                        If manufLine <> String.Empty Then
+                                                                            Dim rCode As String = manufLine.Split("|")(0)
+                                                                            Dim rLot As String = manufLine.Split("|")(1)
+                                                                            insertQuery += Convert.ToString("( '" + manufHeaderID + "', '" + rCode + "', '" + src + "', '" + lotNumber + "'),")
+                                                                        End If
+                                                                    Next
+                                                                    insertQuery = insertQuery.Remove(insertQuery.Length - 1, 1)
+
+                                                                    Dim rawsInserted As String = AutoManufacture.Evolution.UI_ExecuteGeneric(insertQuery)
+                                                                    Select Case rawsInserted.Split("*")(0)
                                                                         Case "1"
-                                                                                     manufExec = manufExec.Remove(0, 2)
-                                                                    If (manufExec.Contains("rows affected") Or manufExec.Contains("Commands completed successfully.")) And manufExec <> String.Empty Then '
-                                                                        Server.Listener.SendResponse(ClientSocket, Zect.RTSQL.Update.UI_setZECTBatchManufactured(jobID, username))
-                                                                        'Server.Listener.SendResponse(ClientSocket, manufExec)
-                                                                    ElseIf manufExec = String.Empty Then
-                                                                        Dim manufMessage As String = AutoManufacture.Evolution.Retreive.UI_GetAutoManufactureHeaderMSG(itemCode, totalQty, src, dest, lotNumber)
-                                                                        If manufMessage.Contains("**SUCCESS**") Then
-                                                                            Server.Listener.SendResponse(ClientSocket, Zect.RTSQL.Update.UI_setZECTBatchManufactured(jobID, username))
-                                                                        Else
-                                                                            Server.Listener.SendResponse(ClientSocket, manufMessage)
-                                                                        End If                                                                        
-                                                                    Else
-                                                                        Server.Listener.SendResponse(ClientSocket, "0*" + manufExec)
-                                                                    End If
+                                                                            Dim manufExec As String = AutoManufacture.Evolution.Update.UI_ProccessAutorManufacture_HL(manufHeaderID)
+                                                                            Select Case manufExec.Split("*")(0)
+                                                                                Case "1"
+                                                                                    manufExec = manufExec.Remove(0, 2)
+                                                                                    If (manufExec.Contains("rows affected") Or manufExec.Contains("Commands completed successfully.")) And manufExec <> String.Empty Then '
+                                                                                        Server.Listener.SendResponse(ClientSocket, Zect.RTSQL.Update.UI_setZECTBatchManufactured(jobID, username))
+                                                                                        'Server.Listener.SendResponse(ClientSocket, manufExec)
+                                                                                    ElseIf manufExec = String.Empty Then
+                                                                                        Dim manufMessage As String = AutoManufacture.Evolution.Retreive.UI_GetAutoManufactureHeaderMSG(itemCode, totalQty, src, dest, lotNumber)
+                                                                                        If manufMessage.Contains("**SUCCESS**") Then
+                                                                                            Server.Listener.SendResponse(ClientSocket, Zect.RTSQL.Update.UI_setZECTBatchManufactured(jobID, username))
+                                                                                        Else
+                                                                                            Server.Listener.SendResponse(ClientSocket, manufMessage)
+                                                                                        End If
+                                                                                    Else
+                                                                                        Server.Listener.SendResponse(ClientSocket, "0*" + manufExec)
+                                                                                    End If
 
 
-                                                                            'manufExec = manufExec.Remove(0, 2)
-                                                                            'If manufExec.Contains("**SUCCESS**") And manufExec <> String.Empty Then
-                                                                            '    Dim setAsManuf As String = Zect.RTSQL.Update.UI_setZECTBatchManufactured(jobID, username)
-                                                                            '    Server.Listener.SendResponse(ClientSocket, setAsManuf)
-                                                                            'ElseIf manufExec = String.Empty Then
-                                                                            '    Dim manufMessage As String = AutoManufacture.Evolution.Retreive.UI_GetAutoManufactureHeaderMSG(itemCode, totalQty, src, dest, lotNumber)
-                                                                            '    Server.Listener.SendResponse(ClientSocket, manufMessage)
-                                                                            'Else
-                                                                            '    Server.Listener.SendResponse(ClientSocket, "0*" + manufExec)
-                                                                            'End If
+                                                                                    'manufExec = manufExec.Remove(0, 2)
+                                                                                    'If manufExec.Contains("**SUCCESS**") And manufExec <> String.Empty Then
+                                                                                    '    Dim setAsManuf As String = Zect.RTSQL.Update.UI_setZECTBatchManufactured(jobID, username)
+                                                                                    '    Server.Listener.SendResponse(ClientSocket, setAsManuf)
+                                                                                    'ElseIf manufExec = String.Empty Then
+                                                                                    '    Dim manufMessage As String = AutoManufacture.Evolution.Retreive.UI_GetAutoManufactureHeaderMSG(itemCode, totalQty, src, dest, lotNumber)
+                                                                                    '    Server.Listener.SendResponse(ClientSocket, manufMessage)
+                                                                                    'Else
+                                                                                    '    Server.Listener.SendResponse(ClientSocket, "0*" + manufExec)
+                                                                                    'End If
+                                                                                Case Else
+                                                                                    Server.Listener.SendResponse(ClientSocket, manufExec)
+                                                                            End Select
                                                                         Case Else
-                                                                            Server.Listener.SendResponse(ClientSocket, manufExec)
+                                                                            Server.Listener.SendResponse(ClientSocket, rawsInserted)
                                                                     End Select
                                                                 Case Else
-                                                                    Server.Listener.SendResponse(ClientSocket, rawsInserted)
+                                                                    Server.Listener.SendResponse(ClientSocket, manufLines)
                                                             End Select
                                                         Case Else
-                                                            Server.Listener.SendResponse(ClientSocket, manufLines)
+                                                            Server.Listener.SendResponse(ClientSocket, manufHeaderID)
                                                     End Select
-                                                Case Else
-                                                    Server.Listener.SendResponse(ClientSocket, manufHeaderID)
+                                                Case "-1"
+                                                    Server.Listener.SendResponse(ClientSocket, manufInserted)
                                             End Select
-                                        Case "-1"
-                                            Server.Listener.SendResponse(ClientSocket, manufInserted)
+                                        Case Else
+                                            Server.Listener.SendResponse(ClientSocket, manufLocs)
                                     End Select
-                                Case Else
-                                    Server.Listener.SendResponse(ClientSocket, manufLocs)
+                                Case "0"
+                                    Server.Listener.SendResponse(ClientSocket, totalQty)
+                                Case "-1"
+                                    Server.Listener.SendResponse(ClientSocket, totalQty)
                             End Select
-                        Case "0"
-                            Server.Listener.SendResponse(ClientSocket, totalQty)
-                        Case "-1"
-                            Server.Listener.SendResponse(ClientSocket, totalQty)
-                    End Select
                         Case Else
                             Server.Listener.SendResponse(ClientSocket, itemCode)
-                    End Select                              
+                    End Select
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
@@ -3379,7 +3422,7 @@ Public Class ServerResponse
                                                                             Server.Listener.SendResponse(ClientSocket, AW.RTSQL.Update.UI_UpdatePalletManufactured(lineID, jobID, username))
                                                                         Else
                                                                             Server.Listener.SendResponse(ClientSocket, manufMessage)
-                                                                        End If                                                                        
+                                                                        End If
                                                                     Else
                                                                         Server.Listener.SendResponse(ClientSocket, "0*" + manufExec)
                                                                     End If
@@ -3462,20 +3505,20 @@ Public Class ServerResponse
                                                                     Dim manufExec As String = AutoManufacture.Evolution.Update.UI_ProccessAutorManufacture_HL(manufHeaderID)
                                                                     Select Case manufExec.Split("*")(0)
                                                                         Case "1"
-                                                                             manufExec = manufExec.Remove(0, 2)
-                                                                    If (manufExec.Contains("rows affected") Or manufExec.Contains("Commands completed successfully.")) And manufExec <> String.Empty Then '
-                                                                        Server.Listener.SendResponse(ClientSocket, AW.RTSQL.Update.UI_setAWBatchManufactured(jobID, username))
-                                                                        'Server.Listener.SendResponse(ClientSocket, manufExec)
-                                                                    ElseIf manufExec = String.Empty Then
-                                                                        Dim manufMessage As String = AutoManufacture.Evolution.Retreive.UI_GetAutoManufactureHeaderMSG(itemCode, totalQty, src, dest, lotNumber)
-                                                                        If manufMessage.Contains("**SUCCESS**") Then
-                                                                            Server.Listener.SendResponse(ClientSocket, AW.RTSQL.Update.UI_setAWBatchManufactured(jobID, username))
-                                                                        Else
-                                                                            Server.Listener.SendResponse(ClientSocket, manufMessage)
-                                                                        End If                                                                        
-                                                                    Else
-                                                                        Server.Listener.SendResponse(ClientSocket, "0*" + manufExec)
-                                                                    End If
+                                                                            manufExec = manufExec.Remove(0, 2)
+                                                                            If (manufExec.Contains("rows affected") Or manufExec.Contains("Commands completed successfully.")) And manufExec <> String.Empty Then '
+                                                                                Server.Listener.SendResponse(ClientSocket, AW.RTSQL.Update.UI_setAWBatchManufactured(jobID, username))
+                                                                                'Server.Listener.SendResponse(ClientSocket, manufExec)
+                                                                            ElseIf manufExec = String.Empty Then
+                                                                                Dim manufMessage As String = AutoManufacture.Evolution.Retreive.UI_GetAutoManufactureHeaderMSG(itemCode, totalQty, src, dest, lotNumber)
+                                                                                If manufMessage.Contains("**SUCCESS**") Then
+                                                                                    Server.Listener.SendResponse(ClientSocket, AW.RTSQL.Update.UI_setAWBatchManufactured(jobID, username))
+                                                                                Else
+                                                                                    Server.Listener.SendResponse(ClientSocket, manufMessage)
+                                                                                End If
+                                                                            Else
+                                                                                Server.Listener.SendResponse(ClientSocket, "0*" + manufExec)
+                                                                            End If
 
 
                                                                             'manufExec = manufExec.Remove(0, 2)
@@ -3520,9 +3563,9 @@ Public Class ServerResponse
                 Try
                     Dim jobID As String = ClientData.Split("|")(0)
                     Dim username As String = ClientData.Split("|")(1)
-                    Server.Listener.SendResponse(ClientSocket, AW.RTSQL.Update.UI_setAWBatchManufacturedManual(jobID, username))                
+                    Server.Listener.SendResponse(ClientSocket, AW.RTSQL.Update.UI_setAWBatchManufacturedManual(jobID, username))
                 Catch ex As Exception
-                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
+                    Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
 #End Region
 
@@ -3650,7 +3693,7 @@ Public Class ServerResponse
                                                                             Server.Listener.SendResponse(ClientSocket, Canning.RTSQL.Update.UI_UpdatePalletManufactured(lineID, username))
                                                                         Else
                                                                             Server.Listener.SendResponse(ClientSocket, manufMessage)
-                                                                        End If                                                                        
+                                                                        End If
                                                                     Else
                                                                         Server.Listener.SendResponse(ClientSocket, "0*" + manufExec)
                                                                     End If
@@ -4021,7 +4064,7 @@ Public Class ServerResponse
                             Next
                         Case Else
                             Server.Listener.SendResponse(ClientSocket, allTicketInfo)
-                    End Select                                       
+                    End Select
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
@@ -4227,7 +4270,7 @@ Public Class ServerResponse
 #End Region
 
 #Region "Palletizing"
-           Case "*GETPALLETPRINTSETTINGS*"
+            Case "*GETPALLETPRINTSETTINGS*"
                 Try
                     Server.Listener.SendResponse(ClientSocket, Palletizing.RTIS.Retreive.UI_GetPalletPrintSettings())
                 Catch ex As Exception
@@ -4241,7 +4284,7 @@ Public Class ServerResponse
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
-             Case "*SENDPALLETLABELTOSERVER*"
+            Case "*SENDPALLETLABELTOSERVER*"
                 Try
                     Server.Listener.SendResponse(ClientSocket, "1*Success")
                 Catch ex As Exception
@@ -4262,12 +4305,12 @@ Public Class ServerResponse
                 End Try
             Case "*GETPALLETLINESALL*"
                 Try
-                    Dim dateSearch As Boolean = Convert.ToBoolean(ClientData.Split("|")(0)) 
+                    Dim dateSearch As Boolean = Convert.ToBoolean(ClientData.Split("|")(0))
                     Dim dateFrom As String = ClientData.Split("|")(1)
                     Dim dateTo As String = ClientData.Split("|")(2)
                     Dim headerInfo As String = String.Empty
                     If dateSearch Then
-                        headerInfo = Palletizing.RTIS.Retreive.UI_GetPalletsByDate(dateFrom, dateTo)                        
+                        headerInfo = Palletizing.RTIS.Retreive.UI_GetPalletsByDate(dateFrom, dateTo)
                     Else
                         headerInfo = Palletizing.RTIS.Retreive.UI_GetPallets()
                     End If
@@ -4277,24 +4320,24 @@ Public Class ServerResponse
                             headerInfo = headerInfo.Remove(0, 2)
                             Dim sendList As String = String.Empty
                             Dim allHeaderInfo As List(Of String) = headerInfo.Split("~").ToList()
-                            for Each header As String In allHeaderInfo
+                            For Each header As String In allHeaderInfo
                                 If header <> String.Empty Then
-                                Dim id As String = header.Split("|")(0)
-                                Dim _date As String = header.Split("|")(1)
-                                Dim palletNum As String = header.Split("|")(2)
-                                Dim itemCode As String = Barcodes.GetItemCode(palletNum)
-                                Dim lotNumbers As String = Palletizing.RTIS.Retreive.UI_GetPalletLots(id)
-                                Select Case lotNumbers.Split("*")(0)
-                                    Case "1"
-                                        lotNumbers = lotNumbers.Remove(0, 2)
-                                        sendList += id + "|" + palletNum + "|" + itemCode + "|" + _date + "|" + lotNumbers + "~"
-                                    Case "0"
-                                        'Ignor
-                                    Case Else
-                                        Server.Listener.SendResponse(ClientSocket, lotNumbers)
-                                        Exit For
-                                End Select
-                                End If 
+                                    Dim id As String = header.Split("|")(0)
+                                    Dim _date As String = header.Split("|")(1)
+                                    Dim palletNum As String = header.Split("|")(2)
+                                    Dim itemCode As String = Barcodes.GetItemCode(palletNum)
+                                    Dim lotNumbers As String = Palletizing.RTIS.Retreive.UI_GetPalletLots(id)
+                                    Select Case lotNumbers.Split("*")(0)
+                                        Case "1"
+                                            lotNumbers = lotNumbers.Remove(0, 2)
+                                            sendList += id + "|" + palletNum + "|" + itemCode + "|" + _date + "|" + lotNumbers + "~"
+                                        Case "0"
+                                            'Ignor
+                                        Case Else
+                                            Server.Listener.SendResponse(ClientSocket, lotNumbers)
+                                            Exit For
+                                    End Select
+                                End If
                             Next
 
                             If sendList <> String.Empty Then
@@ -4305,19 +4348,19 @@ Public Class ServerResponse
                         Case Else
                             Server.Listener.SendResponse(ClientSocket, headerInfo)
                     End Select
-                    
+
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
             Case "*GETPALLETLINESBYITEM*"
                 Try
                     Dim itemCode As String = ClientData.Split("|")(0)
-                    Dim dateSearch As Boolean = Convert.ToBoolean(ClientData.Split("|")(1)) 
+                    Dim dateSearch As Boolean = Convert.ToBoolean(ClientData.Split("|")(1))
                     Dim dateFrom As String = ClientData.Split("|")(2)
                     Dim dateTo As String = ClientData.Split("|")(3)
                     Dim headerInfo As String = String.Empty
                     If dateSearch Then
-                        headerInfo = Palletizing.RTIS.Retreive.UI_GetPalletsByItemAndDate(itemCode, dateFrom, dateTo)                       
+                        headerInfo = Palletizing.RTIS.Retreive.UI_GetPalletsByItemAndDate(itemCode, dateFrom, dateTo)
                     Else
                         headerInfo = Palletizing.RTIS.Retreive.UI_GetPalletsByItem(itemCode)
                     End If
@@ -4327,23 +4370,23 @@ Public Class ServerResponse
                             headerInfo = headerInfo.Remove(0, 2)
                             Dim sendList As String = String.Empty
                             Dim allHeaderInfo As List(Of String) = headerInfo.Split("~").ToList()
-                            for Each header As String In allHeaderInfo
+                            For Each header As String In allHeaderInfo
                                 If header <> String.Empty Then
-                                Dim id As String = header.Split("|")(0)
-                                Dim _date As String = header.Split("|")(1)
-                                Dim palletNum As String = header.Split("|")(2)
-                                Dim lotNumbers As String = Palletizing.RTIS.Retreive.UI_GetPalletLots(id)
-                                Select Case lotNumbers.Split("*")(0)
-                                    Case "1"
-                                        lotNumbers = lotNumbers.Remove(0, 2)
-                                        sendList += id + "|" + palletNum + "|" + itemCode + "|" + _date + "|" + lotNumbers + "~"
-                                    Case "0"
-                                        'Ignor
-                                    Case Else
-                                        Server.Listener.SendResponse(ClientSocket, lotNumbers)
-                                        Exit For
-                                End Select
-                                End If 
+                                    Dim id As String = header.Split("|")(0)
+                                    Dim _date As String = header.Split("|")(1)
+                                    Dim palletNum As String = header.Split("|")(2)
+                                    Dim lotNumbers As String = Palletizing.RTIS.Retreive.UI_GetPalletLots(id)
+                                    Select Case lotNumbers.Split("*")(0)
+                                        Case "1"
+                                            lotNumbers = lotNumbers.Remove(0, 2)
+                                            sendList += id + "|" + palletNum + "|" + itemCode + "|" + _date + "|" + lotNumbers + "~"
+                                        Case "0"
+                                            'Ignor
+                                        Case Else
+                                            Server.Listener.SendResponse(ClientSocket, lotNumbers)
+                                            Exit For
+                                    End Select
+                                End If
                             Next
 
                             If sendList <> String.Empty Then
@@ -4354,7 +4397,7 @@ Public Class ServerResponse
                         Case Else
                             Server.Listener.SendResponse(ClientSocket, headerInfo)
                     End Select
-                    
+
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
@@ -4362,15 +4405,15 @@ Public Class ServerResponse
                 Try
                     Dim itemCode As String = ClientData.Split("|")(0)
                     Dim lotNumber As String = ClientData.Split("|")(1)
-                    Dim dateSearch As Boolean = Convert.ToBoolean(ClientData.Split("|")(2)) 
+                    Dim dateSearch As Boolean = Convert.ToBoolean(ClientData.Split("|")(2))
                     Dim dateFrom As String = ClientData.Split("|")(3)
                     Dim dateTo As String = ClientData.Split("|")(4)
 
-                    Dim headerIDs As String  = String.Empty
+                    Dim headerIDs As String = String.Empty
                     If dateSearch Then
-                       headerIDs = Palletizing.RTIS.Retreive.UI_GetPalletsByLotAndDate(lotNumber, dateFrom, dateTo)
-                    Else                       
-                         headerIDs = Palletizing.RTIS.Retreive.UI_GetPalletsByLot(lotNumber) 
+                        headerIDs = Palletizing.RTIS.Retreive.UI_GetPalletsByLotAndDate(lotNumber, dateFrom, dateTo)
+                    Else
+                        headerIDs = Palletizing.RTIS.Retreive.UI_GetPalletsByLot(lotNumber)
                     End If
 
                     Select Case headerIDs.Split("*")(0)
@@ -4385,7 +4428,7 @@ Public Class ServerResponse
                                     headerInfo = headerInfo.Remove(0, 2)
                                     Dim sendList As String = String.Empty
                                     Dim allHeaderInfo As List(Of String) = headerInfo.Split("~").ToList()
-                                    for Each header As String In allHeaderInfo
+                                    For Each header As String In allHeaderInfo
                                         If header <> String.Empty Then
                                             Dim id As String = header.Split("|")(0)
                                             Dim _date As String = header.Split("|")(1)
@@ -4464,7 +4507,7 @@ Public Class ServerResponse
 
                                     Dim itemInfo As String = Palletizing.Evolution.Retreive.MBL_GetItemInfo(itemCode)
                                     Select Case itemInfo.Split("*")(0)
-                                        Case "1"   
+                                        Case "1"
                                             itemInfo = itemInfo.Remove(0, 2)
                                             Dim allItemInfo As String() = itemInfo.Split("|")
                                             Dim rep As New XtraReport()
@@ -4476,7 +4519,7 @@ Public Class ServerResponse
                                                 End If
 
                                                 If item.Name = "_RT2D" Then
-                                                     item.Value = palletCode
+                                                    item.Value = palletCode
                                                 End If
 
                                                 If item.Name = "_Date" Then
@@ -4484,23 +4527,23 @@ Public Class ServerResponse
                                                 End If
 
                                                 If item.Name = "_Qty" Then
-                                                     item.Value = "1"
+                                                    item.Value = "1"
                                                 End If
 
                                                 If item.Name = "_SimpleCode" Then
-                                                     item.Value = allItemInfo(1)
+                                                    item.Value = allItemInfo(1)
                                                 End If
 
                                                 If item.Name = "_LotNumbers" Then
-                                                     item.Value = allLots
+                                                    item.Value = allLots
                                                 End If
 
                                                 If item.Name = "_ItemCode" Then
-                                                     item.Value = itemCode
+                                                    item.Value = itemCode
                                                 End If
 
                                                 If item.Name = "_Desc1" Then
-                                                     item.Value = allItemInfo(2)
+                                                    item.Value = allItemInfo(2)
                                                 End If
 
                                                 If item.Name = "_Desc2" Then
@@ -4509,7 +4552,7 @@ Public Class ServerResponse
 
                                                 If item.Name = "_Desc3" Then
                                                     item.Value = allItemInfo(4)
-                                                End If                                                       
+                                                End If
                                             Next
 
                                             rep.CreateDocument()
@@ -4517,8 +4560,8 @@ Public Class ServerResponse
                                             rpt.PrinterSettings.Copies = Convert.ToInt16(1)
                                             rpt.Print(printer)
                                             Server.Listener.SendResponse(ClientSocket, "1*SUCCESS")
-                                    Case Else
-                                        Server.Listener.SendResponse(ClientSocket, itemInfo)
+                                        Case Else
+                                            Server.Listener.SendResponse(ClientSocket, itemInfo)
                                     End Select
                                 Case Else
                                     Server.Listener.SendResponse(ClientSocket, printSettings)
@@ -4529,7 +4572,7 @@ Public Class ServerResponse
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
-            
+
 #End Region
 
 #Region "Old"
@@ -4763,7 +4806,7 @@ Public Class ServerResponse
 
 #Region "Manufacture"
             Case "*PGMGETREMCAPTURED*"
-                try 
+                Try
                     Dim itemCode As String = ClientData.Split("|")(0)
                     Dim lot As String = ClientData.Split("|")(1)
                     Dim location As String = ClientData.Split("|")(2)
@@ -5030,13 +5073,13 @@ Public Class ServerResponse
                     Server.Listener.SendResponse(ClientSocket, "-1*" + ex.Message)
                 End Try
             Case "*PGMSETREMAINDER*"
-                try 
+                Try
                     Dim itemCode As String = ClientData.Split("|")(0)
                     Dim lot As String = ClientData.Split("|")(1)
                     Dim concentration As String = ClientData.Split("|")(2)
                     Dim whse As String = ClientData.Split("|")(3)
                     Dim remainder As String = ClientData.Split("|")(4)
-                    dim username As string = ClientData.Split("|")(5)
+                    Dim username As String = ClientData.Split("|")(5)
                     'PGM_setBatchRemainder
                     Server.Listener.SendResponse(ClientSocket, PGM.RTSQL.Update.PGM_setBatchRemainder(remainder, itemCode, lot, concentration, whse, username))
                 Catch ex As Exception
@@ -5074,6 +5117,21 @@ Public Class ServerResponse
                     Dim transferType As String = ClientData.Split("|")(5)
                     Dim whseTo As String = String.Empty '"WIP-FS"
                     Dim whseDest As String = String.Empty
+
+                    Dim procCode As String = "PGM"
+                    Dim transferDescription As String = "PGM Transfer to IT"
+                    'Select Case procCode
+                    '    Case "PPtFS"
+                    '        transferDescription = "Powder Prep Transfer from IT"
+                    '    Case "FStMS"
+                    '        transferDescription = "Fresh Slurry Transfer from IT"
+                    '    Case "MStZECT"
+                    '        transferDescription = "MIxed Slurry Transfer from IT"
+                    '    Case "AW"
+                    '        transferDescription = "AW Transfer from IT"
+                    '    Case "Canning"
+                    '        transferDescription = "Canning Transfer from IT"
+                    'End Select
                     Select Case transferType
                         Case "VW"
                             whseTo = PGM.RTSQL.Retreive.PGM_GetVWWIPLoc()
@@ -5139,12 +5197,14 @@ Public Class ServerResponse
                                                                                         Dim headerUpdated As String = PGM.RTSQL.Update.PGM_updateHeaderQtyOut(itemCode, lotNumber, qty, whseFrom)
                                                                                         Select Case headerUpdated.Split("*")(0)
                                                                                             Case "1"
-                                                                                                Dim transferred As String = Transfers.RTSQL.Insert.UI_InsertFGWhseTransfer(itemCode, lotNumber, whseFrom, whseTo, qty.Replace(",", "."), username, "PGM")
-                                                                                                Select Case transferred.Split("*")(0)
+                                                                                                'Dim transferred As String = Transfers.RTSQL.Insert.UI_InsertFGWhseTransfer(itemCode, lotNumber, whseFrom, whseTo, qty.Replace(",", "."), username, "PGM")
+                                                                                                Dim transferSaved As String = Transfers.RTSQL.Insert.UI_InsertWhseTransfer(itemCode, lotNumber, whseFrom, whseTo, qty, username, procCode, transferDescription, "Pending")
+
+                                                                                                Select Case transferSaved.Split("*")(0)
                                                                                                     Case "1"
                                                                                                         Server.Listener.SendResponse(ClientSocket, Transfers.RTSQL.Insert.UI_whtTransferLog(itemCode, batch, whseFrom, whseTo, qty.Replace(",", "."), username, "PGM"))
                                                                                                     Case "-1"
-                                                                                                        Server.Listener.SendResponse(ClientSocket, transferred)
+                                                                                                        Server.Listener.SendResponse(ClientSocket, transferSaved)
                                                                                                 End Select
                                                                                             Case "-1"
                                                                                                 Server.Listener.SendResponse(ClientSocket, headerUpdated)
@@ -5659,7 +5719,7 @@ Public Class ServerResponse
                                     'Dim trolleyAlreadyUsed As String = MixedSlurry.RTSQL.Retreive.MBL_CheckSlurryAlreadyInTank(headerID, trolleyNo, slurrycode, lotNumber)
                                     'Select Case trolleyAlreadyUsed.Split("*")(0)
                                     '    Case "1"
-                                            
+
                                     '    Case "0"
                                     '        Server.Listener.SendResponse(ClientSocket, trolleyAlreadyUsed)
                                     '    Case "-1"
@@ -5716,8 +5776,8 @@ Public Class ServerResponse
                                             Dim trolleyID As String = freshSlurryInfo.Split("|")(0)
                                             Dim trolleyWeight As String = freshSlurryInfo.Split("|")(1)
                                             Dim totalDecanted As String = freshSlurryInfo.Split("|")(2)
-                                            Dim totalDecntedWeight As Double = Convert.ToDouble(totalDecanted.Replace(".", sep).Replace(",", sep))                            
-                                      
+                                            Dim totalDecntedWeight As Double = Convert.ToDouble(totalDecanted.Replace(".", sep).Replace(",", sep))
+
                                             Dim dEnteredWeight As Double = Convert.ToDouble(wetWeight.Replace(".", sep).Replace(",", sep))
                                             Dim dTrolleyWeight As Double = Convert.ToDouble(trolleyWeight.Replace(".", sep).Replace(",", sep))
 
@@ -5743,10 +5803,10 @@ Public Class ServerResponse
                                                         Server.Listener.SendResponse(ClientSocket, MixedSlurry.RTSQL.Insert.MBL_InsertFreshSlurryRecord(headerID, tankNo, trolleyCode, trolleyItem, trolleyDesc, trolleyLot, actualWeight.Replace(",", "."), actualTolerance.Replace(",", "."), userName))
                                                     Case Else
                                                         Server.Listener.SendResponse(ClientSocket, slurryDecanted)
-                                                End Select                                            
+                                                End Select
                                             Else
                                                 Server.Listener.SendResponse(ClientSocket, $"0*The quantity entered would exceed the amount of slurry in the container{Environment.NewLine}Remaining slurry weight: {Convert.ToString(dTrolleyWeight - totalDecntedWeight)}{Environment.NewLine}Attempted Weight: {wetWeight}")
-                                            End If                                      
+                                            End If
                                         Case "-1"
                                             Server.Listener.SendResponse(ClientSocket, freshSlurryInfo)
                                     End Select
@@ -5836,7 +5896,7 @@ Public Class ServerResponse
                 Try
                     Server.Listener.SendResponse(ClientSocket, MixedSlurry.RTSQL.Retreive.MBL_GetAllChemicals())
                 Catch ex As Exception
-                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
+                    Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
             Case "*CHECKSLURRYTANKZANDC*"
                 Try
@@ -6509,7 +6569,20 @@ Public Class ServerResponse
                             transferDescription = "Fresh Slurry Transfer from IT"
                         Case "MStZECT"
                             transferDescription = "MIxed Slurry Transfer from IT"
+                        Case "AW"
+                            transferDescription = "AW Transfer from IT"
+                        Case "Canning"
+                            transferDescription = "Canning Transfer from IT"
                     End Select
+
+                    'Select Case procCode
+                    '    Case "PPtFS"
+                    '        transferDescription = "Powder Prep Transfer from IT"
+                    '    Case "FStMS"
+                    '        transferDescription = "Fresh Slurry Transfer from IT"
+                    '    Case "MStZECT"
+                    '        transferDescription = "MIxed Slurry Transfer from IT"
+                    'End Select
 
                     Dim headerID As String = PGM.RTSQL.Retreive.PGM_GetPGMHeaderID(itemCode, lotNumber)
                     Select Case headerID.Split("*")(0)
@@ -6526,7 +6599,9 @@ Public Class ServerResponse
                                                 Dim whseToOK As String = Transfers.RTSQL.Retreive.MBL_CheckWhseStockAso(itemCode, WhseTo)
                                                 Select Case whseToOK.Split("*")(0)
                                                     Case "1"
+                                                        'Dim transferSaved As String = Transfers.RTSQL.Insert.UI_InsertFGWhseTransfer(itemCode, lotNumber, WhseFrom, WhseTo, qty, username, procCode)
                                                         Dim transferSaved As String = Transfers.RTSQL.Insert.UI_InsertWhseTransfer(itemCode, lotNumber, WhseFrom, WhseTo, qty, username, procCode, transferDescription, "Pending")
+
                                                         Select Case transferSaved.Split("*")(0)
                                                             Case "1"
                                                                 Dim transferLogged As String = Transfers.RTSQL.Insert.UI_whtTransferLog(itemCode, lotNumber, WhseFrom, WhseTo, qty.Replace(",", "."), username, procCode)
@@ -6748,6 +6823,10 @@ Public Class ServerResponse
                     Dim dqty As Double = Convert.ToDouble(qty) / 10000
                     qty = Convert.ToString(dqty)
 
+                    Dim procCode As String = "PPtFS"
+                    Dim transferDescription As String = "Powder Prep Transfer to IT"
+
+
                     Dim whseTo As String = Transfers.RTSQL.Retreive.MBL_GetPowderPrepWhes()
                     Select Case whseTo.Split("*")(0)
                         Case "1"
@@ -6758,9 +6837,11 @@ Public Class ServerResponse
                                     Dim whseToOK As String = Transfers.RTSQL.Retreive.MBL_CheckWhseStockAso(itemCode, whseTo)
                                     Select Case whseToOK.Split("*")(0)
                                         Case "1"
-                                            Dim transferComplete As String = Transfers.RTSQL.Insert.UI_InsertFGWhseTransfer(itemCode, lot, whseFrom, whseTo, qty, userName, "PPtFS")
+                                            'Dim transferComplete As String = Transfers.RTSQL.Insert.UI_InsertFGWhseTransfer(itemCode, lot, whseFrom, whseTo, qty, userName, "PPtFS")
+                                            Dim transferSaved As String = Transfers.RTSQL.Insert.UI_InsertWhseTransfer(itemCode, lot, whseFrom, whseTo, qty, userName, procCode, transferDescription, "Pending")
+
                                             'Dim transferComplete As String = Transfers.EvolutionSDK.CTransferItem(orderNum, whseFrom, whseTo, itemCode, lot, qty)
-                                            Select Case transferComplete.Split("*")(0)
+                                            Select Case transferSaved.Split("*")(0)
                                                 Case "1"
                                                     Dim transferRecorded As String = Transfers.RTSQL.Insert.UI_whtTransferLog(itemCode, lot, whseFrom, whseTo, qty, userName, "PPtFS")
                                                     Select Case transferRecorded.Split("*")(0)
@@ -6770,7 +6851,7 @@ Public Class ServerResponse
                                                             Server.Listener.SendResponse(ClientSocket, transferRecorded)
                                                     End Select
                                                 Case "-1"
-                                                    Server.Listener.SendResponse(ClientSocket, transferComplete)
+                                                    Server.Listener.SendResponse(ClientSocket, transferSaved)
                                             End Select
                                         Case "-1"
                                             Server.Listener.SendResponse(ClientSocket, whseToOK)
@@ -7558,7 +7639,7 @@ Public Class ServerResponse
                                                 Case "1"
                                                     Dim headerId = StockTake.RTSQL.Retreive.MBL_GetSTLineIDLot(stNum, itemCode, whsecode, tankLot)
                                                     Select Case headerId.Split("*")(0)
-                                                        Case "1"         
+                                                        Case "1"
                                                             headerId = headerId.Remove(0, 2)
                                                             If Convert.ToBoolean(isRecount) = False Then
                                                                 Dim trolleyTicketInfo As String = StockTake.RTSQL.Retreive.MBL_getSlurryTicketInfo(headerId, trolleyCode)
@@ -7599,13 +7680,13 @@ Public Class ServerResponse
                                                             Else
                                                                 Dim invalidatedLineFound As String = StockTake.RTSQL.Retreive.MBL_checkRT2dForRecount(headerId, trolleyCode)
                                                                 Select Case invalidatedLineFound.Split("*")(0)
-                                                                    Case "1"     
+                                                                    Case "1"
                                                                         invalidatedLineFound = invalidatedLineFound.Remove(0, 2)
-                                                                         If Convert.ToBoolean(invalidatedLineFound) = False Then
+                                                                        If Convert.ToBoolean(invalidatedLineFound) = False Then
                                                                             Server.Listener.SendResponse(ClientSocket, "1*" + tankLot + "|" + tankQty)
-                                                                         Else
-                                                                             Server.Listener.SendResponse(ClientSocket, "-1*The system cannot recount this item as it has already assigned to a ticket")
-                                                                         End If
+                                                                        Else
+                                                                            Server.Listener.SendResponse(ClientSocket, "-1*The system cannot recount this item as it has already assigned to a ticket")
+                                                                        End If
                                                                     Case Else
                                                                         Server.Listener.SendResponse(ClientSocket, invalidatedLineFound)
                                                                 End Select
@@ -7615,7 +7696,7 @@ Public Class ServerResponse
                                                     End Select
                                                 Case Else
                                                     Server.Listener.SendResponse(ClientSocket, addedToST)
-                                            End Select                                                                           
+                                            End Select
                                         Case Else
                                             Server.Listener.SendResponse(ClientSocket, whseID)
                                     End Select
@@ -7662,47 +7743,47 @@ Public Class ServerResponse
                                     Dim stUnq2 = stUnqs.Split("|")(1)
                                     'If Convert.ToBoolean(isRecount) = False Then
                                     If Convert.ToBoolean(isSingleScanner) = False Then
-                                            If CLng(scannerID) Mod 2 = 0 Then
-                                                'Even
-                                                If stUnq2 <> stNum Then
-                                                    Server.Listener.SendResponse(ClientSocket, "1*Success")
-                                                Else
-                                                    Server.Listener.SendResponse(ClientSocket, "-1*Item already scanned on this stock take")
-                                                End If
+                                        If CLng(scannerID) Mod 2 = 0 Then
+                                            'Even
+                                            If stUnq2 <> stNum Then
+                                                Server.Listener.SendResponse(ClientSocket, "1*Success")
                                             Else
-                                                'Odd
-                                                If stUnq1 <> stNum Then
-                                                    Server.Listener.SendResponse(ClientSocket, "1*Success")
-                                                Else
-                                                    Server.Listener.SendResponse(ClientSocket, "-1*Item already scanned on this stock take")
-                                                End If
+                                                Server.Listener.SendResponse(ClientSocket, "-1*Item already scanned on this stock take")
                                             End If
                                         Else
-                                            If stUnq1 <> stNum And stUnq2 <> stNum Then
+                                            'Odd
+                                            If stUnq1 <> stNum Then
                                                 Server.Listener.SendResponse(ClientSocket, "1*Success")
                                             Else
                                                 Server.Listener.SendResponse(ClientSocket, "-1*Item already scanned on this stock take")
                                             End If
                                         End If
-                                        'Else
+                                    Else
                                         If stUnq1 <> stNum And stUnq2 <> stNum Then
-                                            Dim invalidatedLineFound As String = StockTake.RTSQL.Retreive.MBL_checkRT2dForRecount(headerId, RT2D)
-                                            Select Case invalidatedLineFound.Split("*")(0)
-                                                Case "1"
-                                                    invalidatedLineFound = invalidatedLineFound.Remove(0, 2)
-                                                    If Convert.ToBoolean(invalidatedLineFound) = False Then
-                                                        Server.Listener.SendResponse(ClientSocket, "1*Success")
-                                                    Else
-                                                        Server.Listener.SendResponse(ClientSocket, "-1*The system cannot recount this item as it has already assigned to a ticket")
-                                                    End If
-                                                Case "0"
-                                                    Server.Listener.SendResponse(ClientSocket, invalidatedLineFound)
-                                                Case "-1"
-                                                    Server.Listener.SendResponse(ClientSocket, invalidatedLineFound)
-                                            End Select
+                                            Server.Listener.SendResponse(ClientSocket, "1*Success")
                                         Else
                                             Server.Listener.SendResponse(ClientSocket, "-1*Item already scanned on this stock take")
                                         End If
+                                    End If
+                                    'Else
+                                    If stUnq1 <> stNum And stUnq2 <> stNum Then
+                                        Dim invalidatedLineFound As String = StockTake.RTSQL.Retreive.MBL_checkRT2dForRecount(headerId, RT2D)
+                                        Select Case invalidatedLineFound.Split("*")(0)
+                                            Case "1"
+                                                invalidatedLineFound = invalidatedLineFound.Remove(0, 2)
+                                                If Convert.ToBoolean(invalidatedLineFound) = False Then
+                                                    Server.Listener.SendResponse(ClientSocket, "1*Success")
+                                                Else
+                                                    Server.Listener.SendResponse(ClientSocket, "-1*The system cannot recount this item as it has already assigned to a ticket")
+                                                End If
+                                            Case "0"
+                                                Server.Listener.SendResponse(ClientSocket, invalidatedLineFound)
+                                            Case "-1"
+                                                Server.Listener.SendResponse(ClientSocket, invalidatedLineFound)
+                                        End Select
+                                    Else
+                                        Server.Listener.SendResponse(ClientSocket, "-1*Item already scanned on this stock take")
+                                    End If
                                     'End If
                                 Case "0"
                                     Server.Listener.SendResponse(ClientSocket, stUnqs)
@@ -8509,22 +8590,29 @@ Public Class ServerResponse
                                             Next
                                             headerInString = "(" + headerInString.Substring(0, headerInString.Length - 1) + ")"
                                             If lotCount.Count = allHeaderIDs.Count Then
-                                            Dim stUnqs As String = Unique.RTSQL.Retreive.MBL_GetSTPalletUnqs(RT2D)
-                                            Select Case stUnqs.Split("*")(0)
-                                                Case "1"
-                                                    stUnqs = stUnqs.Remove(0, 2)
-                                                    Dim stUnq1 = stUnqs.Split("|")(0)
-                                                    Dim stUnq2 = stUnqs.Split("|")(1)
-                                                    If Convert.ToBoolean(isRecount) = False Then
-                                                        If Convert.ToBoolean(isSingleScanner) = False Then
-                                                            If CLng(scannerID) Mod 2 = 0 Then
-                                                                If stUnq2 <> stNum Then
-                                                                    Server.Listener.SendResponse(ClientSocket, "1*Success")
+                                                Dim stUnqs As String = Unique.RTSQL.Retreive.MBL_GetSTPalletUnqs(RT2D)
+                                                Select Case stUnqs.Split("*")(0)
+                                                    Case "1"
+                                                        stUnqs = stUnqs.Remove(0, 2)
+                                                        Dim stUnq1 = stUnqs.Split("|")(0)
+                                                        Dim stUnq2 = stUnqs.Split("|")(1)
+                                                        If Convert.ToBoolean(isRecount) = False Then
+                                                            If Convert.ToBoolean(isSingleScanner) = False Then
+                                                                If CLng(scannerID) Mod 2 = 0 Then
+                                                                    If stUnq2 <> stNum Then
+                                                                        Server.Listener.SendResponse(ClientSocket, "1*Success")
+                                                                    Else
+                                                                        Server.Listener.SendResponse(ClientSocket, "-1*Item already scanned on this stock take")
+                                                                    End If
                                                                 Else
-                                                                    Server.Listener.SendResponse(ClientSocket, "-1*Item already scanned on this stock take")
+                                                                    If stUnq1 <> stNum Then
+                                                                        Server.Listener.SendResponse(ClientSocket, "1*Success")
+                                                                    Else
+                                                                        Server.Listener.SendResponse(ClientSocket, "-1*Item already scanned on this stock take")
+                                                                    End If
                                                                 End If
                                                             Else
-                                                                If stUnq1 <> stNum Then
+                                                                If stUnq1 <> stNum And stUnq2 <> stNum Then
                                                                     Server.Listener.SendResponse(ClientSocket, "1*Success")
                                                                 Else
                                                                     Server.Listener.SendResponse(ClientSocket, "-1*Item already scanned on this stock take")
@@ -8532,37 +8620,30 @@ Public Class ServerResponse
                                                             End If
                                                         Else
                                                             If stUnq1 <> stNum And stUnq2 <> stNum Then
-                                                                Server.Listener.SendResponse(ClientSocket, "1*Success")
+                                                                Dim invalidatedLineFound As String = StockTake.RTSQL.Retreive.MBL_checkRT2dForRecountRMPallet(headerInString, RT2D)
+                                                                Select Case invalidatedLineFound.Split("*")(0)
+                                                                    Case "1"
+                                                                        invalidatedLineFound = invalidatedLineFound.Remove(0, 2)
+                                                                        If Convert.ToBoolean(invalidatedLineFound) = False Then
+                                                                            Server.Listener.SendResponse(ClientSocket, "1*Success")
+                                                                        Else
+                                                                            Server.Listener.SendResponse(ClientSocket, "-1*The system cannot recount this item as it has already assigned to a ticket")
+                                                                        End If
+                                                                    Case Else
+                                                                        Server.Listener.SendResponse(ClientSocket, invalidatedLineFound)
+                                                                End Select
                                                             Else
                                                                 Server.Listener.SendResponse(ClientSocket, "-1*Item already scanned on this stock take")
                                                             End If
                                                         End If
-                                                    Else
-                                                        If stUnq1 <> stNum And stUnq2 <> stNum Then
-                                                            Dim invalidatedLineFound As String = StockTake.RTSQL.Retreive.MBL_checkRT2dForRecountRMPallet(headerInString, RT2D)
-                                                            Select Case invalidatedLineFound.Split("*")(0)
-                                                                Case "1"
-                                                                    invalidatedLineFound = invalidatedLineFound.Remove(0, 2)
-                                                                    If Convert.ToBoolean(invalidatedLineFound) = False Then
-                                                                        Server.Listener.SendResponse(ClientSocket, "1*Success")
-                                                                    Else
-                                                                        Server.Listener.SendResponse(ClientSocket, "-1*The system cannot recount this item as it has already assigned to a ticket")
-                                                                    End If
-                                                                Case Else
-                                                                    Server.Listener.SendResponse(ClientSocket, invalidatedLineFound)
-                                                            End Select
-                                                        Else
-                                                            Server.Listener.SendResponse(ClientSocket, "-1*Item already scanned on this stock take")
-                                                        End If
-                                                    End If
-                                                Case Else
-                                                  Server.Listener.SendResponse(ClientSocket, stUnqs)
-                                            End Select
+                                                    Case Else
+                                                        Server.Listener.SendResponse(ClientSocket, stUnqs)
+                                                End Select
                                             Else
                                                 Server.Listener.SendResponse(ClientSocket, "-1*Not all items on this pallet were found on the stock take")
-                                            End If                                           
+                                            End If
                                         Case Else
-                                           Server.Listener.SendResponse(ClientSocket, headerIds)
+                                            Server.Listener.SendResponse(ClientSocket, headerIds)
                                     End Select
                                 Case Else
                                     Server.Listener.SendResponse(ClientSocket, lotIds)
@@ -8602,7 +8683,7 @@ Public Class ServerResponse
                                             palletUnqs = palletUnqs.Remove(0, 2)
                                             Dim allPalletUnqs As String() = palletUnqs.Split("~")
                                             If Convert.ToBoolean(isRecount) = False Then
-#Region "Normal Count"                                          
+#Region "Normal Count"
                                                 Dim ticketCounts As String = StockTake.RTSQL.Retreive.MBL_checkTicketCounts(headerId, ticketNo)
                                                 Select Case ticketCounts.Split("*")(0)
                                                     Case "1"
@@ -8777,9 +8858,9 @@ Public Class ServerResponse
                                                                     Select Case ticketInserted.Split("*")(0)
                                                                         Case "1"
                                                                             Dim updated As String = StockTake.RTSQL.Update.MBL_UpdateRTStockTakeItemBoth_Lot(stNum, itemCode, whsecode, lotNumber, qty)
-                                                                            Select Case updated.Split("*")(0) 
+                                                                            Select Case updated.Split("*")(0)
                                                                                 Case "1"
-                                                                                     Server.Listener.SendResponse(ClientSocket, Unique.RTSQL.Update.MBL_UpdatePalletSTBoth(RT2D, stNum))
+                                                                                    Server.Listener.SendResponse(ClientSocket, Unique.RTSQL.Update.MBL_UpdatePalletSTBoth(RT2D, stNum))
                                                                                 Case Else
                                                                                     Server.Listener.SendResponse(ClientSocket, updated)
                                                                                     Exit For
@@ -8798,7 +8879,7 @@ Public Class ServerResponse
                                                         Server.Listener.SendResponse(ClientSocket, ticketCounts)
                                                         Exit For
                                                 End Select
-#End Region                        
+#End Region
                                             Else
 #Region "Recount"
                                                 Dim ticketRefFound As String = StockTake.RTSQL.Retreive.MBL_checkTicketRef(stNum, ticketNo)
@@ -8868,8 +8949,8 @@ Public Class ServerResponse
                     'MBL_getFreshSlurryInfo_CheckAddLot
                     Dim tankInfo As String = StockTake.RTSQL.Retreive.MBL_getFreshSlurryInfo(trolleyNumber, itemCode)
                     Select Case tankInfo.Split("*")(0)
-                         Case "1"
-                             tankInfo = tankInfo.Remove(0, 2)
+                        Case "1"
+                            tankInfo = tankInfo.Remove(0, 2)
                             Dim tankLot As String = tankInfo.Split("|")(0)
                             Dim tankQty As String = tankInfo.Split("|")(1)
                             Dim tankReceived As String = tankInfo.Split("|")(2)
@@ -8878,7 +8959,7 @@ Public Class ServerResponse
                             Else
                                 Server.Listener.SendResponse(ClientSocket, "-1*Slurry trolley is empty in CATscan")
                             End If
-                         Case Else
+                        Case Else
                             Server.Listener.SendResponse(ClientSocket, tankInfo)
                     End Select
                 Catch ex As Exception
@@ -9142,13 +9223,13 @@ Public Class ServerResponse
 #Region "Mixed Slurry"
 
 #Region "Tank"
-               Case "*GETMSLOTSTOCKTAKE*"
+            Case "*GETMSLOTSTOCKTAKE*"
                 Try
                     Dim itemCode As String = ClientData.Split("|")(0)
                     Dim tankNumber As String = ClientData.Split("|")(1)
                     Dim tankInfo As String = StockTake.RTSQL.Retreive.MBL_getMixedSlurryTankInfo_CheckLot(tankNumber, itemCode)
                     Select Case tankInfo.Split("*")(0)
-                         Case "1"
+                        Case "1"
                             tankInfo = tankInfo.Remove(0, 2)
                             Dim tankLot As String = tankInfo.Split("|")(0)
                             Dim tankQty As String = tankInfo.Split("|")(1)
@@ -9159,11 +9240,11 @@ Public Class ServerResponse
                                     Server.Listener.SendResponse(ClientSocket, "1*" + tankLot + "|" + tankQty)
                                 Else
                                     Server.Listener.SendResponse(ClientSocket, "-1*No dry weight found for this tank please use the manual count function!")
-                                End If                               
+                                End If
                             Else
                                 Server.Listener.SendResponse(ClientSocket, "-1*Slurry trolley is empty in CATscan")
                             End If
-                         Case Else
+                        Case Else
                             Server.Listener.SendResponse(ClientSocket, tankInfo)
                     End Select
                 Catch ex As Exception
@@ -9428,13 +9509,13 @@ Public Class ServerResponse
 #End Region
 
 #Region "Mobile Tank"
-                Case "*GETMBLMSLOTSTOCKTAKE*"
+            Case "*GETMBLMSLOTSTOCKTAKE*"
                 Try
                     Dim itemCode As String = ClientData.Split("|")(0)
                     Dim tankNumber As String = ClientData.Split("|")(1)
                     Dim tankInfo As String = StockTake.RTSQL.Retreive.MBL_getMixedSlurryMobileTankInfo_CheckLot(tankNumber, itemCode)
                     Select Case tankInfo.Split("*")(0)
-                         Case "1"
+                        Case "1"
                             tankInfo = tankInfo.Remove(0, 2)
                             Dim tankLot As String = tankInfo.Split("|")(0)
                             Dim tankQty As String = tankInfo.Split("|")(1)
@@ -9445,11 +9526,11 @@ Public Class ServerResponse
                                     Server.Listener.SendResponse(ClientSocket, "1*" + tankLot + "|" + tankQty)
                                 Else
                                     Server.Listener.SendResponse(ClientSocket, "-1*No dry weight found for this tank please use the manual count function!")
-                                End If                               
+                                End If
                             Else
                                 Server.Listener.SendResponse(ClientSocket, "-1*Slurry trolley is empty in CATscan")
                             End If
-                         Case Else
+                        Case Else
                             Server.Listener.SendResponse(ClientSocket, tankInfo)
                     End Select
                 Catch ex As Exception
@@ -10250,7 +10331,7 @@ Public Class ServerResponse
 #End Region
 
 #Region "Palletizing"
-           Case "*GETPALLETITMDESC*"
+            Case "*GETPALLETITMDESC*"
                 Try
                     Dim unq As String = ClientData.Split("|")(0)
                     Dim itemCode As String = Barcodes.GetItemCode(unq)
@@ -10260,7 +10341,7 @@ Public Class ServerResponse
                             Server.Listener.SendResponse(ClientSocket, Palletizing.Evolution.Retreive.MBL_GetItemDesc(itemCode))
                         Case Else
                             Server.Listener.SendResponse(ClientSocket, unqOnPallet)
-                    End Select                    
+                    End Select
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
@@ -10277,7 +10358,7 @@ Public Class ServerResponse
 
                     Dim printSettings As String = Palletizing.RTIS.Retreive.MBL_GetPalletPrintSettings()
                     Select Case printSettings.Split("*")(0)
-                        Case "1"   
+                        Case "1"
                             Dim allSettings As String() = printSettings.Split("~")
                             For Each setting As String In allSettings
                                 If setting <> String.Empty Then
@@ -10300,7 +10381,7 @@ Public Class ServerResponse
                                     Dim palletID As String = palletSaved.Remove(0, 2)
                                     Dim inserUnqPalletLines As String = "INSERT INTO [ltbl_PalletBarcodes] ([iPallet_ID], [vUnqBarcode], [bOnPallet]) VALUES"
                                     For Each unq As String In palletUnqs
-                                        If unq <> String.Empty Then                                   
+                                        If unq <> String.Empty Then
                                             inserUnqPalletLines += "('" + palletID + "','" + unq + "',1),"
                                             lotNumbers += Barcodes.GetItemLot(unq) + ","
                                         End If
@@ -10309,11 +10390,11 @@ Public Class ServerResponse
                                     lotNumbers = lotNumbers.Substring(0, lotNumbers.Length - 1)
                                     Dim palletLinesInserted As String = Unique.RTSQL.Insert.UI_GenericInsert(inserUnqPalletLines)
                                     Select Case palletLinesInserted.Split("*")(0)
-                                         Case "1"
+                                        Case "1"
                                             Dim itemInfo As String = Palletizing.Evolution.Retreive.MBL_GetItemInfo(itemCode)
 
                                             Select Case itemInfo.Split("*")(0)
-                                                Case "1"   
+                                                Case "1"
                                                     itemInfo = itemInfo.Remove(0, 2)
                                                     Dim allItemInfo As String() = itemInfo.Split("|")
                                                     Dim rep As New XtraReport()
@@ -10321,7 +10402,7 @@ Public Class ServerResponse
 
                                                     For Each item As DevExpress.XtraReports.Parameters.Parameter In rep.Parameters
                                                         If item.Name = "_barcode" Then
-                                                           item.Value = allItemInfo(0)
+                                                            item.Value = allItemInfo(0)
                                                         End If
 
                                                         If item.Name = "_RT2D" Then
@@ -10358,31 +10439,31 @@ Public Class ServerResponse
 
                                                         If item.Name = "_Desc3" Then
                                                             item.Value = allItemInfo(4)
-                                                        End If                                                       
+                                                        End If
                                                     Next
 
                                                     rep.CreateDocument()
-                                                        Dim rpt As ReportPrintTool = New ReportPrintTool(rep)
-                                                        rpt.PrinterSettings.Copies = Convert.ToInt16(1)
-                                                        rpt.Print(printer)
-                                                        Server.Listener.SendResponse(ClientSocket, "1*SUCCESS")
+                                                    Dim rpt As ReportPrintTool = New ReportPrintTool(rep)
+                                                    rpt.PrinterSettings.Copies = Convert.ToInt16(1)
+                                                    rpt.Print(printer)
+                                                    Server.Listener.SendResponse(ClientSocket, "1*SUCCESS")
                                                 Case Else
-                                                     Server.Listener.SendResponse(ClientSocket, itemInfo)
+                                                    Server.Listener.SendResponse(ClientSocket, itemInfo)
                                             End Select
                                         Case "-1"
                                             Server.Listener.SendResponse(ClientSocket, palletLinesInserted)
-                                    End Select                                            
+                                    End Select
                                 Case Else
                                     Server.Listener.SendResponse(ClientSocket, palletSaved)
                             End Select
                         Case Else
                             Server.Listener.SendResponse(ClientSocket, printSettings)
-                    End Select                   
+                    End Select
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
             Case "*GETPALLETINFO*"
-                Try 
+                Try
                     Dim palletNo As String = ClientData.Split("|")(0)
                     Server.Listener.SendResponse(ClientSocket, Unique.RTSQL.Retreive.MBL_GetPalletContents(palletNo))
                 Catch ex As Exception
@@ -10434,7 +10515,7 @@ Public Class ServerResponse
 
                                     Dim itemInfo As String = Palletizing.Evolution.Retreive.MBL_GetItemInfo(itemCode)
                                     Select Case itemInfo.Split("*")(0)
-                                        Case "1"   
+                                        Case "1"
                                             itemInfo = itemInfo.Remove(0, 2)
                                             Dim allItemInfo As String() = itemInfo.Split("|")
                                             Dim rep As New XtraReport()
@@ -10446,7 +10527,7 @@ Public Class ServerResponse
                                                 End If
 
                                                 If item.Name = "_RT2D" Then
-                                                     item.Value = palletCode
+                                                    item.Value = palletCode
                                                 End If
 
                                                 If item.Name = "_Date" Then
@@ -10454,23 +10535,23 @@ Public Class ServerResponse
                                                 End If
 
                                                 If item.Name = "_Qty" Then
-                                                     item.Value = "1"
+                                                    item.Value = "1"
                                                 End If
 
                                                 If item.Name = "_SimpleCode" Then
-                                                     item.Value = allItemInfo(1)
+                                                    item.Value = allItemInfo(1)
                                                 End If
 
                                                 If item.Name = "_LotNumbers" Then
-                                                     item.Value = allLots
+                                                    item.Value = allLots
                                                 End If
 
                                                 If item.Name = "_ItemCode" Then
-                                                     item.Value = itemCode
+                                                    item.Value = itemCode
                                                 End If
 
                                                 If item.Name = "_Desc1" Then
-                                                     item.Value = allItemInfo(2)
+                                                    item.Value = allItemInfo(2)
                                                 End If
 
                                                 If item.Name = "_Desc2" Then
@@ -10479,7 +10560,7 @@ Public Class ServerResponse
 
                                                 If item.Name = "_Desc3" Then
                                                     item.Value = allItemInfo(4)
-                                                End If                                                       
+                                                End If
                                             Next
 
                                             rep.CreateDocument()
@@ -10487,8 +10568,8 @@ Public Class ServerResponse
                                             rpt.PrinterSettings.Copies = Convert.ToInt16(1)
                                             rpt.Print(printer)
                                             Server.Listener.SendResponse(ClientSocket, "1*SUCCESS")
-                                    Case Else
-                                        Server.Listener.SendResponse(ClientSocket, itemInfo)
+                                        Case Else
+                                            Server.Listener.SendResponse(ClientSocket, itemInfo)
                                     End Select
                                 Case Else
                                     Server.Listener.SendResponse(ClientSocket, printSettings)
@@ -10502,7 +10583,7 @@ Public Class ServerResponse
 #End Region
 
 #Region "Unused"
- Case "*CHECKSLURRYINUSE*"
+            Case "*CHECKSLURRYINUSE*"
                 Try
                     Dim slurryTank As String = ClientData.Split("|")(0)
                     Dim itemCode As String = ClientData.Split("|")(1)
@@ -10518,7 +10599,7 @@ Public Class ServerResponse
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
-       #End Region
+#End Region
 #End Region
 
 #Region "ZECT"
@@ -10865,80 +10946,80 @@ Public Class ServerResponse
                     Dim whse As String = ClientData.Split("|")(4)
                     Dim username As String = ClientData.Split("|")(5)
 
-                    Dim itemCode As String =  Zect.Evoltion.Retreive.Zect_GetMFCode(Code)
+                    Dim itemCode As String = Zect.Evoltion.Retreive.Zect_GetMFCode(Code)
                     Select Case itemCode.Split("*")(0)
                         Case "1"
                             itemCode = itemCode.Remove(0, 2)
                             Dim jobRunning As String = Zect.RTSQL.Retreive.Zect_GetJobOpen(jobNo)
-                    Select Case jobRunning.Split("*")(0)
-                        Case "1"
-                            jobRunning = jobRunning.Remove(0, 2)
-                            If Convert.ToBoolean(jobRunning) Then
-                                Dim headerID As String = Zect.RTSQL.Retreive.Zect_GetJobID(jobNo)
-                                Select Case headerID.Split("*")(0)
-                                    Case "1"
-                                        headerID = headerID.Remove(0, 2)
-
-                                        Dim failed As Boolean = False
-                                        Dim failureReason As String = String.Empty
-                                        Dim palletNumber As String = String.Empty
-                                        Dim palletCode As String = String.Empty
-
-                                        Dim lastPalletCode As String = Zect.RTSQL.Retreive.Zect_GetLastJobPallet(headerID)
-                                        Select Case lastPalletCode.Split("*")(0)
+                            Select Case jobRunning.Split("*")(0)
+                                Case "1"
+                                    jobRunning = jobRunning.Remove(0, 2)
+                                    If Convert.ToBoolean(jobRunning) Then
+                                        Dim headerID As String = Zect.RTSQL.Retreive.Zect_GetJobID(jobNo)
+                                        Select Case headerID.Split("*")(0)
                                             Case "1"
-                                                lastPalletCode = lastPalletCode.Remove(0, 2)
-                                                Dim lastPalletNumber As String = lastPalletCode.Split("_")(2)
+                                                headerID = headerID.Remove(0, 2)
 
-                                                palletNumber = Convert.ToString(Convert.ToInt32(lastPalletNumber) + 1).PadLeft(3, "0")
-                                                palletCode = jobNo + "_" + palletNumber
-                                            Case "0"
-                                                'generate new
-                                                palletNumber = "1".PadLeft(3, "0")
-                                                palletCode = jobNo + "_" + palletNumber
-                                            Case "-1"
-                                                failed = True
-                                                failureReason = lastPalletCode
-                                        End Select
+                                                Dim failed As Boolean = False
+                                                Dim failureReason As String = String.Empty
+                                                Dim palletNumber As String = String.Empty
+                                                Dim palletCode As String = String.Empty
 
-                                        If failed = False Then
-                                            Dim Barcode = "(240)" + itemCode.PadRight(25, " ") + "(15)" + "".PadRight(6, " ") + "(10)" + lotNumber.PadRight(20, " ") + "(30)" + qty.PadLeft(8, "0") + "(90)" + palletCode
-                                            Dim palletLogged As String = Zect.RTSQL.Insert.Zect_AddNewPallet(headerID, palletCode, palletNumber, qty, username)
-                                            Select Case palletLogged.Split("*")(0)
-                                                Case "1"
-                                                    Dim unqInserted As String = Unique.RTSQL.Insert.UI_SaveRT2DBarcode(Barcode, jobNo)
-                                                    Select Case unqInserted.Split("*")(0)
+                                                Dim lastPalletCode As String = Zect.RTSQL.Retreive.Zect_GetLastJobPallet(headerID)
+                                                Select Case lastPalletCode.Split("*")(0)
+                                                    Case "1"
+                                                        lastPalletCode = lastPalletCode.Remove(0, 2)
+                                                        Dim lastPalletNumber As String = lastPalletCode.Split("_")(2)
+
+                                                        palletNumber = Convert.ToString(Convert.ToInt32(lastPalletNumber) + 1).PadLeft(3, "0")
+                                                        palletCode = jobNo + "_" + palletNumber
+                                                    Case "0"
+                                                        'generate new
+                                                        palletNumber = "1".PadLeft(3, "0")
+                                                        palletCode = jobNo + "_" + palletNumber
+                                                    Case "-1"
+                                                        failed = True
+                                                        failureReason = lastPalletCode
+                                                End Select
+
+                                                If failed = False Then
+                                                    Dim Barcode = "(240)" + itemCode.PadRight(25, " ") + "(15)" + "".PadRight(6, " ") + "(10)" + lotNumber.PadRight(20, " ") + "(30)" + qty.PadLeft(8, "0") + "(90)" + palletCode
+                                                    Dim palletLogged As String = Zect.RTSQL.Insert.Zect_AddNewPallet(headerID, palletCode, palletNumber, qty, username)
+                                                    Select Case palletLogged.Split("*")(0)
                                                         Case "1"
-                                                            Dim headerUpdated As String = Zect.RTSQL.Update.ZECT_UpdateManufacturedQty(jobNo, qty)
-                                                            Select Case headerUpdated.Split("*")(0)
+                                                            Dim unqInserted As String = Unique.RTSQL.Insert.UI_SaveRT2DBarcode(Barcode, jobNo)
+                                                            Select Case unqInserted.Split("*")(0)
                                                                 Case "1"
-                                                                    Server.Listener.SendResponse(ClientSocket, Zect.RTSQL.Retreive.Zect_GetLabelInfo_ZectTage(itemCode, palletCode, palletNumber, Barcode))
+                                                                    Dim headerUpdated As String = Zect.RTSQL.Update.ZECT_UpdateManufacturedQty(jobNo, qty)
+                                                                    Select Case headerUpdated.Split("*")(0)
+                                                                        Case "1"
+                                                                            Server.Listener.SendResponse(ClientSocket, Zect.RTSQL.Retreive.Zect_GetLabelInfo_ZectTage(itemCode, palletCode, palletNumber, Barcode))
+                                                                        Case "-1"
+                                                                            Server.Listener.SendResponse(ClientSocket, headerUpdated)
+                                                                    End Select
                                                                 Case "-1"
-                                                                    Server.Listener.SendResponse(ClientSocket, headerUpdated)
+                                                                    Server.Listener.SendResponse(ClientSocket, unqInserted)
                                                             End Select
                                                         Case "-1"
-                                                            Server.Listener.SendResponse(ClientSocket, unqInserted)
+                                                            Server.Listener.SendResponse(ClientSocket, palletLogged)
                                                     End Select
-                                                Case "-1"
-                                                    Server.Listener.SendResponse(ClientSocket, palletLogged)
-                                            End Select
-                                        Else
-                                            Server.Listener.SendResponse(ClientSocket, failureReason)
-                                        End If
-                                    Case "-1"
-                                        Server.Listener.SendResponse(ClientSocket, headerID)
-                                End Select
-                            Else
-                                Server.Listener.SendResponse(ClientSocket, "0*The job scanned is currently not running")
-                            End If
-                        Case "0"
-                            Server.Listener.SendResponse(ClientSocket, jobRunning)
-                        Case "-1"
-                            Server.Listener.SendResponse(ClientSocket, jobRunning)
-                    End Select
+                                                Else
+                                                    Server.Listener.SendResponse(ClientSocket, failureReason)
+                                                End If
+                                            Case "-1"
+                                                Server.Listener.SendResponse(ClientSocket, headerID)
+                                        End Select
+                                    Else
+                                        Server.Listener.SendResponse(ClientSocket, "0*The job scanned is currently not running")
+                                    End If
+                                Case "0"
+                                    Server.Listener.SendResponse(ClientSocket, jobRunning)
+                                Case "-1"
+                                    Server.Listener.SendResponse(ClientSocket, jobRunning)
+                            End Select
                         Case Else
-                             Server.Listener.SendResponse(ClientSocket, itemCode)
-                    End Select              
+                            Server.Listener.SendResponse(ClientSocket, itemCode)
+                    End Select
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
@@ -11305,11 +11386,11 @@ Public Class ServerResponse
                     Select Case mfZectCode.Split("*")(0)
                         Case "1"
                             mfZectCode = mfZectCode.Remove(0, 2)
-                            Dim baseCode As String = mfZectCode.Replace("-1st COAT", string.Empty).Replace("-2nd COAT", string.Empty).Replace("-3rd COAT", string.Empty).Replace("-4rd COAT", string.Empty).Replace(" - 1st COAT", string.Empty).Replace(" - 2nd COAT", string.Empty).Replace(" - 3rd COAT", string.Empty).Replace(" - 4rd COAT", string.Empty).Replace(" ", string.Empty)
+                            Dim baseCode As String = mfZectCode.Replace("-1st COAT", String.Empty).Replace("-2nd COAT", String.Empty).Replace("-3rd COAT", String.Empty).Replace("-4rd COAT", String.Empty).Replace(" - 1st COAT", String.Empty).Replace(" - 2nd COAT", String.Empty).Replace(" - 3rd COAT", String.Empty).Replace(" - 4rd COAT", String.Empty).Replace(" ", String.Empty)
                             Server.Listener.SendResponse(ClientSocket, AW.Evolution.Retrieve.AW_GetAWItemCode(baseCode))
                         Case "-1"
                             Server.Listener.SendResponse(ClientSocket, mfZectCode)
-                    End Select                    
+                    End Select
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
