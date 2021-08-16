@@ -56,6 +56,18 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("EvolutionCommon")>  _
+        Public Property EvoComDB() As String
+            Get
+                Return CType(Me("EvoComDB"),String)
+            End Get
+            Set
+                Me("EvoComDB") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("A GF 100")>  _
         Public Property Project() As String
             Get
@@ -116,42 +128,6 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("CATALER2")>  _
-        Public Property EvoComServer() As String
-            Get
-                Return CType(Me("EvoComServer"),String)
-            End Get
-            Set
-                Me("EvoComServer") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("CATALER2")>  _
-        Public Property RTServer() As String
-            Get
-                Return CType(Me("RTServer"),String)
-            End Get
-            Set
-                Me("RTServer") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("CATALER2")>  _
-        Public Property EvoServer() As String
-            Get
-                Return CType(Me("EvoServer"),String)
-            End Get
-            Set
-                Me("EvoServer") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("R3lt3ch!4")>  _
         Public Property EvoComPassword() As String
             Get
@@ -188,13 +164,37 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("EvolutionCommon")>  _
-        Public Property EvoComDB() As String
+         Global.System.Configuration.DefaultSettingValueAttribute("CATALER2")>  _
+        Public Property EvoComServer() As String
             Get
-                Return CType(Me("EvoComDB"),String)
+                Return CType(Me("EvoComServer"),String)
             End Get
             Set
-                Me("EvoComDB") = value
+                Me("EvoComServer") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("CATALER2")>  _
+        Public Property RTServer() As String
+            Get
+                Return CType(Me("RTServer"),String)
+            End Get
+            Set
+                Me("RTServer") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("CATALER2")>  _
+        Public Property EvoServer() As String
+            Get
+                Return CType(Me("EvoServer"),String)
+            End Get
+            Set
+                Me("EvoServer") = value
             End Set
         End Property
         

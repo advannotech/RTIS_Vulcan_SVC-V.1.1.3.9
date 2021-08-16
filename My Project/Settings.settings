@@ -2,6 +2,9 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="My" GeneratedClassName="MySettings" UseMySettingsClassName="true">
   <Profiles />
   <Settings>
+    <Setting Name="EvoComDB" Type="System.String" Scope="User">
+      <Value Profile="(Default)">EvolutionCommon</Value>
+    </Setting>
     <Setting Name="Project" Type="System.String" Scope="User">
       <Value Profile="(Default)">A GF 100</Value>
     </Setting>
@@ -17,15 +20,6 @@
     <Setting Name="EvoComUser" Type="System.String" Scope="User">
       <Value Profile="(Default)">Reltech</Value>
     </Setting>
-    <Setting Name="EvoComServer" Type="System.String" Scope="User">
-      <Value Profile="(Default)">CATALER2</Value>
-    </Setting>
-    <Setting Name="RTServer" Type="System.String" Scope="User">
-      <Value Profile="(Default)">CATALER2</Value>
-    </Setting>
-    <Setting Name="EvoServer" Type="System.String" Scope="User">
-      <Value Profile="(Default)">CATALER2</Value>
-    </Setting>
     <Setting Name="EvoComPassword" Type="System.String" Scope="User">
       <Value Profile="(Default)">R3lt3ch!4</Value>
     </Setting>
@@ -35,8 +29,14 @@
     <Setting Name="EvoPassword" Type="System.String" Scope="User">
       <Value Profile="(Default)">R3lt3ch!4</Value>
     </Setting>
-    <Setting Name="EvoComDB" Type="System.String" Scope="User">
-      <Value Profile="(Default)">EvolutionCommon</Value>
+    <Setting Name="EvoComServer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">CATALER2</Value>
+    </Setting>
+    <Setting Name="RTServer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">CATALER2</Value>
+    </Setting>
+    <Setting Name="EvoServer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">CATALER2</Value>
     </Setting>
     <Setting Name="RTDB" Type="System.String" Scope="User">
       <Value Profile="(Default)">CAT_RTIS</Value>
