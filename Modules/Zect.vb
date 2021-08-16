@@ -240,7 +240,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT [vRMCode] FROM [tbl_RTIS_Zect_Raws]
+                    Dim sqlComm As New SqlCommand(" SELECT DISTINCT [vRMCode] FROM [tbl_RTIS_Zect_Raws]
                                                     WHERE [vCatalystCode] LIKE @1 AND [vCatalystCode] LIKE @2 AND ([vRMCode] LIKE 'TSP%' OR [vRMCode] LIKE 'VSP%')", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", "%" + itemCode + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@2", "%" + coatNum + "%"))
@@ -1484,22 +1484,22 @@ Public Class Zect
                     'INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Decant] rd ON rd.[iHeaderID] = rl.[iLineID] 
                     'WHERE s.[Code] = @1 AND w.[Code] = @2 AND rl.[vTankType] = 'BTNK'  AND lq.[fQtyOnHand]  <> 0 AND rd.[bTransferred] = 1 AND ISNULL(rd.[bReceived], 0)  = 0 AND rd.[dSolidity] IS NOT NULL ", sqlConn)
 
-                    Dim sqlComm As New SqlCommand("SELECT DISTINCT 'Large Tank', rl.vTankCode, l.[cLotDescription], 'TNK', rl.[dWetWeight], rl.[dDryWeight] FROM [_etblLotTrackingQty] lq
-                                                    INNER JOIN [_etblLotTracking] l ON l.[idLotTracking] = lq.[iLotTrackingID]
-                                                    INNER JOIN [_etblLotStatus] ls ON l.[iLotStatusID] = ls.[idLotStatus]
-                                                    INNER JOIN [WhseMst] w ON w.[WhseLink] = lq.[iWarehouseID]
-                                                    INNER JOIN [StkItem] s ON s.[StockLink] = l.[iStockID]
-                                                    INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Main] rl ON rl.[vLotNumber] COLLATE Latin1_General_CI_AS = l.[cLotDescription] AND rl.[vItemCode] = s.[Code]
-                                                    WHERE s.[Code] = @1 AND w.[Code] = @2 AND lq.[fQtyOnHand]  > 0 AND rl.[bTransferred] IS NOT NULL AND rl.[bReceived] IS NOT NULL AND rl.[dSolidity] >0 
-                                                    UNION
-                                                    SELECT DISTINCT 'Mobile Tank', rd.vTankCode, l.[cLotDescription], 'MTNK', rd.[dFinalWetWeight], rd.[dDryWeight] FROM [_etblLotTrackingQty] lq
-                                                    INNER JOIN [_etblLotTracking] l ON l.[idLotTracking] = lq.[iLotTrackingID]
-                                                    INNER JOIN [_etblLotStatus] ls ON l.[iLotStatusID] = ls.[idLotStatus]
-                                                    INNER JOIN [WhseMst] w ON w.[WhseLink] = lq.[iWarehouseID]
-                                                    INNER JOIN [StkItem] s ON s.[StockLink] = l.[iStockID]
-                                                    INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Main] rl ON rl.[vLotNumber] COLLATE Latin1_General_CI_AS = l.[cLotDescription] AND rl.[vItemCode] = s.[Code]
-                                                    INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Decant] rd ON rd.[iHeaderID] = rl.[iLineID]
-                                                    WHERE s.[Code] = @1 AND w.[Code] = @2 AND lq.[fQtyOnHand]  > 0 AND rd.[bTransferred] IS NOT NULL AND rl.[bReceived] IS NOT NULL AND rl.[dSolidity] >0 ", sqlConn)
+                    Dim sqlComm As New SqlCommand(" SELECT DISTINCT 'Large Tank', rl.vTankCode, l.[cLotDescription], 'TNK', rl.[dWetWeight], rl.[dDryWeight] FROM [_etblLotTrackingQty] lq
+                                            INNER JOIN [_etblLotTracking] l ON l.[idLotTracking] = lq.[iLotTrackingID] 
+                                            INNER JOIN [_etblLotStatus] ls ON l.[iLotStatusID] = ls.[idLotStatus]
+                                            INNER JOIN [WhseMst] w ON w.[WhseLink] = lq.[iWarehouseID]
+                                            INNER JOIN [StkItem] s ON s.[StockLink] = l.[iStockID]
+                                            INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Main] rl ON rl.[vLotNumber] COLLATE Latin1_General_CI_AS = l.[cLotDescription] AND rl.[vItemCode] = s.[Code]
+                                            WHERE s.[Code] = @1 AND w.[Code] = @2 AND rl.[vTankType] = 'TNK'  AND lq.[fQtyOnHand]  > 0 AND rl.[bTransferred] = 1 AND rl.[dSolidity] >0  
+                                            UNION
+                                            SELECT DISTINCT 'Mobile Tank', rd.vTankCode, l.[cLotDescription], 'MTNK', rd.[dFinalWetWeight], rd.[dDryWeight] FROM [_etblLotTrackingQty] lq
+                                            INNER JOIN [_etblLotTracking] l ON l.[idLotTracking] = lq.[iLotTrackingID] 
+                                            INNER JOIN [_etblLotStatus] ls ON l.[iLotStatusID] = ls.[idLotStatus]
+                                            INNER JOIN [WhseMst] w ON w.[WhseLink] = lq.[iWarehouseID]
+                                            INNER JOIN [StkItem] s ON s.[StockLink] = l.[iStockID]
+                                            INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Main] rl ON rl.[vLotNumber] COLLATE Latin1_General_CI_AS = l.[cLotDescription] AND rl.[vItemCode] = s.[Code]
+                                            INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Decant] rd ON rd.[iHeaderID] = rl.[iLineID] 
+                                            WHERE s.[Code] = @1 AND w.[Code] = @2 AND rl.[vTankType] = 'BTNK'  AND lq.[fQtyOnHand]  > 0 AND rd.[bTransferred] = 1 AND rd.[dSolidity] >0 ", sqlConn)
 
                     sqlComm.Parameters.Add(New SqlParameter("@1", code))
                     sqlComm.Parameters.Add(New SqlParameter("@2", whse))
@@ -1660,23 +1660,23 @@ Public Class Zect
                     ''                                    INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Main] rl ON rl.[vLotNumber] COLLATE Latin1_General_CI_AS = l.[cLotDescription] AND rl.[vItemCode] = s.[Code]
                     ''INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Decant] rd ON rd.[iHeaderID] = rl.[iLineID] 
                     ''WHERE s.[Code] = @1 AND w.[Code] = @2 AND rl.[vTankType] = 'BTNK'  AND lq.[fQtyOnHand]  <> 0 AND rd.[bTransferred] = 1 AND ISNULL(rd.[bReceived], 0)  = 0 AND rd.[dSolidity] IS NOT NULL", sqlConn)
-
-                    Dim sqlComm As New SqlCommand("SELECT DISTINCT 'Large Tank', rl.vTankCode, l.[cLotDescription], 'TNK', rl.[dWetWeight], rl.[dDryWeight] FROM [_etblLotTrackingQty] lq
-                                                    INNER JOIN [_etblLotTracking] l ON l.[idLotTracking] = lq.[iLotTrackingID]
-                                                    INNER JOIN [_etblLotStatus] ls ON l.[iLotStatusID] = ls.[idLotStatus]
-                                                    INNER JOIN [WhseMst] w ON w.[WhseLink] = lq.[iWarehouseID]
-                                                    INNER JOIN [StkItem] s ON s.[StockLink] = l.[iStockID]
-                                                    INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Main] rl ON rl.[vLotNumber] COLLATE Latin1_General_CI_AS = l.[cLotDescription] AND rl.[vItemCode] = s.[Code]
-                                                    WHERE s.[Code] = @1 AND w.[Code] = @2  AND lq.[fQtyOnHand]  > 0 AND rl.[bTransferred] IS NOT NULL AND rl.[bReceived] IS NOT NULL AND rl.[dSolidity] >0 
-                                                    UNION
-                                                    SELECT DISTINCT 'Mobile Tank', rd.vTankCode, l.[cLotDescription], 'MTNK', rd.[dFinalWetWeight], rd.[dDryWeight] FROM [_etblLotTrackingQty] lq
-                                                    INNER JOIN [_etblLotTracking] l ON l.[idLotTracking] = lq.[iLotTrackingID]
-                                                    INNER JOIN [_etblLotStatus] ls ON l.[iLotStatusID] = ls.[idLotStatus]
-                                                    INNER JOIN [WhseMst] w ON w.[WhseLink] = lq.[iWarehouseID]
-                                                    INNER JOIN [StkItem] s ON s.[StockLink] = l.[iStockID]
-                                                    INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Main] rl ON rl.[vLotNumber] COLLATE Latin1_General_CI_AS = l.[cLotDescription] AND rl.[vItemCode] = s.[Code]
-                                                    INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Decant] rd ON rd.[iHeaderID] = rl.[iLineID]
-                                                    WHERE s.[Code] = @1 AND w.[Code] = @2  AND lq.[fQtyOnHand]  > 0 AND rd.[bTransferred] IS NOT NULL AND rl.[bReceived] IS NOT NULL AND rl.[dSolidity] >0 ", sqlConn)
+                    Dim sqlComm As New SqlCommand("
+                                            SELECT DISTINCT 'Large Tank', rl.vTankCode, l.[cLotDescription], 'TNK', rl.[dWetWeight], rl.[dDryWeight] FROM [_etblLotTrackingQty] lq
+                                            INNER JOIN [_etblLotTracking] l ON l.[idLotTracking] = lq.[iLotTrackingID] 
+                                            INNER JOIN [_etblLotStatus] ls ON l.[iLotStatusID] = ls.[idLotStatus]
+                                            INNER JOIN [WhseMst] w ON w.[WhseLink] = lq.[iWarehouseID]
+                                            INNER JOIN [StkItem] s ON s.[StockLink] = l.[iStockID]
+                                            INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Main] rl ON rl.[vLotNumber] COLLATE Latin1_General_CI_AS = l.[cLotDescription] AND rl.[vItemCode] = s.[Code]
+                                            WHERE s.[Code] = @1 AND w.[Code] = @2 AND rl.[vTankType] = 'TNK'  AND lq.[fQtyOnHand]  > 0 AND rl.[bTransferred] = 1 AND rl.[dSolidity] >0 AND rl.[dWetWeight] IS NOT NULL 
+                                            UNION
+                                            SELECT DISTINCT 'Mobile Tank', rd.vTankCode, l.[cLotDescription], 'MTNK', rd.[dFinalWetWeight], rd.[dDryWeight] FROM [_etblLotTrackingQty] lq
+                                            INNER JOIN [_etblLotTracking] l ON l.[idLotTracking] = lq.[iLotTrackingID] 
+                                            INNER JOIN [_etblLotStatus] ls ON l.[iLotStatusID] = ls.[idLotStatus]
+                                            INNER JOIN [WhseMst] w ON w.[WhseLink] = lq.[iWarehouseID]
+                                            INNER JOIN [StkItem] s ON s.[StockLink] = l.[iStockID]
+                                            INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Main] rl ON rl.[vLotNumber] COLLATE Latin1_General_CI_AS = l.[cLotDescription] AND rl.[vItemCode] = s.[Code]
+                                            INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Decant] rd ON rd.[iHeaderID] = rl.[iLineID] 
+                                            WHERE s.[Code] = @1 AND w.[Code] = @2 AND rl.[vTankType] = 'BTNK'  AND lq.[fQtyOnHand]  > 0 AND rd.[bTransferred] = 1  AND rd.[dSolidity] >0 AND rl.[dWetWeight] IS NOT NULL", sqlConn)
 
                     sqlComm.Parameters.Add(New SqlParameter("@1", code))
                     sqlComm.Parameters.Add(New SqlParameter("@2", whse))
