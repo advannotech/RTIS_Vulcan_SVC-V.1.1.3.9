@@ -2095,8 +2095,8 @@ Public Class ServerResponse
                 End Try
             Case "*GETPGMJOBSBYDATE*"
                 Try
-                    Dim dateFrom As String = ClientData.Split("|")(0)
-                    Dim dateTo As String = ClientData.Split("|")(1)
+                    Dim dateFrom As String = ClientData.Split("|")(0) + " 00:00:29.317"
+                    Dim dateTo As String = ClientData.Split("|")(1) + " 23:59:29.317"
                     Server.Listener.SendResponse(ClientSocket, PGM.RTSQL.Retreive.UI_GetPGMJobsByDate(dateFrom, dateTo))
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
@@ -2299,8 +2299,8 @@ Public Class ServerResponse
 #Region "Powder Prep Records"
             Case "*GETPOWDERPREPRECORDSBYDATE*"
                 Try
-                    Dim dateFrom As String = ClientData.Split("|")(0)
-                    Dim dateTo As String = ClientData.Split("|")(1)
+                    Dim dateFrom As String = ClientData.Split("|")(0) + " 00:00:29.317"
+                    Dim dateTo As String = ClientData.Split("|")(1) + " 23:59:29.317"
                     Server.Listener.SendResponse(ClientSocket, PowderPrep.RTSQL.Retrieve.UI_GetPowderPrepRecords(dateFrom, dateTo))
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
@@ -2470,8 +2470,8 @@ Public Class ServerResponse
 #Region "Fresh Slurry Records"
             Case "*GETFRESHSLURRYRECORDSBYDATE*"
                 Try
-                    Dim dateFrom As String = ClientData.Split("|")(0)
-                    Dim dateTo As String = ClientData.Split("|")(1)
+                    Dim dateFrom As String = ClientData.Split("|")(0) + " 00:00:29.317"
+                    Dim dateTo As String = ClientData.Split("|")(1) + " 23:59:29.317"
                     Server.Listener.SendResponse(ClientSocket, FreshSlurry.RTSQL.Retreive.UI_GetFreshSlurryRecords(dateFrom, dateTo))
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
@@ -2582,8 +2582,8 @@ Public Class ServerResponse
 #Region "View Records"
             Case "*GETALLMIXEDSLURRIS*"
                 Try
-                    Dim dateFrom As String = ClientData.Split("|")(0)
-                    Dim dateto As String = ClientData.Split("|")(1)
+                    Dim dateFrom As String = ClientData.Split("|")(0) + " 00:00:29.317"
+                    Dim dateTo As String = ClientData.Split("|")(1) + " 23:59:29.317"
                     Server.Listener.SendResponse(ClientSocket, MixedSlurry.RTSQL.Retreive.UI_GetAllMixedSlurries(dateFrom, dateto))
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
@@ -3095,8 +3095,8 @@ Public Class ServerResponse
 
 #Region "Outputs"
             Case "*UIGETZECTJOBS*"
-                Dim dateFrom As String = ClientData.Split("|")(0)
-                Dim dateTo As String = ClientData.Split("|")(1)
+                Dim dateFrom As String = ClientData.Split("|")(0) + " 00:00:29.317"
+                Dim dateTo As String = ClientData.Split("|")(1) + " 23:59:29.317"
                 Server.Listener.SendResponse(ClientSocket, Zect.RTSQL.Retreive.UI_GetAllZECTJobs(dateFrom, dateTo))
             Case "*UIGETZECTJOBINPUTS*"
                 Dim headerID As String = ClientData
@@ -3333,8 +3333,8 @@ Public Class ServerResponse
 #Region "Outputs"
             Case "*UIGETAWJOBS*"
                 Try
-                    Dim dateFrom As String = ClientData.Split("|")(0)
-                    Dim dateTo As String = ClientData.Split("|")(1)
+                    Dim dateFrom As String = ClientData.Split("|")(0) + " 00:00:29.317"
+                    Dim dateTo As String = ClientData.Split("|")(1) + " 23:59:29.317"
                     Server.Listener.SendResponse(ClientSocket, AW.RTSQL.Retrieve.UI_GetAllAWJobs(dateFrom, dateTo))
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
@@ -3625,8 +3625,8 @@ Public Class ServerResponse
 #Region "Outputs"
             Case "*UIGETCANNINGRECORDS*"
                 Try
-                    Dim dateFrom As String = ClientData.Split("|")(0)
-                    Dim dateTo As String = ClientData.Split("|")(1)
+                    Dim dateFrom As String = ClientData.Split("|")(0) + " 00:00:29.317"
+                    Dim dateTo As String = ClientData.Split("|")(1) + " 23:59:29.317"
                     Server.Listener.SendResponse(ClientSocket, Canning.RTSQL.Retrieve.UI_GetCanningRecords(dateFrom, dateTo))
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))

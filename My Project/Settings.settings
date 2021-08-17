@@ -11,15 +11,6 @@
     <Setting Name="EvoComDB" Type="System.String" Scope="User">
       <Value Profile="(Default)">EvolutionCommon</Value>
     </Setting>
-    <Setting Name="RTServer" Type="System.String" Scope="User">
-      <Value Profile="(Default)">CATALER2</Value>
-    </Setting>
-    <Setting Name="EvoServer" Type="System.String" Scope="User">
-      <Value Profile="(Default)">CATALER2</Value>
-    </Setting>
-    <Setting Name="EvoComServer" Type="System.String" Scope="User">
-      <Value Profile="(Default)">CATALER2</Value>
-    </Setting>
     <Setting Name="RTUser" Type="System.String" Scope="User">
       <Value Profile="(Default)">Reltech</Value>
     </Setting>
@@ -43,6 +34,15 @@
     </Setting>
     <Setting Name="EvoDB" Type="System.String" Scope="User">
       <Value Profile="(Default)">Cataler_SCN_Test</Value>
+    </Setting>
+    <Setting Name="RTServer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">CATALER2</Value>
+    </Setting>
+    <Setting Name="EvoServer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">CATALER2</Value>
+    </Setting>
+    <Setting Name="EvoComServer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">CATALER2</Value>
     </Setting>
   </Settings>
 </SettingsFile>

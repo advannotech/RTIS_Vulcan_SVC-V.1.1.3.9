@@ -1850,11 +1850,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-<<<<<<< HEAD
-        <dsig:DigestValue>tew1Ly8Bgn4Rnll1R/PHg8hzLQKoWOTW0snPL6i+4Iw=</dsig:DigestValue>
-=======
-        <dsig:DigestValue>vqFWe0D+wh8O6D/74i8aJUYdoO8wm4oPrAOzyzawoT0=</dsig:DigestValue>
->>>>>>> b4122268e400217b186f8fceeb523365bcd2ccfb
+        <dsig:DigestValue>XnGhAGTbbos5ZAvwxsxUuvz8tK2MA+cQ0SEi/teWPJQ=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -1903,17 +1899,13 @@
       <dsig:DigestValue>g+fc1S3eRQoAR5k1MDAUu4Q/wE5l5t25imLWI/RNyAk=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="RTIS_Vulcan_SVC.exe.config" size="2571">
+  <file name="RTIS_Vulcan_SVC.exe.config" size="2558">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-<<<<<<< HEAD
-      <dsig:DigestValue>RXllcT/VG7sYP5Rzja3khVtQRmUqspQ2MOxvW8TZG84=</dsig:DigestValue>
-=======
-      <dsig:DigestValue>eJm89Dh0pkyi3bhnyRVrg+Ub5/yG/A0EQV57++VdEHg=</dsig:DigestValue>
->>>>>>> b4122268e400217b186f8fceeb523365bcd2ccfb
+      <dsig:DigestValue>5BncV5iLeOD2mfOHI2QV8LnonDtmI+SqCQpFhxMsfw8=</dsig:DigestValue>
     </hash>
   </file>
   <file name="SQLite.Interop.dll" size="1155584">
