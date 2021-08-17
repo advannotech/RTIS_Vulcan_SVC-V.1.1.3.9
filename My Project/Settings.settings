@@ -11,6 +11,12 @@
     <Setting Name="Port" Type="System.String" Scope="User">
       <Value Profile="(Default)">32017</Value>
     </Setting>
+    <Setting Name="EvoDB" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Cataler_SCN</Value>
+    </Setting>
+    <Setting Name="RTDB" Type="System.String" Scope="User">
+      <Value Profile="(Default)">CAT_RTIS</Value>
+    </Setting>
     <Setting Name="RTUser" Type="System.String" Scope="User">
       <Value Profile="(Default)">Reltech</Value>
     </Setting>
@@ -37,12 +43,6 @@
     </Setting>
     <Setting Name="EvoServer" Type="System.String" Scope="User">
       <Value Profile="(Default)">CATALER2</Value>
-    </Setting>
-    <Setting Name="RTDB" Type="System.String" Scope="User">
-      <Value Profile="(Default)">CAT_RTIS</Value>
-    </Setting>
-    <Setting Name="EvoDB" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Cataler_SCN</Value>
     </Setting>
   </Settings>
 </SettingsFile>
