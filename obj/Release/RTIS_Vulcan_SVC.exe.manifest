@@ -1843,18 +1843,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="RTIS_Vulcan_SVC.exe" size="968736">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="RTIS_Vulcan_SVC.exe" size="971808">
       <assemblyIdentity name="RTIS_Vulcan_SVC" version="1.1.3.14" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-<<<<<<< HEAD
-        <dsig:DigestValue>Dcsepd11TMz+Sanm/Wy+DHz+HY4IeYk9xAVpp7h6xco=</dsig:DigestValue>
-=======
-        <dsig:DigestValue>hzhhh9NYnWxiPnda4FM6fbXgJGHG+jnPop73fRSG/+k=</dsig:DigestValue>
->>>>>>> b4122268e400217b186f8fceeb523365bcd2ccfb
+        <dsig:DigestValue>wnNtAKgNRRzSgvmLkUm0aud8R/szRqU7n+MVswMmjSA=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -1903,21 +1899,13 @@
       <dsig:DigestValue>g+fc1S3eRQoAR5k1MDAUu4Q/wE5l5t25imLWI/RNyAk=</dsig:DigestValue>
     </hash>
   </file>
-<<<<<<< HEAD
-  <file name="RTIS_Vulcan_SVC.exe.config" size="2571">
-=======
   <file name="RTIS_Vulcan_SVC.exe.config" size="2561">
->>>>>>> b4122268e400217b186f8fceeb523365bcd2ccfb
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-<<<<<<< HEAD
-      <dsig:DigestValue>RXllcT/VG7sYP5Rzja3khVtQRmUqspQ2MOxvW8TZG84=</dsig:DigestValue>
-=======
-      <dsig:DigestValue>EyZkBQuK8CM6BJtWGVtK93me7w6XD3qm6RIvQUQ0TkY=</dsig:DigestValue>
->>>>>>> b4122268e400217b186f8fceeb523365bcd2ccfb
+      <dsig:DigestValue>ExkQASVtteM4vFpXBHSWTbKLgDKjax9TbKplE522E4g=</dsig:DigestValue>
     </hash>
   </file>
   <file name="SQLite.Interop.dll" size="1155584">
