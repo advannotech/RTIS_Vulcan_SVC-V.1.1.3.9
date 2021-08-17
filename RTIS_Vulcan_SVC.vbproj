@@ -6,11 +6,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{FB689BF8-E82C-43AF-B561-2E23AEA8B051}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <StartupObject>RTIS_Vulcan_SVC.Form1</StartupObject>
+    <StartupObject>RTIS_Vulcan_SVC.Service</StartupObject>
     <RootNamespace>RTIS_Vulcan_SVC</RootNamespace>
     <AssemblyName>RTIS_Vulcan_SVC</AssemblyName>
     <FileAlignment>512</FileAlignment>
-    <MyType>WindowsFormsWithCustomSubMain</MyType>
+    <MyType>Console</MyType>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
     <IsWebBootstrapper>false</IsWebBootstrapper>
