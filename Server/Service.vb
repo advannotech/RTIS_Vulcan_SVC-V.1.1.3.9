@@ -9,9 +9,9 @@ Public Class Service
         Admin.AddFirewallException(My.Application.Info.ProductName, System.Windows.Forms.Application.ExecutablePath)
         Server.Listener.StartListen()
          Server.Listener.StartListenFile()
-        tmrTransfer.Interval = 180000
-        AddHandler tmrTransfer.Elapsed, AddressOf tmrTransfer_Tick
-        tmrTransfer.Start()
+        'tmrTransfer.Interval = 180000
+        'AddHandler tmrTransfer.Elapsed, AddressOf tmrTransfer_Tick
+        'tmrTransfer.Start()
     End Sub
 
     Private Sub tmrTransfer_Tick(sender As Object, e As ElapsedEventArgs)
