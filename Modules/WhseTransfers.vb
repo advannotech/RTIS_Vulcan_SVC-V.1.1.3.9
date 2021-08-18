@@ -78,32 +78,18 @@ Public Class WhseTransfers
                     End If
                 End Try
             End Function
-            Public Shared Function UI_getWhtLInes(ByVal status As String, ByVal process As String, ByVal rows As String, transferredDate As String, failedDate As String) As String
+            Public Shared Function UI_getWhtLInes(ByVal status As String, ByVal process As String, ByVal rows As String, transStart As Date, transEnd As Date, failedStart As Date, failedEnd As Date) As String
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT TOP " + rows + "  wt.[iLineID]
-                                                    ,[vItemCode]
-                                                    ,[vLotNumber]
-                                                    ,[vWarehouse_From]
-                                                    ,[vWarehouse_To]
-                                                    ,[dQtyTransfered]
-                                                    ,[dtDateTransfered]
-                                                    ,[vUsername]
-                                                    ,pr.[vDisplayName]
-                                                    ,[vTransDesc]
-                                                    ,'' AS [Save]
-                                                    ,[vStatus]
-                                                    ,[vFailureReason]
-                                                    ,[dtDateFailed]
-                                                    ,'false' AS [bChanged]
-                                                    FROM [tbl_WHTPending]  wt
-                                                    INNER JOIN [tbl_ProcNames] pr ON wt.[vProcess]  = [vProcName]
-                                                    WHERE [vStatus] LIKE @1 AND [vProcess] LIKE @2
-                                                    " + transferredDate + failedDate + "
-                                                    ORDER BY [dtDateTransfered] DESC", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", "%" + status + "%"))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", "%" + process + "%"))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_GetTransfers] @1,@2,@3,@4,@5,@6,@7", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@1", transStart))
+                    sqlComm.Parameters.Add(New SqlParameter("@2", transEnd))
+                    sqlComm.Parameters.Add(New SqlParameter("@3", failedStart))
+                    sqlComm.Parameters.Add(New SqlParameter("@4", failedEnd))
+                    sqlComm.Parameters.Add(New SqlParameter("@5", process))
+                    sqlComm.Parameters.Add(New SqlParameter("@6", status))
+                    sqlComm.Parameters.Add(New SqlParameter("@7", rows))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -256,48 +242,15 @@ Public Class WhseTransfers
                 End Try
             End Function
 
-            Public Shared Function UI_getWhtLInesAll(ByVal process As String, ByVal rows As String, transferredDate As String) As String
+            Public Shared Function UI_getWhtLInesAll(ByVal process As String, ByVal rows As String, transStart As Date, transEnd As Date) As String
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT TOP " + rows + " wt.[iLineID]
-                                                    ,[vItemCode]
-                                                    ,[vLotNumber]
-                                                    ,[vWarehouse_From]
-                                                    ,[vWarehouse_To]
-                                                    ,[dQtyTransfered]
-                                                    ,[dtDateTransfered]
-                                                    ,[vUsername]
-                                                    ,pr.[vDisplayName]
-                                                    ,[vTransDesc]
-                                                    ,'' AS [Save]
-                                                    ,[vStatus]
-                                                    ,[vFailureReason]
-                                                    ,[dtDateFailed]
-                                                    ,'false' AS [bChanged]
-                                                    FROM [tbl_WHTPending] wt
-                                                    INNER JOIN [tbl_ProcNames] pr ON wt.[vProcess]  = [vProcName]
-                                                    " + transferredDate + process + "
-                                                    UNION
-                                                    SELECT  wt.[iLineID]
-                                                    ,[vItemCode]
-                                                    ,[vLotNumber]
-                                                    ,[vWarehouse_From]
-                                                    ,[vWarehouse_To]
-                                                    ,[dQtyTransfered] 
-                                                    ,[dtDateEntered] AS [dtDateTransfered]
-                                                    ,[vUsername]
-                                                    ,pr.[vDisplayName]
-                                                    ,[vTransDesc]
-                                                    ,'' AS [Save]
-                                                    ,'Posted' [vStatus]
-                                                    ,'' AS [vFailureReason]
-                                                    ,NULL AS [dtDateFailed]
-                                                    ,'false' AS [bChanged]
-                                                    FROM [tbl_WHTCompleted] wt
-                                                    INNER JOIN [tbl_ProcNames] pr ON wt.[vProcess]  = [vProcName]
-                                                    " + transferredDate + process + "
-                                                    ORDER BY [dtDateTransfered] DESC", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_GetAllTransfers] @1,@2,@3,@4", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@1", transStart))
+                    sqlComm.Parameters.Add(New SqlParameter("@2", transEnd))
+                    sqlComm.Parameters.Add(New SqlParameter("@3", process))
+                    sqlComm.Parameters.Add(New SqlParameter("@4", rows))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
