@@ -440,6 +440,157 @@ CASE WHEN([vw_GetStockTakeVariances].[gcSystem] - [vw_GetStockTakeVariances].[gc
 WHEN([vw_GetStockTakeVariances].[gcCounted] - [vw_GetStockTakeVariances].[gcSystem]) < 0 THEN [vw_GetStockTakeVariances].[gcCounted] END DESC
 
 
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_GetAllTransfers]') IS NOT NULL)
+	DROP PROC [dbo].[sp_GetAllTransfers]
+GO
+
+CREATE PROC [dbo].[sp_GetAllTransfers]
+	@transStart varchar(50),
+	@transEnd varchar(50),
+	@process varchar(50),
+	@rows int
+AS
+SELECT TOP(@rows) wt.[iLineID]
+,[vItemCode]
+,[vLotNumber]
+,[vWarehouse_From]
+,[vWarehouse_To]
+,[dQtyTransfered]
+,[dtDateTransfered]
+,[vUsername]
+,pr.[vDisplayName]
+,[vTransDesc]
+,'' AS [Save]
+,[vStatus]
+,[vFailureReason]
+,[dtDateFailed]
+,'false' AS [bChanged]
+FROM [tbl_WHTPending] wt
+INNER JOIN [tbl_ProcNames] pr ON wt.[vProcess]  = [vProcName]
+WHERE CAST([dtDateTransfered] AS DATE) BETWEEN CAST(@transStart AS DATE) AND CAST(@transEnd AS DATE)
+UNION
+SELECT TOP(@rows) wt.[iLineID]
+,[vItemCode]
+,[vLotNumber]
+,[vWarehouse_From]
+,[vWarehouse_To]
+,[dQtyTransfered] 
+,[dtDateEntered] AS [dtDateTransfered]
+,[vUsername]
+,pr.[vDisplayName]
+,[vTransDesc]
+,'' AS [Save]
+,'Posted' [vStatus]
+,'' AS [vFailureReason]
+,NULL AS [dtDateFailed]
+,'false' AS [bChanged]
+FROM [tbl_WHTCompleted] wt
+INNER JOIN [tbl_ProcNames] pr ON wt.[vProcess]  = [vProcName]
+WHERE wt.[vProcess] LIKE '%' + @process + '%'
+AND CAST([dtDateTransfered] AS DATE) BETWEEN CAST(@transStart AS DATE) AND CAST(@transEnd AS DATE)
+ORDER BY [dtDateTransfered] DESC
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_GetTransfers]') IS NOT NULL)
+	DROP PROC [dbo].[sp_GetTransfers]
+GO
+
+CREATE PROC [dbo].[sp_GetTransfers]
+	@transStart varchar(50),
+	@transEnd varchar(50),
+	@failedStart varchar(50),
+	@failedEnd varchar(50),
+	@process varchar(50),
+	@status varchar(50),
+	@rows int
+AS
+SELECT TOP (@rows)  wt.[iLineID]
+,[vItemCode]
+,[vLotNumber]
+,[vWarehouse_From]
+,[vWarehouse_To]
+,[dQtyTransfered]
+,[dtDateTransfered]
+,[vUsername]
+,pr.[vDisplayName]
+,[vTransDesc]
+,'' AS [Save]
+,[vStatus]
+,[vFailureReason]
+,[dtDateFailed]
+,'false' AS [bChanged]
+FROM [tbl_WHTPending]  wt
+INNER JOIN [tbl_ProcNames] pr ON wt.[vProcess]  = [vProcName]
+WHERE [vStatus] LIKE @status AND [vProcess] LIKE '%' + @process + '%'
+AND CAST([dtDateTransfered] AS DATE) BETWEEN CAST(@transStart AS DATE) AND CAST(@transEnd AS DATE)
+OR CAST([dtDateFailed] AS DATE) BETWEEN CAST(@failedStart AS DATE) AND CAST(@failedEnd AS DATE)
+ORDER BY [dtDateTransfered] DESC
+GO
+
+
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_GetPostedTransfers]') IS NOT NULL)
+	DROP PROC [dbo].[sp_GetPostedTransfers]
+GO
+
+CREATE PROC [dbo].[sp_GetPostedTransfers]
+	@transStart varchar(50),
+	@transEnd varchar(50),
+	@process varchar(50),
+	@rows int
+AS
+SELECT TOP (@rows) wt.[iLineID]
+,wt.[vItemCode]
+,wt.[vLotNumber]
+,wt.[vWarehouse_From]
+,wt.[vWarehouse_To]
+,wt.[dQtyTransfered] 
+,wt.[dtDateEntered] AS [dtDateTransfered]
+,wt.[vUsername]
+,pr.[vDisplayName]
+,wt.[vTransDesc]
+,'' AS [Save]
+,'Posted' AS  [vStatus]
+,'' AS [vFailureReason]
+,NULL AS[dtDateFailed]
+,'false' AS [bChanged]
+FROM [tbl_WHTCompleted] wt
+INNER JOIN [tbl_ProcNames] pr ON wt.[vProcess]  = [vProcName]
+WHERE wt.[vProcess] LIKE '%' + @process + '%'
+AND CAST([dtDateTransfered] AS DATE) BETWEEN CAST(@transStart AS DATE) AND CAST(@transEnd AS DATE)
+ORDER BY [dtDateTransfered] DESC
+GO
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
