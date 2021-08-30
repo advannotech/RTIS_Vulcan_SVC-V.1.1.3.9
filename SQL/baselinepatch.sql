@@ -473,7 +473,8 @@ SELECT TOP(@rows) wt.[iLineID]
 ,'false' AS [bChanged]
 FROM [tbl_WHTPending] wt
 INNER JOIN [tbl_ProcNames] pr ON wt.[vProcess]  = [vProcName]
-WHERE CAST([dtDateTransfered] AS DATE) BETWEEN CAST(@transStart AS DATE) AND CAST(@transEnd AS DATE)
+WHERE wt.[vProcess] LIKE '%' + @process + '%'
+AND CAST([dtDateTransfered] AS DATE) BETWEEN CAST(@transStart AS DATE) AND CAST(@transEnd AS DATE)
 UNION
 SELECT TOP(@rows) wt.[iLineID]
 ,[vItemCode]
@@ -481,7 +482,7 @@ SELECT TOP(@rows) wt.[iLineID]
 ,[vWarehouse_From]
 ,[vWarehouse_To]
 ,[dQtyTransfered] 
-,[dtDateEntered] AS [dtDateTransfered]
+,[dtDateTransfered]
 ,[vUsername]
 ,pr.[vDisplayName]
 ,[vTransDesc]
@@ -559,7 +560,7 @@ SELECT TOP (@rows) wt.[iLineID]
 ,wt.[vWarehouse_From]
 ,wt.[vWarehouse_To]
 ,wt.[dQtyTransfered] 
-,wt.[dtDateEntered] AS [dtDateTransfered]
+,wt.[dtDateTransfered]
 ,wt.[vUsername]
 ,pr.[vDisplayName]
 ,wt.[vTransDesc]

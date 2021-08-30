@@ -137,7 +137,6 @@ Public Class Server
                 'Next
 
                 ClientMsg = UTF8Encoding.UTF8.GetString(byteData).Replace(vbNullChar, String.Empty)
-                EventLog.WriteEntry("RTIS Client", ClientMsg)
                 ServerResponse.Determine(ClientMsg, ThisSocket)
             Catch ex As Exception
                 'EventLog.WriteEntry("RTIS Vulcan SVC", "StartReceive Error: " & ex.Message)
