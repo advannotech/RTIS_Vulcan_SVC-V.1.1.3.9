@@ -40,11 +40,8 @@ Public Class Unique
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" IF NOT EXISTS (SELECT [bTransferredOut] FROM [tbl_unqBarcodes]
-                                                    WHERE [vUnqBarcode] LIKE @1 AND [vUnqBarcode] LIKE @2 AND [vUnqBarcode] LIKE @3 AND [vUnqBarcode] LIKE @4)
-	                                                    SELECT 'false' AS tranferredOut
-                                                    ELSE 
-	                                                    SELECT 'true' AS tranferredOut", sqlConn)
+                    Dim sqlComm As New SqlCommand(" SELEcT ISNULL([bTransferredIn], 'False') FROM [tbl_unqBarcodes]
+                                                        WHERE [vUnqBarcode] LIKE @1 AND [vUnqBarcode] LIKE @2 AND [vUnqBarcode] LIKE @3 AND [vUnqBarcode] LIKE @4", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", "%" + itemCode + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@2", "%" + lot + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@3", "%" + qty + "%"))
@@ -217,11 +214,8 @@ Public Class Unique
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" IF NOT EXISTS (SELECT [bTransferredOut] FROM [tbl_unqBarcodes]
-                                                    WHERE [vUnqBarcode] LIKE @1 AND [vUnqBarcode] LIKE @2 AND [vUnqBarcode] LIKE @3 AND [vUnqBarcode] LIKE @4)
-	                                                    SELECT 'false' AS tranferredOut
-                                                    ELSE 
-	                                                    SELECT 'true' AS tranferredOut", sqlConn)
+                    Dim sqlComm As New SqlCommand(" SELEcT ISNULL([bTransferredOut], 'false') FROM [tbl_unqBarcodes]
+                                                        WHERE [vUnqBarcode] LIKE @1 AND [vUnqBarcode] LIKE @2 AND [vUnqBarcode] LIKE @3 AND [vUnqBarcode] LIKE @4", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", "%" + itemCode + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@2", "%" + lot + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@3", "%" + qty + "%"))

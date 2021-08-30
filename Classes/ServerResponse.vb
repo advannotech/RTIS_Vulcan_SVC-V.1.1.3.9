@@ -785,17 +785,21 @@ Public Class ServerResponse
                     Dim transferredDate As String = String.Empty
                     Dim failedDate As String = String.Empty
                     Dim charIndex As Integer = 3
+                    Dim transferredStart As String = ""
+                    Dim transferredEnd As String = ""
+                    Dim failedStart As String = ""
+                    Dim failedEnd As String = ""
 
                     If ClientData.Split("|").Length = 5 Then
                         Select Case ClientData.Split("|")(charIndex).Substring(0, 1)
                             Case "t"
-                                Dim transferredStartDate As String = ClientData.Split("|")(3) + " 00:00:29.317"
-                                Dim transferredEndDate As String = ClientData.Split("|")(4) + " 23:59:29.317"
-                                transferredDate = String.Format("AND [dtDateTransfered] BETWEEN '{0}' AND '{1}'", transferredStartDate.Replace("t", ""), transferredEndDate)
+                                transferredStart = ClientData.Split("|")(3).Replace("t", "")
+                                transferredEnd = ClientData.Split("|")(4).Replace("f", "")
+                                'transferredDate = String.Format("AND [dtDateTransfered] BETWEEN '{0}' AND '{1}'", transferredStartDate.Replace("t", ""), transferredEndDate)
                             Case "f"
-                                Dim failedStartDate As String = ClientData.Split("|")(3) + " 00:00:29.317"
-                                Dim failedEndDate As String = ClientData.Split("|")(4) + " 23:59:29.317"
-                                failedDate = String.Format("AND [dtDateFailed] BETWEEN '{0}' AND '{1}'", failedStartDate.Replace("f", ""), failedEndDate)
+                                failedStart = ClientData.Split("|")(3).Replace("f", "")
+                                failedEnd = ClientData.Split("|")(4).Replace("f", "")
+                                'failedDate = String.Format("AND [dtDateFailed] BETWEEN '{0}' AND '{1}'", failedStartDate.Replace("f", ""), failedEndDate)
                         End Select
                     End If
 
@@ -803,19 +807,34 @@ Public Class ServerResponse
                         For index = 1 To ClientData.Split("|").Length - 3
                             Select Case ClientData.Split("|")(charIndex).Substring(0, 1)
                                 Case "t"
-                                    Dim transferredStartDate As String = ClientData.Split("|")(3) + " 00:00:29.317"
-                                    Dim transferredEndDate As String = ClientData.Split("|")(4) + " 23:59:29.317"
-                                    transferredDate = String.Format("AND [dtDateTransfered] BETWEEN '{0}' AND '{1}'", transferredStartDate.Replace("t", ""), transferredEndDate)
+                                    transferredStart = ClientData.Split("|")(3).Replace("t", "").Replace("t", "")
+                                    transferredEnd = ClientData.Split("|")(4).Replace("t", "").Replace("t", "")
+                                    'transferredDate = String.Format("AND [dtDateTransfered] BETWEEN '{0}' AND '{1}'", transferredStartDate.Replace("t", ""), transferredEndDate)
                                 Case "f"
-                                    Dim failedStartDate As String = ClientData.Split("|")(5) + " 00:00:29.317"
-                                    Dim failedEndDate As String = ClientData.Split("|")(6) + " 23:59:29.317"
-                                    failedDate = String.Format("AND [dtDateFailed] BETWEEN '{0}' AND '{1}'", failedStartDate.Replace("f", ""), failedEndDate)
+                                    failedStart = ClientData.Split("|")(5).Replace("f", "")
+                                    failedEnd = ClientData.Split("|")(6).Replace("f", "")
+                                    'failedDate = String.Format("AND [dtDateFailed] BETWEEN '{0}' AND '{1}'", failedStartDate.Replace("f", ""), failedEndDate)
                             End Select
                             charIndex = charIndex + 1
                         Next
                     End If
 
-                    Server.Listener.SendResponse(ClientSocket, WhseTransfers.RTSQL.Retreive.UI_getWhtLInes(status, process, rows, transferredDate, failedDate))
+                    'Dim tStart As Date = ""
+                    'Dim tEnd As Date = ""
+                    'Dim fStart As Date = ""
+                    'Dim fEnd As Date = ""
+
+                    'If transferredStart IsNot String.Empty Then
+                    '    tStart = Convert.ToDateTime(transferredStart)
+                    '    tEnd = Convert.ToDateTime(transferredEnd)
+                    'End If
+
+                    'If failedStart IsNot String.Empty Then
+                    '    tStart = Convert.ToDateTime(failedStart)
+                    '    tEnd = Convert.ToDateTime(failedEnd)
+                    'End If
+
+                    Server.Listener.SendResponse(ClientSocket, WhseTransfers.RTSQL.Retreive.UI_getWhtLInes(status, process, rows, transferredStart, transferredEnd, failedStart, failedEnd))
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
@@ -824,27 +843,29 @@ Public Class ServerResponse
                     Dim process As String = ClientData.Split("|")(0)
                     Dim rows As String = ClientData.Split("|")(1)
                     Dim transferredDate As String = String.Empty
-                    Dim failedDate As String = String.Empty
+                    'Dim failedDate As String = String.Empty
                     Dim charIndex As Integer = 2
+                    Dim transferredStartDate As String = ""
+                    Dim transferredEndDate As String = ""
 
                     If ClientData.Split("|").Length = 4 Then
                         Select Case ClientData.Split("|")(charIndex).Substring(0, 1)
                             Case "t"
-                                Dim transferredStartDate As String = ClientData.Split("|")(2) + " 00:00:29.317"
-                                Dim transferredEndDate As String = ClientData.Split("|")(3) + " 23:59:29.317"
-                                transferredDate = String.Format("WHERE [dtDateTransfered] BETWEEN '{0}' AND '{1}'", transferredStartDate.Replace("t", ""), transferredEndDate.Replace("t", ""))
+                                transferredStartDate = ClientData.Split("|")(2).Replace("t", "")
+                                transferredEndDate = ClientData.Split("|")(3).Replace("t", "")
+                                'transferredDate = String.Format("WHERE [dtDateTransfered] BETWEEN '{0}' AND '{1}'", transferredStartDate.Replace("t", ""), transferredEndDate.Replace("t", ""))
                         End Select
                     End If
                     Dim appendOperator As String = ""
 
-                    If transferredDate = "" Then
-                        appendOperator = "WHERE"
-                    Else
-                        appendOperator = "AND"
-                    End If
+                    'If transferredDate = "" Then
+                    '    appendOperator = "WHERE"
+                    'Else
+                    '    appendOperator = "AND"
+                    'End If
 
-                    process = String.Format(" {0} pr.[vProcName] LIKE '%{1}%'", appendOperator, process)
-                    Server.Listener.SendResponse(ClientSocket, WhseTransfers.RTSQL.Retreive.UI_getWhtLInesAll(process, rows, transferredDate))
+                    'process = String.Format(" {0} pr.[vProcName] LIKE '%{1}%'", appendOperator, process)
+                    Server.Listener.SendResponse(ClientSocket, WhseTransfers.RTSQL.Retreive.UI_getWhtLInesAll(process, rows, transferredStartDate, transferredEndDate))
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
@@ -855,13 +876,15 @@ Public Class ServerResponse
                     Dim transferredDate As String = String.Empty
                     Dim failedDate As String = String.Empty
                     Dim charIndex As Integer = 2
+                    Dim transferredStartDate As String = ""
+                    Dim transferredEndDate As String = ""
 
                     If ClientData.Split("|").Length = 4 Then
                         Select Case ClientData.Split("|")(charIndex).Substring(0, 1)
                             Case "t"
-                                Dim transferredStartDate As String = ClientData.Split("|")(2) + " 00:00:29.317"
-                                Dim transferredEndDate As String = ClientData.Split("|")(3) + " 23:59:29.317"
-                                transferredDate = String.Format("WHERE [dtDateTransfered] BETWEEN '{0}' AND '{1}'", transferredStartDate.Replace("t", ""), transferredEndDate)
+                                transferredStartDate = ClientData.Split("|")(2).Replace("t", "")
+                                transferredEndDate = ClientData.Split("|")(3).Replace("t", "")
+                                'transferredDate = String.Format("WHERE [dtDateTransfered] BETWEEN '{0}' AND '{1}'", transferredStartDate.Replace("t", ""), transferredEndDate)
                         End Select
                     End If
 
@@ -873,8 +896,8 @@ Public Class ServerResponse
                         appendOperator = "AND"
                     End If
 
-                    process = String.Format(" {0} pr.[vProcName] LIKE '%{1}%'", appendOperator, process)
-                    Server.Listener.SendResponse(ClientSocket, WhseTransfers.RTSQL.Retreive.UI_getWhtLInesPosted(process, rows, transferredDate))
+                    'process = String.Format(" {0} pr.[vProcName] LIKE '%{1}%'", appendOperator, process)
+                    Server.Listener.SendResponse(ClientSocket, WhseTransfers.RTSQL.Retreive.UI_getWhtLInesPosted(process, rows, transferredStartDate, transferredEndDate))
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
@@ -2095,8 +2118,8 @@ Public Class ServerResponse
                 End Try
             Case "*GETPGMJOBSBYDATE*"
                 Try
-                    Dim dateFrom As String = ClientData.Split("|")(0)
-                    Dim dateTo As String = ClientData.Split("|")(1)
+                    Dim dateFrom As String = ClientData.Split("|")(0) + " 00:00:29.317"
+                    Dim dateTo As String = ClientData.Split("|")(1) + " 23:59:29.317"
                     Server.Listener.SendResponse(ClientSocket, PGM.RTSQL.Retreive.UI_GetPGMJobsByDate(dateFrom, dateTo))
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
@@ -2299,8 +2322,8 @@ Public Class ServerResponse
 #Region "Powder Prep Records"
             Case "*GETPOWDERPREPRECORDSBYDATE*"
                 Try
-                    Dim dateFrom As String = ClientData.Split("|")(0)
-                    Dim dateTo As String = ClientData.Split("|")(1)
+                    Dim dateFrom As String = ClientData.Split("|")(0) + " 00:00:29.317"
+                    Dim dateTo As String = ClientData.Split("|")(1) + " 23:59:29.317"
                     Server.Listener.SendResponse(ClientSocket, PowderPrep.RTSQL.Retrieve.UI_GetPowderPrepRecords(dateFrom, dateTo))
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
@@ -2470,8 +2493,8 @@ Public Class ServerResponse
 #Region "Fresh Slurry Records"
             Case "*GETFRESHSLURRYRECORDSBYDATE*"
                 Try
-                    Dim dateFrom As String = ClientData.Split("|")(0)
-                    Dim dateTo As String = ClientData.Split("|")(1)
+                    Dim dateFrom As String = ClientData.Split("|")(0) + " 00:00:29.317"
+                    Dim dateTo As String = ClientData.Split("|")(1) + " 23:59:29.317"
                     Server.Listener.SendResponse(ClientSocket, FreshSlurry.RTSQL.Retreive.UI_GetFreshSlurryRecords(dateFrom, dateTo))
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
@@ -2582,8 +2605,8 @@ Public Class ServerResponse
 #Region "View Records"
             Case "*GETALLMIXEDSLURRIS*"
                 Try
-                    Dim dateFrom As String = ClientData.Split("|")(0)
-                    Dim dateto As String = ClientData.Split("|")(1)
+                    Dim dateFrom As String = ClientData.Split("|")(0) + " 00:00:29.317"
+                    Dim dateTo As String = ClientData.Split("|")(1) + " 23:59:29.317"
                     Server.Listener.SendResponse(ClientSocket, MixedSlurry.RTSQL.Retreive.UI_GetAllMixedSlurries(dateFrom, dateto))
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
@@ -3095,8 +3118,8 @@ Public Class ServerResponse
 
 #Region "Outputs"
             Case "*UIGETZECTJOBS*"
-                Dim dateFrom As String = ClientData.Split("|")(0)
-                Dim dateTo As String = ClientData.Split("|")(1)
+                Dim dateFrom As String = ClientData.Split("|")(0) + " 00:00:29.317"
+                Dim dateTo As String = ClientData.Split("|")(1) + " 23:59:29.317"
                 Server.Listener.SendResponse(ClientSocket, Zect.RTSQL.Retreive.UI_GetAllZECTJobs(dateFrom, dateTo))
             Case "*UIGETZECTJOBINPUTS*"
                 Dim headerID As String = ClientData
@@ -3333,8 +3356,8 @@ Public Class ServerResponse
 #Region "Outputs"
             Case "*UIGETAWJOBS*"
                 Try
-                    Dim dateFrom As String = ClientData.Split("|")(0)
-                    Dim dateTo As String = ClientData.Split("|")(1)
+                    Dim dateFrom As String = ClientData.Split("|")(0) + " 00:00:29.317"
+                    Dim dateTo As String = ClientData.Split("|")(1) + " 23:59:29.317"
                     Server.Listener.SendResponse(ClientSocket, AW.RTSQL.Retrieve.UI_GetAllAWJobs(dateFrom, dateTo))
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
@@ -3625,8 +3648,8 @@ Public Class ServerResponse
 #Region "Outputs"
             Case "*UIGETCANNINGRECORDS*"
                 Try
-                    Dim dateFrom As String = ClientData.Split("|")(0)
-                    Dim dateTo As String = ClientData.Split("|")(1)
+                    Dim dateFrom As String = ClientData.Split("|")(0) + " 00:00:29.317"
+                    Dim dateTo As String = ClientData.Split("|")(1) + " 23:59:29.317"
                     Server.Listener.SendResponse(ClientSocket, Canning.RTSQL.Retrieve.UI_GetCanningRecords(dateFrom, dateTo))
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
