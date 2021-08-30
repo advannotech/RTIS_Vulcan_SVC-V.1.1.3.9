@@ -10,7 +10,7 @@ Public Class Form1
         Server.Listener.StartListenFile()
         tmrTransfer.Interval = 10000
         AddHandler tmrTransfer.Elapsed, AddressOf tmrTransfer_Tick
-        'tmrTransfer.Start()
+        'tmrTransfer.Start().
     End Sub
 
     Private Sub tmrTransfer_Tick(sender As Object, e As ElapsedEventArgs)
@@ -22,7 +22,11 @@ Public Class Form1
             Dim intRandomNumber = rand.Next(lower, upper)
             tmrTransfer.Interval = intRandomNumber
             triggerd = True
-            proccessWhseTransfers()
+
+            Server.Listener.StartListen()
+
+
+            ''proccessWhseTransfers()
         End If
     End Sub
 

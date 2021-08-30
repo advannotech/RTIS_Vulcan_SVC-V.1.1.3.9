@@ -1546,7 +1546,7 @@ Public Class StockTake
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
                     Dim sqlComm As New SqlCommand(" INSERT INTO [RTIS_InvCountArchiveLines_Tickets] 
-                                                    SELECT [iLineID],[iHeaderID] ,[vTicketNo],[dCountQty],[vCountUser],[dtDateCounted],[dCountQty2],[vCountUser2],[dtDateCounted2] 
+                                                    SELECT [iHeaderID] ,[vTicketNo],[dCountQty],[vCountUser],[dtDateCounted],[dCountQty2],[vCountUser2],[dtDateCounted2] 
                                                     ,[vBarcodeType],[vUnqBarcode],[bCountValid],[bRecountTicket]
                                                     FROM [RTIS_InvCountLines_Tickets] it
                                                     INNER JOIN [RTIS_InvCountLines] il ON il.[idInvCountLines] = it.[iHeaderID]
