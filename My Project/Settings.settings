@@ -29,12 +29,6 @@
     <Setting Name="EvoPassword" Type="System.String" Scope="User">
       <Value Profile="(Default)">R3lt3ch!4</Value>
     </Setting>
-    <Setting Name="RTDB" Type="System.String" Scope="User">
-      <Value Profile="(Default)">CAT_RTIS</Value>
-    </Setting>
-    <Setting Name="EvoDB" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Cataler_SCN</Value>
-    </Setting>
     <Setting Name="RTServer" Type="System.String" Scope="User">
       <Value Profile="(Default)">LIFA</Value>
     </Setting>
@@ -44,11 +38,17 @@
     <Setting Name="EvoComServer" Type="System.String" Scope="User">
       <Value Profile="(Default)">LIFA</Value>
     </Setting>
-    <Setting Name="RTDB" Type="System.String" Scope="User">
+    <Setting Name="RTDB1" Type="System.String" Scope="User">
       <Value Profile="(Default)">CAT_RTIS_Test</Value>
     </Setting>
-    <Setting Name="EvoDB" Type="System.String" Scope="User">
+    <Setting Name="EvoDB1" Type="System.String" Scope="User">
       <Value Profile="(Default)">Cataler_SCN_Test</Value>
+    </Setting>
+    <Setting Name="RTDB" Type="System.String" Scope="User">
+      <Value Profile="(Default)">CAT_RTIS</Value>
+    </Setting>
+    <Setting Name="EvoDB" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Cataler_SCN</Value>
     </Setting>
   </Settings>
 </SettingsFile>

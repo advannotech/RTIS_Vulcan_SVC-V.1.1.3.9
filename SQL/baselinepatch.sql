@@ -76,75 +76,6 @@ END
 GO
 
 
-
--- query from CATscan UI, you'll find it on DirectQueries.cs
-
-SELECT
-il.[idInvCountLines] AS [gclineID]
-,s.[Code] AS [gcItemCode]
-, s.[Bar_Code] AS [gcBarcode]
-, s.[Description_1] AS [gcItemDesc]
-, b.[cBinLocationName] AS [gcBin]
-, l.[cLotDescription] AS [gcLot]
-, ROUND(il.[fCountQty], 5) AS [gcCounted]
-, ROUND(il.[fCountQty2], 5) AS [gcCounted2]
-, ROUND(il.[fSystemQty], 5) AS [gcSystem]
-, CASE WHEN(il.[fCountQty] = il.[fCountQty2])  
-THEN CAST([dbo].[fn_CalculateVariance]([dbo].[fn_GetDifference](il.[fCountQty],il.[fSystemQty]), [dbo].[fn_GetTolerance](s.[ItemGroup])) AS VARCHAR(50))
-ELSE 'SV: ' + CAST(CAST([dbo].[fn_GetDifference](il.[fCountQty],il.[fSystemQty]) AS FLOAT) AS VARCHAR(50)) END AS [gcVarience]
-, w.[Code] AS [gcWhseCode]
-, w.[Name] AS [gcWhseName]
-, il.[bIsCounted] AS [gcIsCounted]
-, il.[bOnST] AS [gcOnST]
-FROM[RTIS_InvCountLines] il
-INNER JOIN[RTIS_InvCount] i ON i.[idInvCount] = [iInvCountID]
-INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[StockLink] = il.[iStockID]
-INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = il.[iWarehouseID]
-LEFT JOIN [Cataler_SCN].[dbo].[_etblLotTracking] l ON il.[iLotTrackingID] = l.[idLotTracking]
-LEFT JOIN [Cataler_SCN].[dbo].[_btblBINLocation] b ON il.[iBinLocationId] = b.[idBinLocation]
-WHERE i.[cInvCountNo] = 'STK0131'  
-ORDER BY
-CASE WHEN(il.[fSystemQty] - il.[fCountQty]) < 0 THEN il.[fCountQty]
-WHEN(il.[fCountQty] - il.[fSystemQty]) < 0 THEN il.[fCountQty] END DESC
-
-
-
------------------------------------------------------------------------------------------------------
-
-
-
-SELECT * FROM [RTIS_InvCountLines]
-WHERE [iInvCountID] = 131
-
-
--- update the variance expression
-UPDATE [RTIS_InvCountLines]
-SET [fCountQty] = 1.87123  ,
-[fCountQty2] = 1.87123  ,
-[fSystemQty] = 2
-WHERE [idInvCountLines] = 341
-
-
-
-
------------------------------------------------------------------------------------------------------
-
-
-
-SELECT * FROM [RTIS_InvCountLines]
-WHERE [iInvCountID] = 131
-
-
--- update the variance expression
-UPDATE [RTIS_InvCountLines]
-SET [fCountQty] = 2  ,
-[fCountQty2] = 2  ,
-[fSystemQty] = 1.95123  
-WHERE [idInvCountLines] = 341
-
-
-
-
 -----------------------------------------------------------------------------------------------------
 
 
@@ -183,14 +114,6 @@ GO
 
 
 
---SELECT * from [vw_GetItemsBelowSystemCount]
---WHERE [vw_GetItemsBelowSystemCount].[cInvCountNo] = 'STK0182'
---ORDER BY [vw_GetItemsBelowSystemCount].[ItemCode]
-
-
-
-
-
 --Items Above system count
 IF (OBJECT_ID('[dbo].[vw_GetItemsAboveSystemCount]') IS NOT NULL)
 	DROP VIEW [dbo].[vw_GetItemsAboveSystemCount]
@@ -220,10 +143,6 @@ AND il.[fCountQty] = il.[fCountQty2]
 AND il.[bOnST] = 1 
 --ORDER BY s.[Code]
 GO
-
-
-
-SELECT * FROM [dbo].[vw_GetItemsAboveSystemCount] WHERE [vw_GetItemsAboveSystemCount].cInvCountNo = 'STK0182' ORDER BY [vw_GetItemsAboveSystemCount].[ItemCode]
 
 
 
@@ -258,12 +177,6 @@ AND (il.[fCountQty] <> 0 OR il.[fCountQty2] <> 0 OR il.[fSystemQty] <> 0)
 AND il.[bOnST] = 1 
 --ORDER BY s.[Code]
 GO
-
-
-
-
-SELECT * FROM [dbo].[vw_GetItemsUncounted] WHERE [vw_GetItemsUncounted].cInvCountNo = 'STK0182' ORDER BY [vw_GetItemsUncounted].[ItemCode]
-
 
 
 
@@ -307,15 +220,6 @@ GO
 
 
 
-
-SELECT * FROM [dbo].[vw_GetItemsEqualSystemCount] WHERE [vw_GetItemsEqualSystemCount].[cInvCountNo] = 'STK0140' ORDER BY [vw_GetItemsEqualSystemCount].[ItemCode]
-
-
-
-
-
-
-
 --Unqual scanner quantities
 IF (OBJECT_ID('[dbo].[vw_GetUnequalScannerQty]') IS NOT NULL)
 	DROP VIEW [dbo].[vw_GetUnequalScannerQty]
@@ -345,13 +249,6 @@ AND il.[bOnST] = 1
 --ORDER BY s.[Code]
 GO
 
-
-
-
-
-
-
-SELECT * FROM [dbo].[vw_GetUnequalScannerQty] WHERE [vw_GetUnequalScannerQty].[cInvCountNo] = 'STK0182' ORDER BY [vw_GetUnequalScannerQty].[ItemCode]
 
 
 
@@ -390,12 +287,6 @@ GO
 
 
 
-SELECT * FROM [dbo].[vw_GetUnlistedItems] WHERE [vw_GetUnlistedItems].[cInvCountNo] = 'STK0182' ORDER BY [vw_GetUnlistedItems].[ItemCode]
-
-
-
-
-
 --Stock take variance
 IF (OBJECT_ID('[dbo].[vw_GetStockTakeVariances]') IS NOT NULL)
 	DROP VIEW [dbo].[vw_GetStockTakeVariances]
@@ -425,19 +316,8 @@ INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[StockLink] = il.[iStockID]
 INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = il.[iWarehouseID]
 LEFT JOIN [Cataler_SCN].[dbo].[_etblLotTracking] l ON il.[iLotTrackingID] = l.[idLotTracking]
 LEFT JOIN [Cataler_SCN].[dbo].[_btblBINLocation] b ON il.[iBinLocationId] = b.[idBinLocation]
---WHERE i.[cInvCountNo] = 'STK0182'  
---ORDER BY
---CASE WHEN(il.[fSystemQty] - il.[fCountQty]) < 0 THEN il.[fCountQty]
---WHEN(il.[fCountQty] - il.[fSystemQty]) < 0 THEN il.[fCountQty] END DESC
 GO
 
-
-
-SELECT * FROM [dbo].[vw_GetStockTakeVariances] 
-WHERE [vw_GetStockTakeVariances].[cInvCountNo] = 'STK0182' 
-ORDER BY
-CASE WHEN([vw_GetStockTakeVariances].[gcSystem] - [vw_GetStockTakeVariances].[gcCounted]) < 0 THEN [vw_GetStockTakeVariances].[gcCounted]
-WHEN([vw_GetStockTakeVariances].[gcCounted] - [vw_GetStockTakeVariances].[gcSystem]) < 0 THEN [vw_GetStockTakeVariances].[gcCounted] END DESC
 
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -575,6 +455,77 @@ WHERE wt.[vProcess] LIKE '%' + @process + '%'
 AND CAST([dtDateTransfered] AS DATE) BETWEEN CAST(@transStart AS DATE) AND CAST(@transEnd AS DATE)
 ORDER BY [dtDateTransfered] DESC
 GO
+
+
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_ManualCloseZectJob]') IS NOT NULL)
+	DROP PROC [dbo].[sp_ManualCloseZectJob]
+GO
+
+CREATE PROC [dbo].[sp_ManualCloseZectJob]
+	@lot varchar(50)
+AS
+	IF EXISTS (SELECT * FROM [dbo].[tbl_RTIS_Zect_Jobs]
+				WHERE [vLotNumber] = TRIM(@lot))
+	BEGIN
+		UPDATE [dbo].[tbl_RTIS_Zect_Jobs]
+		SET [bJobRunning] = 0
+		WHERE [vLotNumber] = TRIM(@lot) 
+
+		SELECT 1 AS RETVAL
+	END
+	ELSE 
+		SELECT 0 AS RETVAL
+GO
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -11740,6 +11740,18 @@ Public Class ServerResponse
                 End Try
 #End Region
 
+#Region "ManualClose"
+
+            Case "*ZECTMANUALCLOSEJOB*"
+                Try
+                    Dim lotNumber As String = ClientData
+                    Server.Listener.SendResponse(ClientSocket, Zect.RTSQL.Retreive.Zect_ManualCloseJob(lotNumber))
+                Catch ex As Exception
+                    Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
+                End Try
+
+#End Region
+
 #End Region
 
 #Region "Canning"
