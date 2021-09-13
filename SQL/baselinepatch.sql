@@ -277,9 +277,7 @@ INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[StockLink] = il.[iStockID]
 INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = il.[iWarehouseID] 
 LEFT JOIN [Cataler_SCN].[dbo].[_btblBINLocation] b ON b.[idBinLocation] = il.[iBinLocationId] 
 LEFT JOIN [Cataler_SCN].[dbo].[_etblLotTracking] l ON il.[iLotTrackingID] = l.[idLotTracking] 
---WHERE i.[cInvCountNo] = 'STK0182' 
 WHERE il.[bOnST] = 0 
---ORDER BY s.[Code]
 GO
 
 
@@ -310,7 +308,7 @@ il.[idInvCountLines] AS [gclineID]
 , w.[Name] AS [gcWhseName]
 , il.[bIsCounted] AS [gcIsCounted]
 , il.[bOnST] AS [gcOnST]
-FROM[RTIS_InvCountLines] il
+FROM [RTIS_InvCountLines] il
 INNER JOIN[RTIS_InvCount] i ON i.[idInvCount] = [iInvCountID]
 INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[StockLink] = il.[iStockID]
 INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = il.[iWarehouseID]
@@ -533,6 +531,283 @@ WITH cte AS (
 )
 DELETE FROM cte
 WHERE row_num > 1;
+
+
+
+
+--Archived stock take variance
+IF (OBJECT_ID('[dbo].[vw_GetStockTakeVariancesArchives]') IS NOT NULL)
+	DROP VIEW [dbo].[vw_GetStockTakeVariancesArchives]
+GO
+
+
+
+
+CREATE VIEW [dbo].[vw_GetStockTakeVariancesArchives]
+AS
+SELECT
+il.[idInvCountLines] AS [gclineID]
+,i.[cInvCountNo]
+,s.[Code] AS [gcItemCode]
+, s.[Bar_Code] AS [gcBarcode]
+, s.[Description_1] AS [gcItemDesc]
+, b.[cBinLocationName] AS [gcBin]
+, l.[cLotDescription] AS [gcLot]
+, ROUND(il.[fCountQty], 4) AS [gcCounted]
+, ROUND(il.[fCountQty2], 4) AS [gcCounted2]
+, ROUND(il.[fSystemQty], 4) AS [gcSystem]
+, CAST([dbo].[fn_CalculateVariance]([dbo].[fn_GetDifference](il.[fCountQty],il.[fSystemQty]), [dbo].[fn_GetTolerance](s.[ItemGroup]))AS VARCHAR(50)) AS [gcVarience]
+, w.[Code] AS [gcWhseCode]
+, w.[Name] AS [gcWhseName]
+, il.[bOnST] AS [gcOnST]
+FROM [RTIS_InvCountArchiveLines] il
+INNER JOIN[RTIS_InvCount] i ON i.[idInvCount] = [iInvCountID]
+INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[StockLink] = il.[iStockID]
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = il.[iWarehouseID]
+LEFT JOIN [Cataler_SCN].[dbo].[_etblLotTracking] l ON il.[iLotTrackingID] = l.[idLotTracking]
+LEFT JOIN [Cataler_SCN].[dbo].[_btblBINLocation] b ON il.[iBinLocationId] = b.[idBinLocation]
+GO
+
+
+
+
+
+
+
+--Archived Items below system count
+IF (OBJECT_ID('[dbo].[vw_GetArchivedItemsBelowSystemCount]') IS NOT NULL)
+	DROP VIEW [dbo].[vw_GetArchivedItemsBelowSystemCount]
+GO
+
+CREATE VIEW [dbo].[vw_GetArchivedItemsBelowSystemCount]
+AS
+SELECT s.[Code] AS [ItemCode],
+i.[cInvCountNo],
+s.[Description_1] AS [Desc] ,
+b.[cBinLocationName] AS Bin ,
+ROUND(il.[fCountQty], 5)  AS [Counted], 
+ROUND(il.[fCountQty2], 5) AS [Counted2],
+ROUND(il.[fSystemQty], 5) AS [System], 
+ROUND(CAST([dbo].[fn_CalculateVariance]([dbo].[fn_GetDifference](il.[fCountQty],il.[fSystemQty]), [dbo].[fn_GetTolerance](s.[ItemGroup])) AS VARCHAR(50)), 5) AS [Variance] ,
+w.[Code] AS [WHSE]  ,
+i.[dPrepared] 
+FROM [RTIS_InvCountArchiveLines] il 
+INNER JOIN [RTIS_InvCount] i ON i.[idInvCount] = [iInvCountID] 
+INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[StockLink] = il.[iStockID] 
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = il.[iWarehouseID] 
+LEFT JOIN [Cataler_SCN].[dbo].[_btblBINLocation] b ON b.[idBinLocation] = il.[iBinLocationId] 
+LEFT JOIN [Cataler_SCN].[dbo].[_etblLotTracking] l ON il.[iLotTrackingID] = l.[idLotTracking] 
+WHERE il.[fSystemQty] > il.[fCountQty]  
+AND il.[fCountQty] <> 0 
+AND il.[fCountQty] = il.[fCountQty2] 
+AND il.[bOnST] = 1 
+--ORDER BY s.[Code]
+GO
+
+
+
+
+--Archived Items Above system count
+IF (OBJECT_ID('[dbo].[vw_GetArchivedItemsAboveSystemCount]') IS NOT NULL)
+	DROP VIEW [dbo].[vw_GetArchivedItemsAboveSystemCount]
+GO
+
+CREATE VIEW [dbo].[vw_GetArchivedItemsAboveSystemCount]
+AS
+SELECT s.[Code] AS [ItemCode], 
+i.[cInvCountNo],
+s.[Description_1] AS [Desc] , 
+b.[cBinLocationName] AS Bin ,
+ROUND(il.[fCountQty], 5)  AS [Counted], 
+ROUND([fCountQty2], 5) AS [Counted2] ,
+ROUND(il.[fSystemQty], 5) AS [System], 
+ROUND(CAST([dbo].[fn_CalculateVariance]([dbo].[fn_GetDifference](il.[fCountQty],il.[fSystemQty]), [dbo].[fn_GetTolerance](s.[ItemGroup])) AS VARCHAR(50)), 5) AS [Variance] ,
+w.[Code] AS [WHSE] ,
+i.[dPrepared] 
+FROM [RTIS_InvCountArchiveLines] il 
+INNER JOIN [RTIS_InvCount] i ON i.[idInvCount] = [iInvCountID] 
+INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[StockLink] = il.[iStockID] 
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = il.[iWarehouseID] 
+LEFT JOIN [Cataler_SCN].[dbo].[_btblBINLocation] b ON b.[idBinLocation] = il.[iBinLocationId] 
+LEFT JOIN [Cataler_SCN].[dbo].[_etblLotTracking] l ON il.[iLotTrackingID] = l.[idLotTracking] 
+--WHERE i.[cInvCountNo] = 'STK0182' 
+WHERE il.[fSystemQty] < il.[fCountQty] 
+AND il.[fCountQty] = il.[fCountQty2] 
+AND il.[bOnST] = 1 
+--ORDER BY s.[Code]
+GO
+
+
+
+
+--Uncounted Archived Items
+IF (OBJECT_ID('[dbo].[vw_GetArchivedItemsUncounted]') IS NOT NULL)
+	DROP VIEW [dbo].[vw_GetArchivedItemsUncounted]
+GO
+
+CREATE VIEW [dbo].[vw_GetArchivedItemsUncounted]
+AS
+SELECT s.[Code] AS [ItemCode] ,  
+i.[cInvCountNo],
+s.[Description_1] AS [Desc] , 
+b.[cBinLocationName] AS Bin ,
+'0'  AS [Counted],  
+ROUND([fCountQty2], 5) AS [Counted2] ,
+ROUND(il.[fSystemQty], 5) AS [System], 
+ROUND(CAST([dbo].[fn_CalculateVariance]([dbo].[fn_GetDifference](il.[fCountQty],il.[fSystemQty]), [dbo].[fn_GetTolerance](s.[ItemGroup])) AS VARCHAR(50)), 5) AS [Variance] ,
+w.[Code] AS [WHSE] ,
+i.[dPrepared] 
+FROM [RTIS_InvCountArchiveLines] il 
+INNER JOIN [RTIS_InvCount] i ON i.[idInvCount] = [iInvCountID] 
+INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[StockLink] = il.[iStockID] 
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = il.[iWarehouseID] 
+LEFT JOIN [Cataler_SCN].[dbo].[_btblBINLocation] b ON b.[idBinLocation] = il.[iBinLocationId] 
+LEFT JOIN [Cataler_SCN].[dbo].[_etblLotTracking] l ON il.[iLotTrackingID] = l.[idLotTracking] 
+--WHERE i.[cInvCountNo] = 'STK0182' 
+WHERE (il.[fCountQty] = 0 OR il.[fCountQty] IS NULL OR il.[fCountQty] = '') 
+AND (il.[fCountQty2] = 0 OR il.[fCountQty2] IS NULL OR il.[fCountQty2] = '') 
+AND (il.[fCountQty] <> 0 OR il.[fCountQty2] <> 0 OR il.[fSystemQty] <> 0) 
+AND il.[bOnST] = 1 
+--ORDER BY s.[Code]
+GO
+
+
+
+
+
+
+-- Archived Items equal to system count
+IF (OBJECT_ID('[dbo].[vw_GetArchivedItemsEqualSystemCount]') IS NOT NULL)
+	DROP VIEW [dbo].[vw_GetArchivedItemsEqualSystemCount]
+GO
+
+CREATE VIEW [dbo].[vw_GetArchivedItemsEqualSystemCount]
+AS
+SELECT s.[Code] AS [ItemCode],  
+i.[cInvCountNo],
+s.[Description_1] AS [Desc], 
+b.[cBinLocationName] AS Bin ,
+ROUND(il.[fCountQty], 5)  AS [Counted], 
+ROUND([fCountQty2], 5) AS [Counted2] ,
+ROUND(il.[fSystemQty], 5) AS [System], 
+ROUND(CAST([dbo].[fn_CalculateVariance]([dbo].[fn_GetDifference](il.[fCountQty],il.[fSystemQty]), [dbo].[fn_GetTolerance](s.[ItemGroup])) AS VARCHAR(50)), 5) AS [Variance] ,
+w.[Code] AS [WHSE] ,
+i.[dPrepared] 
+FROM [RTIS_InvCountArchiveLines] il 
+INNER JOIN [RTIS_InvCount] i ON i.[idInvCount] = [iInvCountID] 
+INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[StockLink] = il.[iStockID] 
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = il.[iWarehouseID] 
+LEFT JOIN [Cataler_SCN].[dbo].[_btblBINLocation] b ON b.[idBinLocation] = il.[iBinLocationId] 
+LEFT JOIN [Cataler_SCN].[dbo].[_etblLotTracking] l ON il.[iLotTrackingID] = l.[idLotTracking] 
+--WHERE i.[cInvCountNo] = 'STK0140' 
+WHERE il.[fCountQty] = il.[fSystemQty] 
+AND il.[fCountQty] <> 0 
+AND il.[fSystemQty] <> 0 
+AND il.[fCountQty] = il.[fCountQty2] 
+AND il.[bOnST] = 1 
+--ORDER BY s.[Code]
+GO
+
+
+
+
+
+
+--Unqual scanner Archived quantities
+IF (OBJECT_ID('[dbo].[vw_GetUnequalScannerQty]') IS NOT NULL)
+	DROP VIEW [dbo].[vw_GetUnequalScannerQty]
+GO
+
+CREATE VIEW [dbo].[vw_GetUnequalScannerQty]
+AS
+SELECT s.[Code] AS [ItemCode], 
+i.[cInvCountNo],
+s.[Description_1] AS [Desc] , 
+b.[cBinLocationName] AS Bin ,
+ROUND(il.[fCountQty], 5)  AS [Counted], 
+ROUND([fCountQty2], 5) AS [Counted2] ,
+ROUND(il.[fSystemQty], 5) AS [System], 
+ROUND(CAST([dbo].[fn_CalculateVariance]([dbo].[fn_GetDifference](il.[fCountQty],il.[fSystemQty]), [dbo].[fn_GetTolerance](s.[ItemGroup])) AS VARCHAR(50)), 5) AS [Variance] ,
+w.[Code] AS [WHSE] ,
+i.[dPrepared] 
+FROM [RTIS_InvCountArchiveLines] il 
+INNER JOIN [RTIS_InvCount] i ON i.[idInvCount] = [iInvCountID] 
+INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[StockLink] = il.[iStockID] 
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = il.[iWarehouseID] 
+LEFT JOIN [Cataler_SCN].[dbo].[_btblBINLocation] b ON b.[idBinLocation] = il.[iBinLocationId] 
+LEFT JOIN [Cataler_SCN].[dbo].[_etblLotTracking] l ON il.[iLotTrackingID] = l.[idLotTracking] 
+--WHERE i.[cInvCountNo] = 'STK0182' 
+WHERE il.[fCountQty] <> il.[fCountQty2] 
+AND il.[bOnST] = 1 
+--ORDER BY s.[Code]
+GO
+
+
+
+
+
+
+--unlisted Archived Items
+IF (OBJECT_ID('[dbo].[vw_GetArchivedUnlistedItems]') IS NOT NULL)
+	DROP VIEW [dbo].[vw_GetArchivedUnlistedItems]
+GO
+
+CREATE VIEW [dbo].[vw_GetArchivedUnlistedItems]
+AS
+SELECT s.[Code] AS [ItemCode], 
+i.[cInvCountNo],
+s.[Description_1] AS [Desc], 
+b.[cBinLocationName] AS Bin ,
+ROUND(il.[fCountQty], 5)  AS [Counted], 
+ROUND([fCountQty2], 5) AS [Counted2] ,
+ROUND(il.[fSystemQty], 5) AS [System], 
+ROUND(CAST([dbo].[fn_CalculateVariance]([dbo].[fn_GetDifference](il.[fCountQty],il.[fSystemQty]), [dbo].[fn_GetTolerance](s.[ItemGroup])) AS VARCHAR(50)), 5) AS [Variance] ,
+w.[Code] AS [WHSE] ,
+i.[dPrepared] 
+FROM [RTIS_InvCountArchiveLines] il 
+INNER JOIN [RTIS_InvCount] i ON i.[idInvCount] = [iInvCountID] 
+INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[StockLink] = il.[iStockID] 
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = il.[iWarehouseID] 
+LEFT JOIN [Cataler_SCN].[dbo].[_btblBINLocation] b ON b.[idBinLocation] = il.[iBinLocationId] 
+LEFT JOIN [Cataler_SCN].[dbo].[_etblLotTracking] l ON il.[iLotTrackingID] = l.[idLotTracking] 
+WHERE il.[bOnST] = 0 
+GO
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
