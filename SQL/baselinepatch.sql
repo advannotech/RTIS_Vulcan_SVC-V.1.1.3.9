@@ -488,6 +488,32 @@ GO
 
 
 
+IF (OBJECT_ID('[dbo].[sp_ManualCloseAWJob]') IS NOT NULL)
+	DROP PROC [dbo].[sp_ManualCloseAWJob]
+GO
+
+CREATE PROC [dbo].[sp_ManualCloseAWJob]
+	@lot varchar(50)
+AS
+	IF EXISTS (SELECT * FROM [dbo].[tbl_RTIS_AW_Jobs]
+				WHERE [vLotNumber] = TRIM(@lot))
+	BEGIN
+		UPDATE [dbo].[tbl_RTIS_Zect_Jobs]
+		SET [bJobRunning] = 0
+		WHERE [vLotNumber] = TRIM(@lot) 
+
+		SELECT 1 AS RETVAL
+	END
+	ELSE 
+		SELECT 0 AS RETVAL
+GO
+
+
+
+
+
+
+
 
 
 

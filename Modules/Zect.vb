@@ -965,26 +965,6 @@ Public Class Zect
                     End If
                 End Try
             End Function
-            Public Shared Function Zect_ManualCloseJob(ByVal lotNo As String) As String
-                Try
-                    Dim ReturnData As String = ""
-                    Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_ManualCloseZectJob] @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", lotNo))
-                    sqlConn.Open()
-                    Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
-                    While sqlReader.Read()
-                        ReturnData = Convert.ToString(sqlReader.Item(0))
-                    End While
-                    sqlReader.Close()
-                    sqlComm.Dispose()
-                    sqlConn.Close()
-                    Return ReturnData
-                Catch ex As Exception
-                    EventLog.WriteEntry("RTIS Vulcan SVC", "Zect_ManualCloseJob: " + ex.ToString())
-                    Return ExHandler.returnErrorEx(ex)
-                End Try
-            End Function
 
 #End Region
 
@@ -1327,6 +1307,26 @@ Public Class Zect
                     Return "1*"
                 Catch ex As Exception
                     EventLog.WriteEntry("RTIS Vulcan SVC", "UI_setZECTBatchManufactured: " + ex.ToString())
+                    Return ExHandler.returnErrorEx(ex)
+                End Try
+            End Function
+            Public Shared Function Zect_ManualCloseJob(ByVal lotNo As String) As String
+                Try
+                    Dim ReturnData As String = ""
+                    Dim sqlConn As New SqlConnection(RTString)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_ManualCloseZectJob] @1", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@1", lotNo))
+                    sqlConn.Open()
+                    Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
+                    While sqlReader.Read()
+                        ReturnData = Convert.ToString(sqlReader.Item(0))
+                    End While
+                    sqlReader.Close()
+                    sqlComm.Dispose()
+                    sqlConn.Close()
+                    Return ReturnData
+                Catch ex As Exception
+                    EventLog.WriteEntry("RTIS Vulcan SVC", "Zect_ManualCloseJob: " + ex.ToString())
                     Return ExHandler.returnErrorEx(ex)
                 End Try
             End Function
