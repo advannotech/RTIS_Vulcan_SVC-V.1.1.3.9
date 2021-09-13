@@ -498,7 +498,7 @@ AS
 	IF EXISTS (SELECT * FROM [dbo].[tbl_RTIS_AW_Jobs]
 				WHERE [vLotNumber] = TRIM(@lot))
 	BEGIN
-		UPDATE [dbo].[tbl_RTIS_Zect_Jobs]
+		UPDATE [dbo].[tbl_RTIS_AW_Jobs]
 		SET [bJobRunning] = 0
 		WHERE [vLotNumber] = TRIM(@lot) 
 
@@ -511,6 +511,28 @@ GO
 
 
 
+-- DELETE duplicate permission modules
+WITH cte AS (
+    SELECT 
+        [iLine_ID],
+		[iRole_ID],
+		[iPermission_ID],
+		[bPermission_Active],
+		[dPermission_Added],
+		[dPermission_Removed],
+        ROW_NUMBER() OVER (
+            PARTITION BY 
+                [iRole_ID],
+				[iPermission_ID]
+            ORDER BY 
+                [iRole_ID],
+				[iPermission_ID]
+        ) row_num
+     FROM 
+        [dbo].[ltbl_userRoleLines]
+)
+DELETE FROM cte
+WHERE row_num > 1;
 
 
 
