@@ -699,13 +699,11 @@ INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[StockLink] = il.[iStockID]
 INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = il.[iWarehouseID] 
 LEFT JOIN [Cataler_SCN].[dbo].[_btblBINLocation] b ON b.[idBinLocation] = il.[iBinLocationId] 
 LEFT JOIN [Cataler_SCN].[dbo].[_etblLotTracking] l ON il.[iLotTrackingID] = l.[idLotTracking] 
---WHERE i.[cInvCountNo] = 'STK0140' 
 WHERE il.[fCountQty] = il.[fSystemQty] 
 AND il.[fCountQty] <> 0 
 AND il.[fSystemQty] <> 0 
 AND il.[fCountQty] = il.[fCountQty2] 
 AND il.[bOnST] = 1 
---ORDER BY s.[Code]
 GO
 
 
@@ -736,10 +734,8 @@ INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[StockLink] = il.[iStockID]
 INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = il.[iWarehouseID] 
 LEFT JOIN [Cataler_SCN].[dbo].[_btblBINLocation] b ON b.[idBinLocation] = il.[iBinLocationId] 
 LEFT JOIN [Cataler_SCN].[dbo].[_etblLotTracking] l ON il.[iLotTrackingID] = l.[idLotTracking] 
---WHERE i.[cInvCountNo] = 'STK0182' 
 WHERE il.[fCountQty] <> il.[fCountQty2] 
 AND il.[bOnST] = 1 
---ORDER BY s.[Code]
 GO
 
 
@@ -775,8 +771,46 @@ GO
 
 
 
+---Update Records from Permission Modules
+BEGIN
+	IF NOT EXISTS (SELECT [vPermission_Name] FROM [dbo].[ltbl_Module_Perms] WHERE [vPermission_Name] = 'ZECT Records')
+	BEGIN
+		UPDATE [dbo].[ltbl_Module_Perms]
+		SET [vPermission_Name] = 'ZECT Records' 
+		WHERE [vPermission_Name] = 'ZECT Jobs'
+	END
+END
+GO
 
+BEGIN
+	IF NOT EXISTS (SELECT [vPermission_Name] FROM [dbo].[ltbl_Module_Perms] WHERE [vPermission_Name] = 'AW Records')
+	BEGIN
+		UPDATE [dbo].[ltbl_Module_Perms]
+		SET [vPermission_Name] = 'AW Records' 
+		WHERE [vPermission_Name] = 'AW Jobs'
+	END
+END
+GO
 
+BEGIN
+	IF NOT EXISTS (SELECT [vPermission_Name] FROM [dbo].[ltbl_Module_Perms] WHERE [vPermission_Name] = 'PGM RM')
+	BEGIN
+		UPDATE [dbo].[ltbl_Module_Perms]
+		SET [vPermission_Name] = 'PGM RM' 
+		WHERE [vPermission_Name] = 'PGM Planning'
+	END
+END
+GO
+
+BEGIN
+	IF NOT EXISTS (SELECT [vPermission_Name] FROM [dbo].[ltbl_Module_Perms] WHERE [vPermission_Name] = 'Production RM')
+	BEGIN
+		UPDATE [dbo].[ltbl_Module_Perms]
+		SET [vPermission_Name] = 'Production RM' 
+		WHERE [vPermission_Name] = 'Production Planning'
+	END
+END
+GO
 
 
 
