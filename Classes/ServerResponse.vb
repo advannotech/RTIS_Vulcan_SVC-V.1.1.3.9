@@ -1467,6 +1467,22 @@ Public Class ServerResponse
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
+            Case "*REPRINTVENDORPOLINES*"
+                Try
+                    Dim vendorName As String = ClientData
+                    Dim vendorPO As String = POReceiving.RTSQL.Retreive.UI_GetVendorPO(vendorName)
+                    Select Case vendorPO.Split("*")(0)
+                        Case "1"
+                            vendorPO = vendorPO.Remove(0, 2)
+                            Server.Listener.SendResponse(ClientSocket, POReceiving.Evolution.Retreive.UI_ReprintPOLinesNew(vendorPO, vendorName))
+                        Case "0"
+                            Server.Listener.SendResponse(ClientSocket, vendorPO)
+                        Case "-1"
+                            Server.Listener.SendResponse(ClientSocket, vendorPO)
+                    End Select
+                Catch ex As Exception
+                    Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
+                End Try
             Case "*GETPOLINES*"
                 Try
                     Dim orderNum As String = ClientData
@@ -1483,6 +1499,27 @@ Public Class ServerResponse
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
+
+
+            Case "*REPRINTPOLINES*"
+                Try
+                    Dim orderNum As String = ClientData
+                    Dim POVendor As String = POReceiving.RTSQL.Retreive.UI_GetPOVendor(orderNum)
+                    Select Case POVendor.Split("*")(0)
+                        Case "1"
+                            POVendor = POVendor.Remove(0, 2)
+                            Server.Listener.SendResponse(ClientSocket, POReceiving.Evolution.Retreive.UI_ReprintPOLinesNew(orderNum, POVendor))
+                        Case "0"
+                            Server.Listener.SendResponse(ClientSocket, POVendor)
+                        Case "-1"
+                            Server.Listener.SendResponse(ClientSocket, POVendor)
+                    End Select
+                Catch ex As Exception
+                    Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
+                End Try
+
+
+
             Case "*PRINTPOLABELSAUTO*"
                 Try
                     Dim OrderNO As String = ClientData.Split("|")(0)

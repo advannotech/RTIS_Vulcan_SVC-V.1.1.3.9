@@ -38,12 +38,14 @@ Public Class Core
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
+
                     Dim sqlComm As New SqlCommand(" SELECT p.[vPermission_Name], p.[vNestNode] 
                                                     FROM [ltbl_Module_Perms] p
                                                     INNER JOIN [ltbl_userRoleLines] rl ON p.[iPermission_ID] = rl.[iPermission_ID]
                                                     INNER JOIN [tbl_users] u ON u.[iRoleID] = rl.[iRole_ID]
                                                     WHERE rl.[bPermission_Active] = 1 AND p.[iModuleID] = @1 AND u.[vUser_Username] = @2 AND p.[bUIPerm] = 1
                                                     ORDER BY p.[Indx]", sqlConn)
+
                     sqlComm.Parameters.Add(New SqlParameter("@1", moduleID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", userName))
                     sqlConn.Open()

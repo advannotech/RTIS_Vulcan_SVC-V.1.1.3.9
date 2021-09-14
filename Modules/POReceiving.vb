@@ -112,8 +112,8 @@ Public Class POReceiving
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
-                        ReturnData &= Convert.ToString(sqlReader.Item(0)) + "|" + Convert.ToString(sqlReader.Item(1)) + "|" + Convert.ToString(sqlReader.Item(2)) + "|" + Convert.ToString(sqlReader.Item(3)) + "|" + Convert.ToString(sqlReader.Item(4)) + "|" + Convert.ToString(sqlReader.Item(5)) + "|" + Convert.ToString(sqlReader.Item(6)) + "|" + Convert.ToString(sqlReader.Item(7)) + "|" + Convert.ToString(sqlReader.Item(8)) + "|" + Convert.ToString(sqlReader.Item(9)) + "|" + Convert.ToString(sqlReader.Item(10))+ 
-                        "|" + Convert.ToString(sqlReader.Item(11))   + "|" + Convert.ToString(sqlReader.Item(12))   + "|" + Convert.ToString(sqlReader.Item(13)) + "~"
+                        ReturnData &= Convert.ToString(sqlReader.Item(0)) + "|" + Convert.ToString(sqlReader.Item(1)) + "|" + Convert.ToString(sqlReader.Item(2)) + "|" + Convert.ToString(sqlReader.Item(3)) + "|" + Convert.ToString(sqlReader.Item(4)) + "|" + Convert.ToString(sqlReader.Item(5)) + "|" + Convert.ToString(sqlReader.Item(6)) + "|" + Convert.ToString(sqlReader.Item(7)) + "|" + Convert.ToString(sqlReader.Item(8)) + "|" + Convert.ToString(sqlReader.Item(9)) + "|" + Convert.ToString(sqlReader.Item(10)) +
+                        "|" + Convert.ToString(sqlReader.Item(11)) + "|" + Convert.ToString(sqlReader.Item(12)) + "|" + Convert.ToString(sqlReader.Item(13)) + "~"
                     End While
                     sqlReader.Close()
                     sqlComm.Dispose()
@@ -324,11 +324,11 @@ Public Class POReceiving
 
                     sqlComm.Dispose()
                     sqlConn.Close()
-                   
+
                     Return "1*Success"
                 Catch ex As Exception
-                   EventLog.WriteEntry("RTIS Vulcan SVC", "UI_GetItemCMSApprovalLines: " + ex.ToString())
-                   Return ExHandler.returnErrorEx(ex)
+                    EventLog.WriteEntry("RTIS Vulcan SVC", "UI_GetItemCMSApprovalLines: " + ex.ToString())
+                    Return ExHandler.returnErrorEx(ex)
                 End Try
             End Function
             Public Shared Function UI_GetCMSHeadersToArchive(ByVal stockLink As String, ByVal docVersion As String) As String
@@ -406,11 +406,11 @@ Public Class POReceiving
 
                     sqlComm.Dispose()
                     sqlConn.Close()
-                   
+
                     Return "1*Success"
                 Catch ex As Exception
-                   EventLog.WriteEntry("RTIS Vulcan SVC", "UI_GetItemCMSApprovalLines: " + ex.ToString())
-                   Return ExHandler.returnErrorEx(ex)
+                    EventLog.WriteEntry("RTIS Vulcan SVC", "UI_GetItemCMSApprovalLines: " + ex.ToString())
+                    Return ExHandler.returnErrorEx(ex)
                 End Try
             End Function
             Public Shared Function UI_GetItemCMSArchiveLines(ByVal headerID As String) As String
@@ -594,6 +594,9 @@ Public Class POReceiving
                     End If
                 End Try
             End Function
+
+
+
             Public Shared Function UI_GetVendorPO(ByVal vendorName As String) As String
                 Try
                     Dim ReturnData As String = ""
@@ -824,7 +827,7 @@ Public Class POReceiving
                     Return ExHandler.returnErrorEx(ex)
                 End Try
             End Function
-             Public Shared Function UI_UpdateCMSRejected(ByVal lineID As String, ByVal reason As String, ByVal username As String) As String
+            Public Shared Function UI_UpdateCMSRejected(ByVal lineID As String, ByVal reason As String, ByVal username As String) As String
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
@@ -1078,11 +1081,16 @@ Public Class POReceiving
                     End If
                 End Try
             End Function
+
+
+
+
+
             Public Shared Function UI_GetVendorPOs(ByVal vendorID As String) As String
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand(" SELECT [OrderNum] FROM [InvNum]
+                    Dim sqlComm As New SqlCommand(" SELECT DISTINCT TOP 3 [OrderNum] FROM [InvNum]
                                                     WHERE [AccountID] = @1 AND [DocType] = 5 AND ([DocState] = 1 OR [DocState] = 3)", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", vendorID))
                     sqlConn.Open()
@@ -1110,6 +1118,9 @@ Public Class POReceiving
                     End If
                 End Try
             End Function
+
+
+
             Public Shared Function UI_GetPOLinesNew(ByVal orderNum As String, ByVal vendorName As String) As String
                 Try
                     Dim ReturnData As String = ""
@@ -1181,6 +1192,76 @@ Public Class POReceiving
                 End Try
 
             End Function
+
+
+
+
+
+
+            Public Shared Function UI_ReprintPOLinesNew(ByVal orderNum As String, ByVal vendorName As String) As String
+                Try
+                    Dim ReturnData As String = ""
+                    Dim sqlConn As New SqlConnection(EvoString)
+                    Dim sqlComm As New SqlCommand(" SELECT s.[Code], s.[Description_1], s.[Description_2], il.[cLotNumber], il.[fQuantity] AS [OrderQty], il.[fQtyToProcess], 'false' AS [Receive],  '' AS [Print], s.[bLotItem] AS [LotLine], 'true' AS [Viewable]	                                                                                                   
+                                                    ,ISNULL(rtp.[dPrintQty],0) AS [dPrintQty]                                                    
+                                                    ,ISNULL(rtp.[bValidated], 'True') AS [bValidated]
+                                                    ,ISNULL(rtp.[bScanned], 'False') AS [bScanned]
+	                                                ,'0' AS [Back1]
+	                                                ,'0' AS [Back2]
+	                                                ,'' AS [Back3]
+                                                    FROM [InvNum] i
+                                                    INNER JOIN [_btblInvoiceLines] il ON i.[AutoIndex] = il.[iInvoiceID]
+                                                    INNER JOIN [StkItem] s ON s.[StockLink] = il.[iStockCodeID] 
+                                                    LEFT JOIN [" + My.Settings.RTDB + "].[dbo].[tblPOLines] rtp ON rtp.[vItemCode] COLLATE Latin1_General_CI_AS = s.[Code] AND rtp.[vLotNumber] COLLATE Latin1_General_CI_AS = il.[cLotNumber] AND rtp.[vOrderNum] COLLATE Latin1_General_CI_AS = [OrderNum]
+                                                    WHERE i.[OrderNum] = @1 AND il.[cLotNumber]<>'' AND dPrintQty>0 AND i.[DocType] = '5' And (i.[DocState] = 1 OR i.[DocState] = 3) AND [bLotItem] = 1 AND i.[AutoIndex] = (SELECT TOP 1 [AutoIndex] FROM [InvNum] WHERE [OrderNum] = @1 ORDER BY [DocVersion] DESC)       
+                                                    UNION
+                                                    SELECT s.[Code], s.[Description_1], s.[Description_2], il.[cLotNumber], il.[fQuantity] AS [OrderQty], il.[fQtyToProcess], 'false' AS [Receive],  '' AS [Print], s.[bLotItem] AS [LotLine], 'true' AS [Viewable] 	                                                
+                                                    ,ISNULL(rtp.[dPrintQty], 0) AS [dPrintQty]                                                    
+                                                    ,ISNULL(rtp.[bValidated], 'True') AS [bValidated]
+                                                    ,ISNULL(rtp.[bScanned], 'False') AS [bScanned]
+	                                                ,'0' AS [Back1]
+	                                                ,'0' AS [Back2]
+	                                                ,'' AS [Back3]
+                                                    FROM [InvNum] i
+                                                    INNER JOIN [_btblInvoiceLines] il ON i.[AutoIndex] = il.[iInvoiceID]
+                                                    INNER JOIN [StkItem] s ON s.[StockLink] = il.[iStockCodeID] 
+                                                    LEFT JOIN [" + My.Settings.RTDB + "].[dbo].[tblPOLines] rtp ON rtp.[vItemCode] COLLATE Latin1_General_CI_AS = s.[Code] AND rtp.[vOrderNum] COLLATE Latin1_General_CI_AS = [OrderNum]
+                                                    WHERE i.[OrderNum] = @1 AND il.[cLotNumber]<>'' AND dPrintQty>0 AND i.[DocType] = '5' And (i.[DocState] = 1 OR i.[DocState] = 3) AND [bLotItem] = 1  AND i.[AutoIndex] = (SELECT TOP 1 [AutoIndex] FROM [InvNum] WHERE [OrderNum] = @1 ORDER BY [DocVersion] DESC)", sqlConn)
+
+
+                    sqlComm.Parameters.Add(New SqlParameter("@1", orderNum))
+                    sqlConn.Open()
+                    Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
+                    sqlReader.Read()
+                    ReturnData = Convert.ToString(sqlReader.Item(0)) + "|" + Convert.ToString(sqlReader.Item(1)) + "|" + Convert.ToString(sqlReader.Item(2)) + "|" + Convert.ToString(sqlReader.Item(3)) + "|" + Convert.ToString(sqlReader.Item(4)) + "|" + Convert.ToString(sqlReader.Item(5)) + "|" + Convert.ToString(sqlReader.Item(6)) + "|" + Convert.ToString(sqlReader.Item(7)) + "|" + Convert.ToString(sqlReader.Item(8)) +
+                         "|" + Convert.ToString(sqlReader.Item(9)) + "|" + Convert.ToString(sqlReader.Item(10)) + "|" + Convert.ToString(sqlReader.Item(11)) + "|" + Convert.ToString(sqlReader.Item(12)) + "|" + Convert.ToString(sqlReader.Item(13)) + "|" + Convert.ToString(sqlReader.Item(14)) + "|" + Convert.ToString(sqlReader.Item(15)) + "~" '+ Convert.ToString(sqlReader.Item(16)) + "|" + Convert.ToString(sqlReader.Item(17)) + "~" '+ "|" + Convert.ToString(sqlReader.Item(18)) + "|" + Convert.ToString(sqlReader.Item(19)) + "|" + Convert.ToString(sqlReader.Item(20)) + "~"
+                    While sqlReader.Read()
+                        ReturnData &= Convert.ToString(sqlReader.Item(0)) + "|" + Convert.ToString(sqlReader.Item(1)) + "|" + Convert.ToString(sqlReader.Item(2)) + "|" + Convert.ToString(sqlReader.Item(3)) + "|" + Convert.ToString(sqlReader.Item(4)) + "|" + Convert.ToString(sqlReader.Item(5)) + "|" + Convert.ToString(sqlReader.Item(6)) + "|" + Convert.ToString(sqlReader.Item(7)) + "|" + Convert.ToString(sqlReader.Item(8)) +
+                         "|" + Convert.ToString(sqlReader.Item(9)) + "|" + Convert.ToString(sqlReader.Item(10)) + "|" + Convert.ToString(sqlReader.Item(11)) + "|" + Convert.ToString(sqlReader.Item(12)) + "|" + Convert.ToString(sqlReader.Item(13)) + "|" + Convert.ToString(sqlReader.Item(14)) + "|" + Convert.ToString(sqlReader.Item(15)) + "~" '+ Convert.ToString(sqlReader.Item(16)) + "|" + Convert.ToString(sqlReader.Item(17)) + "~" '+ "|" + Convert.ToString(sqlReader.Item(18)) + "|" + Convert.ToString(sqlReader.Item(19)) + "|" + Convert.ToString(sqlReader.Item(20)) + "~"
+                    End While
+                    sqlReader.Close()
+                    sqlComm.Dispose()
+                    sqlConn.Close()
+
+                    If ReturnData <> "" Then
+                        Return "1*" + orderNum + "*" + vendorName + "*" + ReturnData
+                    Else
+                        Return "0*No Lines found for purchase order"
+                    End If
+                Catch ex As Exception
+                    If ex.Message = "Invalid attempt to read when no data is present." Then
+                        Return "0*No Lines found for purchase order"
+                    Else
+                        EventLog.WriteEntry("RTIS Vulcan SVC", "UI_GetPOLines: " + ex.ToString())
+                        Return ExHandler.returnErrorEx(ex)
+                    End If
+                End Try
+
+            End Function
+
+
+
+
             Public Shared Function UI_GetStockLabelInfo(ByVal itemCode As String) As String
                 Try
                     Dim ReturnData As String = ""
