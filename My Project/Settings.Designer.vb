@@ -201,30 +201,6 @@ Namespace My
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("CAT_RTIS_Test")>  _
-        Public Property RTDB1() As String
-            Get
-                Return CType(Me("RTDB1"),String)
-            End Get
-            Set
-                Me("RTDB1") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Cataler_SCN_Test")>  _
-        Public Property EvoDB1() As String
-            Get
-                Return CType(Me("EvoDB1"),String)
-            End Get
-            Set
-                Me("EvoDB1") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("CAT_RTIS")>  _
         Public Property RTDB() As String
             Get
                 Return CType(Me("RTDB"),String)
@@ -236,7 +212,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Cataler_SCN")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Cataler_SCN_Test")>  _
         Public Property EvoDB() As String
             Get
                 Return CType(Me("EvoDB"),String)
