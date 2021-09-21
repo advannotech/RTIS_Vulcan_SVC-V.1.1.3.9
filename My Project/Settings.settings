@@ -39,10 +39,10 @@
       <Value Profile="(Default)">LIFA</Value>
     </Setting>
     <Setting Name="RTDB" Type="System.String" Scope="User">
-      <Value Profile="(Default)">CAT_RTIS_Test</Value>
+      <Value Profile="(Default)">CAT_RTIS</Value>
     </Setting>
     <Setting Name="EvoDB" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Cataler_SCN_Test</Value>
+      <Value Profile="(Default)">Cataler_SCN</Value>
     </Setting>
   </Settings>
 </SettingsFile>

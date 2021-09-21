@@ -16,12 +16,7 @@ Public Class WhseTransfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("  SELECT s.[Code], s.[Description_1], l.[cLotDescription], [fQtyOnHand] FROM [_etblLotTrackingQty] lq
-                                                 INNER JOIN [_etblLotTracking] l ON l.[idLotTracking] = lq.[iLotTrackingID] 
-                                                 INNER JOIN [_etblLotStatus] ls ON l.[iLotStatusID] = ls.[idLotStatus]
-                                                 INNER JOIN [WhseMst] w ON w.[WhseLink] = lq.[iWarehouseID]
-                                                 INNER JOIN [StkItem] s ON s.[StockLink] = l.[iStockID]
-                                                 WHERE w.[Code] = @1 AND lq.[fQtyOnHand] <> 0", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_GetWhseStockQtys] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", whseCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
