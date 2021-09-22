@@ -1199,7 +1199,7 @@ GO
 
 
 
-IF (OBJECT_ID('[dbo].[sp_UI_AddVendorPOLink]]') IS NOT NULL)
+IF (OBJECT_ID('[dbo].[sp_UI_AddVendorPOLink]') IS NOT NULL)
 	DROP PROC [dbo].[sp_UI_AddVendorPOLink]
 GO
 
@@ -1215,6 +1215,126 @@ INSERT INTO [tbl_POLink] ([iVendorID]
                         )
 VALUES (@id, @name, @orderNum, GETDATE())
 GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_UpdateCMSApproved]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_UpdateCMSApproved]
+GO
+
+CREATE PROC [dbo].[sp_UI_UpdateCMSApproved]
+	@lineID VARCHAR(MAX),
+	@image VARCHAR(MAX),
+	@username VARCHAR(MAX)
+AS
+UPDATE [COA].[htbl_CMS_Docs] 
+SET [imApprovalSignature] = @image, [dtDateApproved] = GETDATE(), [vUserApproved] = @username, [vStatus] = 'Approved'  
+WHERE [iLineID] = @lineID
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_UpdateCMSRejected]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_UpdateCMSRejected]
+GO
+
+CREATE PROC [dbo].[sp_UI_UpdateCMSRejected]
+	@lineID VARCHAR(MAX),
+	@reason VARCHAR(MAX),
+	@username VARCHAR(MAX)
+AS
+UPDATE [COA].[htbl_CMS_Docs] 
+SET [vReasons] = @reason, [dtRejected] = GETDATE(), [vUserRejected] = @username, [vStatus] = 'Rejected'  
+WHERE [iLineID] = @lineID
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_UpdateCMSEdited]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_UpdateCMSEdited]
+GO
+
+CREATE PROC [dbo].[sp_UI_UpdateCMSEdited]
+	@id VARCHAR(MAX)
+AS
+UPDATE [COA].[htbl_CMS_Docs] 
+SET [vStatus] = 'Waiting Approval', [vReasons] = NULL, [dtRejected] = NULL,  [vUserRejected] = NULL
+WHERE [iLineID] = @1
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_UpdateVendorLookup]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_UpdateVendorLookup]
+GO
+
+CREATE PROC [dbo].[sp_UI_UpdateVendorLookup]
+	@id VARCHAR(MAX),
+	@viewable VARCHAR(MAX)
+AS
+UPDATE [rtblEvoVendors] SET [bSelected]= @viewable WHERE [iVendorID] = @id
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_UpdateVendorPOLink]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_UpdateVendorPOLink]
+GO
+
+CREATE PROC [dbo].[sp_UI_UpdateVendorPOLink]
+	@id VARCHAR(MAX),
+	@name VARCHAR(MAX),
+	@orderNum VARCHAR(MAX)
+AS
+UPDATE [tbl_POLink] 
+SET [vVendorName] = @name, [vOrderNum] = @orderNum, [dtDateUpdated] = GETDATE() 
+WHERE [iVendorID] = @id
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_ValidateLabels]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_ValidateLabels]
+GO
+
+CREATE PROC [dbo].[sp_UI_ValidateLabels]
+	@validRef VARCHAR(MAX)
+AS
+UPDATE [tbl_unqBarcodes] SET [bValidated] = 1 WHERE [ValidateRef] = @validRef
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_SetUnqReceived]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_SetUnqReceived]
+GO
+
+CREATE PROC [dbo].[sp_MBL_SetUnqReceived]
+	@poRec VARCHAR(MAX),
+	@barcode VARCHAR(MAX)
+AS
+UPDATE [tbl_unqBarcodes] SET [Receive] = @poRec WHERE [vUnqBarcode] = @barcode
+GO
+
+
+
+
+
+
+
+
 
 
 

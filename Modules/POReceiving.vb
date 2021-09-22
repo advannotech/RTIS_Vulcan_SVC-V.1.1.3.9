@@ -781,7 +781,7 @@ Public Class POReceiving
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [COA].[htbl_CMS_Docs] SET [imApprovalSignature] = @2, [dtDateApproved] = GETDATE(), [vUserApproved] = @3, [vStatus] = 'Approved'  WHERE [iLineID] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_UpdateCMSApproved] @1, @2, @3", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", lineID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", image))
                     sqlComm.Parameters.Add(New SqlParameter("@3", username))
@@ -799,7 +799,7 @@ Public Class POReceiving
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [COA].[htbl_CMS_Docs] SET [vReasons] = @2, [dtRejected] = GETDATE(), [vUserRejected] = @3, [vStatus] = 'Rejected'  WHERE [iLineID] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_UpdateCMSRejected] @1, @2, @3", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", lineID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", reason))
                     sqlComm.Parameters.Add(New SqlParameter("@3", username))
@@ -817,8 +817,7 @@ Public Class POReceiving
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [COA].[htbl_CMS_Docs] SET [vStatus] = 'Waiting Approval', [vReasons] = NULL, [dtRejected] = NULL,  [vUserRejected] = NULL
-                                                    WHERE [iLineID] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_UpdateCMSEdited] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", id))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
@@ -834,7 +833,7 @@ Public Class POReceiving
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [rtblEvoVendors] SET [bSelected]= @2 WHERE [iVendorID] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_UpdateVendorLookup] @1, @2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", id))
                     sqlComm.Parameters.Add(New SqlParameter("@2", viewable))
                     sqlConn.Open()
@@ -851,7 +850,7 @@ Public Class POReceiving
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [tbl_POLink] SET [vVendorName] = @2, [vOrderNum] = @3, [dtDateUpdated] = GETDATE() WHERE [iVendorID] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_UpdateVendorPOLink] @1, @2, @3", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", id))
                     sqlComm.Parameters.Add(New SqlParameter("@2", name))
                     sqlComm.Parameters.Add(New SqlParameter("@3", orderNum))
@@ -869,7 +868,7 @@ Public Class POReceiving
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [tbl_unqBarcodes] SET [bValidated] = 1 WHERE [ValidateRef] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_ValidateLabels] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", validRef))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
@@ -885,7 +884,7 @@ Public Class POReceiving
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [tbl_unqBarcodes] SET [Receive] = @1 WHERE [vUnqBarcode] = @2", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_SetUnqReceived] @1, @2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", poRec))
                     sqlComm.Parameters.Add(New SqlParameter("@2", barcode))
                     sqlConn.Open()
@@ -904,7 +903,7 @@ Public Class POReceiving
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("DELETE FROM [COA].[tbl_CMS_Admin] WHERE [iLineID] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_CMSItem] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", id))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
@@ -920,7 +919,7 @@ Public Class POReceiving
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("DELETE FROM [tblPOLines] WHERE [vOrderNum] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_DeletePOLines] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", orderNum))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
@@ -936,8 +935,7 @@ Public Class POReceiving
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" DELETE FROM [COA].[ltbl_CMS_Docs]
-                                                    WHERE [iHeaderID] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_DeleteCMSDocLiness] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", id))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
@@ -953,7 +951,7 @@ Public Class POReceiving
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("DELETE FROM [tbl_unqBarcodes] WHERE [ValidateRef] = @1 AND [bValidated] = 0", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_DeleteInvalidLabels] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", orderNum))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
@@ -969,7 +967,7 @@ Public Class POReceiving
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("DELETE FROM [COA].[htbl_CMS_Docs] WHERE [iLineID] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_DeleteCMSHeader] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", id))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
