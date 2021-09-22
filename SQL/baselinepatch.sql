@@ -1332,6 +1332,107 @@ GO
 
 
 
+IF (OBJECT_ID('[dbo].[sp_UI_CMSItem]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_CMSItem]
+GO
+
+CREATE PROC [dbo].[sp_UI_CMSItem]
+	@id VARCHAR(MAX)
+AS
+DELETE FROM [COA].[tbl_CMS_Admin] WHERE [iLineID] = @id
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_DeletePOLines]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_DeletePOLines]
+GO
+
+CREATE PROC [dbo].[sp_UI_DeletePOLines]
+	@orderNum VARCHAR(MAX)
+AS
+DELETE FROM [tblPOLines] WHERE [vOrderNum] = @orderNum
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_DeleteCMSDocLiness]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_DeleteCMSDocLiness]
+GO
+
+CREATE PROC [dbo].[sp_UI_DeleteCMSDocLiness]
+	@id VARCHAR(MAX)
+AS
+DELETE FROM [COA].[ltbl_CMS_Docs]
+WHERE [iHeaderID] = @id
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_DeleteInvalidLabels]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_DeleteInvalidLabels]
+GO
+
+CREATE PROC [dbo].[sp_UI_DeleteInvalidLabels]
+	@orderNum VARCHAR(MAX)
+AS
+DELETE FROM [tbl_unqBarcodes] WHERE [ValidateRef] = @orderNum AND [bValidated] = 0
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_DeleteCMSHeader]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_DeleteCMSHeader]
+GO
+
+CREATE PROC [dbo].[sp_UI_DeleteCMSHeader]
+	@id VARCHAR(MAX)
+AS
+DELETE FROM [COA].[htbl_CMS_Docs] WHERE [iLineID] = @id
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_[sp_UI_DeleteCMSLines]]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_DeleteCMSLines]
+GO
+
+CREATE PROC [dbo].[sp_UI_DeleteCMSLines]
+	@id VARCHAR(MAX)
+AS
+DELETE FROM [COA].[ltbl_CMS_Docs] WHERE [iHeaderID] = @id
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_[sp_UI_DeleteCMSLines]]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_DeleteCMSLines]
+GO
+
+CREATE PROC [dbo].[sp_UI_DeleteCMSLines]
+	@id VARCHAR(MAX)
+AS
+DELETE FROM [COA].[ltbl_CMS_Docs] WHERE [iHeaderID] = @id
+GO
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

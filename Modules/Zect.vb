@@ -1385,7 +1385,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("   SELECT [ucIICoatStage],[Description_1], '' FROM [StkItem]
+                    Dim sqlComm As New SqlCommand("   SELECT [Code],[Description_1], '' FROM [StkItem]
                                                       WHERE [ItemGroup] LIKE '%007%' OR [ItemGroup] LIKE '%011%'", sqlConn)
                     'SELECT [Code],[Description_1], '' FROM [StkItem]
                     'WHERE [ItemGroup] LIKE '%007%' OR [ItemGroup] LIKE '%011%'
