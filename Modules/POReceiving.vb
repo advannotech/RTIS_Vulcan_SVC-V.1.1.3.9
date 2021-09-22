@@ -983,7 +983,7 @@ Public Class POReceiving
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("DELETE FROM [COA].[ltbl_CMS_Docs] WHERE [iHeaderID] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_DeleteCMSLines] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", id))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
