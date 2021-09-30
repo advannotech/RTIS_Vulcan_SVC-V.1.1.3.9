@@ -11,6 +11,43 @@ Public Class POReceiving
     Public Shared sep As String = Thread.CurrentThread.CurrentCulture.NumberFormat.NumberDecimalSeparator
     Public Class RTSQL
         Partial Public Class Retreive
+
+            'GET SELECTED POs FROM CATscan
+
+            Public Shared Function UI_GetSelectedPOs(ByVal VendorName As String) As String
+                Try
+                    Dim ReturnData As String = ""
+                    Dim sqlConn As New SqlConnection(RTString)
+                    Dim sqlComm As New SqlCommand("SELECT DISTINCT [vOrderNum] FROM tbl_POLink WHERE vVendorName=@1 ORDER BY [vOrderNum] ASC", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@1", VendorName))
+                    sqlConn.Open()
+                    Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
+                    sqlReader.Read()
+                    ReturnData = Convert.ToString(sqlReader.Item(0)) + "~"
+                    While sqlReader.Read()
+                        ReturnData &= Convert.ToString(sqlReader.Item(0)) + "~"
+                    End While
+                    sqlReader.Close()
+                    sqlComm.Dispose()
+                    sqlConn.Close()
+
+                    If ReturnData <> "" Then
+                        Return "1*" + ReturnData
+                    Else
+                        Return "1*No POs found~"
+                    End If
+                Catch ex As Exception
+                    If ex.Message = "Invalid attempt to read when no data is present." Then
+                        Return "1*No POs found~"
+                    Else
+                        EventLog.WriteEntry("RTIS Vulcan SVC", "UI_GetSelectedPOs: " + ex.ToString())
+                        Return ExHandler.returnErrorEx(ex)
+                    End If
+                End Try
+            End Function
+
+
+
             Public Shared Function UI_CheckCMSValue(ByVal value As String, ByVal valType As String) As String
                 Try
                     Dim ReturnData As String = ""
@@ -508,7 +545,7 @@ Public Class POReceiving
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELEcT [iVendorID] FROM [tbl_POLink]
+                    Dim sqlComm As New SqlCommand(" SELECT [iVendorID] FROM [tbl_POLink]
                                                         WHERE [iVendorID] = @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", vendorID))
                     sqlConn.Open()
@@ -792,6 +829,33 @@ Public Class POReceiving
                     Return ExHandler.returnErrorEx(ex)
                 End Try
             End Function
+
+
+            'LINK PO TO VENDOR
+            Public Shared Function UI_LinkPOtoVendor(ByVal id As String, ByVal name As String, ByVal orderNum As String) As String
+                Try
+                    Dim ReturnData As String = ""
+                    Dim sqlConn As New SqlConnection(RTString)
+                    Dim sqlComm As New SqlCommand("INSERT INTO [tbl_POLink] ([iVendorID]
+                                                                                ,[vVendorName]
+                                                                                ,[vOrderNum]
+                                                                                ,[dtDateUpdated]
+                                                                                )
+                                                   VALUES (@1, @2, @3, GETDATE())", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@1", id))
+                    sqlComm.Parameters.Add(New SqlParameter("@2", name))
+                    sqlComm.Parameters.Add(New SqlParameter("@3", orderNum))
+                    sqlConn.Open()
+                    sqlComm.ExecuteNonQuery()
+                    sqlComm.Dispose()
+                    sqlConn.Close()
+                    Return "1*Success"
+                Catch ex As Exception
+                    EventLog.WriteEntry("RTIS Vulcan SVC", "UI_AddVendorLookup: " + ex.ToString())
+                    Return ExHandler.returnErrorEx(ex)
+                End Try
+            End Function
+
             Public Shared Function UI_RTLogPO(ByVal query As String) As String
                 Try
                     Dim ReturnData As String = ""
@@ -1049,6 +1113,40 @@ Public Class POReceiving
     End Class
     Public Class Evolution
         Partial Public Class Retreive
+
+            'GET ACTIVE POs FROM SAGE
+            Public Shared Function GetActivePOs() As String
+                Try
+                    Dim ReturnData As String = ""
+                    Dim sqlConn As New SqlConnection(EvoString)
+                    Dim sqlComm As New SqlCommand("SELECT DISTINCT TOP 200 [OrderNum] FROM [InvNum]
+                                                    WHERE[AccountID] <>'' AND [DocType] = 5 AND ([DocState] = 1 OR [DocState] = 3) 
+                                                    ORDER BY [OrderNum] ASC", sqlConn)
+                    sqlConn.Open()
+                    Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
+                    sqlReader.Read()
+                    ReturnData = Convert.ToString(sqlReader.Item(0)) + "~"
+                    While sqlReader.Read()
+                        ReturnData &= Convert.ToString(sqlReader.Item(0)) + "~"
+                    End While
+                    sqlReader.Close()
+                    sqlComm.Dispose()
+                    sqlConn.Close()
+
+                    If ReturnData <> "" Then
+                        Return "1*" + ReturnData
+                    Else
+                        Return "0*No active po were found"
+                    End If
+                Catch ex As Exception
+                    If ex.Message = "Invalid attempt to read when no data is present." Then
+                        Return "0*No active po were found"
+                    Else
+                        EventLog.WriteEntry("RTIS SVC", "GetActivePOnumber: " + ex.ToString())
+                        Return ExHandler.returnErrorEx(ex)
+                    End If
+                End Try
+            End Function
             Public Shared Function UI_GetEvoPOVendors() As String
                 Try
                     Dim ReturnData As String = ""
@@ -1193,40 +1291,35 @@ Public Class POReceiving
 
             End Function
 
-
-
-
-
-
             Public Shared Function UI_ReprintPOLinesNew(ByVal orderNum As String, ByVal vendorName As String) As String
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand(" SELECT s.[Code], s.[Description_1], s.[Description_2], il.[cLotNumber], il.[fQuantity] AS [OrderQty], il.[fQtyToProcess], 'false' AS [Receive],  '' AS [Print], s.[bLotItem] AS [LotLine], 'true' AS [Viewable]	                                                                                                   
+                    Dim sqlComm As New SqlCommand("SELECT s.[Code], s.[Description_1], s.[Description_2], ISNULL(il.[cLotNumber], ''), il.[fQuantity] AS [OrderQty], il.[fQtyToProcess], 'false' AS [Receive],  '' AS [Print], s.[bLotItem] AS [LotLine], 'true' AS [Viewable]	                                                                                                   
                                                     ,ISNULL(rtp.[dPrintQty],0) AS [dPrintQty]                                                    
                                                     ,ISNULL(rtp.[bValidated], 'True') AS [bValidated]
                                                     ,ISNULL(rtp.[bScanned], 'False') AS [bScanned]
-	                                                ,'0' AS [Back1]
-	                                                ,'0' AS [Back2]
-	                                                ,'' AS [Back3]
+                                                    ,'0' AS [Back1]
+                                                    ,'0' AS [Back2]
+                                                    ,'' AS [Back3]
                                                     FROM [InvNum] i
                                                     INNER JOIN [_btblInvoiceLines] il ON i.[AutoIndex] = il.[iInvoiceID]
                                                     INNER JOIN [StkItem] s ON s.[StockLink] = il.[iStockCodeID] 
                                                     LEFT JOIN [" + My.Settings.RTDB + "].[dbo].[tblPOLines] rtp ON rtp.[vItemCode] COLLATE Latin1_General_CI_AS = s.[Code] AND rtp.[vLotNumber] COLLATE Latin1_General_CI_AS = il.[cLotNumber] AND rtp.[vOrderNum] COLLATE Latin1_General_CI_AS = [OrderNum]
-                                                    WHERE i.[OrderNum] = @1 AND il.[cLotNumber]<>'' AND dPrintQty>0 AND i.[DocType] = '5' And (i.[DocState] = 1 OR i.[DocState] = 3) AND [bLotItem] = 1 AND i.[AutoIndex] = (SELECT TOP 1 [AutoIndex] FROM [InvNum] WHERE [OrderNum] = @1 ORDER BY [DocVersion] DESC)       
+                                                    WHERE i.[OrderNum] = @1 AND i.[DocType] = '5' AND il.[cLotNumber]<>'' AND dPrintQty>0 And (i.[DocState] = 1 OR i.[DocState] = 3) AND [bLotItem] = 1 AND i.[AutoIndex] = (SELECT TOP 1 [AutoIndex] FROM [InvNum] WHERE [OrderNum] = @1 ORDER BY [DocVersion] DESC)       
                                                     UNION
-                                                    SELECT s.[Code], s.[Description_1], s.[Description_2], il.[cLotNumber], il.[fQuantity] AS [OrderQty], il.[fQtyToProcess], 'false' AS [Receive],  '' AS [Print], s.[bLotItem] AS [LotLine], 'true' AS [Viewable] 	                                                
+                                                    SELECT s.[Code], s.[Description_1], s.[Description_2], ISNULL(il.[cLotNumber], '') , il.[fQuantity] AS [OrderQty], il.[fQtyToProcess], 'false' AS [Receive],  '' AS [Print], s.[bLotItem] AS [LotLine], 'true' AS [Viewable] 	                                                
                                                     ,ISNULL(rtp.[dPrintQty], 0) AS [dPrintQty]                                                    
                                                     ,ISNULL(rtp.[bValidated], 'True') AS [bValidated]
                                                     ,ISNULL(rtp.[bScanned], 'False') AS [bScanned]
-	                                                ,'0' AS [Back1]
-	                                                ,'0' AS [Back2]
-	                                                ,'' AS [Back3]
+                                                    ,'0' AS [Back1]
+                                                    ,'0' AS [Back2]
+                                                    ,'' AS [Back3]
                                                     FROM [InvNum] i
                                                     INNER JOIN [_btblInvoiceLines] il ON i.[AutoIndex] = il.[iInvoiceID]
                                                     INNER JOIN [StkItem] s ON s.[StockLink] = il.[iStockCodeID] 
                                                     LEFT JOIN [" + My.Settings.RTDB + "].[dbo].[tblPOLines] rtp ON rtp.[vItemCode] COLLATE Latin1_General_CI_AS = s.[Code] AND rtp.[vOrderNum] COLLATE Latin1_General_CI_AS = [OrderNum]
-                                                    WHERE i.[OrderNum] = @1 AND il.[cLotNumber]<>'' AND dPrintQty>0 AND i.[DocType] = '5' And (i.[DocState] = 1 OR i.[DocState] = 3) AND [bLotItem] = 1  AND i.[AutoIndex] = (SELECT TOP 1 [AutoIndex] FROM [InvNum] WHERE [OrderNum] = @1 ORDER BY [DocVersion] DESC)", sqlConn)
+                                                    WHERE i.[OrderNum] = @1 AND i.[DocType] = '5' AND il.[cLotNumber]<>'' AND dPrintQty>0 And (i.[DocState] = 1 OR i.[DocState] = 3) AND [bLotItem] = 0  AND i.[AutoIndex] = (SELECT TOP 1 [AutoIndex] FROM [InvNum] WHERE [OrderNum] = @1 ORDER BY [DocVersion] DESC)", sqlConn)
 
 
                     sqlComm.Parameters.Add(New SqlParameter("@1", orderNum))

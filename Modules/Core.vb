@@ -369,6 +369,7 @@ Public Class Role_Managemet
                     End If
                 End Try
             End Function
+
             Public Shared Function GetActivePermissions() As String
                 Try
                     Dim ReturnData As String = ""

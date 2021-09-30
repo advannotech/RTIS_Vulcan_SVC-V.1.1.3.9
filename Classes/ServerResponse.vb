@@ -1348,6 +1348,19 @@ Public Class ServerResponse
 #End Region
 
 #Region "PO Admin"
+            Case "*GETSELECTEDPOs*"
+                Try
+                    Dim VendorName As String = ClientData
+                    Server.Listener.SendResponse(ClientSocket, POReceiving.RTSQL.Retreive.UI_GetSelectedPOs(VendorName))
+                Catch ex As Exception
+                    Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
+                End Try
+            Case "*GETACTIVEPOs*"
+                Try
+                    Server.Listener.SendResponse(ClientSocket, POReceiving.Evolution.Retreive.GetActivePOs())
+                Catch ex As Exception
+                    Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
+                End Try
             Case "*GETEVOPOVENDORS*"
                 Try
                     Server.Listener.SendResponse(ClientSocket, POReceiving.Evolution.Retreive.UI_GetEvoPOVendors())
@@ -1428,6 +1441,24 @@ Public Class ServerResponse
                     Select Case refFound.Split("*")(0)
                         Case "1"
                             Server.Listener.SendResponse(ClientSocket, POReceiving.RTSQL.Update.UI_UpdateVendorPOLink(vendorID, supName, orderNo))
+                        Case "0"
+                            Server.Listener.SendResponse(ClientSocket, POReceiving.RTSQL.Insert.UI_AddVendorPOLink(vendorID, supName, orderNo))
+                        Case "-1"
+                            Server.Listener.SendResponse(ClientSocket, refFound)
+                    End Select
+                Catch ex As Exception
+                    Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
+                End Try
+
+            Case "*LINKPOTOVENDOR*"
+                Try
+                    Dim vendorID As String = ClientData.Split("|")(0)
+                    Dim supName As String = ClientData.Split("|")(1)
+                    Dim orderNo As String = ClientData.Split("|")(2)
+                    Dim refFound As String = POReceiving.RTSQL.Retreive.UI_CheckVendorPOLink(vendorID)
+                    Select Case refFound.Split("*")(0)
+                        Case "1"
+                            Server.Listener.SendResponse(ClientSocket, POReceiving.RTSQL.Insert.UI_AddVendorPOLink(vendorID, supName, orderNo))
                         Case "0"
                             Server.Listener.SendResponse(ClientSocket, POReceiving.RTSQL.Insert.UI_AddVendorPOLink(vendorID, supName, orderNo))
                         Case "-1"
