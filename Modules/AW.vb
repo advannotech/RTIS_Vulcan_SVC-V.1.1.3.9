@@ -1109,8 +1109,9 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("   SELECT [Code],[Description_1], '' FROM [StkItem]
-                                                      WHERE [ucIICoatStage] Like 'SOL-%' OR [ucIICoatStage] Like 'CHEM-1180%' OR [ucIICoatStage] Like 'CHEM-1640%' OR [ItemGroup] = '005'", sqlConn)
+                    Dim sqlComm As New SqlCommand(" SELECT [Code],[Description_1], '' FROM [StkItem]
+                                                    WHERE [ucIICoatStage] Like 'SOL-%' OR [ucIICoatStage] Like 'CHEM-1180%' OR [ucIICoatStage] Like 'CHEM-1640%' 
+                                                    OR [ItemGroup] = '005' OR [ItemGroup] = '009'", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()

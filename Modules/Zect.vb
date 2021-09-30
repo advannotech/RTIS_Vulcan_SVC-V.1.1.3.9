@@ -1358,12 +1358,14 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("   SELECT [ucIICoatStage],[Description_1],[Description_2], '' FROM [StkItem]
-                                                      WHERE [ucIICoatStage] LIKE '18461%' OR ([ucIICoatStage] LIKE 'V%' AND [ucIICoatStage] NOT LIKE 'VS%')", sqlConn)
-                    'SELECT [Code],[Description_1],[Description_2], '' FROM [StkItem]
-                    ' WHERE [Code] LIKE '18461%' OR ([Code] LIKE 'V%' AND [Code] NOT LIKE 'VS%')
+                    Dim sqlComm As New SqlCommand("Select [Code],[Description_1],[Description_2], '' FROM [StkItem]
+                     WHERE [Code] Like '18461%' OR ([Code] LIKE 'V%' AND [Code] NOT LIKE 'VS%')", sqlConn)
+
+
+                    'Select Case [ucIICoatStage],[Description_1],[Description_2], '' FROM [StkItem]
+                    '                                  WHERE [ucIICoatStage] Like '18461%' OR ([ucIICoatStage] LIKE 'V%' AND [ucIICoatStage] NOT LIKE 'VS%')
                     sqlConn.Open()
-                    Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
+                        Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
                         ReturnData &= Convert.ToString(sqlReader.Item(0)) + "|" + Convert.ToString(sqlReader.Item(1)) + "|" + Convert.ToString(sqlReader.Item(2)) + "|" + Convert.ToString(sqlReader.Item(3)) + "~"
                     End While
@@ -1385,8 +1387,8 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("   SELECT [Code],[Description_1], '' FROM [StkItem]
-                                                      WHERE [ItemGroup] LIKE '%007%' OR [ItemGroup] LIKE '%011%'", sqlConn)
+                    Dim sqlComm As New SqlCommand(" SELECT [Code],[Description_1], '' FROM [StkItem]
+                                                    WHERE [ItemGroup] LIKE '%007%' OR [ItemGroup] LIKE '%011%' OR [ItemGroup] LIKE '%005%'", sqlConn)
                     'SELECT [Code],[Description_1], '' FROM [StkItem]
                     'WHERE [ItemGroup] LIKE '%007%' OR [ItemGroup] LIKE '%011%'
                     sqlConn.Open()

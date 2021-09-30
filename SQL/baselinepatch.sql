@@ -459,7 +459,8 @@ CREATE PROC [dbo].[sp_ManualCloseZectJob]
 	@lot varchar(50)
 AS
 	IF EXISTS (SELECT * FROM [dbo].[tbl_RTIS_Zect_Jobs]
-				WHERE [vLotNumber] = TRIM(@lot))
+				WHERE [vLotNumber] = TRIM(@lot)
+				AND [bJobRunning] = 1)
 	BEGIN
 		UPDATE [dbo].[tbl_RTIS_Zect_Jobs]
 		SET [bJobRunning] = 0
