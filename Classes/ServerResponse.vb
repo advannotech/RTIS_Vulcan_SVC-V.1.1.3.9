@@ -1687,7 +1687,10 @@ Public Class ServerResponse
                     Dim failureReason As String = String.Empty
                     For index = 1 To iPrintQty
 
-                        If (index = iPrintQty And lastLabelqty IsNot Nothing) Then
+                        If (index = iPrintQty And lastLabelqty IsNot Nothing And lastLabelqty > 0) Then
+                            qtyPerLabel = lastLabelqty
+                        End If
+                        If (index = iPrintQty And lastLabelqty IsNot Nothing And lastLabelqty < 0) Then
                             qtyPerLabel = lastLabelqty
                         End If
 
