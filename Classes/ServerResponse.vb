@@ -1677,6 +1677,7 @@ Public Class ServerResponse
                     Dim PrintQty As String = ClientData.Split("|")(3)
                     Dim userName As String = ClientData.Split("|")(4)
                     Dim qtyPerLabel As String = ClientData.Split("|")(5)
+                    Dim lastLabelqty As String = ClientData.Split("|")(6)
 
                     Dim iPrintQty As Integer = Convert.ToInt32(PrintQty)
                     Dim exp = String.Empty
@@ -1685,6 +1686,11 @@ Public Class ServerResponse
                     Dim failed As Boolean = False
                     Dim failureReason As String = String.Empty
                     For index = 1 To iPrintQty
+
+                        If (index = iPrintQty And lastLabelqty IsNot Nothing) Then
+                            qtyPerLabel = lastLabelqty
+                        End If
+
                         Dim unqBar As String = Convert.ToString(DateTime.Now.ToString("dd-MM-yy hh:mm:ss")).Replace(":", "").Replace(" ", "").Replace("-", "").Replace("/", "")
                         Dim Barcode = "(240)" + itemCode.PadRight(25, " ") + "(15)" + "".PadRight(6, " ") + "(10)" + lotNum.PadRight(20, " ") + "(30)" + qtyPerLabel.PadLeft(8, "0") + "(90)" + unqBar
                         Dim inserted As String = Unique.RTSQL.Insert.UI_SaveRT2DBarcode(Barcode, OrderNO)
