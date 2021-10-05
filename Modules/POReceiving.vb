@@ -514,7 +514,7 @@ Public Class POReceiving
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT ven.[iVendorID], ven.[vVendorName], ISNULL([vOrderNum], '- Select Order -') AS [vOrderNum], [dtDateUpdated], '' AS [POs]
+                    Dim sqlComm As New SqlCommand(" SELECT ven.[iVendorID], ven.[vVendorName], ISNULL([vOrderNum], '- Not Linked -') AS [vOrderNum], [dtDateUpdated], '' AS [POs]
                                                     FROM [tbl_POLink] link 
                                                     RIGHT JOIN [rtblEvoVendors] ven ON ven.[iVendorID] = link.[iVendorID]
                                                     WHERE ven.[vVendorName] <> '' AND ven.[bSelected] = 1", sqlConn)
@@ -810,12 +810,22 @@ Public Class POReceiving
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [tbl_POLink] ([iVendorID]
-                                                                                ,[vVendorName]
-                                                                                ,[vOrderNum]
-                                                                                ,[dtDateUpdated]
-                                                                                )
-                                                   VALUES (@1, @2, @3, GETDATE())", sqlConn)
+                    'Dim sqlComm As New SqlCommand("INSERT INTO [tbl_POLink] ([iVendorID]
+                    '                                                            ,[vVendorName]
+                    '                                                            ,[vOrderNum]
+                    '                                                            ,[dtDateUpdated]
+                    '                                                            )
+                    '                               VALUES (@1, @2, @3, GETDATE())", sqlConn)
+                    Dim sqlComm As New SqlCommand("IF NOT EXISTS
+                                                    (   SELECT DISTINCT [vOrderNum],[vVendorName]
+                                                        FROM    [tbl_POLink] 
+                                                        WHERE   [vVendorName] =@1
+		                                                AND		[vOrderNum] IS NOT NULL
+		                                                AND		[vOrderNum] =@2
+                                                    )BEGIN
+                                                    INSERT [tbl_POLink] ([iVendorID], [vVendorName],[vOrderNum],[dtDateUpdated])
+                                                    VALUES (@1, @2, @3, GETDATE())
+                                            END", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", id))
                     sqlComm.Parameters.Add(New SqlParameter("@2", name))
                     sqlComm.Parameters.Add(New SqlParameter("@3", orderNum))
@@ -1115,13 +1125,15 @@ Public Class POReceiving
         Partial Public Class Retreive
 
             'GET ACTIVE POs FROM SAGE
-            Public Shared Function GetActivePOs() As String
+            Public Shared Function GetActivePOs(ByVal supplier As String) As String
                 Try
+
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("SELECT DISTINCT TOP 200 [OrderNum] FROM [InvNum]
-                                                    WHERE[AccountID] <>'' AND [DocType] = 5 AND ([DocState] = 1 OR [DocState] = 3) 
-                                                    ORDER BY [OrderNum] ASC", sqlConn)
+                    Dim sqlComm As New SqlCommand("SELECT DISTINCT TOP 1000 [OrderNum] FROM [InvNum]
+                                                    WHERE [cAccountName]=@1 AND [AccountID] <>'' AND [DocType] = 5 AND ([DocState] = 1 OR [DocState] = 3) 
+                                                    ORDER BY [OrderNum] DESC", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@1", supplier))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -1188,8 +1200,8 @@ Public Class POReceiving
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand(" SELECT DISTINCT TOP 3 [OrderNum] FROM [InvNum]
-                                                    WHERE [AccountID] = @1 AND [DocType] = 5 AND ([DocState] = 1 OR [DocState] = 3)", sqlConn)
+                    Dim sqlComm As New SqlCommand(" SELECT DISTINCT TOP 15 [OrderNum] FROM [InvNum]
+                                                    WHERE [AccountID] = @1 AND [DocType] = 5 AND ([DocState] = 1 OR [DocState] = 3) ORDER BY [OrderNum] DESC", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", vendorID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()

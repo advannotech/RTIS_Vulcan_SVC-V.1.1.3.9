@@ -1357,7 +1357,8 @@ Public Class ServerResponse
                 End Try
             Case "*GETACTIVEPOs*"
                 Try
-                    Server.Listener.SendResponse(ClientSocket, POReceiving.Evolution.Retreive.GetActivePOs())
+                    Dim supplier As String = ClientData
+                    Server.Listener.SendResponse(ClientSocket, POReceiving.Evolution.Retreive.GetActivePOs(supplier))
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
