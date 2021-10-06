@@ -1348,6 +1348,20 @@ Public Class ServerResponse
 #End Region
 
 #Region "PO Admin"
+            Case "*GETSELECTEDPOs*"
+                Try
+                    Dim VendorName As String = ClientData
+                    Server.Listener.SendResponse(ClientSocket, POReceiving.RTSQL.Retreive.UI_GetSelectedPOs(VendorName))
+                Catch ex As Exception
+                    Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
+                End Try
+            Case "*GETACTIVEPOs*"
+                Try
+                    Dim supplier As String = ClientData
+                    Server.Listener.SendResponse(ClientSocket, POReceiving.Evolution.Retreive.GetActivePOs(supplier))
+                Catch ex As Exception
+                    Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
+                End Try
             Case "*GETEVOPOVENDORS*"
                 Try
                     Server.Listener.SendResponse(ClientSocket, POReceiving.Evolution.Retreive.UI_GetEvoPOVendors())
@@ -1436,6 +1450,24 @@ Public Class ServerResponse
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
+
+            Case "*LINKPOTOVENDOR*"
+                Try
+                    Dim vendorID As String = ClientData.Split("|")(0)
+                    Dim supName As String = ClientData.Split("|")(1)
+                    Dim orderNo As String = ClientData.Split("|")(2)
+                    Dim refFound As String = POReceiving.RTSQL.Retreive.UI_CheckVendorPOLink(vendorID)
+                    Select Case refFound.Split("*")(0)
+                        Case "1"
+                            Server.Listener.SendResponse(ClientSocket, POReceiving.RTSQL.Insert.UI_AddVendorPOLink(vendorID, supName, orderNo))
+                        Case "0"
+                            Server.Listener.SendResponse(ClientSocket, POReceiving.RTSQL.Insert.UI_AddVendorPOLink(vendorID, supName, orderNo))
+                        Case "-1"
+                            Server.Listener.SendResponse(ClientSocket, refFound)
+                    End Select
+                Catch ex As Exception
+                    Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
+                End Try
 #End Region
 
 #Region "PO Receiving"
@@ -1467,6 +1499,22 @@ Public Class ServerResponse
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
+            Case "*REPRINTVENDORPOLINES*"
+                Try
+                    Dim vendorName As String = ClientData
+                    Dim vendorPO As String = POReceiving.RTSQL.Retreive.UI_GetVendorPO(vendorName)
+                    Select Case vendorPO.Split("*")(0)
+                        Case "1"
+                            vendorPO = vendorPO.Remove(0, 2)
+                            Server.Listener.SendResponse(ClientSocket, POReceiving.Evolution.Retreive.UI_ReprintPOLinesNew(vendorPO, vendorName))
+                        Case "0"
+                            Server.Listener.SendResponse(ClientSocket, vendorPO)
+                        Case "-1"
+                            Server.Listener.SendResponse(ClientSocket, vendorPO)
+                    End Select
+                Catch ex As Exception
+                    Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
+                End Try
             Case "*GETPOLINES*"
                 Try
                     Dim orderNum As String = ClientData
@@ -1483,6 +1531,27 @@ Public Class ServerResponse
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
+
+
+            Case "*REPRINTPOLINES*"
+                Try
+                    Dim orderNum As String = ClientData
+                    Dim POVendor As String = POReceiving.RTSQL.Retreive.UI_GetPOVendor(orderNum)
+                    Select Case POVendor.Split("*")(0)
+                        Case "1"
+                            POVendor = POVendor.Remove(0, 2)
+                            Server.Listener.SendResponse(ClientSocket, POReceiving.Evolution.Retreive.UI_ReprintPOLinesNew(orderNum, POVendor))
+                        Case "0"
+                            Server.Listener.SendResponse(ClientSocket, POVendor)
+                        Case "-1"
+                            Server.Listener.SendResponse(ClientSocket, POVendor)
+                    End Select
+                Catch ex As Exception
+                    Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
+                End Try
+
+
+
             Case "*PRINTPOLABELSAUTO*"
                 Try
                     Dim OrderNO As String = ClientData.Split("|")(0)
@@ -1609,6 +1678,7 @@ Public Class ServerResponse
                     Dim PrintQty As String = ClientData.Split("|")(3)
                     Dim userName As String = ClientData.Split("|")(4)
                     Dim qtyPerLabel As String = ClientData.Split("|")(5)
+                    Dim lastLabelqty As String = ClientData.Split("|")(6)
 
                     Dim iPrintQty As Integer = Convert.ToInt32(PrintQty)
                     Dim exp = String.Empty
@@ -1617,6 +1687,14 @@ Public Class ServerResponse
                     Dim failed As Boolean = False
                     Dim failureReason As String = String.Empty
                     For index = 1 To iPrintQty
+
+                        If (index = iPrintQty And lastLabelqty IsNot Nothing And lastLabelqty > 0) Then
+                            qtyPerLabel = lastLabelqty
+                        End If
+                        If (index = iPrintQty And lastLabelqty IsNot Nothing And lastLabelqty < 0) Then
+                            qtyPerLabel = lastLabelqty
+                        End If
+
                         Dim unqBar As String = Convert.ToString(DateTime.Now.ToString("dd-MM-yy hh:mm:ss")).Replace(":", "").Replace(" ", "").Replace("-", "").Replace("/", "")
                         Dim Barcode = "(240)" + itemCode.PadRight(25, " ") + "(15)" + "".PadRight(6, " ") + "(10)" + lotNum.PadRight(20, " ") + "(30)" + qtyPerLabel.PadLeft(8, "0") + "(90)" + unqBar
                         Dim inserted As String = Unique.RTSQL.Insert.UI_SaveRT2DBarcode(Barcode, OrderNO)
