@@ -324,9 +324,9 @@ Public Class PGMPlanning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlCommCatalyst As New SqlCommand("SELECT [StockLink], [Code], [Description_1] FROM [StkItem] WHERE [Code] Like '18461-%' ORDER BY [Code] ASC", sqlConn)
-                    Dim sqlCommSlurry As New SqlCommand("SELECT [StockLink], [Code], [Description_1] FROM [StkItem] WHERE [Code] Like 'TSP-%' OR [Code] Like 'VSP-%' ORDER BY [Code] ASC", sqlConn)
-                    Dim sqlCommPowder As New SqlCommand("SELECT [StockLink], [Code], [Description_1] FROM [StkItem] WHERE [Code] Like 'TPP-%' OR [Code] Like 'VPP-%' ORDER BY [Code] ASC", sqlConn)
+                    Dim sqlCommCatalyst As New SqlCommand("SELECT [StockLink], [Code], [Description_1] FROM [StkItem] WHERE [ItemGroup] IN (005) ORDER BY [Code] ASC", sqlConn)
+                    Dim sqlCommSlurry As New SqlCommand("SELECT [StockLink], [Code], [Description_1] FROM [StkItem] WHERE  [ItemGroup] = 011 ORDER BY [Code] ASC", sqlConn)
+                    Dim sqlCommPowder As New SqlCommand("SELECT [StockLink], [Code], [Description_1] FROM [StkItem] WHERE [ItemGroup] = 010 ORDER BY [Code] ASC", sqlConn)
                     sqlConn.Open()
 
                     Dim sqlReaderCatalyst As SqlDataReader = sqlCommCatalyst.ExecuteReader()
@@ -373,7 +373,7 @@ Public Class PGMPlanning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlCommPGM As New SqlCommand("SELECT [StockLink], [Code], [Description_1] FROM [StkItem] WHERE [Code] Like 'SOL-%' OR [Code] Like 'CHEM-1180%' OR [Code] Like 'CHEM-1640%' ORDER BY [Code] ASC", sqlConn)
+                    Dim sqlCommPGM As New SqlCommand("SELECT [StockLink], [Code], [Description_1] FROM [StkItem] WHERE [ItemGroup] IN (002,009) ORDER BY [Code] ASC", sqlConn)
                     sqlConn.Open()
 
                     Dim sqlReaderPGM As SqlDataReader = sqlCommPGM.ExecuteReader()

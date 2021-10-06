@@ -1054,6 +1054,26 @@ Public Class AW
                     Return ExHandler.returnErrorEx(ex)
                 End Try
             End Function
+            Public Shared Function AW_ManualCloseJob(ByVal lotNo As String) As String
+                Try
+                    Dim ReturnData As String = ""
+                    Dim sqlConn As New SqlConnection(RTString)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_ManualCloseAWJob] @1", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@1", lotNo))
+                    sqlConn.Open()
+                    Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
+                    While sqlReader.Read()
+                        ReturnData = Convert.ToString(sqlReader.Item(0))
+                    End While
+                    sqlReader.Close()
+                    sqlComm.Dispose()
+                    sqlConn.Close()
+                    Return ReturnData
+                Catch ex As Exception
+                    EventLog.WriteEntry("RTIS Vulcan SVC", "AW_ManualCloseJob: " + ex.ToString())
+                    Return ExHandler.returnErrorEx(ex)
+                End Try
+            End Function
         End Class
     End Class
 
@@ -1089,8 +1109,9 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("   SELECT [ucIICoatStage],[Description_1], '' FROM [StkItem]
-                                                      WHERE [ucIICoatStage] Like 'SOL-%' OR [ucIICoatStage] Like 'CHEM-1180%' OR [ucIICoatStage] Like 'CHEM-1640%' OR [ItemGroup] = '005'", sqlConn)
+                    Dim sqlComm As New SqlCommand(" SELECT [Code],[Description_1], '' FROM [StkItem]
+                                                    WHERE [ucIICoatStage] Like 'SOL-%' OR [ucIICoatStage] Like 'CHEM-1180%' OR [ucIICoatStage] Like 'CHEM-1640%' 
+                                                    OR [ItemGroup] = '005' OR [ItemGroup] = '009'", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()

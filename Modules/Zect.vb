@@ -1310,6 +1310,26 @@ Public Class Zect
                     Return ExHandler.returnErrorEx(ex)
                 End Try
             End Function
+            Public Shared Function Zect_ManualCloseJob(ByVal lotNo As String) As String
+                Try
+                    Dim ReturnData As String = ""
+                    Dim sqlConn As New SqlConnection(RTString)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_ManualCloseZectJob] @1", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@1", lotNo))
+                    sqlConn.Open()
+                    Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
+                    While sqlReader.Read()
+                        ReturnData = Convert.ToString(sqlReader.Item(0))
+                    End While
+                    sqlReader.Close()
+                    sqlComm.Dispose()
+                    sqlConn.Close()
+                    Return ReturnData
+                Catch ex As Exception
+                    EventLog.WriteEntry("RTIS Vulcan SVC", "Zect_ManualCloseJob: " + ex.ToString())
+                    Return ExHandler.returnErrorEx(ex)
+                End Try
+            End Function
         End Class
         Partial Public Class Delete
             Public Shared Function UI_DeleteRMLink(ByVal catalystCode As String, ByVal rmCode As String) As String
@@ -1338,12 +1358,14 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("   SELECT [ucIICoatStage],[Description_1],[Description_2], '' FROM [StkItem]
-                                                      WHERE [ucIICoatStage] LIKE '18461%' OR ([ucIICoatStage] LIKE 'V%' AND [ucIICoatStage] NOT LIKE 'VS%')", sqlConn)
-                    'SELECT [Code],[Description_1],[Description_2], '' FROM [StkItem]
-                    ' WHERE [Code] LIKE '18461%' OR ([Code] LIKE 'V%' AND [Code] NOT LIKE 'VS%')
+                    Dim sqlComm As New SqlCommand("Select [Code],[Description_1],[Description_2], '' FROM [StkItem]
+                     WHERE [Code] Like '18461%' OR ([Code] LIKE 'V%' AND [Code] NOT LIKE 'VS%')", sqlConn)
+
+
+                    'Select Case [ucIICoatStage],[Description_1],[Description_2], '' FROM [StkItem]
+                    '                                  WHERE [ucIICoatStage] Like '18461%' OR ([ucIICoatStage] LIKE 'V%' AND [ucIICoatStage] NOT LIKE 'VS%')
                     sqlConn.Open()
-                    Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
+                        Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
                         ReturnData &= Convert.ToString(sqlReader.Item(0)) + "|" + Convert.ToString(sqlReader.Item(1)) + "|" + Convert.ToString(sqlReader.Item(2)) + "|" + Convert.ToString(sqlReader.Item(3)) + "~"
                     End While
@@ -1365,8 +1387,8 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("   SELECT [ucIICoatStage],[Description_1], '' FROM [StkItem]
-                                                      WHERE [ItemGroup] LIKE '%007%' OR [ItemGroup] LIKE '%011%'", sqlConn)
+                    Dim sqlComm As New SqlCommand(" SELECT [Code],[Description_1], '' FROM [StkItem]
+                                                    WHERE [ItemGroup] LIKE '%007%' OR [ItemGroup] LIKE '%011%' OR [ItemGroup] LIKE '%005%'", sqlConn)
                     'SELECT [Code],[Description_1], '' FROM [StkItem]
                     'WHERE [ItemGroup] LIKE '%007%' OR [ItemGroup] LIKE '%011%'
                     sqlConn.Open()
@@ -1644,22 +1666,6 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    ''       Dim sqlComm As New SqlCommand("SELECT DISTINCT 'Large Tank', rl.vTankCode, l.[cLotDescription], 'TNK', rl.[dWetWeight], rl.[dDryWeight] FROM [_etblLotTrackingQty] lq
-                    ''                                    INNER JOIN [_etblLotTracking] l ON l.[idLotTracking] = lq.[iLotTrackingID] 
-                    ''                                    INNER JOIN [_etblLotStatus] ls ON l.[iLotStatusID] = ls.[idLotStatus]
-                    ''INNER JOIN [WhseMst] w ON w.[WhseLink] = lq.[iWarehouseID]
-                    ''                                    INNER JOIN [StkItem] s ON s.[StockLink] = l.[iStockID]
-                    ''                                    INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Main] rl ON rl.[vLotNumber] COLLATE Latin1_General_CI_AS = l.[cLotDescription] AND rl.[vItemCode] = s.[Code]
-                    ''WHERE s.[Code] = @1 AND w.[Code] = @2 AND rl.[vTankType] = 'TNK'  AND lq.[fQtyOnHand]  <> 0 AND rl.[bTransferred] = 1 AND ISNULL(rl.[bReceived], 0)  = 0 AND rl.[dSolidity] IS NOT NULL 
-                    ''UNION
-                    ''SELECT DISTINCT 'Mobile Tank', rd.vTankCode, l.[cLotDescription], 'MTNK', rd.[dFinalWetWeight], rd.[dDryWeight] FROM [_etblLotTrackingQty] lq
-                    ''                                    INNER JOIN [_etblLotTracking] l ON l.[idLotTracking] = lq.[iLotTrackingID] 
-                    ''                                    INNER JOIN [_etblLotStatus] ls ON l.[iLotStatusID] = ls.[idLotStatus]
-                    ''INNER JOIN [WhseMst] w ON w.[WhseLink] = lq.[iWarehouseID]
-                    ''                                    INNER JOIN [StkItem] s ON s.[StockLink] = l.[iStockID]
-                    ''                                    INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Main] rl ON rl.[vLotNumber] COLLATE Latin1_General_CI_AS = l.[cLotDescription] AND rl.[vItemCode] = s.[Code]
-                    ''INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Decant] rd ON rd.[iHeaderID] = rl.[iLineID] 
-                    ''WHERE s.[Code] = @1 AND w.[Code] = @2 AND rl.[vTankType] = 'BTNK'  AND lq.[fQtyOnHand]  <> 0 AND rd.[bTransferred] = 1 AND ISNULL(rd.[bReceived], 0)  = 0 AND rd.[dSolidity] IS NOT NULL", sqlConn)
                     Dim sqlComm As New SqlCommand("
                                             SELECT DISTINCT 'Large Tank', rl.vTankCode, l.[cLotDescription], 'TNK', rl.[dWetWeight], rl.[dDryWeight] FROM [_etblLotTrackingQty] lq
                                             INNER JOIN [_etblLotTracking] l ON l.[idLotTracking] = lq.[iLotTrackingID] 

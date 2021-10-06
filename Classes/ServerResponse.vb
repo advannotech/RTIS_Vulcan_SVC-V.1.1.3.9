@@ -11765,6 +11765,18 @@ Public Class ServerResponse
                 End Try
 #End Region
 
+#Region "AWManualClose"
+
+            Case "*AWMANUALCLOSEJOB*"
+                Try
+                    Dim lotNumber As String = ClientData
+                    Server.Listener.SendResponse(ClientSocket, AW.RTSQL.Update.AW_ManualCloseJob(lotNumber))
+                Catch ex As Exception
+                    Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
+                End Try
+
+#End Region
+
 #Region "ReOpen Job"
             Case "*GETAWREOPENJOBLOTS*"
                 Try
@@ -11816,6 +11828,18 @@ Public Class ServerResponse
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
+#End Region
+
+#Region "ZectManualClose"
+
+            Case "*ZECTMANUALCLOSEJOB*"
+                Try
+                    Dim lotNumber As String = ClientData
+                    Server.Listener.SendResponse(ClientSocket, Zect.RTSQL.Update.Zect_ManualCloseJob(lotNumber))
+                Catch ex As Exception
+                    Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
+                End Try
+
 #End Region
 
 #End Region

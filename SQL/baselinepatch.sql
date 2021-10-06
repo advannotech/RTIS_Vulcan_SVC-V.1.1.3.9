@@ -76,75 +76,6 @@ END
 GO
 
 
-
--- query from CATscan UI, you'll find it on DirectQueries.cs
-
-SELECT
-il.[idInvCountLines] AS [gclineID]
-,s.[Code] AS [gcItemCode]
-, s.[Bar_Code] AS [gcBarcode]
-, s.[Description_1] AS [gcItemDesc]
-, b.[cBinLocationName] AS [gcBin]
-, l.[cLotDescription] AS [gcLot]
-, ROUND(il.[fCountQty], 5) AS [gcCounted]
-, ROUND(il.[fCountQty2], 5) AS [gcCounted2]
-, ROUND(il.[fSystemQty], 5) AS [gcSystem]
-, CASE WHEN(il.[fCountQty] = il.[fCountQty2])  
-THEN CAST([dbo].[fn_CalculateVariance]([dbo].[fn_GetDifference](il.[fCountQty],il.[fSystemQty]), [dbo].[fn_GetTolerance](s.[ItemGroup])) AS VARCHAR(50))
-ELSE 'SV: ' + CAST(CAST([dbo].[fn_GetDifference](il.[fCountQty],il.[fSystemQty]) AS FLOAT) AS VARCHAR(50)) END AS [gcVarience]
-, w.[Code] AS [gcWhseCode]
-, w.[Name] AS [gcWhseName]
-, il.[bIsCounted] AS [gcIsCounted]
-, il.[bOnST] AS [gcOnST]
-FROM[RTIS_InvCountLines] il
-INNER JOIN[RTIS_InvCount] i ON i.[idInvCount] = [iInvCountID]
-INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[StockLink] = il.[iStockID]
-INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = il.[iWarehouseID]
-LEFT JOIN [Cataler_SCN].[dbo].[_etblLotTracking] l ON il.[iLotTrackingID] = l.[idLotTracking]
-LEFT JOIN [Cataler_SCN].[dbo].[_btblBINLocation] b ON il.[iBinLocationId] = b.[idBinLocation]
-WHERE i.[cInvCountNo] = 'STK0131'  
-ORDER BY
-CASE WHEN(il.[fSystemQty] - il.[fCountQty]) < 0 THEN il.[fCountQty]
-WHEN(il.[fCountQty] - il.[fSystemQty]) < 0 THEN il.[fCountQty] END DESC
-
-
-
------------------------------------------------------------------------------------------------------
-
-
-
-SELECT * FROM [RTIS_InvCountLines]
-WHERE [iInvCountID] = 131
-
-
--- update the variance expression
-UPDATE [RTIS_InvCountLines]
-SET [fCountQty] = 1.87123  ,
-[fCountQty2] = 1.87123  ,
-[fSystemQty] = 2
-WHERE [idInvCountLines] = 341
-
-
-
-
------------------------------------------------------------------------------------------------------
-
-
-
-SELECT * FROM [RTIS_InvCountLines]
-WHERE [iInvCountID] = 131
-
-
--- update the variance expression
-UPDATE [RTIS_InvCountLines]
-SET [fCountQty] = 2  ,
-[fCountQty2] = 2  ,
-[fSystemQty] = 1.95123  
-WHERE [idInvCountLines] = 341
-
-
-
-
 -----------------------------------------------------------------------------------------------------
 
 
@@ -177,16 +108,7 @@ WHERE il.[fSystemQty] > il.[fCountQty]
 AND il.[fCountQty] <> 0 
 AND il.[fCountQty] = il.[fCountQty2] 
 AND il.[bOnST] = 1 
---ORDER BY s.[Code]
 GO
-
-
-
-
---SELECT * from [vw_GetItemsBelowSystemCount]
---WHERE [vw_GetItemsBelowSystemCount].[cInvCountNo] = 'STK0182'
---ORDER BY [vw_GetItemsBelowSystemCount].[ItemCode]
-
 
 
 
@@ -214,16 +136,10 @@ INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[StockLink] = il.[iStockID]
 INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = il.[iWarehouseID] 
 LEFT JOIN [Cataler_SCN].[dbo].[_btblBINLocation] b ON b.[idBinLocation] = il.[iBinLocationId] 
 LEFT JOIN [Cataler_SCN].[dbo].[_etblLotTracking] l ON il.[iLotTrackingID] = l.[idLotTracking] 
---WHERE i.[cInvCountNo] = 'STK0182' 
 WHERE il.[fSystemQty] < il.[fCountQty] 
 AND il.[fCountQty] = il.[fCountQty2] 
 AND il.[bOnST] = 1 
---ORDER BY s.[Code]
 GO
-
-
-
-SELECT * FROM [dbo].[vw_GetItemsAboveSystemCount] WHERE [vw_GetItemsAboveSystemCount].cInvCountNo = 'STK0182' ORDER BY [vw_GetItemsAboveSystemCount].[ItemCode]
 
 
 
@@ -251,19 +167,11 @@ INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[StockLink] = il.[iStockID]
 INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = il.[iWarehouseID] 
 LEFT JOIN [Cataler_SCN].[dbo].[_btblBINLocation] b ON b.[idBinLocation] = il.[iBinLocationId] 
 LEFT JOIN [Cataler_SCN].[dbo].[_etblLotTracking] l ON il.[iLotTrackingID] = l.[idLotTracking] 
---WHERE i.[cInvCountNo] = 'STK0182' 
 WHERE (il.[fCountQty] = 0 OR il.[fCountQty] IS NULL OR il.[fCountQty] = '') 
 AND (il.[fCountQty2] = 0 OR il.[fCountQty2] IS NULL OR il.[fCountQty2] = '') 
 AND (il.[fCountQty] <> 0 OR il.[fCountQty2] <> 0 OR il.[fSystemQty] <> 0) 
 AND il.[bOnST] = 1 
---ORDER BY s.[Code]
 GO
-
-
-
-
-SELECT * FROM [dbo].[vw_GetItemsUncounted] WHERE [vw_GetItemsUncounted].cInvCountNo = 'STK0182' ORDER BY [vw_GetItemsUncounted].[ItemCode]
-
 
 
 
@@ -292,24 +200,13 @@ INNER JOIN [RTIS_InvCount] i ON i.[idInvCount] = [iInvCountID]
 INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[StockLink] = il.[iStockID] 
 INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = il.[iWarehouseID] 
 LEFT JOIN [Cataler_SCN].[dbo].[_btblBINLocation] b ON b.[idBinLocation] = il.[iBinLocationId] 
-LEFT JOIN [Cataler_SCN].[dbo].[_etblLotTracking] l ON il.[iLotTrackingID] = l.[idLotTracking] 
---WHERE i.[cInvCountNo] = 'STK0140' 
+LEFT JOIN [Cataler_SCN].[dbo].[_etblLotTracking] l ON il.[iLotTrackingID] = l.[idLotTracking]
 WHERE il.[fCountQty] = il.[fSystemQty] 
 AND il.[fCountQty] <> 0 
 AND il.[fSystemQty] <> 0 
 AND il.[fCountQty] = il.[fCountQty2] 
 AND il.[bOnST] = 1 
---ORDER BY s.[Code]
 GO
-
-
-
-
-
-
-
-SELECT * FROM [dbo].[vw_GetItemsEqualSystemCount] WHERE [vw_GetItemsEqualSystemCount].[cInvCountNo] = 'STK0140' ORDER BY [vw_GetItemsEqualSystemCount].[ItemCode]
-
 
 
 
@@ -339,19 +236,10 @@ INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[StockLink] = il.[iStockID]
 INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = il.[iWarehouseID] 
 LEFT JOIN [Cataler_SCN].[dbo].[_btblBINLocation] b ON b.[idBinLocation] = il.[iBinLocationId] 
 LEFT JOIN [Cataler_SCN].[dbo].[_etblLotTracking] l ON il.[iLotTrackingID] = l.[idLotTracking] 
---WHERE i.[cInvCountNo] = 'STK0182' 
 WHERE il.[fCountQty] <> il.[fCountQty2] 
 AND il.[bOnST] = 1 
---ORDER BY s.[Code]
 GO
 
-
-
-
-
-
-
-SELECT * FROM [dbo].[vw_GetUnequalScannerQty] WHERE [vw_GetUnequalScannerQty].[cInvCountNo] = 'STK0182' ORDER BY [vw_GetUnequalScannerQty].[ItemCode]
 
 
 
@@ -380,17 +268,9 @@ INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[StockLink] = il.[iStockID]
 INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = il.[iWarehouseID] 
 LEFT JOIN [Cataler_SCN].[dbo].[_btblBINLocation] b ON b.[idBinLocation] = il.[iBinLocationId] 
 LEFT JOIN [Cataler_SCN].[dbo].[_etblLotTracking] l ON il.[iLotTrackingID] = l.[idLotTracking] 
---WHERE i.[cInvCountNo] = 'STK0182' 
 WHERE il.[bOnST] = 0 
---ORDER BY s.[Code]
 GO
 
-
-
-
-
-
-SELECT * FROM [dbo].[vw_GetUnlistedItems] WHERE [vw_GetUnlistedItems].[cInvCountNo] = 'STK0182' ORDER BY [vw_GetUnlistedItems].[ItemCode]
 
 
 
@@ -419,25 +299,14 @@ il.[idInvCountLines] AS [gclineID]
 , w.[Name] AS [gcWhseName]
 , il.[bIsCounted] AS [gcIsCounted]
 , il.[bOnST] AS [gcOnST]
-FROM[RTIS_InvCountLines] il
+FROM [RTIS_InvCountLines] il
 INNER JOIN[RTIS_InvCount] i ON i.[idInvCount] = [iInvCountID]
 INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[StockLink] = il.[iStockID]
 INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = il.[iWarehouseID]
 LEFT JOIN [Cataler_SCN].[dbo].[_etblLotTracking] l ON il.[iLotTrackingID] = l.[idLotTracking]
 LEFT JOIN [Cataler_SCN].[dbo].[_btblBINLocation] b ON il.[iBinLocationId] = b.[idBinLocation]
---WHERE i.[cInvCountNo] = 'STK0182'  
---ORDER BY
---CASE WHEN(il.[fSystemQty] - il.[fCountQty]) < 0 THEN il.[fCountQty]
---WHEN(il.[fCountQty] - il.[fSystemQty]) < 0 THEN il.[fCountQty] END DESC
 GO
 
-
-
-SELECT * FROM [dbo].[vw_GetStockTakeVariances] 
-WHERE [vw_GetStockTakeVariances].[cInvCountNo] = 'STK0182' 
-ORDER BY
-CASE WHEN([vw_GetStockTakeVariances].[gcSystem] - [vw_GetStockTakeVariances].[gcCounted]) < 0 THEN [vw_GetStockTakeVariances].[gcCounted]
-WHEN([vw_GetStockTakeVariances].[gcCounted] - [vw_GetStockTakeVariances].[gcSystem]) < 0 THEN [vw_GetStockTakeVariances].[gcCounted] END DESC
 
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -669,6 +538,1168 @@ INSERT INTO [rtbl_PermLabels]
            )
    END
 END
+
+IF (OBJECT_ID('[dbo].[sp_ManualCloseZectJob]') IS NOT NULL)
+	DROP PROC [dbo].[sp_ManualCloseZectJob]
+GO
+
+CREATE PROC [dbo].[sp_ManualCloseZectJob]
+	@lot varchar(50)
+AS
+	IF EXISTS (SELECT * FROM [dbo].[tbl_RTIS_Zect_Jobs]
+				WHERE [vLotNumber] = TRIM(@lot)
+				AND [bJobRunning] = 1)
+	BEGIN
+		UPDATE [dbo].[tbl_RTIS_Zect_Jobs]
+		SET [bJobRunning] = 0
+		WHERE [vLotNumber] = TRIM(@lot) 
+
+		SELECT 1 AS RETVAL
+	END
+	ELSE 
+		SELECT 0 AS RETVAL
+GO
+
+
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_ManualCloseAWJob]') IS NOT NULL)
+	DROP PROC [dbo].[sp_ManualCloseAWJob]
+GO
+
+CREATE PROC [dbo].[sp_ManualCloseAWJob]
+	@lot varchar(50)
+AS
+	IF EXISTS (SELECT * FROM [dbo].[tbl_RTIS_AW_Jobs]
+				WHERE [vLotNumber] = TRIM(@lot))
+	BEGIN
+		UPDATE [dbo].[tbl_RTIS_AW_Jobs]
+		SET [bJobRunning] = 0
+		WHERE [vLotNumber] = TRIM(@lot) 
+
+		SELECT 1 AS RETVAL
+	END
+	ELSE 
+		SELECT 0 AS RETVAL
+GO
+
+
+
+
+-- DELETE duplicate permission modules
+WITH cte AS (
+    SELECT 
+        [iLine_ID],
+		[iRole_ID],
+		[iPermission_ID],
+		[bPermission_Active],
+		[dPermission_Added],
+		[dPermission_Removed],
+        ROW_NUMBER() OVER (
+            PARTITION BY 
+                [iRole_ID],
+				[iPermission_ID]
+            ORDER BY 
+                [iRole_ID],
+				[iPermission_ID]
+        ) row_num
+     FROM 
+        [dbo].[ltbl_userRoleLines]
+)
+DELETE FROM cte
+WHERE row_num > 1;
+
+
+
+
+--Archived stock take variance
+IF (OBJECT_ID('[dbo].[vw_GetStockTakeVariancesArchives]') IS NOT NULL)
+	DROP VIEW [dbo].[vw_GetStockTakeVariancesArchives]
+GO
+
+
+
+
+CREATE VIEW [dbo].[vw_GetStockTakeVariancesArchives]
+AS
+SELECT
+il.[idInvCountLines] AS [gclineID]
+,i.[cInvCountNo]
+,s.[Code] AS [gcItemCode]
+, s.[Bar_Code] AS [gcBarcode]
+, s.[Description_1] AS [gcItemDesc]
+, b.[cBinLocationName] AS [gcBin]
+, l.[cLotDescription] AS [gcLot]
+, ROUND(il.[fCountQty], 4) AS [gcCounted]
+, ROUND(il.[fCountQty2], 4) AS [gcCounted2]
+, ROUND(il.[fSystemQty], 4) AS [gcSystem]
+, CAST([dbo].[fn_CalculateVariance]([dbo].[fn_GetDifference](il.[fCountQty],il.[fSystemQty]), [dbo].[fn_GetTolerance](s.[ItemGroup]))AS VARCHAR(50)) AS [gcVarience]
+, w.[Code] AS [gcWhseCode]
+, w.[Name] AS [gcWhseName]
+, il.[bOnST] AS [gcOnST]
+FROM [RTIS_InvCountArchiveLines] il
+INNER JOIN[RTIS_InvCount] i ON i.[idInvCount] = [iInvCountID]
+INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[StockLink] = il.[iStockID]
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = il.[iWarehouseID]
+LEFT JOIN [Cataler_SCN].[dbo].[_etblLotTracking] l ON il.[iLotTrackingID] = l.[idLotTracking]
+LEFT JOIN [Cataler_SCN].[dbo].[_btblBINLocation] b ON il.[iBinLocationId] = b.[idBinLocation]
+GO
+
+
+
+
+
+
+
+--Archived Items below system count
+IF (OBJECT_ID('[dbo].[vw_GetArchivedItemsBelowSystemCount]') IS NOT NULL)
+	DROP VIEW [dbo].[vw_GetArchivedItemsBelowSystemCount]
+GO
+
+CREATE VIEW [dbo].[vw_GetArchivedItemsBelowSystemCount]
+AS
+SELECT s.[Code] AS [ItemCode],
+i.[cInvCountNo],
+s.[Description_1] AS [Desc] ,
+b.[cBinLocationName] AS Bin ,
+ROUND(il.[fCountQty], 5)  AS [Counted], 
+ROUND(il.[fCountQty2], 5) AS [Counted2],
+ROUND(il.[fSystemQty], 5) AS [System], 
+ROUND(CAST([dbo].[fn_CalculateVariance]([dbo].[fn_GetDifference](il.[fCountQty],il.[fSystemQty]), [dbo].[fn_GetTolerance](s.[ItemGroup])) AS VARCHAR(50)), 5) AS [Variance] ,
+w.[Code] AS [WHSE]  ,
+i.[dPrepared] 
+FROM [RTIS_InvCountArchiveLines] il 
+INNER JOIN [RTIS_InvCount] i ON i.[idInvCount] = [iInvCountID] 
+INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[StockLink] = il.[iStockID] 
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = il.[iWarehouseID] 
+LEFT JOIN [Cataler_SCN].[dbo].[_btblBINLocation] b ON b.[idBinLocation] = il.[iBinLocationId] 
+LEFT JOIN [Cataler_SCN].[dbo].[_etblLotTracking] l ON il.[iLotTrackingID] = l.[idLotTracking] 
+WHERE il.[fSystemQty] > il.[fCountQty]  
+AND il.[fCountQty] <> 0 
+AND il.[fCountQty] = il.[fCountQty2] 
+AND il.[bOnST] = 1 
+GO
+
+
+
+
+--Archived Items Above system count
+IF (OBJECT_ID('[dbo].[vw_GetArchivedItemsAboveSystemCount]') IS NOT NULL)
+	DROP VIEW [dbo].[vw_GetArchivedItemsAboveSystemCount]
+GO
+
+CREATE VIEW [dbo].[vw_GetArchivedItemsAboveSystemCount]
+AS
+SELECT s.[Code] AS [ItemCode], 
+i.[cInvCountNo],
+s.[Description_1] AS [Desc] , 
+b.[cBinLocationName] AS Bin ,
+ROUND(il.[fCountQty], 5)  AS [Counted], 
+ROUND([fCountQty2], 5) AS [Counted2] ,
+ROUND(il.[fSystemQty], 5) AS [System], 
+ROUND(CAST([dbo].[fn_CalculateVariance]([dbo].[fn_GetDifference](il.[fCountQty],il.[fSystemQty]), [dbo].[fn_GetTolerance](s.[ItemGroup])) AS VARCHAR(50)), 5) AS [Variance] ,
+w.[Code] AS [WHSE] ,
+i.[dPrepared] 
+FROM [RTIS_InvCountArchiveLines] il 
+INNER JOIN [RTIS_InvCount] i ON i.[idInvCount] = [iInvCountID] 
+INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[StockLink] = il.[iStockID] 
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = il.[iWarehouseID] 
+LEFT JOIN [Cataler_SCN].[dbo].[_btblBINLocation] b ON b.[idBinLocation] = il.[iBinLocationId] 
+LEFT JOIN [Cataler_SCN].[dbo].[_etblLotTracking] l ON il.[iLotTrackingID] = l.[idLotTracking] 
+WHERE il.[fSystemQty] < il.[fCountQty] 
+AND il.[fCountQty] = il.[fCountQty2] 
+AND il.[bOnST] = 1 
+GO
+
+
+
+
+--Uncounted Archived Items
+IF (OBJECT_ID('[dbo].[vw_GetArchivedItemsUncounted]') IS NOT NULL)
+	DROP VIEW [dbo].[vw_GetArchivedItemsUncounted]
+GO
+
+CREATE VIEW [dbo].[vw_GetArchivedItemsUncounted]
+AS
+SELECT s.[Code] AS [ItemCode] ,  
+i.[cInvCountNo],
+s.[Description_1] AS [Desc] , 
+b.[cBinLocationName] AS Bin ,
+'0'  AS [Counted],  
+ROUND([fCountQty2], 5) AS [Counted2] ,
+ROUND(il.[fSystemQty], 5) AS [System], 
+ROUND(CAST([dbo].[fn_CalculateVariance]([dbo].[fn_GetDifference](il.[fCountQty],il.[fSystemQty]), [dbo].[fn_GetTolerance](s.[ItemGroup])) AS VARCHAR(50)), 5) AS [Variance] ,
+w.[Code] AS [WHSE] ,
+i.[dPrepared] 
+FROM [RTIS_InvCountArchiveLines] il 
+INNER JOIN [RTIS_InvCount] i ON i.[idInvCount] = [iInvCountID] 
+INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[StockLink] = il.[iStockID] 
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = il.[iWarehouseID] 
+LEFT JOIN [Cataler_SCN].[dbo].[_btblBINLocation] b ON b.[idBinLocation] = il.[iBinLocationId] 
+LEFT JOIN [Cataler_SCN].[dbo].[_etblLotTracking] l ON il.[iLotTrackingID] = l.[idLotTracking] 
+WHERE (il.[fCountQty] = 0 OR il.[fCountQty] IS NULL OR il.[fCountQty] = '') 
+AND (il.[fCountQty2] = 0 OR il.[fCountQty2] IS NULL OR il.[fCountQty2] = '') 
+AND (il.[fCountQty] <> 0 OR il.[fCountQty2] <> 0 OR il.[fSystemQty] <> 0) 
+AND il.[bOnST] = 1 
+GO
+
+
+
+
+
+
+-- Archived Items equal to system count
+IF (OBJECT_ID('[dbo].[vw_GetArchivedItemsEqualSystemCount]') IS NOT NULL)
+	DROP VIEW [dbo].[vw_GetArchivedItemsEqualSystemCount]
+GO
+
+CREATE VIEW [dbo].[vw_GetArchivedItemsEqualSystemCount]
+AS
+SELECT s.[Code] AS [ItemCode],  
+i.[cInvCountNo],
+s.[Description_1] AS [Desc], 
+b.[cBinLocationName] AS Bin ,
+ROUND(il.[fCountQty], 5)  AS [Counted], 
+ROUND([fCountQty2], 5) AS [Counted2] ,
+ROUND(il.[fSystemQty], 5) AS [System], 
+ROUND(CAST([dbo].[fn_CalculateVariance]([dbo].[fn_GetDifference](il.[fCountQty],il.[fSystemQty]), [dbo].[fn_GetTolerance](s.[ItemGroup])) AS VARCHAR(50)), 5) AS [Variance] ,
+w.[Code] AS [WHSE] ,
+i.[dPrepared] 
+FROM [RTIS_InvCountArchiveLines] il 
+INNER JOIN [RTIS_InvCount] i ON i.[idInvCount] = [iInvCountID] 
+INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[StockLink] = il.[iStockID] 
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = il.[iWarehouseID] 
+LEFT JOIN [Cataler_SCN].[dbo].[_btblBINLocation] b ON b.[idBinLocation] = il.[iBinLocationId] 
+LEFT JOIN [Cataler_SCN].[dbo].[_etblLotTracking] l ON il.[iLotTrackingID] = l.[idLotTracking] 
+WHERE il.[fCountQty] = il.[fSystemQty] 
+AND il.[fCountQty] <> 0 
+AND il.[fSystemQty] <> 0 
+AND il.[fCountQty] = il.[fCountQty2] 
+AND il.[bOnST] = 1 
+GO
+
+
+
+
+
+
+--Unqual scanner Archived quantities
+IF (OBJECT_ID('[dbo].[vw_GetUnequalScannerQty]') IS NOT NULL)
+	DROP VIEW [dbo].[vw_GetUnequalScannerQty]
+GO
+
+CREATE VIEW [dbo].[vw_GetUnequalScannerQty]
+AS
+SELECT s.[Code] AS [ItemCode], 
+i.[cInvCountNo],
+s.[Description_1] AS [Desc] , 
+b.[cBinLocationName] AS Bin ,
+ROUND(il.[fCountQty], 5)  AS [Counted], 
+ROUND([fCountQty2], 5) AS [Counted2] ,
+ROUND(il.[fSystemQty], 5) AS [System], 
+ROUND(CAST([dbo].[fn_CalculateVariance]([dbo].[fn_GetDifference](il.[fCountQty],il.[fSystemQty]), [dbo].[fn_GetTolerance](s.[ItemGroup])) AS VARCHAR(50)), 5) AS [Variance] ,
+w.[Code] AS [WHSE] ,
+i.[dPrepared] 
+FROM [RTIS_InvCountArchiveLines] il 
+INNER JOIN [RTIS_InvCount] i ON i.[idInvCount] = [iInvCountID] 
+INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[StockLink] = il.[iStockID] 
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = il.[iWarehouseID] 
+LEFT JOIN [Cataler_SCN].[dbo].[_btblBINLocation] b ON b.[idBinLocation] = il.[iBinLocationId] 
+LEFT JOIN [Cataler_SCN].[dbo].[_etblLotTracking] l ON il.[iLotTrackingID] = l.[idLotTracking] 
+WHERE il.[fCountQty] <> il.[fCountQty2] 
+AND il.[bOnST] = 1 
+GO
+
+
+
+
+
+
+--unlisted Archived Items
+IF (OBJECT_ID('[dbo].[vw_GetArchivedUnlistedItems]') IS NOT NULL)
+	DROP VIEW [dbo].[vw_GetArchivedUnlistedItems]
+GO
+
+CREATE VIEW [dbo].[vw_GetArchivedUnlistedItems]
+AS
+SELECT s.[Code] AS [ItemCode], 
+i.[cInvCountNo],
+s.[Description_1] AS [Desc], 
+b.[cBinLocationName] AS Bin ,
+ROUND(il.[fCountQty], 5)  AS [Counted], 
+ROUND([fCountQty2], 5) AS [Counted2] ,
+ROUND(il.[fSystemQty], 5) AS [System], 
+ROUND(CAST([dbo].[fn_CalculateVariance]([dbo].[fn_GetDifference](il.[fCountQty],il.[fSystemQty]), [dbo].[fn_GetTolerance](s.[ItemGroup])) AS VARCHAR(50)), 5) AS [Variance] ,
+w.[Code] AS [WHSE] ,
+i.[dPrepared] 
+FROM [RTIS_InvCountArchiveLines] il 
+INNER JOIN [RTIS_InvCount] i ON i.[idInvCount] = [iInvCountID] 
+INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[StockLink] = il.[iStockID] 
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = il.[iWarehouseID] 
+LEFT JOIN [Cataler_SCN].[dbo].[_btblBINLocation] b ON b.[idBinLocation] = il.[iBinLocationId] 
+LEFT JOIN [Cataler_SCN].[dbo].[_etblLotTracking] l ON il.[iLotTrackingID] = l.[idLotTracking] 
+WHERE il.[bOnST] = 0 
+GO
+
+
+
+---Update Records from Permission Modules
+BEGIN
+	IF NOT EXISTS (SELECT [vPermission_Name] FROM [dbo].[ltbl_Module_Perms] WHERE [vPermission_Name] = 'ZECT Records')
+	BEGIN
+		UPDATE [dbo].[ltbl_Module_Perms]
+		SET [vPermission_Name] = 'ZECT Records' 
+		WHERE [vPermission_Name] = 'ZECT Jobs'
+	END
+END
+GO
+
+BEGIN
+	IF NOT EXISTS (SELECT [vPermission_Name] FROM [dbo].[ltbl_Module_Perms] WHERE [vPermission_Name] = 'AW Records')
+	BEGIN
+		UPDATE [dbo].[ltbl_Module_Perms]
+		SET [vPermission_Name] = 'AW Records' 
+		WHERE [vPermission_Name] = 'AW Jobs'
+	END
+END
+GO
+
+BEGIN
+	IF NOT EXISTS (SELECT [vPermission_Name] FROM [dbo].[ltbl_Module_Perms] WHERE [vPermission_Name] = 'PGM RM')
+	BEGIN
+		UPDATE [dbo].[ltbl_Module_Perms]
+		SET [vPermission_Name] = 'PGM RM' 
+		WHERE [vPermission_Name] = 'PGM Planning'
+	END
+END
+GO
+
+BEGIN
+	IF NOT EXISTS (SELECT [vPermission_Name] FROM [dbo].[ltbl_Module_Perms] WHERE [vPermission_Name] = 'Production RM')
+	BEGIN
+		UPDATE [dbo].[ltbl_Module_Perms]
+		SET [vPermission_Name] = 'Production RM' 
+		WHERE [vPermission_Name] = 'Production Planning'
+	END
+END
+GO
+
+
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_CheckCMSValue]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_CheckCMSValue]
+GO
+
+CREATE PROC [dbo].[sp_UI_CheckCMSValue]
+	@value VARCHAR(MAX),
+	@valType VARCHAR(MAX)
+AS
+SELECT [vValType] FROM [COA].[tbl_CMS_Admin] WHERE [vValue] = @value AND [vValType] = @valType
+GO
+
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetCMSItems]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetCMSItems]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetCMSItems]
+AS
+SELECT [iLineID], [vValue] FROM [COA].[tbl_CMS_Admin] WHERE [vValType] = 'Item'
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetCMSUOMs]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetCMSUOMs]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetCMSUOMs]
+AS
+SELECT [iLineID], [vValue] FROM [COA].[tbl_CMS_Admin] WHERE [vValType] = 'UOM'
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetItemCMSHeaders]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetItemCMSHeaders]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetItemCMSHeaders]
+AS
+SELECT s.[Code], s.[Description_1], CASE WHEN hc.[vStatus] IS NULL THEN 'NO' ELSE 'YES' END, ISNULL(hc.[vStatus], 'Waiting CMS'), s.[StockLink], hc.[vUserCaptured], hc.[dtDateCreated], hc.[vUserApproved], hc.[dtDateApproved], ISNULL(hc.[iLineID], 0), hc.[iDocVersion],[vUserRejected],[dtRejected],[vReasons] FROM [Cataler_SCN].[dbo].[StkItem] s
+LEFT JOIN [COA].[htbl_CMS_Docs] hc ON s.[StockLink] = hc.[iStockID]
+WHERE s.[ItemGroup] = '006' 
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetCMSItems_Add]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetCMSItems_Add]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetCMSItems_Add]
+AS
+SELECT [vValue] FROM [COA].[tbl_CMS_Admin] WHERE [vValType] = 'Item'
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetCMSUOMs_Add]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetCMSUOMs_Add]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetCMSUOMs_Add]
+AS
+SELECT [vValue] FROM [COA].[tbl_CMS_Admin] WHERE [vValType] = 'UOM'
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetItemCMSApprovals]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetItemCMSApprovals]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetItemCMSApprovals]
+AS
+SELECT s.[Code], s.[Description_1], ISNULL(hc.[vStatus], 'Waiting CMS'), s.[StockLink], hc.[iLineID], hc.[iDocVersion]  FROM [Cataler_SCN].[dbo].[StkItem] s
+INNER JOIN [COA].[htbl_CMS_Docs] hc ON s.[StockLink] = hc.[iStockID]
+WHERE s.[ItemGroup] = '006' AND hc.[vStatus] <> 'Approved' AND hc.[vStatus] <> 'Rejected'
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetItemCMSApprovalLines]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetItemCMSApprovalLines]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetItemCMSApprovalLines]
+	@headerID VARCHAR(MAX)
+AS
+SELECT [vItem] ,[vUnit] ,[vOperator] ,[dValue1] ,[dValue2] ,[vInspection]
+FROM [COA].[ltbl_CMS_Docs] WHERE [iHeaderID] = @headerID
+GO
+
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetItemCMSApprovalLinesViww]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetItemCMSApprovalLinesViww]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetItemCMSApprovalLinesViww]
+	@headerID VARCHAR(MAX)
+AS
+SELECT [vItem] ,[vUnit] ,[vOperator] ,[dValue1] ,[dValue2] ,[vInspection]
+FROM [COA].[ltbl_CMS_Docs] WHERE [iHeaderID] = @headerID
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetItemCMSApprovalLinesEdit]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetItemCMSApprovalLinesEdit]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetItemCMSApprovalLinesEdit]
+	@headerID VARCHAR(MAX)
+AS
+SELECT [vItem] ,[vUnit] ,[vOperator] ,[dValue1] ,[dValue2] ,[vInspection]
+FROM [COA].[ltbl_CMS_Docs] WHERE [iHeaderID] = @headerID
+GO
+
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetCMSApprovalImagee]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetCMSApprovalImagee]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetCMSApprovalImagee]
+	@itemCode VARCHAR(MAX)
+AS
+SELECT [imApprovalSignature]
+FROM [COA].[htbl_CMS_Docs] WHERE [vItemCode] = @itemCode
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetCMSHeadersToArchive]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetCMSHeadersToArchive]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetCMSHeadersToArchive]
+	@stockLink VARCHAR(MAX),
+	@docVersion VARCHAR(MAX)
+AS
+SELECT [iLineID] FROM [COA].[htbl_CMS_Docs] WHERE [iStockID] = @stockLink AND [iDocVersion] < @docVersion
+GO
+
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetCMSArchiveHeaders]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetCMSArchiveHeaders]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetCMSArchiveHeaders]
+AS
+SELECT s.[Code], s.[Description_1], CASE WHEN hc.[vStatus] IS NULL THEN 'NO' ELSE 'YES' END, ISNULL(hc.[vStatus], 'Waiting CMS'), s.[StockLink], hc.[vUserCaptured], hc.[dtDateCreated], hc.[vUserApproved], hc.[dtDateApproved], ISNULL(hc.[iLineID], 0), hc.[iDocVersion] FROM [Cataler_SCN].[dbo].[StkItem] s
+RIGHT JOIN [COA].[htbl_Archive_CMS_Docs] hc ON s.[StockLink] = hc.[iStockID]
+WHERE s.[ItemGroup] = '006' 
+GO
+
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetCMSArchiveImage]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetCMSArchiveImage]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetCMSArchiveImage]
+	@lineID VARCHAR(MAX)
+AS
+SELECT [imApprovalSignature]
+FROM [COA].[htbl_Archive_CMS_Docs] WHERE [iLineID] = @lineID
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetItemCMSArchiveLines]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetItemCMSArchiveLines]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetItemCMSArchiveLines]
+	@headerID VARCHAR(MAX)
+AS
+SELECT [vItem] ,[vUnit] ,[vOperator] ,[dValue1] ,[dValue2] ,[vInspection]
+FROM [COA].[ltbl_Archive_CMS_Docs] WHERE [iHeaderID] = @headerID
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_CheckRTVendor]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_CheckRTVendor]
+GO
+
+CREATE PROC [dbo].[sp_UI_CheckRTVendor]
+	@vendorID VARCHAR(MAX)
+AS
+SELEcT [iVendorID] FROM [rtblEvoVendors]
+WHERE [iVendorID] = @vendorID
+GO
+
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetVendorPOLinks]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetVendorPOLinks]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetVendorPOLinks]
+AS
+SELECT ven.[iVendorID], ven.[vVendorName], ISNULL([vOrderNum], '- Select Order -') AS [vOrderNum], [dtDateUpdated], '' AS [POs]
+FROM [tbl_POLink] link 
+RIGHT JOIN [rtblEvoVendors] ven ON ven.[iVendorID] = link.[iVendorID]
+WHERE ven.[vVendorName] <> '' AND ven.[bSelected] = 1
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_CheckVendorPOLink]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_CheckVendorPOLink]
+GO
+
+CREATE PROC [dbo].[sp_UI_CheckVendorPOLink]
+	@vendorID VARCHAR(MAX)
+AS
+SELEcT [iVendorID] FROM [tbl_POLink]
+WHERE [iVendorID] = @vendorID
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetLinkedVendors]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetLinkedVendors]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetLinkedVendors]
+AS
+SELECT DISTINCT [vVendorName] FROM [tbl_POLink]
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetLinkedPOs]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetLinkedPOs]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetLinkedPOs]
+AS
+SELECT DISTINCT [vOrderNum] FROM [tbl_POLink]
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetVendorPO]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetVendorPO]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetVendorPO]
+	@vendorName VARCHAR(MAX)
+AS
+SELECT [vOrderNum] FROM [tbl_POLink]
+WHERE [vVendorName] = @vendorName
+GO
+
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetPOVendor]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetPOVendor]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetPOVendor]
+	@PONumber VARCHAR(MAX)
+AS
+SELECT [vVendorName] FROM [tbl_POLink]
+WHERE [vOrderNum] = @PONumber
+GO
+
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_CheckPOUnqLines]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_CheckPOUnqLines]
+GO
+
+CREATE PROC [dbo].[sp_MBL_CheckPOUnqLines]
+	@OrderNum VARCHAR(MAX)
+AS
+SELECT [vUnqBarcode], [Receive], [bValidated] FROM [tbl_unqBarcodes]
+WHERE [ValidateRef] = @OrderNum
+GO
+
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_AddCMSRecord]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_AddCMSRecord]
+GO
+
+CREATE PROC [dbo].[sp_UI_AddCMSRecord]
+	@value VARCHAR(MAX),
+	@valType VARCHAR(MAX)
+AS
+INSERT INTO [COA].[tbl_CMS_Admin] ([vValue],[vValType]) VALUES (@value, @valType)
+GO
+
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_AddCMSDocHeader]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_AddCMSDocHeader]
+GO
+
+CREATE PROC [dbo].[sp_UI_AddCMSDocHeader]
+	@id VARCHAR(MAX),
+	@code VARCHAR(MAX),
+	@username VARCHAR(MAX),
+	@version VARCHAR(MAX)
+AS
+INSERT INTO [COA].[htbl_CMS_Docs] ([iStockID],[vItemCode],[dtDateCreated], [vUserCaptured],[vStatus],[iDocVersion]) 
+OUTPUT INSERTED.iLineID 
+VALUES (@id, @code, GETDATE(), @username, 'Waiting Approval', @version)
+GO
+
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_AddVendorLookup]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_AddVendorLookup]
+GO
+
+CREATE PROC [dbo].[sp_UI_AddVendorLookup]
+	@id VARCHAR(MAX),
+	@name VARCHAR(MAX),
+	@viewable VARCHAR(MAX)
+AS
+INSERT INTO [rtblEvoVendors] ([iVendorID]
+                            ,[vVendorName]
+                            ,[bSelected]
+                            )
+VALUES (@id, @name, @viewable)
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_AddVendorPOLink]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_AddVendorPOLink]
+GO
+
+CREATE PROC [dbo].[sp_UI_AddVendorPOLink]
+	@id VARCHAR(MAX),
+	@name VARCHAR(MAX),
+	@orderNum VARCHAR(MAX)
+AS
+INSERT INTO [tbl_POLink] ([iVendorID]
+                        ,[vVendorName]
+                        ,[vOrderNum]
+                        ,[dtDateUpdated]
+                        )
+VALUES (@id, @name, @orderNum, GETDATE())
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_UpdateCMSApproved]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_UpdateCMSApproved]
+GO
+
+CREATE PROC [dbo].[sp_UI_UpdateCMSApproved]
+	@lineID VARCHAR(MAX),
+	@image VARCHAR(MAX),
+	@username VARCHAR(MAX)
+AS
+UPDATE [COA].[htbl_CMS_Docs] 
+SET [imApprovalSignature] = @image, [dtDateApproved] = GETDATE(), [vUserApproved] = @username, [vStatus] = 'Approved'  
+WHERE [iLineID] = @lineID
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_UpdateCMSRejected]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_UpdateCMSRejected]
+GO
+
+CREATE PROC [dbo].[sp_UI_UpdateCMSRejected]
+	@lineID VARCHAR(MAX),
+	@reason VARCHAR(MAX),
+	@username VARCHAR(MAX)
+AS
+UPDATE [COA].[htbl_CMS_Docs] 
+SET [vReasons] = @reason, [dtRejected] = GETDATE(), [vUserRejected] = @username, [vStatus] = 'Rejected'  
+WHERE [iLineID] = @lineID
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_UpdateCMSEdited]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_UpdateCMSEdited]
+GO
+
+CREATE PROC [dbo].[sp_UI_UpdateCMSEdited]
+	@id VARCHAR(MAX)
+AS
+UPDATE [COA].[htbl_CMS_Docs] 
+SET [vStatus] = 'Waiting Approval', [vReasons] = NULL, [dtRejected] = NULL,  [vUserRejected] = NULL
+WHERE [iLineID] = @1
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_UpdateVendorLookup]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_UpdateVendorLookup]
+GO
+
+CREATE PROC [dbo].[sp_UI_UpdateVendorLookup]
+	@id VARCHAR(MAX),
+	@viewable VARCHAR(MAX)
+AS
+UPDATE [rtblEvoVendors] SET [bSelected]= @viewable WHERE [iVendorID] = @id
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_UpdateVendorPOLink]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_UpdateVendorPOLink]
+GO
+
+CREATE PROC [dbo].[sp_UI_UpdateVendorPOLink]
+	@id VARCHAR(MAX),
+	@name VARCHAR(MAX),
+	@orderNum VARCHAR(MAX)
+AS
+UPDATE [tbl_POLink] 
+SET [vVendorName] = @name, [vOrderNum] = @orderNum, [dtDateUpdated] = GETDATE() 
+WHERE [iVendorID] = @id
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_ValidateLabels]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_ValidateLabels]
+GO
+
+CREATE PROC [dbo].[sp_UI_ValidateLabels]
+	@validRef VARCHAR(MAX)
+AS
+UPDATE [tbl_unqBarcodes] SET [bValidated] = 1 WHERE [ValidateRef] = @validRef
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_SetUnqReceived]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_SetUnqReceived]
+GO
+
+CREATE PROC [dbo].[sp_MBL_SetUnqReceived]
+	@poRec VARCHAR(MAX),
+	@barcode VARCHAR(MAX)
+AS
+UPDATE [tbl_unqBarcodes] SET [Receive] = @poRec WHERE [vUnqBarcode] = @barcode
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_CMSItem]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_CMSItem]
+GO
+
+CREATE PROC [dbo].[sp_UI_CMSItem]
+	@id VARCHAR(MAX)
+AS
+DELETE FROM [COA].[tbl_CMS_Admin] WHERE [iLineID] = @id
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_DeletePOLines]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_DeletePOLines]
+GO
+
+CREATE PROC [dbo].[sp_UI_DeletePOLines]
+	@orderNum VARCHAR(MAX)
+AS
+DELETE FROM [tblPOLines] WHERE [vOrderNum] = @orderNum
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_DeleteCMSDocLiness]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_DeleteCMSDocLiness]
+GO
+
+CREATE PROC [dbo].[sp_UI_DeleteCMSDocLiness]
+	@id VARCHAR(MAX)
+AS
+DELETE FROM [COA].[ltbl_CMS_Docs]
+WHERE [iHeaderID] = @id
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_DeleteInvalidLabels]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_DeleteInvalidLabels]
+GO
+
+CREATE PROC [dbo].[sp_UI_DeleteInvalidLabels]
+	@orderNum VARCHAR(MAX)
+AS
+DELETE FROM [tbl_unqBarcodes] WHERE [ValidateRef] = @orderNum AND [bValidated] = 0
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_DeleteCMSHeader]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_DeleteCMSHeader]
+GO
+
+CREATE PROC [dbo].[sp_UI_DeleteCMSHeader]
+	@id VARCHAR(MAX)
+AS
+DELETE FROM [COA].[htbl_CMS_Docs] WHERE [iLineID] = @id
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_[sp_UI_DeleteCMSLines]]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_DeleteCMSLines]
+GO
+
+CREATE PROC [dbo].[sp_UI_DeleteCMSLines]
+	@id VARCHAR(MAX)
+AS
+DELETE FROM [COA].[ltbl_CMS_Docs] WHERE [iHeaderID] = @id
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_[sp_UI_DeleteCMSLines]]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_DeleteCMSLines]
+GO
+
+CREATE PROC [dbo].[sp_UI_DeleteCMSLines]
+	@id VARCHAR(MAX)
+AS
+DELETE FROM [COA].[ltbl_CMS_Docs] WHERE [iHeaderID] = @id
+GO
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 USE [CAT_RTIS]
