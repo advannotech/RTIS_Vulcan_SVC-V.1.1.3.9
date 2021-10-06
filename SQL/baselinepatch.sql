@@ -671,9 +671,6 @@ INSERT INTO [rtbl_PermLabels]
 END
 
 
-USE [CAT_RTIS]
-GO
-
 
 
 
