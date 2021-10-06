@@ -164,6 +164,30 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("CAT_RTIS")>  _
+        Public Property RTDB() As String
+            Get
+                Return CType(Me("RTDB"),String)
+            End Get
+            Set
+                Me("RTDB") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Cataler_SCN")>  _
+        Public Property EvoDB() As String
+            Get
+                Return CType(Me("EvoDB"),String)
+            End Get
+            Set
+                Me("EvoDB") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.Configuration.DefaultSettingValueAttribute("LIFA")>  _
         Public Property RTServer() As String
             Get
@@ -195,30 +219,6 @@ Namespace My
             End Get
             Set
                 Me("EvoComServer") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("CAT_RTIS")>  _
-        Public Property RTDB() As String
-            Get
-                Return CType(Me("RTDB"),String)
-            End Get
-            Set
-                Me("RTDB") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Cataler_SCN")>  _
-        Public Property EvoDB() As String
-            Get
-                Return CType(Me("EvoDB"),String)
-            End Get
-            Set
-                Me("EvoDB") = value
             End Set
         End Property
     End Class
