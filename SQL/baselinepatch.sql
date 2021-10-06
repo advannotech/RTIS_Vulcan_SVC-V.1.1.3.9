@@ -578,11 +578,106 @@ GO
 
 
 
+--Add Reprint Module---
+USE [CAT_RTIS]
+GO
+BEGIN
+   IF NOT EXISTS (SELECT * FROM [ltbl_Module_Perms] 
+                   WHERE [iPermission_ID] = '1052')
+   BEGIN
+INSERT INTO [dbo].[ltbl_Module_Perms]
+           ([vPermission_Name]
+           ,[bPermissionActive]
+           ,[bHasLabel]
+           ,[iModuleID]
+           ,[bIsNested]
+           ,[vNestNode]
+           ,[Indx]
+           ,[bUIPerm]
+           ,[bPGMPerm])
+     VALUES
+	 ('PO Reprinting',
+	 'True',
+	 'True',
+	 2,
+	 'False',
+	 NULL,
+	 2,
+	 'True',
+	 'False'
+	 )
+   END
+END
+
+--Add Reprint Module User Role---
+
+USE [CAT_RTIS]
+GO
+BEGIN
+   IF NOT EXISTS (SELECT * FROM [ltbl_userRoleLines] 
+                   WHERE [iPermission_ID] = 1052)
+   BEGIN
+INSERT INTO [dbo].[ltbl_userRoleLines]
+           ([iRole_ID]
+           ,[iPermission_ID]
+           ,[bPermission_Active]
+           ,[dPermission_Added]
+           ,[dPermission_Removed])
+     VALUES
+           (
+		   2,
+		   1052,
+		   'True',
+		   '2021-05-17 15:27:06.747'
+           ,NULL
+		   )
+   END
+END
+
+---------Add Label Perm Com for PO Reprinting Module------------
+USE [CAT_RTIS]
+GO
+BEGIN
+   IF NOT EXISTS (SELECT * FROM [rtbl_LabelPermCom] 
+                   WHERE [iLabelID] = 1
+				   AND [iPermissionID]=1052)
+   BEGIN
+INSERT INTO [dbo].[rtbl_LabelPermCom]
+           ([iLabelID]
+           ,[iPermissionID])
+     VALUES
+           (1,
+           1052
+		   )
+   END
+END
 
 
+USE [CAT_RTIS]
+GO
 
 
+----------Add Perm Label For Reprint Module-------------
+USE [CAT_RTIS]
+GO
+BEGIN
+   IF NOT EXISTS (SELECT * FROM [rtbl_PermLabels] 
+                   WHERE [iPermID] = 1052)
+   BEGIN
+INSERT INTO [rtbl_PermLabels]
+           ([vLabelName]
+           ,[iPermID])
+     VALUES
+           (
+		   'Stock_GRV Label.repx'
+		   ,1052
+           )
+   END
+END
 
+
+USE [CAT_RTIS]
+GO
 
 
 
