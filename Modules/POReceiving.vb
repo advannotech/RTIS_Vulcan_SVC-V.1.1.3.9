@@ -496,7 +496,7 @@ Public Class POReceiving
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT ven.[iVendorID], ven.[vVendorName], ISNULL([vOrderNum], '- Not Linked -') AS [vOrderNum], [dtDateUpdated], '' AS [POs]
+                    Dim sqlComm As New SqlCommand(" SELECT ven.[iVendorID], ven.[vVendorName], ISNULL([vOrderNum], '- Select PO -') AS [vOrderNum], [dtDateUpdated], '' AS [POs]
                                                     FROM [tbl_POLink] link 
                                                     RIGHT JOIN [rtblEvoVendors] ven ON ven.[iVendorID] = link.[iVendorID]
                                                     WHERE ven.[vVendorName] <> '' AND ven.[bSelected] = 1", sqlConn)

@@ -12,22 +12,22 @@
       <Value Profile="(Default)">EvolutionCommon</Value>
     </Setting>
     <Setting Name="RTUser" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Reltech</Value>
+      <Value Profile="(Default)">sa</Value>
     </Setting>
     <Setting Name="EvoUser" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Reltech</Value>
+      <Value Profile="(Default)">sa</Value>
     </Setting>
     <Setting Name="EvoComUser" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Reltech</Value>
+      <Value Profile="(Default)">sa</Value>
     </Setting>
     <Setting Name="EvoComPassword" Type="System.String" Scope="User">
-      <Value Profile="(Default)">R3lt3ch!4</Value>
+      <Value Profile="(Default)">62017</Value>
     </Setting>
     <Setting Name="RTPassword" Type="System.String" Scope="User">
-      <Value Profile="(Default)">R3lt3ch!4</Value>
+      <Value Profile="(Default)">62017</Value>
     </Setting>
     <Setting Name="EvoPassword" Type="System.String" Scope="User">
-      <Value Profile="(Default)">R3lt3ch!4</Value>
+      <Value Profile="(Default)">62017</Value>
     </Setting>
     <Setting Name="RTDB" Type="System.String" Scope="User">
       <Value Profile="(Default)">CAT_RTIS</Value>
@@ -36,13 +36,13 @@
       <Value Profile="(Default)">Cataler_SCN</Value>
     </Setting>
     <Setting Name="RTServer" Type="System.String" Scope="User">
-      <Value Profile="(Default)">LIFA</Value>
+      <Value Profile="(Default)">LAPTOP-BURSESPP</Value>
     </Setting>
     <Setting Name="EvoServer" Type="System.String" Scope="User">
-      <Value Profile="(Default)">LIFA</Value>
+      <Value Profile="(Default)">LAPTOP-BURSESPP</Value>
     </Setting>
     <Setting Name="EvoComServer" Type="System.String" Scope="User">
-      <Value Profile="(Default)">LIFA</Value>
+      <Value Profile="(Default)">LAPTOP-BURSESPP</Value>
     </Setting>
   </Settings>
 </SettingsFile>
