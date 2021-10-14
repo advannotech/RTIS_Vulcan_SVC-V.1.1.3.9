@@ -1046,7 +1046,7 @@ GO
 
 CREATE PROC [dbo].[sp_UI_GetVendorPOLinks]
 AS
-SELECT ven.[iVendorID], ven.[vVendorName], ISNULL([vOrderNum], '- Select Order -') AS [vOrderNum], [dtDateUpdated], '' AS [POs]
+SELECT ven.[iVendorID], ven.[vVendorName], ISNULL([vOrderNum], '- Not Linked -') AS [vOrderNum], [dtDateUpdated], '' AS [POs]
 FROM [tbl_POLink] link 
 RIGHT JOIN [rtblEvoVendors] ven ON ven.[iVendorID] = link.[iVendorID]
 WHERE ven.[vVendorName] <> '' AND ven.[bSelected] = 1
@@ -1063,7 +1063,7 @@ GO
 CREATE PROC [dbo].[sp_UI_CheckVendorPOLink]
 	@vendorID VARCHAR(MAX)
 AS
-SELEcT [iVendorID] FROM [tbl_POLink]
+SELECT [iVendorID] FROM [tbl_POLink]
 WHERE [iVendorID] = @vendorID
 GO
 
@@ -1209,11 +1209,35 @@ CREATE PROC [dbo].[sp_UI_AddVendorPOLink]
 	@name VARCHAR(MAX),
 	@orderNum VARCHAR(MAX)
 AS
+IF NOT EXISTS
+(   SELECT DISTINCT [vOrderNum],[vVendorName]
+	FROM    [tbl_POLink] 
+	WHERE   [vVendorName] =@id
+	AND		[vOrderNum] IS NOT NULL
+	AND		[vOrderNum] =@name
+)BEGIN
+	INSERT [tbl_POLink] ([iVendorID], [vVendorName],[vOrderNum],[dtDateUpdated])
+	VALUES (@id, @name, @orderNum, GETDATE())
+END
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_LinkPOtoVendor]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_LinkPOtoVendor]
+GO
+
+CREATE PROC [dbo].[sp_UI_LinkPOtoVendor]
+	@id VARCHAR(MAX),
+	@name VARCHAR(MAX),
+	@orderNum VARCHAR(MAX)
+AS
 INSERT INTO [tbl_POLink] ([iVendorID]
-                        ,[vVendorName]
-                        ,[vOrderNum]
-                        ,[dtDateUpdated]
-                        )
+    ,[vVendorName]
+    ,[vOrderNum]
+    ,[dtDateUpdated]
+    )
 VALUES (@id, @name, @orderNum, GETDATE())
 GO
 

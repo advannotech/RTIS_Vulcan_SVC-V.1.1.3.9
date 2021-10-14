@@ -496,10 +496,7 @@ Public Class POReceiving
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT ven.[iVendorID], ven.[vVendorName], ISNULL([vOrderNum], '- Not Linked -') AS [vOrderNum], [dtDateUpdated], '' AS [POs]
-                                                    FROM [tbl_POLink] link 
-                                                    RIGHT JOIN [rtblEvoVendors] ven ON ven.[iVendorID] = link.[iVendorID]
-                                                    WHERE ven.[vVendorName] <> '' AND ven.[bSelected] = 1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetVendorPOLinks]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -527,9 +524,7 @@ Public Class POReceiving
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT [iVendorID] FROM [tbl_POLink]
-                                                        WHERE [iVendorID] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", vendorID))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_CheckVendorPOLink] @1", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -785,22 +780,7 @@ Public Class POReceiving
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    'Dim sqlComm As New SqlCommand("INSERT INTO [tbl_POLink] ([iVendorID]
-                    '                                                            ,[vVendorName]
-                    '                                                            ,[vOrderNum]
-                    '                                                            ,[dtDateUpdated]
-                    '                                                            )
-                    '                               VALUES (@1, @2, @3, GETDATE())", sqlConn)
-                    Dim sqlComm As New SqlCommand("IF NOT EXISTS
-                                                    (   SELECT DISTINCT [vOrderNum],[vVendorName]
-                                                        FROM    [tbl_POLink] 
-                                                        WHERE   [vVendorName] =@1
-		                                                AND		[vOrderNum] IS NOT NULL
-		                                                AND		[vOrderNum] =@2
-                                                    )BEGIN
-                                                    INSERT [tbl_POLink] ([iVendorID], [vVendorName],[vOrderNum],[dtDateUpdated])
-                                                    VALUES (@1, @2, @3, GETDATE())
-                                            END", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_AddVendorPOLink] @1, @2, @3", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", id))
                     sqlComm.Parameters.Add(New SqlParameter("@2", name))
                     sqlComm.Parameters.Add(New SqlParameter("@3", orderNum))
@@ -821,12 +801,7 @@ Public Class POReceiving
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [tbl_POLink] ([iVendorID]
-                                                                                ,[vVendorName]
-                                                                                ,[vOrderNum]
-                                                                                ,[dtDateUpdated]
-                                                                                )
-                                                   VALUES (@1, @2, @3, GETDATE())", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_LinkPOtoVendor] @1, @2, @3", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", id))
                     sqlComm.Parameters.Add(New SqlParameter("@2", name))
                     sqlComm.Parameters.Add(New SqlParameter("@3", orderNum))
@@ -1103,9 +1078,7 @@ Public Class POReceiving
 
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("SELECT DISTINCT TOP 1000 [OrderNum] FROM [InvNum]
-                                                    WHERE [cAccountName]=@1 AND [AccountID] <>'' AND [DocType] = 5 AND ([DocState] = 1 OR [DocState] = 3) 
-                                                    ORDER BY [OrderNum] DESC", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_GetActivePOs] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", supplier))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -1136,9 +1109,7 @@ Public Class POReceiving
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand(" SELEcT DISTINCT v.[DCLink], v.[Name], ISNULL(rv.[bSelected], 'false') AS [Selected] FROM [InvNum] i 
-                                                    INNER JOIN [Vendor] v ON v.[DCLink] = i.[AccountID]
-                                                    LEFT JOIN [" + My.Settings.RTDB + "].[dbo].[rtblEvoVendors] rv ON rv.[iVendorID] = v.[DCLink] ORDER BY v.[Name] ASC", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetEvoPOVendors]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -1173,8 +1144,7 @@ Public Class POReceiving
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand(" SELECT DISTINCT TOP 15 [OrderNum] FROM [InvNum]
-                                                    WHERE [AccountID] = @1 AND [DocType] = 5 AND ([DocState] = 1 OR [DocState] = 3) ORDER BY [OrderNum] DESC", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetVendorPOs] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", vendorID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -1208,44 +1178,7 @@ Public Class POReceiving
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand(" SELECT s.[Code], s.[Description_1], s.[Description_2], ISNULL(il.[cLotNumber], ''), il.[fQuantity] AS [OrderQty], il.[fQtyToProcess], 'false' AS [Receive],  '' AS [Print], s.[bLotItem] AS [LotLine], 'true' AS [Viewable]	                                                                                                   
-                                                    ,ISNULL(rtp.[dPrintQty],0) AS [dPrintQty]                                                    
-                                                    ,ISNULL(rtp.[bValidated], 'True') AS [bValidated]
-                                                    ,ISNULL(rtp.[bScanned], 'False') AS [bScanned]
-	                                                ,'0' AS [Back1]
-	                                                ,'0' AS [Back2]
-	                                                ,'' AS [Back3]
-                                                    FROM [InvNum] i
-                                                    INNER JOIN [_btblInvoiceLines] il ON i.[AutoIndex] = il.[iInvoiceID]
-                                                    INNER JOIN [StkItem] s ON s.[StockLink] = il.[iStockCodeID] 
-                                                    LEFT JOIN [" + My.Settings.RTDB + "].[dbo].[tblPOLines] rtp ON rtp.[vItemCode] COLLATE Latin1_General_CI_AS = s.[Code] AND rtp.[vLotNumber] COLLATE Latin1_General_CI_AS = il.[cLotNumber] AND rtp.[vOrderNum] COLLATE Latin1_General_CI_AS = [OrderNum]
-                                                    WHERE i.[OrderNum] = @1 AND i.[DocType] = '5' And (i.[DocState] = 1 OR i.[DocState] = 3) AND [bLotItem] = 1 AND i.[AutoIndex] = (SELECT TOP 1 [AutoIndex] FROM [InvNum] WHERE [OrderNum] = @1 ORDER BY [DocVersion] DESC)       
-                                                    UNION
-                                                    SELECT s.[Code], s.[Description_1], s.[Description_2], ISNULL(il.[cLotNumber], '') , il.[fQuantity] AS [OrderQty], il.[fQtyToProcess], 'false' AS [Receive],  '' AS [Print], s.[bLotItem] AS [LotLine], 'true' AS [Viewable] 	                                                
-                                                    ,ISNULL(rtp.[dPrintQty], 0) AS [dPrintQty]                                                    
-                                                    ,ISNULL(rtp.[bValidated], 'True') AS [bValidated]
-                                                    ,ISNULL(rtp.[bScanned], 'False') AS [bScanned]
-	                                                ,'0' AS [Back1]
-	                                                ,'0' AS [Back2]
-	                                                ,'' AS [Back3]
-                                                    FROM [InvNum] i
-                                                    INNER JOIN [_btblInvoiceLines] il ON i.[AutoIndex] = il.[iInvoiceID]
-                                                    INNER JOIN [StkItem] s ON s.[StockLink] = il.[iStockCodeID] 
-                                                    LEFT JOIN [" + My.Settings.RTDB + "].[dbo].[tblPOLines] rtp ON rtp.[vItemCode] COLLATE Latin1_General_CI_AS = s.[Code] AND rtp.[vOrderNum] COLLATE Latin1_General_CI_AS = [OrderNum]
-                                                    WHERE i.[OrderNum] = @1 AND i.[DocType] = '5' And (i.[DocState] = 1 OR i.[DocState] = 3) AND [bLotItem] = 0  AND i.[AutoIndex] = (SELECT TOP 1 [AutoIndex] FROM [InvNum] WHERE [OrderNum] = @1 ORDER BY [DocVersion] DESC)      ", sqlConn)
-
-                    ',ISNULL(rtp.[dLastOrderQty], 0) AS [dLastOrderQty]
-                    ',ISNULL(rtp.[dLastRecQty],0) AS [dLastRecQty]
-                    ',ISNULL(rtp.[dLastPrintQty], 0) AS [dLastPrintQty]
-                    ',ISNULL(rtp.[dOrderQty], il.[fQuantity] - il.[fQtyProcessed]) AS [dOrderQty]
-                    ' ,ISNULL(rtp.[dRecQty], il.[fQtyToProcess]) AS [dRecQty]
-
-                    ',ISNULL(rtp.[dLastOrderQty], 0) AS [dLastOrderQty]
-                    ',ISNULL(rtp.[dLastRecQty], 0) AS [dLastRecQty]
-                    ',ISNULL(rtp.[dLastPrintQty], 0) AS [dLastPrintQty]
-                    ',ISNULL(rtp.[dOrderQty], 0) AS [dOrderQty]                                                   
-                    ',ISNULL(rtp.[dRecQty], 0) AS [dRecQty]
-
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetPOLinesNew] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", orderNum))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -1280,33 +1213,7 @@ Public Class POReceiving
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("SELECT s.[Code], s.[Description_1], s.[Description_2], ISNULL(il.[cLotNumber], ''), il.[fQuantity] AS [OrderQty], il.[fQtyToProcess], 'false' AS [Receive],  '' AS [Print], s.[bLotItem] AS [LotLine], 'true' AS [Viewable]	                                                                                                   
-                                                    ,ISNULL(rtp.[dPrintQty],0) AS [dPrintQty]                                                    
-                                                    ,ISNULL(rtp.[bValidated], 'True') AS [bValidated]
-                                                    ,ISNULL(rtp.[bScanned], 'False') AS [bScanned]
-                                                    ,'0' AS [Back1]
-                                                    ,'0' AS [Back2]
-                                                    ,'' AS [Back3]
-                                                    FROM [InvNum] i
-                                                    INNER JOIN [_btblInvoiceLines] il ON i.[AutoIndex] = il.[iInvoiceID]
-                                                    INNER JOIN [StkItem] s ON s.[StockLink] = il.[iStockCodeID] 
-                                                    LEFT JOIN [" + My.Settings.RTDB + "].[dbo].[tblPOLines] rtp ON rtp.[vItemCode] COLLATE Latin1_General_CI_AS = s.[Code] AND rtp.[vLotNumber] COLLATE Latin1_General_CI_AS = il.[cLotNumber] AND rtp.[vOrderNum] COLLATE Latin1_General_CI_AS = [OrderNum]
-                                                    WHERE i.[OrderNum] = @1 AND i.[DocType] = '5' AND il.[cLotNumber]<>'' AND dPrintQty>0 And (i.[DocState] = 1 OR i.[DocState] = 3) AND [bLotItem] = 1 AND i.[AutoIndex] = (SELECT TOP 1 [AutoIndex] FROM [InvNum] WHERE [OrderNum] = @1 ORDER BY [DocVersion] DESC)       
-                                                    UNION
-                                                    SELECT s.[Code], s.[Description_1], s.[Description_2], ISNULL(il.[cLotNumber], '') , il.[fQuantity] AS [OrderQty], il.[fQtyToProcess], 'false' AS [Receive],  '' AS [Print], s.[bLotItem] AS [LotLine], 'true' AS [Viewable] 	                                                
-                                                    ,ISNULL(rtp.[dPrintQty], 0) AS [dPrintQty]                                                    
-                                                    ,ISNULL(rtp.[bValidated], 'True') AS [bValidated]
-                                                    ,ISNULL(rtp.[bScanned], 'False') AS [bScanned]
-                                                    ,'0' AS [Back1]
-                                                    ,'0' AS [Back2]
-                                                    ,'' AS [Back3]
-                                                    FROM [InvNum] i
-                                                    INNER JOIN [_btblInvoiceLines] il ON i.[AutoIndex] = il.[iInvoiceID]
-                                                    INNER JOIN [StkItem] s ON s.[StockLink] = il.[iStockCodeID] 
-                                                    LEFT JOIN [" + My.Settings.RTDB + "].[dbo].[tblPOLines] rtp ON rtp.[vItemCode] COLLATE Latin1_General_CI_AS = s.[Code] AND rtp.[vOrderNum] COLLATE Latin1_General_CI_AS = [OrderNum]
-                                                    WHERE i.[OrderNum] = @1 AND i.[DocType] = '5' AND il.[cLotNumber]<>'' AND dPrintQty>0 And (i.[DocState] = 1 OR i.[DocState] = 3) AND [bLotItem] = 0  AND i.[AutoIndex] = (SELECT TOP 1 [AutoIndex] FROM [InvNum] WHERE [OrderNum] = @1 ORDER BY [DocVersion] DESC)", sqlConn)
-
-
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_ReprintPOLinesNew] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", orderNum))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -1337,16 +1244,11 @@ Public Class POReceiving
 
             End Function
 
-
-
-
             Public Shared Function UI_GetStockLabelInfo(ByVal itemCode As String) As String
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand(" SELECT [Bar_Code], [cSimpleCode], b.[cBinLocationName], [Description_1], [Description_2], [Description_3], [ItemGroup] 
-                                                FROM [StkItem] s
-                                                LEFT JOIN [_btblBINLocation] b ON s.[iBinLocationID] = b.[idBinLocation] WHERE [Code] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetStockLabelInfo] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -1374,8 +1276,7 @@ Public Class POReceiving
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand(" SELECT [OrderNum] FROM [InvNum]
-                                                    WHERE [OrderNum] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_CheckPOExists] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", OrderNum))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -1400,13 +1301,7 @@ Public Class POReceiving
                     Dim ReturnData As String = ""
                     Dim returnQuery As String = "INSERT INTO [PO] ([ItemCode], [Description], [Description2], [bLotItem], [LotNumber], [OrderQty], [RecQty], [ProcQty], [ViewableQty], [PrintQty], [UserScanned], [DTUserScanned]) VALUES "
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand(" SELECT s.[Code], s.[Description_1], s.[Description_2], CAST(s.[bLotItem] AS INT), il.[cLotNumber], il.[fQuantity], il.[fQtyToProcess], 0, (il.[fQuantity] - il.[fQtyToProcess] - il.[fQtyProcessed]) AS [ViewableQty],
-                                                    ISNULL(rtp.[dPrintQty], 0) FROM [_btblInvoiceLines] il
-                                                    INNER JOIN [InvNum] i ON i.[AutoIndex] = il.[iInvoiceID]
-                                                    INNER JOIN [StkItem] s ON il.[iStockCodeID] = s.[StockLink]
-                                                    LEFT JOIN [" + My.Settings.RTDB + "].[dbo].[tblPOLines] rtp ON s.[Code] = rtp.[vItemCode] COLLATE Latin1_General_CI_AS AND il.[cLotNumber] = rtp.[vLotNumber] COLLATE Latin1_General_CI_AS AND rtp.[vOrderNum] COLLATE Latin1_General_CI_AS = [OrderNum]
-                                                    WHERE i.[OrderNum] = @1 And (i.[DocState] = 1 OR i.[DocState] = 3) AND i.[DocFlag] = 1 
-                                                    ORDER BY il.[cLotNumber] DESC", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetEvoPOLines] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", OrderNum))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
