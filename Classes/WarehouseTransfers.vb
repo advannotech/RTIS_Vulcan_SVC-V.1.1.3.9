@@ -13,6 +13,7 @@ Public Class WarehouseTransfers
                     WhseTransferLines = WhseTransferLines.Remove(0, 2)
                     Dim allWhseTransfers As String() = WhseTransferLines.Split("~")
                     For Each whseTransfer As String In allWhseTransfers
+                        EventLog.WriteEntry("RTIS Vulcan SVC", "Lot Number: " & whseTransfer.Split("|")(2))
                         If whseTransfer <> String.Empty Then
 
                             Dim lineID As String = whseTransfer.Split("|")(0)

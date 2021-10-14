@@ -1266,7 +1266,7 @@ CREATE PROC [dbo].[sp_UI_UpdateCMSEdited]
 AS
 UPDATE [COA].[htbl_CMS_Docs] 
 SET [vStatus] = 'Waiting Approval', [vReasons] = NULL, [dtRejected] = NULL,  [vUserRejected] = NULL
-WHERE [iLineID] = @1
+WHERE [iLineID] = @id
 GO
 
 
@@ -1399,7 +1399,7 @@ GO
 
 
 
-IF (OBJECT_ID('[dbo].[sp_[sp_UI_DeleteCMSLines]]') IS NOT NULL)
+IF (OBJECT_ID('[dbo].[sp_UI_DeleteCMSLines]') IS NOT NULL)
 	DROP PROC [dbo].[sp_UI_DeleteCMSLines]
 GO
 
@@ -1413,7 +1413,7 @@ GO
 
 
 
-IF (OBJECT_ID('[dbo].[sp_[sp_UI_DeleteCMSLines]]') IS NOT NULL)
+IF (OBJECT_ID('[dbo].[sp_UI_DeleteCMSLines]') IS NOT NULL)
 	DROP PROC [dbo].[sp_UI_DeleteCMSLines]
 GO
 
