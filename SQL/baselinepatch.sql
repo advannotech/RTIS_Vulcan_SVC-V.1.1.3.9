@@ -1528,11 +1528,6 @@ INSERT INTO [dbo].[rtbl_LabelPermCom]
    END
 END
 
-
-USE [CAT_RTIS]
-GO
-
-
 ----------Add Perm Label For Reprint Module-------------
 USE [CAT_RTIS]
 GO
