@@ -197,6 +197,151 @@ GO
 
 
 
+--------------------------------------------------------- AW ---------------------------------------------------------------------------
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_AW_GetLabelInfo_AWTags]') IS NOT NULL)
+	DROP PROC [dbo].[sp_AW_GetLabelInfo_AWTags]
+GO
+
+CREATE PROC [dbo].[sp_AW_GetLabelInfo_AWTags]
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT [Code], [Bar_Code], [cSimpleCode], b.[cBinLocationName], [Description_1], [Description_2], [Description_3], [ItemGroup] 
+    FROM [StkItem] s
+    LEFT JOIN [_btblBINLocation] b ON s.[iBinLocationID] = b.[idBinLocation] WHERE [ucIICoatStage] = @itemCode
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_AW_GetReprintLabelInfo]') IS NOT NULL)
+	DROP PROC [dbo].[sp_AW_GetReprintLabelInfo]
+GO
+
+CREATE PROC [dbo].[sp_AW_GetReprintLabelInfo]
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT [Code], [Bar_Code], [cSimpleCode], b.[cBinLocationName], [Description_1], [Description_2], [Description_3], [ItemGroup] 
+    FROM [StkItem] s
+    LEFT JOIN [_btblBINLocation] b ON s.[iBinLocationID] = b.[idBinLocation] WHERE [ucIICoatStage] = @itemCode
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_AW_GetReprintInfo_AWTag]') IS NOT NULL)
+	DROP PROC [dbo].[sp_AW_GetReprintInfo_AWTag]
+GO
+
+CREATE PROC [dbo].[sp_AW_GetReprintInfo_AWTag]
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT [Code], [Bar_Code], [cSimpleCode], b.[cBinLocationName], [Description_1], [Description_2], [Description_3], [ItemGroup] 
+    FROM [StkItem] s
+    LEFT JOIN [_btblBINLocation] b ON s.[iBinLocationID] = b.[idBinLocation] WHERE [ucIICoatStage] = @itemCode
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetAllAWCatalysts]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetAllAWCatalysts]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetAllAWCatalysts]
+AS
+	SELECT [ucIICoatStage],[Description_1],[Description_2], '' FROM [StkItem]
+    WHERE [ucIICoatStage] LIKE '%A&W%'
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetAllAWWRMs]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetAllAWWRMs]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetAllAWWRMs]
+AS
+	SELECT [Code],[Description_1], '' FROM [StkItem]
+    WHERE [ucIICoatStage] Like 'SOL-%' OR [ucIICoatStage] Like 'CHEM-1180%' OR [ucIICoatStage] Like 'CHEM-1640%' 
+    OR [ItemGroup] = '005' OR [ItemGroup] = '009'
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_AW_GetZectMFCode]') IS NOT NULL)
+	DROP PROC [dbo].[sp_AW_GetZectMFCode]
+GO
+
+CREATE PROC [dbo].[sp_AW_GetZectMFCode]
+	@baseCode VARCHAR(MAX)
+AS
+	SELECT [ucIICoatStage] FROM [StkItem] WHERE [Code] = @baseCode
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_AW_GetAWItemCode]') IS NOT NULL)
+	DROP PROC [dbo].[sp_AW_GetAWItemCode]
+GO
+
+CREATE PROC [dbo].[sp_AW_GetAWItemCode]
+	@baseCode VARCHAR(MAX)
+AS
+	SELECT [ucIICoatStage] FROM [StkItem] WHERE [ucIICoatStage] LIKE @baseCode AND [ucIICoatStage] LIKE '%A&W'
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_AW_GetAWAvailablePGMs]') IS NOT NULL)
+	DROP PROC [dbo].[sp_AW_GetAWAvailablePGMs]
+GO
+
+CREATE PROC [dbo].[sp_AW_GetAWAvailablePGMs]
+	@itemCode VARCHAR(MAX),
+	@whseCode VARCHAR(MAX)
+AS
+	SELECT DISTINCT aw.[vRMCode], l.[cLotDescription], lq.[fQtyOnHand] FROM [_etblLotTrackingQty] lq
+    INNER JOIN [_etblLotTracking] l ON l.[idLotTracking] = lq.[iLotTrackingID] 
+    INNER JOIN [_etblLotStatus] ls ON l.[iLotStatusID] = ls.[idLotStatus]
+	INNER JOIN [WhseMst] w ON w.[WhseLink] = lq.[iWarehouseID]
+    INNER JOIN [StkItem] s ON s.[StockLink] = l.[iStockID]  
+	INNER JOIN [CAT_RTIS].[dbo].[tbl_RTIS_AW_Raws] aw ON aw.[vRMCode] = s.[Code]                       
+	WHERE aw.[vAWCode] = @itemCode AND w.[Code] = @whseCode AND lq.[fQtyOnHand]  <> 0
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_AW_GetLabelInfo]') IS NOT NULL)
+	DROP PROC [dbo].[sp_AW_GetLabelInfo]
+GO
+
+CREATE PROC [dbo].[sp_AW_GetLabelInfo]
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT [Bar_Code], [cSimpleCode], b.[cBinLocationName], [Description_1], [Description_2], [Description_3], [ItemGroup] 
+    FROM [StkItem] s
+    LEFT JOIN [_btblBINLocation] b ON s.[iBinLocationID] = b.[idBinLocation] WHERE [ucIICoatStage] = @itemCode
+GO
+
+
+
+
+
+
+
+
+
 
 
 
