@@ -338,6 +338,69 @@ GO
 
 
 
+IF (OBJECT_ID('[dbo].[sp_MBL_GetItemDesc]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetItemDesc]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetItemDesc]
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT [Description_1] FROM [StkItem]
+    WHERE [Code] = @itemCode
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetItemInfo]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetItemInfo]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetItemInfo]
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT [Bar_Code],[cSimpleCode],[Description_1],[Description_2],[Description_3] FROM [StkItem] WHERE [Code] = @itemCode
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetItemCodes]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetItemCodes]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetItemCodes]
+AS
+	SELECT DISTINCT [Code] FROM [StkItem]
+    WHERE [Code] NOT LIKE 'TSP%'AND [Code] NOT LIKE 'VSP%'
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetItemLots]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetItemLots]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetItemLots]
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT DISTINCT l.[cLotDescription] FROM [_etblLotTracking] l
+    INNER JOIN [StkItem] s ON s.[StockLink] = l.[iStockID]
+    WHERE s.[Code] = @itemCode
+GO
+
+
+
+
+
+
+
+
+
+
 
 
 

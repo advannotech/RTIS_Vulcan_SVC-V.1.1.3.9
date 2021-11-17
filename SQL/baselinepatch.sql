@@ -2169,6 +2169,215 @@ AS
 GO
 
 
+--------------------------------------------------------- Palletizing ---------------------------------------------------------------------------
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetPalletPrintSettings]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetPalletPrintSettings]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetPalletPrintSettings]
+AS
+	IF(NOT EXISTS (SELECT * FROM [tbl_RTSettings] WHERE [Setting_Name] = 'Pallet Printer')) 
+    BEGIN
+	    INSERT INTO [tbl_RTSettings] ([Setting_Name], [SettingValue]) 
+	    VALUES ('Pallet Printer', 'Please Select A Printer')
+    END
+    IF(NOT EXISTS (SELECT * FROM [tbl_RTSettings] WHERE [Setting_Name] = 'Pallet Label')) 
+    BEGIN
+	    INSERT INTO [tbl_RTSettings] ([Setting_Name], [SettingValue]) 
+	    VALUES ('Pallet Label', 'Please Select A Label')
+    END
+    SELECT [Setting_Name], [SettingValue] FROM [tbl_RTSettings] WHERE [Setting_Name] = 'Pallet Printer' OR [Setting_Name] = 'Pallet Label'
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetPalletPrintSettings]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetPalletPrintSettings]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetPalletPrintSettings]
+AS
+	IF(NOT EXISTS (SELECT * FROM [tbl_RTSettings] WHERE [Setting_Name] = 'Pallet Printer')) 
+    BEGIN
+	    INSERT INTO [tbl_RTSettings] ([Setting_Name], [SettingValue]) 
+	    VALUES ('Pallet Printer', 'Please Select A Printer')
+    END
+    IF(NOT EXISTS (SELECT * FROM [tbl_RTSettings] WHERE [Setting_Name] = 'Pallet Label')) 
+    BEGIN
+	    INSERT INTO [tbl_RTSettings] ([Setting_Name], [SettingValue]) 
+	    VALUES ('Pallet Label', 'Please Select A Label')
+    END
+    SELECT [Setting_Name], [SettingValue] FROM [tbl_RTSettings] WHERE [Setting_Name] = 'Pallet Printer' OR [Setting_Name] = 'Pallet Label'
+GO
+
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetPallets]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetPallets]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetPallets]
+AS
+	SELECT [iLine_ID], [Printed], [vUnqBarcode] FROM 
+    [htbl_PalletBarcodes] WHERE [bRMPallet] = 1
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetPalletsByDate]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetPalletsByDate]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetPalletsByDate]
+	@from VARCHAR(MAX),
+	@_to VARCHAR(MAX)
+AS
+	SELECT [iLine_ID], [Printed], [vUnqBarcode] FROM 
+    [htbl_PalletBarcodes] WHERE [Printed] BETWEEN @from AND @_to AND [bRMPallet] = 1
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetPalletsByItem]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetPalletsByItem]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetPalletsByItem]
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT [iLine_ID], [Printed], [vUnqBarcode] 
+	FROM [htbl_PalletBarcodes] WHERE [vUnqBarcode] LIKE '%' + @ItemCode + '%' AND [bRMPallet] = 1
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetPalletsByItemAndDate]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetPalletsByItemAndDate]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetPalletsByItemAndDate]
+	@itemCode VARCHAR(MAX),
+	@from VARCHAR(MAX),
+	@_to VARCHAR(MAX)
+AS
+	SELECT [iLine_ID], [Printed], [vUnqBarcode] FROM 
+    [htbl_PalletBarcodes] WHERE [vUnqBarcode] LIKE '%' + @itemCode + '%' 
+    AND [Printed] BETWEEN @from AND @_to AND [bRMPallet] = 1
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetPalletsByLot]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetPalletsByLot]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetPalletsByLot]
+	@lot VARCHAR(MAX)
+AS
+	SELECT [iPallet_ID] FROM [ltbl_PalletBarcodes] l 
+    INNER JOIN [htbl_PalletBarcodes] h ON l.[iPallet_ID] = h.[iLine_ID]
+    WHERE l.[vUnqBarcode] LIKE '%' + @lot + '%' AND h.[bRMPallet] = 1
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetPalletsByLotAndDate]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetPalletsByLotAndDate]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetPalletsByLotAndDate]
+	@lot VARCHAR(MAX),
+	@from VARCHAR(MAX),
+	@_to VARCHAR(MAX)
+AS
+	SELECT [iPallet_ID] FROM [ltbl_PalletBarcodes] l 
+    INNER JOIN [htbl_PalletBarcodes] h ON l.[iPallet_ID] = h.[iLine_ID]
+    WHERE l.[vUnqBarcode] LIKE '%' + @lot + '%' AND h.[Printed] BETWEEN @from AND @_to AND h.[bRMPallet] = 1
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetPalletLots]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetPalletLots]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetPalletLots]
+	@palletId VARCHAR(MAX)
+AS
+	SELECT l.[vUnqBarcode] FROM [ltbl_PalletBarcodes] l WHERE l.[iPallet_ID] = @palletId
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetPalletLines]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetPalletLines]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetPalletLines]
+	@palletId VARCHAR(MAX)
+AS
+	SELECT l.[vUnqBarcode], l.[bOnPallet] FROM [ltbl_PalletBarcodes] l WHERE l.[iPallet_ID] = @palletId
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_UpdatePalletPrinSettings_1]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_UpdatePalletPrinSettings_1]
+GO
+
+CREATE PROC [dbo].[sp_UI_UpdatePalletPrinSettings_1]
+	@printer VARCHAR(MAX)
+AS
+	UPDATE [tbl_RTSettings] SET [SettingValue] = @printer WHERE [Setting_Name] = 'Pallet Printer'
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_UpdatePalletPrinSettings_2]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_UpdatePalletPrinSettings_2]
+GO
+
+CREATE PROC [dbo].[sp_UI_UpdatePalletPrinSettings_2]
+	@label VARCHAR(MAX)
+AS
+	UPDATE [tbl_RTSettings] SET [SettingValue] = @label WHERE [Setting_Name] = 'Pallet Label'
+GO
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
