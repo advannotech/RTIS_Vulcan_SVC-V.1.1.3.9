@@ -14,9 +14,10 @@ Public Class FreshSlurry
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT TOP 1 [vItemCode], [vLotNumber], [dWetWeight] FROM [tbl_RTIS_Fresh_Slurry] WHERE [vTrolleyCode] = @1 AND [dSolidity] IS NULL 
-                                                    ORDER BY [iLineID] DESC", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", trolleyCode))
+                    'Dim sqlComm As New SqlCommand(" SELECT TOP 1 [vItemCode], [vLotNumber], [dWetWeight] FROM [tbl_RTIS_Fresh_Slurry] WHERE [vTrolleyCode] = @1 AND [dSolidity] IS NULL 
+                    '                                ORDER BY [iLineID] DESC", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetFreshSlurryInUse] @vTrolleyCode", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@vTrolleyCode", trolleyCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -44,9 +45,10 @@ Public Class FreshSlurry
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("    SELECT w.[Code], w.[Name] FROM [RTIS_WarehouseLookUp_FStMS] wl
-                                                       INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
-                                                       WHERE [bEnabled] = 1", sqlConn)
+                    'Dim sqlComm As New SqlCommand("    SELECT w.[Code], w.[Name] FROM [RTIS_WarehouseLookUp_FStMS] wl
+                    '                                   INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
+                    '                                   WHERE [bEnabled] = 1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetFreshSlurryWhes]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -76,11 +78,12 @@ Public Class FreshSlurry
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("    SELECT [vLotNumber], s.[Description_1] FROM [tbl_RTIS_Fresh_Slurry] fs
-                                                       INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[StkItem] s ON s.[Code] = fs.[vItemCode]
-                                                       WHERE ([bManuf] = 0 OR [bManuf] IS NULL) AND [vTrolleyCode] = @1 AND [vItemCode] = @2", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", trolleyCode))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", itemCode))
+                    'Dim sqlComm As New SqlCommand("    SELECT [vLotNumber], s.[Description_1] FROM [tbl_RTIS_Fresh_Slurry] fs
+                    '                                   INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[StkItem] s ON s.[Code] = fs.[vItemCode]
+                    '                                   WHERE ([bManuf] = 0 OR [bManuf] IS NULL) AND [vTrolleyCode] = @1 AND [vItemCode] = @2", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetSlurryLotNonManufactured] @vTrolleyCode, @vItemCode", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@vTrolleyCode", trolleyCode))
+                    sqlComm.Parameters.Add(New SqlParameter("@vItemCode", itemCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -103,10 +106,11 @@ Public Class FreshSlurry
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT TOP 1 [vLotNumber] FROM [tbl_RTIS_Fresh_Slurry]
-                                                    WHERE ([bManuf] = 0 OR [bManuf] IS NULL) AND [vTrolleyCode] = @1 AND [vItemCode] = @2 ORDER BY [iLineID] DESC", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", trolleyCode))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", itemCode))
+                    'Dim sqlComm As New SqlCommand(" SELECT TOP 1 [vLotNumber] FROM [tbl_RTIS_Fresh_Slurry]
+                    '                                WHERE ([bManuf] = 0 OR [bManuf] IS NULL) AND [vTrolleyCode] = @1 AND [vItemCode] = @2 ORDER BY [iLineID] DESC", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetSlurryLotNonManufacturedSaveSol] @vTrolleyCode, @vItemCode", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@vTrolleyCode", trolleyCode))
+                    sqlComm.Parameters.Add(New SqlParameter("@vItemCode", itemCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -129,11 +133,13 @@ Public Class FreshSlurry
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT TOP 1 [dWetWeight] FROM [tbl_RTIS_Fresh_Slurry]
-                                                    WHERE ([bManuf] = 0 OR [bManuf] IS NULL) AND [vTrolleyCode] = @1 AND [vItemCode] = @2 AND [vLotNumber] = @3  ORDER BY [iLineID] DESC", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", trolleyCode))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", itemCode))
-                    sqlComm.Parameters.Add(New SqlParameter("@3", lot))
+                    'Dim sqlComm As New SqlCommand(" SELECT TOP 1 [dWetWeight] FROM [tbl_RTIS_Fresh_Slurry]
+                    '                                WHERE ([bManuf] = 0 OR [bManuf] IS NULL) AND [vTrolleyCode] = @1 AND [vItemCode] = @2 AND [vLotNumber] = @3  ORDER BY [iLineID] DESC", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetSlurryWeightNonManufacturedSaveSol] @vTrolleyCode, @vItemCode, @vLotNumber", sqlConn)
+
+                    sqlComm.Parameters.Add(New SqlParameter("@vTrolleyCode", trolleyCode))
+                    sqlComm.Parameters.Add(New SqlParameter("@vItemCode", itemCode))
+                    sqlComm.Parameters.Add(New SqlParameter("@vLotNumber", lot))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -157,8 +163,9 @@ Public Class FreshSlurry
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT [iLineID], [vTrolleyCode], [vItemCode], [vLotNumber], [dWetWeight], [dSolidity], [dDryWeight], [vUserEntered], [dtDateEntered], '', '' , '' 
-                                                     FROM [tbl_RTIS_Fresh_Slurry] WHERE ISNULL([dSolidity], 0) <> 0 AND ISNULL([bManuf], 0) = 0", sqlConn)
+                    'Dim sqlComm As New SqlCommand("  SELECT [iLineID], [vTrolleyCode], [vItemCode], [vLotNumber], [dWetWeight], [dSolidity], [dDryWeight], [vUserEntered], [dtDateEntered], '', '' , '' 
+                    '                                 FROM [tbl_RTIS_Fresh_Slurry] WHERE ISNULL([dSolidity], 0) <> 0 AND ISNULL([bManuf], 0) = 0", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetWaitingFreshSlurries]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -186,9 +193,10 @@ Public Class FreshSlurry
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [iLineID],[vTrolleyCode],'' AS [Tank],[vItemCode],[vItemDesc],[vLotNumber],[dWetWeight],[dSolidity],[dDryWeight],[dtDateSol],ISNULL([bManuf], 0)
-                                                   FROM [tbl_RTIS_Fresh_Slurry] WHERE ([bManuf] = '0' OR [bManuf] IS NULL) AND [dSolidity] is not null
-                                                    ORDER BY [dtDateSol] DESC", sqlConn)
+                    'Dim sqlComm As New SqlCommand("SELECT [iLineID],[vTrolleyCode],'' AS [Tank],[vItemCode],[vItemDesc],[vLotNumber],[dWetWeight],[dSolidity],[dDryWeight],[dtDateSol],ISNULL([bManuf], 0)
+                    '                               FROM [tbl_RTIS_Fresh_Slurry] WHERE ([bManuf] = '0' OR [bManuf] IS NULL) AND [dSolidity] is not null
+                    '                                ORDER BY [dtDateSol] DESC", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetFreshSlurryMF]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -216,24 +224,29 @@ Public Class FreshSlurry
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [vTrolleyCode],
-                                                [vItemCode],[vItemDesc],
-                                                [vLotNumber],[dWetWeight],
-                                                [dDryWeight],[dSolidity],[dtDateSol],
-                                                [vUserSol],[dtDateEntered],[vUserEntered],
-                                                ISNULL([bManuf], 0),
-                                                [dtManufDate],
-                                                [vUserManuf],
-                                                ISNULL([bTrans], 0),
-                                                [dtTrans],
-                                                ISNULL([bRecTrans], 0),
-                                                [dtRecTrans] ,
-                                                [vUserRec] 
-                                                FROM [tbl_RTIS_Fresh_Slurry]
-                                                WHERE [dtDateEntered] BETWEEN @1 AND @2
-                                                ORDER BY [dtDateEntered] DESC", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", dateFrom))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", dateTo))
+                    'Dim sqlComm As New SqlCommand("SELECT [vTrolleyCode],
+                    '                            [vItemCode],[vItemDesc],
+                    '                            [vLotNumber],[dWetWeight],
+                    '                            [dDryWeight],[dSolidity],[dtDateSol],
+                    '                            [vUserSol],[dtDateEntered],[vUserEntered],
+                    '                            ISNULL([bManuf], 0),
+                    '                            [dtManufDate],
+                    '                            [vUserManuf],
+                    '                            ISNULL([bTrans], 0),
+                    '                            [dtTrans],
+                    '                            ISNULL([bRecTrans], 0),
+                    '                            [dtRecTrans] ,
+                    '                            [vUserRec] 
+                    '                            FROM [tbl_RTIS_Fresh_Slurry]
+                    '                            WHERE [dtDateEntered] BETWEEN @1 AND @2
+                    '                            ORDER BY [dtDateEntered] DESC", sqlConn)
+                    'sqlComm.Parameters.Add(New SqlParameter("@1", dateFrom))
+                    'sqlComm.Parameters.Add(New SqlParameter("@2", dateTo))
+
+
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetFreshSlurryRecords] @dateFrom, @dateTo", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@dateFrom", dateFrom))
+                    sqlComm.Parameters.Add(New SqlParameter("@dateTo", dateTo))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -262,10 +275,11 @@ Public Class FreshSlurry
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [vRMCode] FROM [tbl_RTIS_Fresh_Slurry_Raws] WHERE [vSlurryCode] = @1 AND [vRMCode] = @2", sqlConn)
+                    'Dim sqlComm As New SqlCommand("SELECT [vRMCode] FROM [tbl_RTIS_Fresh_Slurry_Raws] WHERE [vSlurryCode] = @1 AND [vRMCode] = @2", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetFSLinkExists] @vSlurryCode, @vRMCode", sqlConn)
                     sqlConn.Open()
-                    sqlComm.Parameters.Add(New SqlParameter("@1", slurryCode))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", rmCode))
+                    sqlComm.Parameters.Add(New SqlParameter("@vSlurryCode", slurryCode))
+                    sqlComm.Parameters.Add(New SqlParameter("@vRMCode", rmCode))
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
                         ReturnData = Convert.ToString(sqlReader.Item(0))
