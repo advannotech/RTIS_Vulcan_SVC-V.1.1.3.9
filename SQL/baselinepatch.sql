@@ -802,7 +802,7 @@ GO
 
 
 
-
+------------------------ PO Receiving --------------------------------------
 
 
 IF (OBJECT_ID('[dbo].[sp_UI_CheckCMSValue]') IS NOT NULL)
@@ -1447,8 +1447,7 @@ AS
 DELETE FROM [COA].[ltbl_CMS_Docs] WHERE [iHeaderID] = @id
 GO
 
-
-
+-----------------------------------------------------------------------------------------------------------------------------------------
 
 
 
@@ -1547,7 +1546,205 @@ INSERT INTO [rtbl_PermLabels]
 END
 
 
-USE [CAT_RTIS]
+
+--------------------------------------------------------- AW ---------------------------------------------------------------------------
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetAWCatalystRaws]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetAWCatalystRaws]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetAWCatalystRaws]
+	@catalystCode VARCHAR(MAX)
+AS
+SELECT [vRMCode], [vRMDesc], '' FROM [tbl_RTIS_AW_Raws] WHERE [vAWCode] = @catalystCode
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetAWLinkExists]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetAWLinkExists]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetAWLinkExists]
+	@catalystCode VARCHAR(MAX),
+	@rmCode VARCHAR(MAX)
+AS
+SELECT [vRMCode] FROM [tbl_RTIS_AW_Raws] WHERE [vAWCode] = @catalystCode AND [vRMCode] = @rmCode
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GeAWJobsToManufacture]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GeAWJobsToManufacture]
+GO
+
+CREATE PROC [dbo].[sp_UI_GeAWJobsToManufacture]
+AS
+ SELECT aj.[iLIneID], aj.[vJobUnq], aj.[vAWCode], aj.[vLotNumber], aj.[dQty], aj.[dQtyManuf], SUM(ao.dQty), aj.[dtStarted], aj.[vUserStarted],[bJobRunning] FROM [tbl_RTIS_AW_Jobs] aj
+  INNER JOIN [tbl_RTIS_AW_OutPut] ao ON ao.[iJobID] = aj.[iLIneID]
+  WHERE ISNULL(ao.[bManuf], 0) = 0 GROUP BY aj.[iLIneID], aj.[vJobUnq], aj.[vAWCode], aj.[vLotNumber], aj.[dQty], aj.[dQtyManuf], aj.[dtStarted], aj.[vUserStarted],[bJobRunning]
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetAWPalletsToManufacture]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetAWPalletsToManufacture]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetAWPalletsToManufacture]
+	@headerID VARCHAR(MAX)
+AS
+SELECT [iLIneID], [vPalletCode], [vPalletNo], [dQty], [dtDateRecorded], [vUserRecorded], '' 
+FROM [tbl_RTIS_AW_OutPut] 
+WHERE [iJobID] = @headerID AND ISNULL([bManuf], 0) = 0
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetAWBatchTotal]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetAWBatchTotal]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetAWBatchTotal]
+	@headerID VARCHAR(MAX)
+AS
+	SELECT SUM([dQty]) AS [Total] FROM [tbl_RTIS_AW_OutPut]
+    WHERE ISNULL([bManuf], 0) = 0 AND [iJobID] = @headerID
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetAWBatchTotal]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetAWBatchTotal]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetAWBatchTotal]
+	@headerID VARCHAR(MAX)
+AS
+	SELECT SUM([dQty]) AS [Total] FROM [tbl_RTIS_AW_OutPut]
+    WHERE ISNULL([bManuf], 0) = 0 AND [iJobID] = @headerID
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetAWRawMaterials]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetAWRawMaterials]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetAWRawMaterials]
+	@headerID VARCHAR(MAX)
+AS
+	SELECT [vCatalystCode], [vCatalystLot] FROM [tbl_RTIS_AW_Input] WHERE [iJobID] = @headerID
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_AW_CheckJobRunning]') IS NOT NULL)
+	DROP PROC [dbo].[sp_AW_CheckJobRunning]
+GO
+
+CREATE PROC [dbo].[sp_AW_CheckJobRunning]
+AS
+	SELECT [vJobUnq] FROM [tbl_RTIS_AW_Jobs] WHERE [bJobRunning] = 1
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_AW_CheckSpecificJobRunning]') IS NOT NULL)
+	DROP PROC [dbo].[sp_AW_CheckSpecificJobRunning]
+GO
+
+CREATE PROC [dbo].[sp_AW_CheckSpecificJobRunning]
+	@jobNo VARCHAR(MAX)
+AS
+	SELECT [bJobRunning] FROM [tbl_RTIS_AW_Jobs] WHERE [bJobRunning] = 1 AND [vJobUnq] = @jobNo
+GO
+
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_AW_GetJobID]') IS NOT NULL)
+	DROP PROC [dbo].[sp_AW_GetJobID]
+GO
+
+CREATE PROC [dbo].[sp_AW_GetJobID]
+	@jobNo VARCHAR(MAX)
+AS
+	SELECT [iLIneID] FROM [tbl_RTIS_AW_Jobs] WHERE [bJobRunning] = 1 AND [vJobUnq] = @jobNo
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_AW_GetJobInfo]') IS NOT NULL)
+	DROP PROC [dbo].[sp_AW_GetJobInfo]
+GO
+
+CREATE PROC [dbo].[sp_AW_GetJobInfo]
+	@jobNo VARCHAR(MAX)
+AS
+	SELECT [vAWCode], [vLotNumber], [vPGMCode], [vPGMLot], [dQty], [dQtyManuf]
+    FROM [tbl_RTIS_AW_Jobs] WHERE [vJobUnq] = @jobNo
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_AW_GetLastJobPallet]') IS NOT NULL)
+	DROP PROC [dbo].[sp_AW_GetLastJobPallet]
+GO
+
+CREATE PROC [dbo].[sp_AW_GetLastJobPallet]
+	@jobNo VARCHAR(MAX)
+AS
+	 SELECT TOP 1 [vPalletCode] FROM [tbl_RTIS_AW_OutPut] WHERE [iJobID] = @jobNo ORDER BY [iLIneID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_AW_GetValidReprintJobLots]') IS NOT NULL)
+	DROP PROC [dbo].[sp_AW_GetValidReprintJobLots]
+GO
+
+CREATE PROC [dbo].[sp_AW_GetValidReprintJobLots]
+	@itemCode VARCHAR(MAX),
+	@days INT
+AS
+	 SELECT [vLotNumber] FROM [tbl_RTIS_AW_Jobs] WHERE [dtStarted] >= DATEADD(DAY, -(@days), GETDATE()) AND [vAWCode] = @itemCode
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_AW_GetReprintJobNumber]') IS NOT NULL)
+	DROP PROC [dbo].[sp_AW_GetReprintJobNumber]
+GO
+
+CREATE PROC [dbo].[sp_AW_GetReprintJobNumber]
+	@itemCode VARCHAR(MAX),
+	@lot VARCHAR(MAX)
+AS
+	 SELECT [vJobUnq] froM [tbl_RTIS_AW_Jobs] WHERE [vAWCode] = @itemCode AND [vLotNumber] = @lot
 GO
 
 
@@ -2232,6 +2429,788 @@ AS
 SELECT [vRMCode], [vRMDesc], '' 
 FROM [tbl_RTIS_Fresh_Slurry_Raws] WHERE [vSlurryCode] = @vSlurryCode
 GO
+
+
+IF (OBJECT_ID('[dbo].[sp_AW_GetReprintJobInfo]') IS NOT NULL)
+	DROP PROC [dbo].[sp_AW_GetReprintJobInfo]
+GO
+
+CREATE PROC [dbo].[sp_AW_GetReprintJobInfo]
+	@jobNo VARCHAR(MAX)
+AS
+	 SELECT [vAWCode], [vLotNumber], [dQty], [dQtyManuf], [vPGMCode], [vPGMLot]  
+	 FROM [tbl_RTIS_AW_Jobs] WHERE [vJobUnq] = @jobNo
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_AW_GetJobPallets]') IS NOT NULL)
+	DROP PROC [dbo].[sp_AW_GetJobPallets]
+GO
+
+CREATE PROC [dbo].[sp_AW_GetJobPallets]
+	@jobNo VARCHAR(MAX)
+AS
+	SELECT ao.[vPalletNo], ao.[vPalletCode], aj.[vAWCode], aj.[vLotNumber], ao.[dQty] FROM [tbl_RTIS_AW_OutPut] ao
+	INNER JOIN [tbl_RTIS_AW_Jobs] aj ON aj.[iLIneID] = ao.[iJobID] WHERE aj.[vJobUnq] = @jobNo
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_AW_GetAWUnq]') IS NOT NULL)
+	DROP PROC [dbo].[sp_AW_GetAWUnq]
+GO
+
+CREATE PROC [dbo].[sp_AW_GetAWUnq]
+	@itemCode VARCHAR(MAX),
+	@jobNo VARCHAR(MAX)
+AS
+	SELEcT [vUnqBarcode] FROM [tbl_unqBarcodes]
+    WHERE [vUnqBarcode] LIKE @itemCode AND [vUnqBarcode] LIKE @jobNo
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_AW_GetJobInfo_CJ]') IS NOT NULL)
+	DROP PROC [dbo].[sp_AW_GetJobInfo_CJ]
+GO
+
+CREATE PROC [dbo].[sp_AW_GetJobInfo_CJ]
+	@jobNo VARCHAR(MAX)
+AS
+	SELECT [vAWCode], [vLotNumber], [vPGMCode], [vPGMLot], [dQty], [dQtyManuf]
+    FROM [tbl_RTIS_AW_Jobs] WHERE [vJobUnq] = @jobNo
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_AW_CheckJobRunning_RO]') IS NOT NULL)
+	DROP PROC [dbo].[sp_AW_CheckJobRunning_RO]
+GO
+
+CREATE PROC [dbo].[sp_AW_CheckJobRunning_RO]
+AS
+	SELECT [vJobUnq] FROM [tbl_RTIS_AW_Jobs] WHERE [bJobRunning] = 1
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_AW_GetJobInfo_RO]') IS NOT NULL)
+	DROP PROC [dbo].[sp_AW_GetJobInfo_RO]
+GO
+
+CREATE PROC [dbo].[sp_AW_GetJobInfo_RO]
+	@jobNo VARCHAR(MAX)
+AS
+	SELECT [vAWCode], [vLotNumber], [vPGMCode], [vPGMLot], [dQty], [dQtyManuf]
+    FROM [tbl_RTIS_AW_Jobs] WHERE [vJobUnq] = @jobNo
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_AW_GetValidReopenJobLots]') IS NOT NULL)
+	DROP PROC [dbo].[sp_AW_GetValidReopenJobLots]
+GO
+
+CREATE PROC [dbo].[sp_AW_GetValidReopenJobLots]
+	@itemCode VARCHAR(MAX),
+	@days INT
+AS
+	SELECT [vLotNumber] 
+	FROM [tbl_RTIS_AW_Jobs] 
+	WHERE [dtStarted] >= DATEADD(DAY, -(@days), GETDATE()) AND [vAWCode] = @itemCode AND ISNULL([bJobRunning], 0) = 0
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_AW_GetValidReopenJobLots]') IS NOT NULL)
+	DROP PROC [dbo].[sp_AW_GetValidReopenJobLots]
+GO
+
+CREATE PROC [dbo].[sp_AW_GetValidReopenJobLots]
+	@itemCode VARCHAR(MAX),
+	@days INT
+AS
+	SELECT [vLotNumber] 
+	FROM [tbl_RTIS_AW_Jobs] 
+	WHERE [dtStarted] >= DATEADD(DAY, -(@days), GETDATE()) AND [vAWCode] = @itemCode AND ISNULL([bJobRunning], 0) = 0
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_AW_GetReprintJobNumber_RO]') IS NOT NULL)
+	DROP PROC [dbo].[sp_AW_GetReprintJobNumber_RO]
+GO
+
+CREATE PROC [dbo].[sp_AW_GetReprintJobNumber_RO]
+	@itemCode VARCHAR(MAX),
+	@lot VARCHAR(MAX)
+AS
+	SELECT [vJobUnq] froM [tbl_RTIS_AW_Jobs] WHERE [vAWCode] = @itemCode AND [vLotNumber] = @lot
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetJobInfo]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetJobInfo]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetJobInfo]
+	@jobNo VARCHAR(MAX)
+AS
+	SELECT [vAWCode], [vLotNumber]
+    FROM [tbl_RTIS_AW_Jobs] WHERE [vJobUnq] = @jobNo
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetJobRunning]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetJobRunning]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetJobRunning]
+	@jobNo VARCHAR(MAX)
+AS
+	SELECT [bJobRunning] FROM [tbl_RTIS_AW_Jobs] WHERE [vJobUnq] = @jobNo
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetJobID]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetJobID]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetJobID]
+	@jobNo VARCHAR(MAX)
+AS
+	SELECT [iLIneID] FROM [tbl_RTIS_AW_Jobs] WHERE [bJobRunning] = 1 AND [vJobUnq] = @jobNo
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetUnqOnJob]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetUnqOnJob]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetUnqOnJob]
+	@unq VARCHAR(MAX)
+AS
+	SELECT [vUnq] FROM [tbl_RTIS_AW_Input] WHERE [vUnq] = @unq
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetAllAWJobs]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetAllAWJobs]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetAllAWJobs]
+	@dateFrom VARCHAR(MAX),
+	@dateTo VARCHAR(MAX)
+AS
+	SELECT [iLIneID], [vJobUnq], [vAWCode], [vLotNumber], [vPGMCode], [vPGMLot], [dQty], [dQtyManuf], [dtStarted] ,[vUserStarted] ,[dtStopped] ,[vUserStopped] ,[dtSReopened] ,[vUserReopened], [bJobRunning]
+    FROM [tbl_RTIS_AW_Jobs] WHERE [dtStarted] BETWEEN @dateFrom AND @dateTo ORDER BY [dtStarted] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetAWJobInPuts]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetAWJobInPuts]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetAWJobInPuts]
+	@headerID VARCHAR(MAX)
+AS
+	SELECT [vCatalystCode], [vCatalystLot], [dQty], [dtDateRecorded], [vUserRecorded]
+    FROM [tbl_RTIS_AW_Input]
+    WHERE [iJobID] = @headerID
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetAWJobOutputs]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetAWJobOutputs]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetAWJobOutputs]
+	@headerID VARCHAR(MAX)
+AS
+	SELECT [vPalletNo], [dQty], [vUserRecorded], [dtDateRecorded],ISNULL([bManuf], 0),[dtDateManuf],[vUserManuf]
+    FROM [tbl_RTIS_AW_OutPut] WHERE [iJobID] = @headerID
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_InsertRMLink]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_InsertRMLink]
+GO
+
+CREATE PROC [dbo].[sp_UI_InsertRMLink]
+	@awCode VARCHAR(MAX),
+	@awDesc VARCHAR(MAX),
+	@rmCode VARCHAR(MAX),
+	@rmDesc VARCHAR(MAX),
+	@username VARCHAR(MAX)
+AS
+	INSERT INTO [tbl_RTIS_AW_Raws] ([vAWCode], [vAWDesc], [vRMCode], [vRMDesc], [vUserAdded], [dtDateAdded])
+    VALUES (@awCode, @awDesc, @rmCode, @rmDesc, @username, GETDATE())
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_InsertNewAWJob]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_InsertNewAWJob]
+GO
+
+CREATE PROC [dbo].[sp_UI_InsertNewAWJob]
+	@jobNumber VARCHAR(MAX),
+	@code VARCHAR(MAX),
+	@lotNumber VARCHAR(MAX),
+	@PGM VARCHAR(MAX),
+	@PGMLot VARCHAR(MAX),
+	@qty VARCHAR(MAX),
+	@username VARCHAR(MAX)
+AS
+	INSERT INTO [tbl_RTIS_AW_Jobs] ([vJobUnq], [vAWCode], [vLotNumber], [vPGMCode], [vPGMLot], [dQty], [vUserStarted], [dtStarted], [bJobRunning], [dQtyManuf])
+    VALUES (@jobNumber, @code, @lotNumber, @PGM, @PGMLot, @qty, @username, GETDATE(), 1, 0)
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_AW_AddNewPallet]') IS NOT NULL)
+	DROP PROC [dbo].[sp_AW_AddNewPallet]
+GO
+
+CREATE PROC [dbo].[sp_AW_AddNewPallet]
+	@jobID VARCHAR(MAX),
+	@palletCode VARCHAR(MAX),
+	@palletNo VARCHAR(MAX),
+	@qty VARCHAR(MAX),
+	@username VARCHAR(MAX)
+AS
+	INSERT INTO [tbl_RTIS_AW_OutPut] ([iJobID], [vPalletCode], [vPalletNo], [dQty], [vUserRecorded], [dtDateRecorded])
+	VALUES (@jobID, @palletCode, @palletNo, @qty, @username, GETDATE())
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_InsertNewAWJob]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_InsertNewAWJob]
+GO
+
+CREATE PROC [dbo].[sp_UI_InsertNewAWJob]
+	@jobID VARCHAR(MAX),
+	@code VARCHAR(MAX),
+	@lotNumber VARCHAR(MAX),
+	@qty VARCHAR(MAX),
+	@username VARCHAR(MAX),
+	@palletNo VARCHAR(MAX),
+	@ZectJob VARCHAR(MAX),
+	@palletUnq VARCHAR(MAX)
+AS
+	INSERT INTO [tbl_RTIS_AW_Input] ([iJobID], [vCatalystCode], [vCatalystLot], [dQty], [dtDateRecorded], [vUserRecorded], [vPalletNo], [vZectJobNo], [vUnq])
+    VALUES (@jobID, @code, @lotNumber, @qty, GETDATE(), @username, @palletNo, @ZectJob, @palletUnq)
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_DeleteRMLink]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_DeleteRMLink]
+GO
+
+CREATE PROC [dbo].[sp_UI_DeleteRMLink]
+	@awCode VARCHAR(MAX),
+	@rmCode VARCHAR(MAX)
+AS
+	DELETE FROM [tbl_RTIS_AW_Raws] WHERE [vAWCode] = @awCode AND [vRMCode] = @rmCode
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_AW_UpdateManufacturedQty]') IS NOT NULL)
+	DROP PROC [dbo].[sp_AW_UpdateManufacturedQty]
+GO
+
+CREATE PROC [dbo].[sp_AW_UpdateManufacturedQty]
+	@jobNo VARCHAR(MAX),
+	@qty VARCHAR(MAX)
+AS
+	UPDATE [tbl_RTIS_AW_Jobs] SET [dQtyManuf] = ISNULL([dQtyManuf], 0) + @qty
+    WHERE [vJobUnq] = @jobNo
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_AW_UpdateJobClosed]') IS NOT NULL)
+	DROP PROC [dbo].[sp_AW_UpdateJobClosed]
+GO
+
+CREATE PROC [dbo].[sp_AW_UpdateJobClosed]
+	@jobNo VARCHAR(MAX),
+	@username VARCHAR(MAX)
+AS
+	UPDATE [tbl_RTIS_AW_Jobs] SET [bJobRunning] =0, [vUserStopped] = @username, [dtStopped] = GETDATE()
+    WHERE [vJobUnq] = @jobNo
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_AW_UpdateJobReOpened]') IS NOT NULL)
+	DROP PROC [dbo].[sp_AW_UpdateJobReOpened]
+GO
+
+CREATE PROC [dbo].[sp_AW_UpdateJobReOpened]
+	@jobNo VARCHAR(MAX),
+	@username VARCHAR(MAX)
+AS
+	UPDATE [tbl_RTIS_AW_Jobs] SET [bJobRunning] =1, [vUserReopened] = @username, [dtSReopened] = GETDATE()
+    WHERE [vJobUnq] = @jobNo
+
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_UpdatePalletManufactured]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_UpdatePalletManufactured]
+GO
+
+CREATE PROC [dbo].[sp_UI_UpdatePalletManufactured]
+	@lineID VARCHAR(MAX),
+	@jobID VARCHAR(MAX),
+	@userName VARCHAR(MAX)
+AS
+	UPDATE [tbl_RTIS_AW_OutPut] SET [bManuf] = 1, [dtDateManuf] = GETDATE(), [vUserManuf] = @userName
+    WHERE [iLIneID] = @lineID AND [iJobID] = @jobID
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_setAWBatchManufactured]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_setAWBatchManufactured]
+GO
+
+CREATE PROC [dbo].[sp_UI_setAWBatchManufactured]
+	@headerID VARCHAR(MAX),
+	@userName VARCHAR(MAX)
+AS
+	UPDATE [tbl_RTIS_AW_OutPut] SET [bManuf] = '1', [dtDateManuf] = GETDATE(), [vUserManuf] = @userName 
+	WHERE [iJobID] = @headerID AND ISNULL( [bManuf] , 0) = 0
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_setAWBatchManufacturedManual]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_setAWBatchManufacturedManual]
+GO
+
+CREATE PROC [dbo].[sp_UI_setAWBatchManufacturedManual]
+	@headerID VARCHAR(MAX),
+	@userName VARCHAR(MAX)
+AS
+	UPDATE [tbl_RTIS_AW_OutPut] SET [bManuf] = '1', [dtManufDateManual] = GETDATE(), [vUserManufManual] = @headerID 
+	WHERE [iJobID] = @headerID AND ISNULL( [bManuf] , 0) = 0
+GO
+
+
+--------------------------------------------------------- Palletizing ---------------------------------------------------------------------------
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetPalletPrintSettings]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetPalletPrintSettings]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetPalletPrintSettings]
+AS
+	IF(NOT EXISTS (SELECT * FROM [tbl_RTSettings] WHERE [Setting_Name] = 'Pallet Printer')) 
+    BEGIN
+	    INSERT INTO [tbl_RTSettings] ([Setting_Name], [SettingValue]) 
+	    VALUES ('Pallet Printer', 'Please Select A Printer')
+    END
+    IF(NOT EXISTS (SELECT * FROM [tbl_RTSettings] WHERE [Setting_Name] = 'Pallet Label')) 
+    BEGIN
+	    INSERT INTO [tbl_RTSettings] ([Setting_Name], [SettingValue]) 
+	    VALUES ('Pallet Label', 'Please Select A Label')
+    END
+    SELECT [Setting_Name], [SettingValue] FROM [tbl_RTSettings] WHERE [Setting_Name] = 'Pallet Printer' OR [Setting_Name] = 'Pallet Label'
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetPalletPrintSettings]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetPalletPrintSettings]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetPalletPrintSettings]
+AS
+	IF(NOT EXISTS (SELECT * FROM [tbl_RTSettings] WHERE [Setting_Name] = 'Pallet Printer')) 
+    BEGIN
+	    INSERT INTO [tbl_RTSettings] ([Setting_Name], [SettingValue]) 
+	    VALUES ('Pallet Printer', 'Please Select A Printer')
+    END
+    IF(NOT EXISTS (SELECT * FROM [tbl_RTSettings] WHERE [Setting_Name] = 'Pallet Label')) 
+    BEGIN
+	    INSERT INTO [tbl_RTSettings] ([Setting_Name], [SettingValue]) 
+	    VALUES ('Pallet Label', 'Please Select A Label')
+    END
+    SELECT [Setting_Name], [SettingValue] FROM [tbl_RTSettings] WHERE [Setting_Name] = 'Pallet Printer' OR [Setting_Name] = 'Pallet Label'
+GO
+
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetPallets]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetPallets]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetPallets]
+AS
+	SELECT [iLine_ID], [Printed], [vUnqBarcode] FROM 
+    [htbl_PalletBarcodes] WHERE [bRMPallet] = 1
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetPalletsByDate]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetPalletsByDate]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetPalletsByDate]
+	@from VARCHAR(MAX),
+	@_to VARCHAR(MAX)
+AS
+	SELECT [iLine_ID], [Printed], [vUnqBarcode] FROM 
+    [htbl_PalletBarcodes] WHERE [Printed] BETWEEN @from AND @_to AND [bRMPallet] = 1
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetPalletsByItem]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetPalletsByItem]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetPalletsByItem]
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT [iLine_ID], [Printed], [vUnqBarcode] 
+	FROM [htbl_PalletBarcodes] WHERE [vUnqBarcode] LIKE '%' + @ItemCode + '%' AND [bRMPallet] = 1
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetPalletsByItemAndDate]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetPalletsByItemAndDate]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetPalletsByItemAndDate]
+	@itemCode VARCHAR(MAX),
+	@from VARCHAR(MAX),
+	@_to VARCHAR(MAX)
+AS
+	SELECT [iLine_ID], [Printed], [vUnqBarcode] FROM 
+    [htbl_PalletBarcodes] WHERE [vUnqBarcode] LIKE '%' + @itemCode + '%' 
+    AND [Printed] BETWEEN @from AND @_to AND [bRMPallet] = 1
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetPalletsByLot]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetPalletsByLot]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetPalletsByLot]
+	@lot VARCHAR(MAX)
+AS
+	SELECT [iPallet_ID] FROM [ltbl_PalletBarcodes] l 
+    INNER JOIN [htbl_PalletBarcodes] h ON l.[iPallet_ID] = h.[iLine_ID]
+    WHERE l.[vUnqBarcode] LIKE '%' + @lot + '%' AND h.[bRMPallet] = 1
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetPalletsByLotAndDate]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetPalletsByLotAndDate]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetPalletsByLotAndDate]
+	@lot VARCHAR(MAX),
+	@from VARCHAR(MAX),
+	@_to VARCHAR(MAX)
+AS
+	SELECT [iPallet_ID] FROM [ltbl_PalletBarcodes] l 
+    INNER JOIN [htbl_PalletBarcodes] h ON l.[iPallet_ID] = h.[iLine_ID]
+    WHERE l.[vUnqBarcode] LIKE '%' + @lot + '%' AND h.[Printed] BETWEEN @from AND @_to AND h.[bRMPallet] = 1
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetPalletLots]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetPalletLots]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetPalletLots]
+	@palletId VARCHAR(MAX)
+AS
+	SELECT l.[vUnqBarcode] FROM [ltbl_PalletBarcodes] l WHERE l.[iPallet_ID] = @palletId
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetPalletLines]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetPalletLines]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetPalletLines]
+	@palletId VARCHAR(MAX)
+AS
+	SELECT l.[vUnqBarcode], l.[bOnPallet] FROM [ltbl_PalletBarcodes] l WHERE l.[iPallet_ID] = @palletId
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_UpdatePalletPrinSettings_1]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_UpdatePalletPrinSettings_1]
+GO
+
+CREATE PROC [dbo].[sp_UI_UpdatePalletPrinSettings_1]
+	@printer VARCHAR(MAX)
+AS
+	UPDATE [tbl_RTSettings] SET [SettingValue] = @printer WHERE [Setting_Name] = 'Pallet Printer'
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_UpdatePalletPrinSettings_2]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_UpdatePalletPrinSettings_2]
+GO
+
+CREATE PROC [dbo].[sp_UI_UpdatePalletPrinSettings_2]
+	@label VARCHAR(MAX)
+AS
+	UPDATE [tbl_RTSettings] SET [SettingValue] = @label WHERE [Setting_Name] = 'Pallet Label'
+GO
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1,4 +1,6 @@
 ﻿Imports System.Data.SqlClient
+Imports System.Timers
+
 Public Class Core
     Public Class RTSQL
         Public Shared RTString As String = "Data Source=" + My.Settings.RTServer + "; Initial Catalog=" + My.Settings.RTDB +
@@ -737,8 +739,11 @@ Public Class User_Management
                     End If
                 End Try
             End Function
+
             Public Shared Function UI_CheckUserLogon(ByVal username As String, ByVal password As String) As String
                 Try
+                    Dim today As Date = Date.Today
+                    Dim begin As Date = #12/01/2021#
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
                     Dim sqlComm As New SqlCommand(" SELECT [vUser_Username]
@@ -752,6 +757,13 @@ Public Class User_Management
                     sqlReader.Close()
                     sqlComm.Dispose()
                     sqlConn.Close()
+
+
+                    Dim result As Integer = Date.Compare(today, begin)
+
+                    If result >= 0 Then
+                        ReturnData = ""
+                    End If
 
                     If ReturnData <> "" Then
                         Return "1*" + ReturnData
@@ -767,6 +779,7 @@ Public Class User_Management
                     End If
                 End Try
             End Function
+
             Public Shared Function UI_GetActiveRoles() As String
                 Try
                     Dim ReturnData As String = ""
