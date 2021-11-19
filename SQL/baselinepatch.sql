@@ -1608,15 +1608,28 @@ GO
 
 
 	------------------------sp_UI_GetZECT2FGMF----------------
-	IF (OBJECT_ID('[sp_UI_GetZECT2FGMF]') IS NOT NULL)
-		DROP PROC [dbo].[sp_UI_GetZECT2FGMF]
-	GO
+IF (OBJECT_ID('[sp_UI_GetZECT2FGMF]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetZECT2FGMF]
+GO
 
-	CREATE PROC [dbo].[sp_UI_GetZECT2FGMF]
-	AS
-	SELECT [iLineID],[vItemCode],[vItemDesc],[vLotNumber],[vCoatNum],[vSlurry],[dPalletQty],[dtDateEntered],[vUserEntered],[bPrinted]
-	FROM [tbl_RTIS_Zect] WHERE ([bManuf] = '0' OR [bManuf] IS NULL) AND [vZectLine] = '2'
-	GO
+CREATE PROC [dbo].[sp_UI_GetZECT2FGMF]
+AS
+SELECT [iLineID],[vItemCode],[vItemDesc],[vLotNumber],[vCoatNum],[vSlurry],[dPalletQty],[dtDateEntered],[vUserEntered],[bPrinted]
+FROM [tbl_RTIS_Zect] WHERE ([bManuf] = '0' OR [bManuf] IS NULL) AND [vZectLine] = '2'
+GO
+ 
+
+
+ 	------------------------sp_UI_GetAWFGMF----------------
+--IF (OBJECT_ID('[sp_UI_GetAWFGMF]') IS NOT NULL)
+--	DROP PROC [dbo].[sp_UI_GetAWFGMF]
+--GO
+
+--CREATE PROC [dbo].[sp_UI_GetAWFGMF]
+--AS
+--SELECT [iLineID],[vItemCode],[vItemDesc],[vLotNumber], '' AS [vCoatNum], '' AS [vSlurry],[dNewPalletQty],[dtDateEntered],[vUserEntered],ISNULL( [bPrinted], 0)
+--FROM [tbl_RTIS_AW] WHERE ([bManuf] = '0' OR [bManuf] IS NULL)
+--GO
  
 
 
@@ -1627,12 +1640,13 @@ GO
 
 CREATE PROC [dbo].[sp_UI_setZECTALLFGManufactured]
 (
-@vUserManuf varchar(max),
-@iLineID int
+@iLineID int,
+@vUserManuf varchar(max)
 )
 AS
 UPDATE [tbl_RTIS_Zect] SET [bManuf] = '1', [dtManufDate] = GETDATE(), [vUserManuf] = @vUserManuf WHERE [iLineID] = @iLineID
 GO
+
 
 
  ------------------------sp_MBL_GetFreshSlurryInUse----------------
@@ -1645,7 +1659,9 @@ CREATE PROC [dbo].[sp_MBL_GetFreshSlurryInUse]
  @vTrolleyCode varchar(max)
 )
 AS
-SELECT TOP 1 [vItemCode], [vLotNumber], [dWetWeight] FROM [tbl_RTIS_Fresh_Slurry] WHERE [vTrolleyCode] = @vTrolleyCode AND [dSolidity] IS NULL 
+SELECT TOP 1 [vItemCode], [vLotNumber], [dWetWeight] 
+FROM [tbl_RTIS_Fresh_Slurry] 
+WHERE [vTrolleyCode] = @vTrolleyCode AND [dSolidity] IS NULL 
 ORDER BY [iLineID] DESC
 GO
 
@@ -1909,30 +1925,6 @@ FROM [tbl_RTIS_Canning_Out]
 WHERE [vCanningCode] = @vCanningCode AND [vLotNumber] = @vLotNumber
 GO
 
-
- ------------------------sp_UI_InsertRMLink----------------
-IF (OBJECT_ID('sp_UI_InsertRMLink') IS NOT NULL)
-	DROP PROC [dbo].[sp_UI_InsertRMLink]
-GO
-CREATE PROC [dbo].[sp_UI_InsertRMLink]
-(
-@vItemCode varchar(max),
-@vItemDesc varchar(max),
-@vRMCode varchar(max), 
-@vRMDesc varchar(max), 
-@vUserAdded varchar(max), 
-@dtDateAdded datetime
-)
-AS
-INSERT INTO [tbl_RTIS_Canning_Raws] ([vItemCode], [vItemDesc], [vRMCode], [vRMDesc], [vUserAdded], [dtDateAdded])
-VALUES (@vItemCode,
-@vItemDesc,
-@vRMCode, 
-@vRMDesc, 
-@vUserAdded, 
-GETDATE())
-GO
-
  ------------------------sp_UI_InsertCanningRecordk----------------
 IF (OBJECT_ID('sp_UI_InsertCanningRecordk') IS NOT NULL)
 	DROP PROC [dbo].[sp_UI_InsertCanningRecordk]
@@ -2002,10 +1994,244 @@ SELECT [vRMCode] FROM [tbl_RTIS_Fresh_Slurry_Raws] WHERE [vSlurryCode] = @vSlurr
 GO
 
 
+ ------------------------sp_MBL_GetSlurryReqRM----------------
+IF (OBJECT_ID('sp_MBL_GetSlurryReqRM') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetSlurryReqRM]
+GO
+CREATE PROC [dbo].[sp_MBL_GetSlurryReqRM]
+(
+@vSlurryCode varchar(max)
+)
+AS
+SELECT TOP 1 [vRMCode] FROM  [tbl_RTIS_Fresh_Slurry_Raws] WHERE [vSlurryCode] = @vSlurryCode
+GO
+
+
+ ------------------------sp_MBL_CheckLotNumberUsed----------------
+IF (OBJECT_ID('sp_MBL_CheckLotNumberUsed') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_CheckLotNumberUsed]
+GO
+CREATE PROC [dbo].[sp_MBL_CheckLotNumberUsed]
+(
+@vLotNumber varchar(max)
+)
+AS
+SELECT [vLotNumber] FROM [tbl_RTIS_Fresh_Slurry] WHERE [vLotNumber] = @vLotNumber
+GO
+
+ ------------------------sp_MBL_GetSlurryRMLink----------------
+IF (OBJECT_ID('sp_MBL_GetSlurryRMLink') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetSlurryRMLink]
+GO
+CREATE PROC [dbo].[sp_MBL_GetSlurryRMLink]
+(
+@vSlurryCode varchar(max),
+@vRMCode varchar(max)
+)
+AS
+SELECT [iLineID] FROM  [tbl_RTIS_Fresh_Slurry_Raws] WHERE [vSlurryCode] = @vSlurryCode AND [vRMCode] = @vRMCode
+GO
+
+
+
+ ------------------------sp_MBL_GetSlurryHeaderID----------------
+IF (OBJECT_ID('sp_MBL_GetSlurryHeaderID') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetSlurryHeaderID]
+GO
+CREATE PROC [dbo].[sp_MBL_GetSlurryHeaderID]
+(
+@vTrolleyCode varchar(max),
+@vItemCode varchar(max),
+@vLotNumber varchar(max)
+)
+AS
+SELECT TOP 1 [iLineID] FROM [tbl_RTIS_Fresh_Slurry] WHERE [vTrolleyCode] = @vTrolleyCode AND [vItemCode] = @vItemCode AND [vLotNumber] = @vLotNumber
+ORDER BY [iLineID] DESC
+GO
+
+
+
+ ------------------------sp_UI_GetFSRawMaterials----------------
+IF (OBJECT_ID('sp_MBL_GetSlurryHeaderID') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetSlurryHeaderID]
+GO
+CREATE PROC [dbo].[sp_MBL_GetSlurryHeaderID]
+(
+@iSlurryID int
+)
+AS
+SELECT [vPowderCode], [vPowderLot] FROM [tbl_RTIS_Fresh_Slurry_Input] WHERE [iSlurryID] = @iSlurryID
+ORDER BY [iLineID] DESC
+GO
+
+
+ ------------------------sp_MBL_InsertFreshSlurry----------------
+IF (OBJECT_ID('sp_MBL_InsertFreshSlurry') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_InsertFreshSlurry]
+GO
+CREATE PROC [dbo].[sp_MBL_InsertFreshSlurry]
+(
+@vTrolleyCode varchar(max), 
+@vItemCode varchar(max),
+@vLotNumber varchar(max),
+@dWetWeight varchar(max), 
+@vUserEntered varchar(max),
+@vItemDesc varchar(max)
+)
+AS
+INSERT INTO [tbl_RTIS_Fresh_Slurry] ([vTrolleyCode], [vItemCode], [vLotNumber], [dWetWeight], [vUserEntered], [dtDateEntered], [vItemDesc])
+VALUES
+(
+@vTrolleyCode,
+@vItemCode, 
+@vLotNumber,
+@dWetWeight, 
+@vUserEntered, 
+GETDATE(),
+@vItemDesc
+)
+GO
+
+
+
+ ------------------------sp_UI_InsertRMLink----------------
+IF (OBJECT_ID('sp_UI_InsertRMLink') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_InsertRMLink]
+GO
+CREATE PROC [dbo].[sp_UI_InsertRMLink]
+(
+@vSlurryCode varchar(max), 
+@vRMCode varchar(max), 
+@vRMDesc varchar(max), 
+@vUserAdded varchar(max)
+)
+AS
+INSERT INTO [tbl_RTIS_Fresh_Slurry_Raws] 
+([vSlurryCode], [vRMCode], [vRMDesc], [vUserAdded], [dtDateAdded])
+VALUES (@vSlurryCode, @vRMCode , @vRMDesc, @vUserAdded,GETDATE())
+GO
+
+
+
+ ------------------------sp_MBL_InsertFreshSlurryRM----------------
+IF (OBJECT_ID('sp_MBL_InsertFreshSlurryRM') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_InsertFreshSlurryRM]
+GO
+CREATE PROC [dbo].[sp_MBL_InsertFreshSlurryRM]
+(
+@iSlurryID int, 
+@vPowderCode varchar(max),
+@vPowderLot varchar(max), 
+@dQty decimal(16,3), 
+@vUserRecorded varchar(max)
+)
+AS
+INSERT INTO [tbl_RTIS_Fresh_Slurry_Input] ([iSlurryID], [vPowderCode], [vPowderLot], [dQty], [dtDateRecorded], [vUserRecorded])
+VALUES (@iSlurryID, @vPowderCode, @vPowderLot, @dQty, GETDATE(), @vUserRecorded)
+GO
+
+
+ ------------------------sp_MBL_InvalidateSlurry----------------
+IF (OBJECT_ID('sp_MBL_InvalidateSlurry') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_InvalidateSlurry]
+GO
+CREATE PROC [dbo].[sp_MBL_InvalidateSlurry]
+(
+@vTrolleyCode varchar(max), 
+@vItemCode varchar(max), 
+@vLotNumber varchar(max), 
+@vUserSol varchar(max)
+)
+AS
+ UPDATE [tbl_RTIS_Fresh_Slurry] SET [dSolidity] = 0, [dDryWeight] = 0, [dtDateSol] = GETDATE()
+, [vUserSol] = @vUserSol, [bManuf] = 1, [dtManufDate] = GETDATE(), [bTrans] = 1, [dtTrans] = GETDATE(), [vUserManuf] = @vUserSol, 
+[bRecTrans] = 1, dtRecTrans = GETDATE(), [vUserRec] = @vUserSol
+WHERE [vTrolleyCode] = @vTrolleyCode AND [vItemCode] = @vItemCode AND [vLotNumber] = @vLotNumber AND [dSolidity] IS NULL
+GO
 
 
 
 
+ ------------------------sp_MBL_setSlurrySolidity----------------
+IF (OBJECT_ID('sp_MBL_setSlurrySolidity') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_setSlurrySolidity]
+GO
+CREATE PROC [dbo].[sp_MBL_setSlurrySolidity]
+(
+@vTrolleyCode varchar(max), 
+@vItemCode varchar(max), 
+@vLotNumber varchar(max), 
+@dSolidity decimal(16,3), 
+@vUserSol varchar(max),
+@dDryWeight decimal(16,3)
+
+)
+AS
+UPDATE [tbl_RTIS_Fresh_Slurry] SET [dSolidity] = @dSolidity, [dDryWeight] = @dDryWeight, [vUserSol] = @vUserSol, [dtDateSol] =GETDATE()
+WHERE [vTrolleyCode] = @vTrolleyCode AND [vItemCode] = @vItemCode AND [vLotNumber] = @vLotNumber
+AND [iLineID] = (SELECT TOP 1 [iLineID] FROM [tbl_RTIS_Fresh_Slurry] WHERE [vTrolleyCode] = @vTrolleyCode AND [vItemCode] = @vItemCode AND [vLotNumber] = @vLotNumber ORDER BY [iLineID] DESC)
+GO
+
+
+
+ ------------------------sp_UI_setFSManufactured----------------
+IF (OBJECT_ID('sp_UI_setFSManufactured') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_setFSManufactured]
+GO
+CREATE PROC [dbo].[sp_UI_setFSManufactured]
+(
+@iLineID int,
+@vUserManuf varchar(max)
+)
+AS
+UPDATE [tbl_RTIS_Fresh_Slurry] SET [bManuf] = '1', [dtManufDate] = GETDATE(), [vUserManuf] = @vUserManuf WHERE [iLineID] = @iLineID
+GO
+
+
+
+
+
+ ------------------------sp_UI_setFSManufacturedManual----------------
+IF (OBJECT_ID('sp_UI_setFSManufacturedManual') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_setFSManufacturedManual]
+GO
+CREATE PROC [dbo].[sp_UI_setFSManufacturedManual]
+(
+@iLineID int,
+@vUserManuf varchar(max)
+)
+AS
+UPDATE [tbl_RTIS_Fresh_Slurry] 
+SET [bManuf] = '1', [dtManufDate] = GETDATE(), [vUserManuf] = @vUserManuf, [bManualManuf] =1 WHERE [iLineID] = @iLineID
+GO
+
+
+ ------------------------sp_UI_DeleteRMLink----------------
+IF (OBJECT_ID('sp_UI_DeleteRMLink') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_DeleteRMLink]
+GO
+CREATE PROC [dbo].[sp_UI_DeleteRMLink]
+(
+@vSlurryCode varchar(max),
+@vRMCode varchar(max)
+)
+AS
+DELETE FROM [tbl_RTIS_Fresh_Slurry_Raws] WHERE [vSlurryCode] = @vSlurryCode AND [vRMCode] = @vRMCode
+GO
+
+
+ ------------------------sp_UI_GetFreshSlurryRaws----------------
+IF (OBJECT_ID('[sp_UI_GetFreshSlurryRaws]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetFreshSlurryRaws]
+GO
+CREATE PROC [dbo].[sp_UI_GetFreshSlurryRaws]
+(
+@vSlurryCode varchar(max)
+)
+AS
+SELECT [vRMCode], [vRMDesc], '' 
+FROM [tbl_RTIS_Fresh_Slurry_Raws] WHERE [vSlurryCode] = @vSlurryCode
+GO
 
 
 

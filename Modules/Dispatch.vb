@@ -15,7 +15,6 @@ Public Class Dispatch
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    'Dim sqlComm As New SqlCommand(" SELECT DISTINCT [Dispatch] FROM [tbl_unqBarcodes] WHERE [Dispatch] IS NOT NULL AND [Dispatch] <> ''", sqlConn)
                     Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetSOUnqBarcodes]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()

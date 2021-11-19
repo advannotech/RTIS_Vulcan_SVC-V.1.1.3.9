@@ -14,8 +14,6 @@ Public Class FGManufacture
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    'Dim sqlComm As New SqlCommand("SELECT [iLineID],[vItemCode],[vItemDesc],[vLotNumber],[vCoatNum],[vSlurry],[dPalletQty],[dtDateEntered],[vUserEntered], ISNULL([bPrinted], 0)
-                    '                            FROM [tbl_RTIS_Zect] WHERE ([bManuf] = '0' OR [bManuf] IS NULL) AND [vZectLine] = '1'", sqlConn)
                     Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetZECT1FGMF]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -46,8 +44,6 @@ Public Class FGManufacture
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    'Dim sqlComm As New SqlCommand("SELECT [iLineID],[vItemCode],[vItemDesc],[vLotNumber],[vCoatNum],[vSlurry],[dPalletQty],[dtDateEntered],[vUserEntered],[bPrinted]
-                    '                            FROM [tbl_RTIS_Zect] WHERE ([bManuf] = '0' OR [bManuf] IS NULL) AND [vZectLine] = '2'", sqlConn)
                     Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetZECT2FGMF]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -114,9 +110,9 @@ Public Class FGManufacture
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
                     'Dim sqlComm As New SqlCommand("UPDATE [tbl_RTIS_Zect] SET [bManuf] = '1', [dtManufDate] = GETDATE(), [vUserManuf] = @2 WHERE [iLineID] = @1", sqlConn)
-                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_setZECTALLFGManufactured] @vUserManuf, @iLineID", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@vUserManuf", UserName))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_setZECTALLFGManufactured] @iLineID, @vUserManuf", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@iLineID", LineID))
+                    sqlComm.Parameters.Add(New SqlParameter("@vUserManuf", UserName))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
