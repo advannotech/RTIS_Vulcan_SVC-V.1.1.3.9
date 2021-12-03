@@ -2366,6 +2366,500 @@ GO
 
 
 
+--------------------------------------------------------- Palletizing ---------------------------------------------------------------------------
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_CheckMixedSlurryBufferTankInUse]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_CheckMixedSlurryBufferTankInUse]
+GO
+
+CREATE PROC [dbo].[sp_MBL_CheckMixedSlurryBufferTankInUse]
+	@tankType VARCHAR(MAX),
+	@tankCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [iLineID] FROM [tbl_RTIS_MS_Main]
+    WHERE [vTankType] = @tankType AND [vTankCode] = @tankCode AND [vItemCode] = @itemCode AND ISNULL([bBufferClosed], 0) = 0
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_CheckMixedSlurryTankInUse]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_CheckMixedSlurryTankInUse]
+GO
+
+CREATE PROC [dbo].[sp_MBL_CheckMixedSlurryTankInUse]
+	@tankType VARCHAR(MAX),
+	@tankCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [vLotNumber] FROM [tbl_RTIS_MS_Main]
+    WHERE [vTankType] = @tankType AND [vTankCode] = @tankCode AND [vItemCode] = @itemCode AND ISNULL([bReceived], 0) = 0
+	ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_CheckMixedSlurryRemENtered]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_CheckMixedSlurryRemENtered]
+GO
+
+CREATE PROC [dbo].[sp_MBL_CheckMixedSlurryRemENtered]
+	@tankType VARCHAR(MAX),
+	@tankCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [vUserRemaining] FROM [tbl_RTIS_MS_Main]
+    WHERE [vTankType] = @tankType AND [vTankCode] = @tankCode AND [vItemCode] = @itemCode
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_CheckMixedSlurryRecEntered]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_CheckMixedSlurryRecEntered]
+GO
+
+CREATE PROC [dbo].[sp_MBL_CheckMixedSlurryRecEntered]
+	@tankType VARCHAR(MAX),
+	@tankCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [vUserRecovered] FROM [tbl_RTIS_MS_Main]
+    WHERE [vTankType] = @tankType AND [vTankCode] = @tankCode AND [vItemCode] = @itemCode
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_CheckSlurryInBufferTank]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_CheckSlurryInBufferTank]
+GO
+
+CREATE PROC [dbo].[sp_MBL_CheckSlurryInBufferTank]
+	@tankType VARCHAR(MAX),
+	@tankCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [iLineID] FROM [tbl_RTIS_MS_Main]
+    WHERE [vTankType] = @tankType AND [vTankCode] = @tankCode AND [vItemCode] = @itemCode AND ISNULL([bBufferClosed], 0) = 0
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetTankFreshSlurries]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetTankFreshSlurries]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetTankFreshSlurries]
+	@headerID VARCHAR(MAX)
+AS
+	SELECT
+    s.[vTrolleyCode]
+    ,s.[vItemCode]
+    ,s.[vItemDesc]
+    ,s.[vLotNumber]
+    ,s.[dWeight]
+    FROM [tbl_RTIS_MS_Slurries] s
+    WHERE s.[iHeaderID] = @headerID
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_CheckSlurryInTank]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_CheckSlurryInTank]
+GO
+
+CREATE PROC [dbo].[sp_MBL_CheckSlurryInTank]
+	@tankType VARCHAR(MAX),
+	@tankCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [iLineID] FROM [tbl_RTIS_MS_Main]
+    WHERE [vTankType] = @tankType AND [vTankCode] = @tankCode AND [vItemCode] = @itemCode AND ISNULL([bReceived], 0) = 0
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetMixedSlurryHeaderID]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetMixedSlurryHeaderID]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetMixedSlurryHeaderID]
+	@tankType VARCHAR(MAX),
+	@tankCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [iLineID] FROM [tbl_RTIS_MS_Main]
+    WHERE [vTankType] = @tankType AND [vTankCode] = @tankCode AND [vItemCode] = @itemCode AND ISNULL([bReceived], 0) = 0
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetTrolleyInfo]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetTrolleyInfo]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetTrolleyInfo]
+	@trolleyNo VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [vLotNumber], s.[Description_1]
+    FROM [tbl_RTIS_Fresh_Slurry] ms
+    INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[Code] = ms.[vItemCode]
+    WHERE [vTrolleyCode] = @trolleyNo AND [vItemCode] = @itemCode AND [dSolidity] IS NOT NULL AND ISNULL([bRecTrans], 0) = 1 
+	ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_CheckSlurryAlreadyInTank]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_CheckSlurryAlreadyInTank]
+GO
+
+CREATE PROC [dbo].[sp_MBL_CheckSlurryAlreadyInTank]
+	@headerId VARCHAR(MAX),
+	@trolleyCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX),
+	@lotNumber VARCHAR(MAX)
+AS
+	SELECT [iLineID] FROM [tbl_RTIS_MS_Slurries] WHERE [iHeaderID] = @headerId 
+	AND [vTrolleyCode] = @trolleyCode 
+	AND [vItemCode] = @itemCode 
+	AND [vLotNumber] = @lotNumber
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetBufferTankSlurryID]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetBufferTankSlurryID]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetBufferTankSlurryID]
+	@tankType VARCHAR(MAX),
+	@tankCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [iLineID] FROM [tbl_RTIS_MS_Main]
+    WHERE [vTankType] = @tankType AND [vTankCode] = @tankCode AND [vItemCode] = @itemCode AND ISNULL([bBufferClosed], 0) = 0
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetTankSlurryID]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetTankSlurryID]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetTankSlurryID]
+	@tankType VARCHAR(MAX),
+	@tankCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [iLineID] FROM [tbl_RTIS_MS_Main]
+    WHERE [vTankType] = @tankType AND [vTankCode] = @tankCode AND [vItemCode] = @itemCode AND ISNULL([bReceived], 0) = 0
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetTrolleyTolerance]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetTrolleyTolerance]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetTrolleyTolerance]
+AS
+	SELECT [SettingValue] FROM [tbl_RTSettings]
+    WHERE [Setting_Name] = 'FSTol'
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetFreshSlurryTrolleyInfo]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetFreshSlurryTrolleyInfo]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetFreshSlurryTrolleyInfo]
+	@trolleyCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [iLIneID], [dWetWeight], [dTotalDecantedWeight] FROM [tbl_RTIS_Fresh_Slurry]
+    WHERE [vTrolleyCode] = @trolleyCode AND [vItemCode] = @itemCode ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_CheckSlurryAvailableToDecant]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_CheckSlurryAvailableToDecant]
+GO
+
+CREATE PROC [dbo].[sp_MBL_CheckSlurryAvailableToDecant]
+	@tankType VARCHAR(MAX),
+	@tankCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [vLotNumber], [vDescription] FROM [tbl_RTIS_MS_Main]
+    WHERE [vTankType] = @tankType AND [vTankCode] = @tankCode AND [vItemCode] = @itemCode AND ISNULL([bBufferClosed], 0) = 0 AND [dRemainingWeight] IS NOT NULL AND [dRecoveredWeight] IS NOT NULL
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_CheckMobileTankAvailable]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_CheckMobileTankAvailable]
+GO
+
+CREATE PROC [dbo].[sp_MBL_CheckMobileTankAvailable]
+	@tankCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [vLotNumber] FROM [tbl_RTIS_MS_Decant]
+    WHERE [vTankCode] = @tankCode AND [vItemCode]= @itemCode AND ISNULL([bReceived], 0) = 0
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetMixedSlurryHeaderInfo]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetMixedSlurryHeaderInfo]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetMixedSlurryHeaderInfo]
+	@tankType VARCHAR(MAX),
+	@tankCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [iLineID], [vDescription], [vLotNumber] FROM [tbl_RTIS_MS_Main]
+    WHERE [vTankType] = @tankType AND [vTankCode] = @tankCode AND [vItemCode] = @itemCode AND ISNULL([bBufferClosed], 0) = 0 AND [dRemainingWeight] IS NOT NULL AND [dRecoveredWeight] IS NOT NULL
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_CheckSlurryInMobileTankZAC]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_CheckSlurryInMobileTankZAC]
+GO
+
+CREATE PROC [dbo].[sp_MBL_CheckSlurryInMobileTankZAC]
+	@tankCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [vLotNumber], [vItemDesc] FROM [tbl_RTIS_MS_Decant]
+    WHERE [vTankCode] = @tankCode AND [vItemCode] = @itemCode AND ISNULL([bTransferred], 0) = 0 AND ISNULL([bReceived], 0) = 0 AND [dSolidity] IS NULL
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_CheckSlurryTankZAC]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_CheckSlurryTankZAC]
+GO
+
+CREATE PROC [dbo].[sp_MBL_CheckSlurryTankZAC]
+	@tankType VARCHAR(MAX),
+	@tankCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [vLotNumber], [vDescription] FROM [tbl_RTIS_MS_Main]
+    WHERE [vTankType] = @tankType AND [vTankCode] = @tankCode AND [vItemCode] = @itemCode AND ISNULL([bTransferred], 0) = 0 AND ISNULL([bReceived], 0) = 0 AND [dSolidity] IS NULL
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetZacChems]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetZacChems]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetZacChems]
+AS
+	SELECT [vChemicalName] FROM [tbl_RTIS_MS_Chemical_List]
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetMobileTankSlurryID]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetMobileTankSlurryID]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetMobileTankSlurryID]
+	@tankCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [iLineID] FROM [tbl_RTIS_MS_Decant]
+    WHERE [vTankCode] = @tankCode AND [vItemCode] = @itemCode
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetMobileTankChemicalID]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetMobileTankChemicalID]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetMobileTankChemicalID]
+	@tankID VARCHAR(MAX),
+	@chemical VARCHAR(MAX)
+AS
+	SElECT [iLineID] FROM [tbl_RTIS_MS_Chemicals] WHERE [iMTNKID] = @tankID AND [vChemicalName] = @chemical
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetTankChemicalID]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetTankChemicalID]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetTankChemicalID]
+	@tankID VARCHAR(MAX),
+	@chemical VARCHAR(MAX)
+AS
+	SElECT [iLineID] FROM [tbl_RTIS_MS_Chemicals] WHERE [iTNKID] = @tankID AND [vChemicalName] = @chemical
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetAllChemicals]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetAllChemicals]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetAllChemicals]
+AS
+	SELECT [vChemicalName]
+    FROM [tbl_RTIS_MS_Chemical_List]
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetMobileTankSlurryID]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetMobileTankSlurryID]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetMobileTankSlurryID]
+	@tankCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [vLotNumber], [vItemDesc] FROM [tbl_RTIS_MS_Decant]
+    WHERE [vTankCode] = @tankCode AND [vItemCode] = @itemCode AND ISNULL([bTransferred], 0) = 0 AND ISNULL([bReceived], 0) = 0 AND [dSolidity] IS NULL
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetSlurryTankInfoSolidity]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetSlurryTankInfoSolidity]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetSlurryTankInfoSolidity]
+	@tankType VARCHAR(MAX),
+	@tankCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [vLotNumber], [vDescription] FROM [tbl_RTIS_MS_Main]
+    WHERE [vTankType] = @tankType AND [vTankCode] = @tankCode AND [vItemCode] = @itemCode AND ISNULL([bTransferred], 0) = 0 AND ISNULL([bReceived], 0) = 0 AND [dSolidity] IS NULL
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetMobileTankSolidityInfo]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetMobileTankSolidityInfo]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetMobileTankSolidityInfo]
+	@tankCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [iLineID], [vLotNumber] FROM [tbl_RTIS_MS_Decant]
+    WHERE [vTankCode] = @tankCode AND [vItemCode] = @itemCode AND ISNULL([bTransferred], 0) = 0 AND ISNULL([bReceived], 0) = 0 AND [dSolidity] IS NULL
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetSlurryTankSolidityInfo]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetSlurryTankSolidityInfo]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetSlurryTankSolidityInfo]
+	@tankType VARCHAR(MAX),
+	@tankCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1  [iLineID], [vLotNumber] FROM [tbl_RTIS_MS_Main]
+    WHERE [vTankType] = @tankType AND [vTankCode] = @tankCode AND [vItemCode] = @itemCode AND ISNULL([bTransferred], 0) = 0 AND ISNULL([bReceived], 0) = 0 AND [dSolidity] IS NULL
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetFreshSlurryInfoRecTrans]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetFreshSlurryInfoRecTrans]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetFreshSlurryInfoRecTrans]
+	@trolleyCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [vLotNumber], [dDryWeight], ISNULL([bRecTrans], 'False'), s.[Description_1] FROM [tbl_RTIS_Fresh_Slurry] ms
+    INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[Code] = [vItemCode]
+    WHERE [vTrolleyCode] = @trolleyCode AND [vItemCode] = @itemCode ORDER BY [iLineID] DESC
+GO
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -30,8 +30,8 @@ Public Class ServerResponse
             Case "*UILOGIN*"
                 Try
                     Dim userName As String = ClientData.Split("|")(0)
-                    Dim password As String = ClientData.Split("|")(1)
-                    Server.Listener.SendResponse(ClientSocket, User_Management.RTSQL.Retreive.UI_CheckUserLogon(userName, password))
+                    Dim pin As String = ClientData.Split("|")(1)
+                    Server.Listener.SendResponse(ClientSocket, User_Management.RTSQL.Retreive.UI_CheckUserLogon(userName, pin))
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try

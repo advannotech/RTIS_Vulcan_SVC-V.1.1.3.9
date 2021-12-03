@@ -11,6 +11,12 @@
     <Setting Name="EvoComDB" Type="System.String" Scope="User">
       <Value Profile="(Default)">EvolutionCommon</Value>
     </Setting>
+    <Setting Name="RTDB" Type="System.String" Scope="User">
+      <Value Profile="(Default)">CAT_RTIS</Value>
+    </Setting>
+    <Setting Name="EvoDB" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Cataler_SCN</Value>
+    </Setting>
     <Setting Name="RTUser" Type="System.String" Scope="User">
       <Value Profile="(Default)">Reltech</Value>
     </Setting>
@@ -28,12 +34,6 @@
     </Setting>
     <Setting Name="EvoPassword" Type="System.String" Scope="User">
       <Value Profile="(Default)">R3lt3ch!4</Value>
-    </Setting>
-    <Setting Name="RTDB" Type="System.String" Scope="User">
-      <Value Profile="(Default)">CAT_RTIS</Value>
-    </Setting>
-    <Setting Name="EvoDB" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Cataler_SCN</Value>
     </Setting>
     <Setting Name="RTServer" Type="System.String" Scope="User">
       <Value Profile="(Default)">LIFA</Value>

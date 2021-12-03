@@ -740,16 +740,14 @@ Public Class User_Management
                 End Try
             End Function
 
-            Public Shared Function UI_CheckUserLogon(ByVal username As String, ByVal password As String) As String
+            Public Shared Function UI_CheckUserLogon(ByVal username As String, ByVal pin As String) As String
                 Try
-                    Dim today As Date = Date.Today
-                    Dim begin As Date = #12/01/2021#
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
                     Dim sqlComm As New SqlCommand(" SELECT [vUser_Username]
 	                                                FROM [tbl_users] WHERE [vUser_Username] = @1 AND [vUser_Password] = @2  AND [bUser_IsActive] = 1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", username))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", password))
+                    sqlComm.Parameters.Add(New SqlParameter("@2", pin))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -757,13 +755,6 @@ Public Class User_Management
                     sqlReader.Close()
                     sqlComm.Dispose()
                     sqlConn.Close()
-
-
-                    Dim result As Integer = Date.Compare(today, begin)
-
-                    If result >= 0 Then
-                        ReturnData = ""
-                    End If
 
                     If ReturnData <> "" Then
                         Return "1*" + ReturnData
