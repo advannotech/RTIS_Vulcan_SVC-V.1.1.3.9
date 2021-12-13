@@ -1610,22 +1610,6 @@ GO
 
 
 
-
-IF (OBJECT_ID('[dbo].[sp_UI_GetAWBatchTotal]') IS NOT NULL)
-	DROP PROC [dbo].[sp_UI_GetAWBatchTotal]
-GO
-
-CREATE PROC [dbo].[sp_UI_GetAWBatchTotal]
-	@headerID VARCHAR(MAX)
-AS
-	SELECT SUM([dQty]) AS [Total] FROM [tbl_RTIS_AW_OutPut]
-    WHERE ISNULL([bManuf], 0) = 0 AND [iJobID] = @headerID
-GO
-
-
-
-
-
 IF (OBJECT_ID('[dbo].[sp_UI_GetAWBatchTotal]') IS NOT NULL)
 	DROP PROC [dbo].[sp_UI_GetAWBatchTotal]
 GO
@@ -1839,23 +1823,6 @@ GO
 
 
 
-
-IF (OBJECT_ID('[dbo].[sp_AW_GetValidReopenJobLots]') IS NOT NULL)
-	DROP PROC [dbo].[sp_AW_GetValidReopenJobLots]
-GO
-
-CREATE PROC [dbo].[sp_AW_GetValidReopenJobLots]
-	@itemCode VARCHAR(MAX),
-	@days INT
-AS
-	SELECT [vLotNumber] 
-	FROM [tbl_RTIS_AW_Jobs] 
-	WHERE [dtStarted] >= DATEADD(DAY, -(@days), GETDATE()) AND [vAWCode] = @itemCode AND ISNULL([bJobRunning], 0) = 0
-GO
-
-
-
-
 IF (OBJECT_ID('[dbo].[sp_AW_GetValidReopenJobLots]') IS NOT NULL)
 	DROP PROC [dbo].[sp_AW_GetValidReopenJobLots]
 GO
@@ -2044,11 +2011,11 @@ GO
 
 
 
-IF (OBJECT_ID('[dbo].[sp_UI_InsertNewAWJob]') IS NOT NULL)
-	DROP PROC [dbo].[sp_UI_InsertNewAWJob]
+IF (OBJECT_ID('[dbo].[sp_UI_InsertNewAWJobRawMaterial]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_InsertNewAWJobRawMaterial]
 GO
 
-CREATE PROC [dbo].[sp_UI_InsertNewAWJob]
+CREATE PROC [dbo].[sp_UI_InsertNewAWJobRawMaterial]
 	@jobID VARCHAR(MAX),
 	@code VARCHAR(MAX),
 	@lotNumber VARCHAR(MAX),

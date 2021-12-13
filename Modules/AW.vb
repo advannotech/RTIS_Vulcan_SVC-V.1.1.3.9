@@ -876,7 +876,7 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_InsertNewAWJob] @1, @2, @3, @4, @5, @6, @7, @8", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_InsertNewAWJobRawMaterial] @1, @2, @3, @4, @5, @6, @7, @8", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", jobID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", code))
                     sqlComm.Parameters.Add(New SqlParameter("@3", lotNumber))
@@ -1107,7 +1107,7 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_AW_GetZectMFCode] @1", sqlConn)
                     sqlConn.Open()
                     sqlComm.Parameters.Add(New SqlParameter("@1", baseCode))
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
