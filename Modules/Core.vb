@@ -1,4 +1,7 @@
 ﻿Imports System.Data.SqlClient
+Imports System.IO
+Imports System.Security.Cryptography
+Imports System.Text
 Imports System.Timers
 
 Public Class Core
@@ -742,12 +745,14 @@ Public Class User_Management
 
             Public Shared Function UI_CheckUserLogon(ByVal username As String, ByVal password As String) As String
                 Try
-                    Dim today As Date = Date.Today
-                    Dim begin As Date = #12/01/2021#
+
+
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
                     Dim sqlComm As New SqlCommand(" SELECT [vUser_Username]
 	                                                FROM [tbl_users] WHERE [vUser_Username] = @1 AND [vUser_Password] = @2  AND [bUser_IsActive] = 1", sqlConn)
+                    password = password.Replace(" ", "+")
+
                     sqlComm.Parameters.Add(New SqlParameter("@1", username))
                     sqlComm.Parameters.Add(New SqlParameter("@2", password))
                     sqlConn.Open()
@@ -757,13 +762,6 @@ Public Class User_Management
                     sqlReader.Close()
                     sqlComm.Dispose()
                     sqlConn.Close()
-
-
-                    Dim result As Integer = Date.Compare(today, begin)
-
-                    If result >= 0 Then
-                        ReturnData = ""
-                    End If
 
                     If ReturnData <> "" Then
                         Return "1*" + ReturnData
@@ -1035,6 +1033,8 @@ Public Class User_Management
                 End Try
             End Function
         End Class
+
+
         Partial Public Class Insert
             Public Shared Function UI_AddUser(ByVal name As String, ByVal username As String, ByVal pin As String, ByVal password As String, ByVal roleId As String, ByVal hasAgent As String, ByVal evoAgent As String) As String
                 Try

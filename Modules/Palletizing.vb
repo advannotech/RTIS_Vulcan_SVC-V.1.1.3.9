@@ -3,10 +3,10 @@
 Public Class Palletizing
     Public Shared RTString As String = "Data Source=" + My.Settings.RTServer + "; Initial Catalog=" + My.Settings.RTDB +
     "; user ID=" + My.Settings.RTUser + "; password=" + My.Settings.RTPassword + ";Max Pool Size=99999;"
-        Public Shared EvoString As String = "Data Source=" + My.Settings.EvoServer + "; Initial Catalog=" + My.Settings.EvoDB +
-      "; user ID=" + My.Settings.EvoUser + "; password=" + My.Settings.EvoPassword + ";Max Pool Size=99999;"
+    Public Shared EvoString As String = "Data Source=" + My.Settings.EvoServer + "; Initial Catalog=" + My.Settings.EvoDB +
+  "; user ID=" + My.Settings.EvoUser + "; password=" + My.Settings.EvoPassword + ";Max Pool Size=99999;"
     Public Class RTIS
-        Public Partial Class Retreive
+        Partial Public Class Retreive
             Public Shared Function UI_GetPalletPrintSettings() As String
                 Try
                     Dim ReturnData As String = ""
@@ -34,7 +34,7 @@ Public Class Palletizing
                         Return ExHandler.returnErrorEx(ex)
                     End If
                 End Try
-            End Function    
+            End Function
             Public Shared Function MBL_GetPalletPrintSettings() As String
                 Try
                     Dim ReturnData As String = ""
@@ -95,9 +95,9 @@ Public Class Palletizing
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetPalletsByDate] @1, @2", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@FROM", from))
-                    sqlComm.Parameters.Add(New SqlParameter("@TO", _to))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetPallets] @from, @_to", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@from", from))
+                    sqlComm.Parameters.Add(New SqlParameter("@_to", _to))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -125,8 +125,8 @@ Public Class Palletizing
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetPalletsByItem] @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@ItemCode", itemCode))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetPalletsByItem] @itemCode", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@itemCode", itemCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -154,10 +154,10 @@ Public Class Palletizing
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetPalletsByItemAndDate] @1, @2, @3", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@ItemCode", itemCode))
-                    sqlComm.Parameters.Add(New SqlParameter("@FROM", from))
-                    sqlComm.Parameters.Add(New SqlParameter("@TO", _to))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetPalletsByItemAndDate] @itemCode, @from, @_to", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@itemCode", itemCode))
+                    sqlComm.Parameters.Add(New SqlParameter("@from", from))
+                    sqlComm.Parameters.Add(New SqlParameter("@_to", _to))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -185,8 +185,8 @@ Public Class Palletizing
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetPalletsByLot] @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@LOT", lot))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetPalletsByLot] @lot", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@lot ", lot))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -214,7 +214,9 @@ Public Class Palletizing
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetPalletsByLotAndDate] @1, @2, @3", sqlConn)
+                    Dim sqlComm As New SqlCommand(" SELECT [iPallet_ID] FROM [ltbl_PalletBarcodes] l 
+                                                    INNER JOIN [htbl_PalletBarcodes] h ON l.[iPallet_ID] = h.[iLine_ID]
+                                                    WHERE l.[vUnqBarcode] LIKE '%' + @LOT + '%' AND h.[Printed] BETWEEN @FROM AND @TO AND h.[bRMPallet] = 1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@LOT", lot))
                     sqlComm.Parameters.Add(New SqlParameter("@FROM", from))
                     sqlComm.Parameters.Add(New SqlParameter("@TO", _to))
@@ -245,8 +247,9 @@ Public Class Palletizing
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetPalletLots] @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@ID", palletId))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetPalletLots] @palletId", sqlConn)
+                    'Dim sqlComm As New SqlCommand(" SELECT l.[vUnqBarcode] FROM [ltbl_PalletBarcodes] l WHERE l.[iPallet_ID] = @ID", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@palletId", palletId))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -280,7 +283,7 @@ Public Class Palletizing
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
-                        ReturnData += Convert.ToString(sqlReader.Item(0)) + "|" + Convert.ToString(sqlReader.Item(1))  + "|" + Convert.ToString(sqlReader.Item(2)) + "~"
+                        ReturnData += Convert.ToString(sqlReader.Item(0)) + "|" + Convert.ToString(sqlReader.Item(1)) + "|" + Convert.ToString(sqlReader.Item(2)) + "~"
                     End While
                     sqlReader.Close()
                     sqlComm.Dispose()
@@ -304,8 +307,9 @@ Public Class Palletizing
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetPalletLines] @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@ID", palletId))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetPalletLines] @palletId", sqlConn)
+                    'Dim sqlComm As New SqlCommand(" SELECT l.[vUnqBarcode], l.[bOnPallet] FROM [ltbl_PalletBarcodes] l WHERE l.[iPallet_ID] = @ID", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@palletId", palletId))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -332,15 +336,15 @@ Public Class Palletizing
             End Function
         End Class
 
-        Public Partial Class Update
+        Partial Public Class Update
             Public Shared Function UI_UpdatePalletPrinSettings(ByVal printer As String, ByVal label As String) As String
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_UpdatePalletPrinSettings_1] @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("UPDATE [tbl_RTSettings] SET [SettingValue] = @VALUE WHERE [Setting_Name] = 'Pallet Printer'", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@VALUE", printer))
 
-                    Dim sqlComm2 As New SqlCommand("EXEC [dbo].[sp_UI_UpdatePalletPrinSettings_2] @1", sqlConn)
+                    Dim sqlComm2 As New SqlCommand(" UPDATE [tbl_RTSettings] SET [SettingValue] = @VALUE2 WHERE [Setting_Name] = 'Pallet Label'", sqlConn)
                     sqlComm2.Parameters.Add(New SqlParameter("@VALUE2", label))
 
                     sqlConn.Open()
@@ -358,13 +362,13 @@ Public Class Palletizing
     End Class
 
     Public Class Evolution
-        Public Partial Class Retreive
+        Partial Public Class Retreive
             Public Shared Function MBL_GetItemDesc(ByVal itemCode As String) As String
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetItemDesc] @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetItemDesc] @Code", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@Code", itemCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -392,12 +396,12 @@ Public Class Palletizing
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetItemInfo] @1", sqlConn)
+                    Dim sqlComm As New SqlCommand(" SELECT [Bar_Code],[cSimpleCode],[Description_1],[Description_2],[Description_3] FROM [StkItem] WHERE [Code] = @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
-                        ReturnData = Convert.ToString(sqlReader.Item(0)) + "|" + Convert.ToString(sqlReader.Item(1))+ "|" + Convert.ToString(sqlReader.Item(2))+ "|" + Convert.ToString(sqlReader.Item(3))+ "|" + Convert.ToString(sqlReader.Item(4))
+                        ReturnData = Convert.ToString(sqlReader.Item(0)) + "|" + Convert.ToString(sqlReader.Item(1)) + "|" + Convert.ToString(sqlReader.Item(2)) + "|" + Convert.ToString(sqlReader.Item(3)) + "|" + Convert.ToString(sqlReader.Item(4))
                     End While
                     sqlReader.Close()
                     sqlComm.Dispose()
@@ -451,8 +455,8 @@ Public Class Palletizing
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetItemLots] @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@CODE", itemCode))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetItemLots] @itemCode", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@itemCode", itemCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()

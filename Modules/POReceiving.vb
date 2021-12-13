@@ -525,6 +525,7 @@ Public Class POReceiving
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
                     Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_CheckVendorPOLink] @1", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@1", vendorID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -746,7 +747,7 @@ Public Class POReceiving
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_UI_AddVendorLookup] @1, @2, @3", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_AddVendorLookup] @1, @2, @3", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", id))
                     sqlComm.Parameters.Add(New SqlParameter("@2", name))
                     sqlComm.Parameters.Add(New SqlParameter("@3", viewable))

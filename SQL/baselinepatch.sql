@@ -2993,8 +2993,6 @@ GO
 
 
 
-
-
 IF (OBJECT_ID('[dbo].[sp_UI_GetPalletLots]') IS NOT NULL)
 	DROP PROC [dbo].[sp_UI_GetPalletLots]
 GO
@@ -3006,8 +3004,6 @@ AS
 GO
 
 
-
-
 IF (OBJECT_ID('[dbo].[sp_UI_GetPalletLines]') IS NOT NULL)
 	DROP PROC [dbo].[sp_UI_GetPalletLines]
 GO
@@ -3017,8 +3013,6 @@ CREATE PROC [dbo].[sp_UI_GetPalletLines]
 AS
 	SELECT l.[vUnqBarcode], l.[bOnPallet] FROM [ltbl_PalletBarcodes] l WHERE l.[iPallet_ID] = @palletId
 GO
-
-
 
 
 IF (OBJECT_ID('[dbo].[sp_UI_UpdatePalletPrinSettings_1]') IS NOT NULL)
@@ -3033,7 +3027,6 @@ GO
 
 
 
-
 IF (OBJECT_ID('[dbo].[sp_UI_UpdatePalletPrinSettings_2]') IS NOT NULL)
 	DROP PROC [dbo].[sp_UI_UpdatePalletPrinSettings_2]
 GO
@@ -3043,24 +3036,6 @@ CREATE PROC [dbo].[sp_UI_UpdatePalletPrinSettings_2]
 AS
 	UPDATE [tbl_RTSettings] SET [SettingValue] = @label WHERE [Setting_Name] = 'Pallet Label'
 GO
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

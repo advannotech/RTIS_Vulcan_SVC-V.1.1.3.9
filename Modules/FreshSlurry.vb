@@ -304,7 +304,7 @@ Public Class FreshSlurry
                         Return "1*Ok to use"
                     End If
                 Catch ex As Exception
-                   If ex.Message = "Invalid attempt to read when no data is present." Then
+                    If ex.Message = "Invalid attempt to read when no data is present." Then
                         Return "1*Ok to use"
                     Else
                         EventLog.WriteEntry("RTIS Vulcan SVC", "MBL_CheckLotNumberUsed: " + ex.ToString())
@@ -641,7 +641,6 @@ Public Class FreshSlurry
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
                     Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetAllFreshSlurryRMs]", sqlConn)
-                    'WHERE [Code] LIKE '18471%' OR [Code] LIKE 'TSP%' OR [Code] LIKE 'VSP%' OR [Code] LIKE '18461%' OR [Code] LIKE '%COAT%' OR [Code] LIKE '%Coat%'
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -670,8 +669,8 @@ Public Class FreshSlurry
                     Dim sqlConn As New SqlConnection(EvoString)
                     Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_InsertFreshSlurryForManufacture] @sBOMItemCode, @fQtyToProduce, @sLotNumber, @sProjectCode", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@sBOMItemCode", itemCode))
-                    sqlComm.Parameters.Add(New SqlParameter("@fQtyToProduce", qty))
                     sqlComm.Parameters.Add(New SqlParameter("@sLotNumber", lotNumber))
+                    sqlComm.Parameters.Add(New SqlParameter("@fQtyToProduce", qty))
                     sqlComm.Parameters.Add(New SqlParameter("@sProjectCode", project))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
