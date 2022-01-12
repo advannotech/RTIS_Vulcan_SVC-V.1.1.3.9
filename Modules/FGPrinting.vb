@@ -17,10 +17,8 @@ Public Class FGPrinting
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand(" SELECT [Bar_Code], [cSimpleCode], b.[cBinLocationName], [Description_1], [Description_2], [Description_3], [ItemGroup] 
-                                                FROM [StkItem] s
-                                                LEFT JOIN [_btblBINLocation] b ON s.[iBinLocationID] = b.[idBinLocation] WHERE [Code] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetLabelInfo] @Code", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@Code", itemCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()

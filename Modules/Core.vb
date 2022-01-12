@@ -1,4 +1,7 @@
 ﻿Imports System.Data.SqlClient
+Imports System.IO
+Imports System.Security.Cryptography
+Imports System.Text
 Imports System.Timers
 
 Public Class Core
@@ -1026,6 +1029,8 @@ Public Class User_Management
                 End Try
             End Function
         End Class
+
+
         Partial Public Class Insert
             Public Shared Function UI_AddUser(ByVal name As String, ByVal username As String, ByVal pin As String, ByVal password As String, ByVal roleId As String, ByVal hasAgent As String, ByVal evoAgent As String) As String
                 Try

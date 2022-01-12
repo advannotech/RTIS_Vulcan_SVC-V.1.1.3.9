@@ -194,8 +194,27 @@ WHERE i.[OrderNum] = @OrderNum And (i.[DocState] = 1 OR i.[DocState] = 3) AND i.
 ORDER BY il.[cLotNumber] DESC
 GO
 
+------------------------sp_GetAllCanningCatalysts----------------
+IF (OBJECT_ID('[sp_GetAllCanningCatalysts]') IS NOT NULL)
+	DROP PROC [dbo].[sp_GetAllCanningCatalysts]
+GO
 
+CREATE PROC [dbo].[sp_GetAllCanningCatalysts]
+AS
+SELECT [Code],[Description_1],[Description_2], '' FROM [StkItem]
+WHERE [Code] LIKE '18450%'
+GO
 
+------------------------sp_GetAllCanningWRMs----------------
+IF (OBJECT_ID('[sp_GetAllCanningWRMs]') IS NOT NULL)
+	DROP PROC [dbo].[sp_GetAllCanningWRMs]
+GO
+
+CREATE PROC [dbo].[sp_GetAllCanningWRMs]
+AS
+SELECT [Code],[Description_1], '' FROM [StkItem]
+WHERE [Code] LIKE '18471%' OR [Code] LIKE '18461%' OR [Code] LIKE '%A&W%' OR ([Code] LIKE 'V%' AND [Code] NOT LIKE 'VSP%')
+GO
 
 --------------------------------------------------------- AW ---------------------------------------------------------------------------
 
@@ -406,6 +425,50 @@ GO
 
 
 
+
+------------------------sp_GetLabelInfo----------------
+IF (OBJECT_ID('[sp_UI_GetLabelInfo]') IS NOT NULL)
+	DROP PROC [dbo].[sp_GetLabelInfo]
+GO
+
+CREATE PROC [dbo].[sp_GetLabelInfo]
+(
+@Code varchar(400)
+)
+AS
+SELECT [Bar_Code], [cSimpleCode], b.[cBinLocationName], [Description_1], [Description_2], [Description_3], [ItemGroup] 
+FROM [StkItem] s
+LEFT JOIN [_btblBINLocation] b ON s.[iBinLocationID] = b.[idBinLocation] WHERE [Code] = @Code
+GO
+
+
+
+ ------------------------sp_Canning_GetLabelInfo----------------
+IF (OBJECT_ID('[sp_Canning_GetLabelInfo]') IS NOT NULL)
+	DROP PROC [dbo].[sp_Canning_GetLabelInfo]
+GO
+CREATE PROC [dbo].[sp_Canning_GetLabelInfo]
+(
+@Code varchar(400)
+)
+AS
+SELECT [Code], [Bar_Code], [cSimpleCode], b.[cBinLocationName], [Description_1], [Description_2], [Description_3], [ItemGroup] 
+FROM [StkItem] s
+LEFT JOIN [_btblBINLocation] b ON s.[iBinLocationID] = b.[idBinLocation] WHERE [Code] = @Code
+GO
+
+ ------------------------sp_MBL_GetItemDesc----------------
+IF (OBJECT_ID('[sp_MBL_GetItemDesc]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetItemDesc]
+GO
+CREATE PROC [dbo].[sp_MBL_GetItemDesc]
+(
+@Code varchar(400)
+)
+AS
+SELECT [Description_1] FROM [StkItem]
+WHERE [Code] = @Code
+GO
 
 
 
