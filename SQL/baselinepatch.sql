@@ -3006,7 +3006,7 @@ GO
 
 
 
---------------------------------------------------------- Palletizing ---------------------------------------------------------------------------
+--------------------------------------------------------- Mixed Slurry ---------------------------------------------------------------------------
 
 
 
@@ -3481,6 +3481,62 @@ AS
     INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[Code] = [vItemCode]
     WHERE [vTrolleyCode] = @trolleyCode AND [vItemCode] = @itemCode ORDER BY [iLineID] DESC
 GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[MBL_GetMobileTankTransferInfo]') IS NOT NULL)
+	DROP PROC [dbo].[MBL_GetMobileTankTransferInfo]
+GO
+
+CREATE PROC [dbo].[MBL_GetMobileTankTransferInfo]
+	@tankNo VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [vLotNumber], [dDryWeight], ISNULL([bTransferred], 0), [vItemDesc]
+    FROM [tbl_RTIS_MS_Decant] WHERE [vTankCode] = @tankNo AND [vItemCode] = @itemCode AND [dSolidity] IS NOT NULL
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[MBL_GetMobileTankTransferd]') IS NOT NULL)
+	DROP PROC [dbo].[MBL_GetMobileTankTransferd]
+GO
+
+CREATE PROC [dbo].[MBL_GetMobileTankTransferd]
+	@tankNo VARCHAR(MAX),
+	@itemCode VARCHAR(MAX),
+	@lotNumber VARCHAR(MAX)
+AS
+	SELECT TOP 1 ISNULL([bTransferred], 0) FROM [tbl_RTIS_MS_Decant]
+	WHERE [vTankCode] = @tankNo AND [vItemCode] = @itemCode AND [vLotNumber] = @lotNumber
+	ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[MBL_GetLargeTankTransferd]') IS NOT NULL)
+	DROP PROC [dbo].[MBL_GetLargeTankTransferd]
+GO
+
+CREATE PROC [dbo].[MBL_GetLargeTankTransferd]
+	@tankTye VARCHAR(MAX),
+	@tankNo VARCHAR(MAX),
+	@itemCode VARCHAR(MAX),
+	@lotNumber VARCHAR(MAX)
+AS
+	SELECT TOP 1 ISNULL([bTransferred], 0) FROM [tbl_RTIS_MS_Main]
+    WHERE [vTankType] = @tankTye AND [vTankCode] = @tankNo 
+	AND [vItemCode] = @itemCode AND [vLotNumber] = @lotNumber 
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
 
 
 

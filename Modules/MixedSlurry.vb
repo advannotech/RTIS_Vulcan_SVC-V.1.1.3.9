@@ -891,9 +891,7 @@ Public Class MixedSlurry
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT TOP 1 [vLotNumber], [dDryWeight], ISNULL([bTransferred], 0), [vItemDesc]
-                                                    FROM [tbl_RTIS_MS_Decant] WHERE [vTankCode] = @1 AND [vItemCode] = @2 AND [dSolidity] IS NOT NULL
-                                                    ORDER BY [iLineID] DESC", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[MBL_GetMobileTankTransferInfo] @1, @2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", tankNo))
                     sqlComm.Parameters.Add(New SqlParameter("@2", itemCode))
                     sqlConn.Open()
@@ -923,9 +921,7 @@ Public Class MixedSlurry
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("	SELECT TOP 1 ISNULL([bTransferred], 0) FROM [tbl_RTIS_MS_Decant]
-	                                                WHERE [vTankCode] = @1 AND [vItemCode] = @2 AND [vLotNumber] = @3
-	                                                ORDER BY [iLineID] DESC", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[MBL_GetMobileTankTransferd] @1, @2, @3", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", tankNo))
                     sqlComm.Parameters.Add(New SqlParameter("@2", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@3", lotNumber))
@@ -956,9 +952,7 @@ Public Class MixedSlurry
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("	  SELECT TOP 1 ISNULL([bTransferred], 0) FROM [tbl_RTIS_MS_Main]
-                                                      WHERE [vTankType] = @1 AND [vTankCode] = @2 AND [vItemCode] = @3 AND [vLotNumber] = @4 
-                                                      ORDER BY [iLineID] DESC", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[MBL_GetLargeTankTransferd] @1, @2, @3, @4", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", tankTye))
                     sqlComm.Parameters.Add(New SqlParameter("@2", tankNo))
                     sqlComm.Parameters.Add(New SqlParameter("@3", itemCode))
@@ -990,9 +984,7 @@ Public Class MixedSlurry
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT TOP 1 [vLotNumber], [dDryWeight], ISNULL([bTransferred], 0), [vDescription]
-                                                    FROM [tbl_RTIS_MS_Main] WHERE [vTankType] = @1 AND [vTankCode] = @2 AND [vItemCode] = @3 AND [dSolidity] IS NOT NULL
-                                                    ORDER BY [iLineID] DESC", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[MBL_GetTankTransferInfo] @1, @2, @3", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", tankType))
                     sqlComm.Parameters.Add(New SqlParameter("@2", tankNo))
                     sqlComm.Parameters.Add(New SqlParameter("@3", itemCode))
@@ -2248,8 +2240,7 @@ Public Class MixedSlurry
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand(" SELECT [Description_1] FROM [StkItem]
-                                                    WHERE [Code] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[MBL_GetItemDesc] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -2278,8 +2269,8 @@ Public Class MixedSlurry
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("SELECT [StockLink], [AveUCst] FROM [StkItem] WHERE [Code] = @CODE", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@CODE", itemCode))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[MBL_GetFeshSlurryInfo] @1", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -2307,9 +2298,9 @@ Public Class MixedSlurry
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("SELECT [idLotTracking] FROM [_etblLotTracking] WHERE [cLotDescription] = @LOT AND [iStockID] = @ID", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@LOT", lotNUmber))
-                    sqlComm.Parameters.Add(New SqlParameter("@ID", stockID))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[MBL_GetFeshSlurryLotID] @1, @2", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@1", lotNUmber))
+                    sqlComm.Parameters.Add(New SqlParameter("@2", stockID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()

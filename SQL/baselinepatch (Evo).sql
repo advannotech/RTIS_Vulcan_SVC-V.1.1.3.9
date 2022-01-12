@@ -415,17 +415,6 @@ GO
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 ------------------------sp_GetLabelInfo----------------
 IF (OBJECT_ID('[sp_UI_GetLabelInfo]') IS NOT NULL)
 	DROP PROC [dbo].[sp_GetLabelInfo]
@@ -469,6 +458,87 @@ AS
 SELECT [Description_1] FROM [StkItem]
 WHERE [Code] = @Code
 GO
+
+
+
+
+--------------------------------------------------------- Mixed Slurry ---------------------------------------------------------------------------
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[MBL_GetItemDesc]') IS NOT NULL)
+	DROP PROC [dbo].[MBL_GetItemDesc]
+GO
+
+CREATE PROC [dbo].[MBL_GetItemDesc]
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT [Description_1] FROM [StkItem]
+    WHERE [Code] = @itemCode
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[MBL_GetFeshSlurryInfo]') IS NOT NULL)
+	DROP PROC [dbo].[MBL_GetFeshSlurryInfo]
+GO
+
+CREATE PROC [dbo].[MBL_GetFeshSlurryInfo]
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT [StockLink], [AveUCst] FROM [StkItem] WHERE [Code] = @itemCode
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[MBL_GetFeshSlurryLotID]') IS NOT NULL)
+	DROP PROC [dbo].[MBL_GetFeshSlurryLotID]
+GO
+
+CREATE PROC [dbo].[MBL_GetFeshSlurryLotID]
+	@lotNUmber VARCHAR(MAX),
+	@stockID VARCHAR(MAX)
+AS
+	SELECT [idLotTracking] FROM [_etblLotTracking] WHERE [cLotDescription] = @lotNUmber AND [iStockID] = @stockID
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[MBL_GetRecLotID]') IS NOT NULL)
+	DROP PROC [dbo].[MBL_GetRecLotID]
+GO
+
+CREATE PROC [dbo].[MBL_GetRecLotID]
+	@lotNUmber VARCHAR(MAX),
+	@stockID VARCHAR(MAX)
+AS
+	SELECT [idLotTracking] FROM [_etblLotTracking] WHERE [cLotDescription] = @lotNUmber AND [iStockID] = @stockID
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[MBL_GetRecLotID]') IS NOT NULL)
+	DROP PROC [dbo].[MBL_GetRecLotID]
+GO
+
+CREATE PROC [dbo].[MBL_GetRecLotID]
+	@lotNUmber VARCHAR(MAX),
+	@stockID VARCHAR(MAX)
+AS
+	SELECT [idLotTracking] FROM [_etblLotTracking] WHERE [cLotDescription] = @lotNUmber AND [iStockID] = @stockID
+GO
+
+
+
+
+
+
 
 
 
