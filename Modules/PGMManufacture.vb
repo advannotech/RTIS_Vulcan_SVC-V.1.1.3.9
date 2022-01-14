@@ -14,10 +14,7 @@ Public Class PGMManufacture
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT l.[iLineID],h.[vItemCode],h.[vLotDesc],l.[dWeightIn],l.[dtDateAdded],l.[vUserAdded]
-                                                   FROM [htbl_RTIS_PGM_Manuf] h
-                                                   LEFT JOIN [ltbl_RTIS_PGM_Manuf] l ON l.[iHeaderID] = h.[iLineID]
-                                                   WHERE (l.[bManuf] = '0' OR l.[bManuf] IS NULL)", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[UI_GetPGMMF]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -51,7 +48,7 @@ Public Class PGMManufacture
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [ltbl_RTIS_PGM_Manuf] SET [bManuf] = '1', [dtManufDate] = GETDATE(), [vUserManuf] = @2 WHERE [iLineID] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[UI_GetPGMMF] @1, @2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", LineID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", UserName))
                     sqlConn.Open()
@@ -69,8 +66,8 @@ Public Class PGMManufacture
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [ltbl_RTIS_PGM_Manuf] SET [bManuf] = '1', [dtManufDate] = GETDATE(), [vUserManuf] = @3 WHERE [iHeaderID] = @1 AND [vContainer] = @2", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[UI_setPGMContainerManufactured] @1, @2, @3", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@1", Convert.ToInt32(headerID)))
                     sqlComm.Parameters.Add(New SqlParameter("@2", container))
                     sqlComm.Parameters.Add(New SqlParameter("@3", UserName))
                     sqlConn.Open()

@@ -4770,16 +4770,54 @@ GO
 
 
 
+--------------------------------------------------------- PGM Manufacture ---------------------------------------------------------------------------
 
 
 
 
+IF (OBJECT_ID('[dbo].[UI_GetPGMMF]') IS NOT NULL)
+	DROP PROC [dbo].[UI_GetPGMMF]
+GO
+
+CREATE PROC [dbo].[UI_GetPGMMF]
+AS
+	SELECT l.[iLineID],h.[vItemCode],h.[vLotDesc],l.[dWeightIn],l.[dtDateAdded],l.[vUserAdded]
+    FROM [htbl_RTIS_PGM_Manuf] h
+    LEFT JOIN [ltbl_RTIS_PGM_Manuf] l ON l.[iHeaderID] = h.[iLineID]
+    WHERE (l.[bManuf] = '0' OR l.[bManuf] IS NULL)
+GO
 
 
 
 
+IF (OBJECT_ID('[dbo].[UI_GetPGMMF]') IS NOT NULL)
+	DROP PROC [dbo].[UI_GetPGMMF]
+GO
+
+CREATE PROC [dbo].[UI_GetPGMMF]
+	@LineID INT,
+	@UserName VARCHAR(MAX)
+AS
+	UPDATE [ltbl_RTIS_PGM_Manuf] SET [bManuf] = '1', [dtManufDate] = GETDATE(), [vUserManuf] = @UserName 
+	WHERE [iLineID] = @LineID
+GO
 
 
+
+
+IF (OBJECT_ID('[dbo].[UI_setPGMContainerManufactured]') IS NOT NULL)
+	DROP PROC [dbo].[UI_setPGMContainerManufactured]
+GO
+
+CREATE PROC [dbo].[UI_setPGMContainerManufactured]
+	@headerID INT,
+	@container VARCHAR(MAX),
+	@UserName VARCHAR(MAX)
+AS
+DECLARE @res int
+	UPDATE [ltbl_RTIS_PGM_Manuf] SET [bManuf] = '1', [dtManufDate] = GETDATE(), [vUserManuf] = @UserName 
+	WHERE [iHeaderID] = @headerID AND [vContainer] = @container
+GO
 
 
 
