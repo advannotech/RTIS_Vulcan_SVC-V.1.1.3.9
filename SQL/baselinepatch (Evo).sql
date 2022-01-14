@@ -537,6 +537,82 @@ GO
 
 
 
+--------------------------------------------------------- PGM ---------------------------------------------------------------------------
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_GetItemFVDescription]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_GetItemFVDescription]
+GO
+
+CREATE PROC [dbo].[PGM_GetItemFVDescription]
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT [Description_1] FROM [StkItem] WHERE [Code] = @itemCode
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_GetItemRecDescription]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_GetItemRecDescription]
+GO
+
+CREATE PROC [dbo].[PGM_GetItemRecDescription]
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT [Description_1] FROM [StkItem] WHERE [Code] = @itemCode
+GO
+
+
+
+
+--=========================================================================================================--
+	------------------------	CHECK BUG	--------------------------
+--=========================================================================================================--
+
+
+IF (OBJECT_ID('[dbo].[PGM_GetItemRecDescription]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_GetItemRecDescription]
+GO
+
+CREATE PROC [dbo].[PGM_GetItemRecDescription]
+	@code VARCHAR(MAX),
+	@whse VARCHAR(MAX)
+AS
+	--SELECT l.[cLotDescription] FROM [_etblLotTrackingQty] lq
+ --   INNER JOIN [_etblLotTracking] l ON l.[idLotTracking] = lq.[iLotTrackingID] 
+ --   INNER JOIN [_etblLotStatus] ls ON l.[iLotStatusID] = ls.[idLotStatus]
+ --   INNER JOIN [WhseMst] w ON w.[WhseLink] = lq.[iWarehouseID]
+ --   INNER JOIN [StkItem] s ON s.[StockLink] = l.[iStockID]
+ --   INNER JOIN [CAT_RTIS].[dbo].[htbl_RTIS_PGM_Manuf] rl ON rl.[vLotDesc] COLLATE Latin1_General_CI_AS = l.[cLotDescription]
+	--WHERE s.[Code] = @code AND w.[Code] = @whse AND lq.[fQtyOnHand] <> 0 AND rl.[vPGMLoc] = @whse
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_InsertPGmForManufacture]') IS NOT NULL)
+	DROP PROC [dbo].[UI_InsertPGmForManufacture]
+GO
+
+CREATE PROC [dbo].[UI_InsertPGmForManufacture]
+	@itemCode VARCHAR(MAX),
+	@qty FLOAT,
+	@lotNumber VARCHAR(MAX),
+	@project VARCHAR(MAX)
+AS
+	INSERT INTO __SLtbl_MFPImports (sBOMItemCode, fQtyToProduce, sLotNumber, sProjectCode ) 
+	VALUES ( @itemCode, @qty, @lotNumber, @project)
+GO
+
+
+
+
+
 
 
 

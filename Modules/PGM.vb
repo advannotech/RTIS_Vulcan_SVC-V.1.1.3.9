@@ -15,8 +15,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT [dWeightIn], [dWeightOut], [dWeightBal], [dConcentration] FROM [htbl_RTIS_PGM_Manuf]
-                                                    WHERE [vItemCode] = @1 AND [vLotDesc] = @2 AND [vWhseCode] = @3", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_GetItemBatch] @1, @2, @3", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", lot))
                     sqlComm.Parameters.Add(New SqlParameter("@3", location))
@@ -42,8 +41,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT TOP 1 [bTransferred] FROM [ltbl_RTIS_PGM_Manuf]
-                                                    WHERE [vContainer] = @1 ORDER BY [iLineID] DESC", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_CheckContainerUsed_Global] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", container))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -68,8 +66,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT [vContainer] FROM [ltbl_RTIS_PGM_Manuf]
-                                                    WHERE [iHeaderID] = @1 AND [vContainer] = @2", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_CheckContainerUsed] @1, @2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", container))
                     sqlConn.Open()
@@ -95,7 +92,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT TOP 1 ISNULL([bTransferred], 0) FROM [ltbl_RTIS_PGM_Manuf] WHERE [vContainer] = @1 AND [iHeaderID] = @2 ORDER BY [iLineID] DESC", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_CheckContTransState] @1, @2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", container))
                     sqlComm.Parameters.Add(New SqlParameter("@2", headerID))
                     sqlConn.Open()
@@ -121,7 +118,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT TOP 1 ISNULL([bReceived], 0) FROM [ltbl_RTIS_PGM_Trans] WHERE [vContainer] = @1 ORDER BY [iLineID] DESC", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_CheckContRecState_Global] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", container))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -151,7 +148,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT TOP 1 ISNULL([bReceived], 0) FROM [ltbl_RTIS_PGM_Trans] WHERE [vContainer] = @1 AND [iHeaderID] = @2", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_CheckContRecState] @1, @2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", container))
                     sqlComm.Parameters.Add(New SqlParameter("@2", headerID))
                     sqlConn.Open()
@@ -177,8 +174,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT ISNULL([bRemainderSet], 0) FROM [htbl_RTIS_PGM_Manuf]
-	                                                WHERE [vItemCode] = @1 AND [vLotDesc] = @2 AND [vWhseCode] = @3", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_GetRemainderCaptured] @1, @2, @3", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", lot))
                     sqlComm.Parameters.Add(New SqlParameter("@3", location))
@@ -204,9 +200,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT pl.[vContainer], pl.[dWeightIn], ISNULL(pl.[bManuf], 0), ISNULL(pl.[bTransferred], 0) FROM [ltbl_RTIS_PGM_Manuf] pl 
-	                                                INNER JOIN [htbl_RTIS_PGM_Manuf] ph ON pl.[iHeaderID] = ph.[iLineID]
-	                                                WHERE ph.[vItemCode] = @1 AND ph.[vLotDesc] = @2 AND ph.[vWhseCode] = @3", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_GetBatchLines] @1, @2, @3", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", lot))
                     sqlComm.Parameters.Add(New SqlParameter("@3", location))
@@ -232,8 +226,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT TOP 1 [iLineID] FROM [htbl_RTIS_PGM_Manuf]
-                                                    WHERE [vItemCode] = @1 AND [vLotDesc] = @2 AND [vWhseCode] = @3 ORDER BY [iLineID] DESC", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_GetHeaderID] @1, @2, @3", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", lot))
                     sqlComm.Parameters.Add(New SqlParameter("@3", location))
@@ -259,10 +252,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT TOP 1 tl.[dWeightOut], tl.[vWhseTo], tl.[vDestWhse], tl.[iLineID], h.[vItemCode], h.[vLotDesc] FROM [ltbl_RTIS_PGM_Trans] tl 
-                                                     INNER JOIN [htbl_RTIS_PGM_Manuf] h ON h.[iLineID] = tl.[iHeaderID]
-                                                     WHERE [vContainer] = @1
-                                                     ORDER BY [iLineID] DESC", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_GetContOldInfo] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", cont))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -286,7 +276,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT DISTINCT [vSlurryCode] FROM [rtbl_VW_Slurry_PGM]", sqlConn)
+                    Dim sqlComm As New SqlCommand("[dbo].[PGM_SelectVWTransferSlurries]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -309,7 +299,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT DISTINCT [vPowderCode] FROM [rtbl_T_Powder_PGM]", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_SelectTTransferPowders]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -332,7 +322,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT DISTINCT [vSlurryCode] FROM [rtbl_T_Slurry_PGM]", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_SelectTTransferSlurries]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -355,7 +345,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT DISTINCT [vCatalystCode] FROM [rtbl_T_Catalyst_PGM]", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_SelectTTransferAW]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -378,7 +368,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [iLineID] FROM [rtbl_VW_Slurry_PGM] WHERE [vSlurryCode] = @1 AND [vPGMCode] = @2", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_CheckItemAllowedVW] @1, @2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", manufItem))
                     sqlComm.Parameters.Add(New SqlParameter("@2", itemCode))
                     sqlConn.Open()
@@ -403,7 +393,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [iLineID] FROM [rtbl_T_Powder_PGM] WHERE [vPowderCode] = @1 AND [vPGMCode] = @2", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_CheckItemAllowedTP] @1, @2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", manufItem))
                     sqlComm.Parameters.Add(New SqlParameter("@2", itemCode))
                     sqlConn.Open()
@@ -428,7 +418,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [iLineID] FROM [rtbl_T_Slurry_PGM] WHERE [vSlurryCode] = @1 AND [vPGMCode] = @2", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_CheckItemAllowedTS] @1, @2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", manufItem))
                     sqlComm.Parameters.Add(New SqlParameter("@2", itemCode))
                     sqlConn.Open()
@@ -453,7 +443,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [iLineID] FROM [rtbl_T_Catalyst_PGM] WHERE [vCatalystCode] = @1 AND [vPGMCode] = @2", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_CheckItemAllowedTAW] @1, @2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", manufItem))
                     sqlComm.Parameters.Add(New SqlParameter("@2", itemCode))
                     sqlConn.Open()
@@ -478,7 +468,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [SettingValue] FROM [tbl_RTSettings] WHERE [Setting_Name] = 'PGMVW'", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_GetVWWIPLoc]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -501,7 +491,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [SettingValue] FROM [tbl_RTSettings] WHERE [Setting_Name] = 'PGMVW-WIP'", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_GetVWDestLoc]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -524,7 +514,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [SettingValue] FROM [tbl_RTSettings] WHERE [Setting_Name] = 'PGMTP'", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_GetTPWIPLoc]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -547,7 +537,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [SettingValue] FROM [tbl_RTSettings] WHERE [Setting_Name] = 'PGMTP-WIP'", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_GetTPDestLoc]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -571,7 +561,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [SettingValue] FROM [tbl_RTSettings] WHERE [Setting_Name] = 'PGMTS'", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_GetTSWIPLoc]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -594,7 +584,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [SettingValue] FROM [tbl_RTSettings] WHERE [Setting_Name] = 'PGMTS-WIP'", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_GetTSDestLoc]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -617,7 +607,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [SettingValue] FROM [tbl_RTSettings] WHERE [Setting_Name] = 'PGMTAW'", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_GetTAWWIPLoc]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -640,7 +630,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [SettingValue] FROM [tbl_RTSettings] WHERE [Setting_Name] = 'PGMTAW-WIP'", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_GetTAWDestLoc]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -663,9 +653,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT TOP 1 ph.[vItemCode], ph.[vLotDesc], pl.[dWeightIn], ph.[iLineID] FROM [ltbl_RTIS_PGM_Manuf] pl 
-	                                                INNER JOIN [htbl_RTIS_PGM_Manuf] ph ON pl.[iHeaderID] = ph.[iLineID]
-	                                                WHERE pl.[vContainer] = @1 AND ph.[vWhseCode] = @2 ORDER BY pl.[iLineID] DESC  ", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_GetContainerInfo] @1, @2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", container))
                     sqlComm.Parameters.Add(New SqlParameter("@2", location))
                     sqlConn.Open()
@@ -717,7 +705,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT TOP 1 [bReceived] FROM [ltbl_RTIS_PGM_Trans] WHERE [vContainer] = @1 AND [iHeaderID] = @2 ORDER BY [iLineID] DESC", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_CheckItemTransferred] @1, @2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", container))
                     sqlComm.Parameters.Add(New SqlParameter("@2", headerID))
                     sqlConn.Open()
@@ -742,7 +730,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT DISTINCT [vItemCode] FROM [htbl_RTIS_PGM_Manuf] WHERE [vWhseCode] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_GetAllPGM] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", whseCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -766,8 +754,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("   SELECT [vLotDesc], [dConcentration], [dWeightIn], [dWeightOut], [dWeightBal]
-                                                      FROM [htbl_RTIS_PGM_Manuf] WHERE [vItemCode] = @1 AND [vWhseCode] = @2", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_GetAllPGMItemHeaders] @1, @2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", whseCode))
                     sqlConn.Open()
@@ -792,10 +779,10 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("   SELECT TOP " + rowCount + " [vLotDesc], [dConcentration], [dWeightIn], [dWeightOut], [dWeightBal]
-                                                      FROM [htbl_RTIS_PGM_Manuf] WHERE [vItemCode] = @1 AND [vWhseCode] = @2 ORDER BY [iLineID] DESC", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_GetAllPGMItemHeaderRows] @1, @2, @3", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", whseCode))
+                    sqlComm.Parameters.Add(New SqlParameter("@3", Convert.ToInt32(rowCount)))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -818,14 +805,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT pl.[vUserAdded], pl.[dtDateAdded], pl.[vContainer],ph.[dConcentration], pl.[dWeightIn], pl.[dWeightOut], ph.[vLotDesc], pl.[dtDateAdded]  FROM [ltbl_RTIS_PGM_Manuf] pl 
-                                                    INNER JOIN [htbl_RTIS_PGM_Manuf] ph ON pl.[iHeaderID] = ph.[iLineID]
-                                                    WHERE ph.[vItemCode] = @1 AND ph.[vLotDesc] = @2 AND  ph.[vWhseCode] = @3
-                                                    UNION
-                                                    SELECT pl.[vUserAdded],  pl.[dtDateAdded], pl.[vContainer],ph.[dConcentration], pl.[dWeightIn], pl.[dWeightOut], ph.[vLotDesc], pl.[dtDateAdded]  FROM [ltbl_RTIS_PGM_Trans] pl 
-                                                    INNER JOIN [htbl_RTIS_PGM_Manuf] ph ON pl.[iHeaderID] = ph.[iLineID]
-                                                    WHERE ph.[vItemCode] = @1 AND ph.[vLotDesc] = @2 AND  ph.[vWhseCode] = @3
-                                                    ORDER BY pl.[dtDateAdded] DESC", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_GetAllPGMItemTransactions] @1, @2, @3", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", lotNumber))
                     sqlComm.Parameters.Add(New SqlParameter("@3", whseCode))
@@ -851,10 +831,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("   SELECT  TOP 1 ph.[vItemCode], ph.[vLotDesc], pl.[dWeightOut], s.[Description_1], ISNULL([bReceived], 0), ph.[iLineID] FROM [ltbl_RTIS_PGM_Trans] pl 
-	                                                INNER JOIN [htbl_RTIS_PGM_Manuf] ph ON pl.[iHeaderID] = ph.[iLineID]
-													INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[StkItem] s ON s.[Code] = ph.[vItemCode]
-	                                                WHERE pl.[vContainer] = @1 AND ph.[vItemCode] = @2 ORDER BY ph.[iLineID] DESC  ", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_GetContainerInfoForRecTrans] @1, @2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", container))
                     sqlComm.Parameters.Add(New SqlParameter("@2", itemCode))
                     sqlConn.Open()
@@ -879,7 +856,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [iLineID] FROM [htbl_RTIS_PGM_Manuf] WHERE [vItemCode] = @1 AND [vLotDesc] = @2", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_GetPGMHeaderID] @1, @2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", lotNo))
                     sqlConn.Open()
@@ -904,8 +881,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("	SELECT ISNULL([bReceived], 0) FROM [ltbl_RTIS_PGM_Trans]
-													WHERE [iHeaderID] = @1 AND [vContainer] = @2", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_GetPGMReceived] @1, @2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", contNo))
                     sqlConn.Open()
@@ -930,8 +906,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("	SELECT ISNULL([bManuf], 0) FROM [ltbl_RTIS_PGM_Manuf] 
-													WHERE [iHeaderID] = @1 AND [vContainer] = @2", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_GetCheckContainerManuf] @1, @2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", contNo))
                     sqlConn.Open()
@@ -959,8 +934,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("	  SELECT [vItemCode], [vLotDesc], [vWhseCode], [dWeightIn], [dWeightOut], [dWeightBal], [dConcentration], [dtDateAdded]
-                                                      FROM [htbl_RTIS_PGM_Manuf]", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[UI_GetPGMJobLines]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -983,8 +957,8 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("	  SELECT TOP " + rowCount + " [vItemCode], [vLotDesc], [vWhseCode], [dWeightIn], [dWeightOut], [dWeightBal], [dConcentration], [dtDateAdded]
-                                                      FROM [htbl_RTIS_PGM_Manuf] ORDER BY [iLineID] DESC", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[UI_GetPGMJobrows] @1", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@1", Convert.ToInt32(rowCount)))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -1007,8 +981,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("	  SELECT [vItemCode], [vLotDesc], [vWhseCode], [dWeightIn], [dWeightOut], [dWeightBal], [dConcentration], [dtDateAdded]
-                                                      FROM [htbl_RTIS_PGM_Manuf] WHERE [dtDateAdded] BETWEEN @1 AND @2 ORDER BY [iLineID] DESC, [dtDateAdded] DESC", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[UI_GetPGMJobsByDate] @1, @2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", dateFrom))
                     sqlComm.Parameters.Add(New SqlParameter("@2", dateTo))
                     sqlConn.Open()
@@ -1033,10 +1006,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("	    SELECT pl.[vContainer], pl.[dWeightIn], pl.[vUserAdded], pl.[dtDateAdded], ISNULL( pl.[bManuf], 'false'), pl.[dtManufDate], pl.[vUserManuf], pl.[vUserEdited], pl.[dtDateEdited], pl.[vEditReason]
-                                                        FROM [ltbl_RTIS_PGM_Manuf] pl
-                                                        INNER JOIN [htbl_RTIS_PGM_Manuf] ph ON ph.[iLineID] = pl.[iHeaderID]
-                                                        WHERE ph.[vItemCode] = @1 AND ph.[vLotDesc] = @2", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[UI_GetPGMContainers] @1, @2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", lotNumber))
                     sqlConn.Open()
@@ -1061,9 +1031,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("	SELECT ph.[vItemCode], ph.[vLotDesc], ph.[vWhseCode], ph.[dConcentration], SUM(pl.[dWeightIn]) AS [Qty Waiting], ISNULL(ph.[bRemainderSet], 1) , ISNULL(ph.[dRemainder], 0) FROM [ltbl_RTIS_PGM_Manuf] pl
-                                                    INNER JOIN [htbl_RTIS_PGM_Manuf] ph ON ph.[iLineID] = pl.[iHeaderID]
-                                                    WHERE ISNULL([bManuf], 0) = 0 GROUP BY ph.[vItemCode], ph.[vLotDesc],ph.[vWhseCode], ph.[dConcentration], ph.[bRemainderSet], ph.[dRemainder]", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[UI_GetPGMManufactureHeaders]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -1086,10 +1054,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("	    SELECT pl.[vContainer], pl.[dWeightIn], pl.[vUserAdded], pl.[dtDateAdded], '' AS [Manuf], '' AS [Edit]
-                                                        FROM [ltbl_RTIS_PGM_Manuf] pl
-                                                        INNER JOIN [htbl_RTIS_PGM_Manuf] ph ON ph.[iLineID] = pl.[iHeaderID]
-                                                        WHERE ph.[vItemCode] = @1 AND ph.[vLotDesc] = @2 AND ph.[vWhseCode] = @3 AND ph.[dConcentration] = @4 AND ISNULL(pl.[bManuf], 0) = 0", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[UI_GetPGMManufactureContainers] @1, @2, @3, @4", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", lotNumber))
                     sqlComm.Parameters.Add(New SqlParameter("@3", location))
@@ -1116,10 +1081,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT SUM(l.[dWeightIn]) + ISNULL(h.[dRemainder], 0) AS [Total] FROM [ltbl_RTIS_PGM_Manuf] l
-                                                            INNER JOIN [htbl_RTIS_PGM_Manuf] h ON h.[iLineID] = l.[iHeaderID]
-                                                            WHERE ISNULL([bManuf], 0) = 0 AND [iHeaderID] = @1
-                                                            GROUP BY h.[dRemainder]", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[UI_GetPGMBatchTotal] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -1149,8 +1111,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [stbl_WHTLog] ([vItemCode], [vLotNumber], [vWarehouse_From], [vWarehouse_To], [dQtyTransfered], [dtDateTransfered], [vUsername], [vProcess])
-                                                   VALUES (@1, @2, @3, @4, @5, GETDATE(), @6, @7)", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_AddWhseTransferLog] @1, @2, @3, @4, @5, @6, @7", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", lotNumber))
                     sqlComm.Parameters.Add(New SqlParameter("@3", whseFrom))
@@ -1172,8 +1133,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [htbl_RTIS_PGM_Manuf] ([vItemCode], [vLotDesc], [dWeightIn], [dWeightOut], [dWeightBal], [dConcentration], [vWhseCode], [dtDateAdded], [vUserAdded]) OUTPUT INSERTED.iLineID
-                                                   VALUES (@1, @2, @3, 0, @4, @5, @6, GETDATE(), @7)", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_ManufactureHeader] @1, @2, @3, @4, @5, @6, @7", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", lotNumber))
                     sqlComm.Parameters.Add(New SqlParameter("@3", wIn))
@@ -1198,8 +1158,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [ltbl_RTIS_PGM_Manuf] ([iHeaderID],[vContainer], [dWeightIn], [dWeightOut], [dtDateAdded], [vUserAdded], [bTransferred])
-                                                                              VALUES (@1, @2, @3, 0, GETDATE(), @4, 0)", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_ManufactureLine] @1, @2, @3, @4", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", HeaderID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", container))
                     sqlComm.Parameters.Add(New SqlParameter("@3", weightIn))
@@ -1218,8 +1177,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [ltbl_RTIS_PGM_Trans] ([iHeaderID],[vContainer], [dWeightIn], [dWeightOut], [dtDateAdded], [vUserAdded], [vWhseFrom], [vWhseTo], [ManufItem], [ManufBatch], [vDestWhse])
-                                                                              VALUES (@1, @2, 0, @3, GETDATE(), @4, @5, @6,@7, @8, @9)", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_AddTransferOutLine] @1, @2, @3, @4, @5, @6, @7, @8, @9", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", HeaderID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", container))
                     sqlComm.Parameters.Add(New SqlParameter("@3", weightOut))
@@ -1247,7 +1205,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [ltbl_RTIS_PGM_Trans] SET [bReceived] = 1 WHERE [iLineID] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_updateContRec] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", lineID))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
@@ -1263,7 +1221,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [htbl_RTIS_PGM_Manuf] SET [dWeightIn] = [dWeightIn] + @3, [dWeightBal] = [dWeightBal] + @3 WHERE [vItemCode] = @1 AND [vLotDesc] = @2 AND [vWhseCode] = @4", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_updateHeader] @1, @2, @3, @4", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", lotNumber))
                     sqlComm.Parameters.Add(New SqlParameter("@3", wIn))
@@ -1282,7 +1240,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [ltbl_RTIS_PGM_Manuf] SET [bTransferred] = 1 WHERE [vContainer] = @1 AND [iHeaderID] = @2 AND [iLineID] = (SELECT TOP 1 [iLineID] FROM [ltbl_RTIS_PGM_Manuf] WHERE [vContainer] = @1 AND [iHeaderID] = @2 ORDER BY [iLineID] DESC)", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_updateManufOut] @1, @2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", cont))
                     sqlComm.Parameters.Add(New SqlParameter("@2", headerID))
                     sqlConn.Open()
@@ -1299,7 +1257,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [htbl_RTIS_PGM_Manuf] SET [dWeightOut] = [dWeightOut] + @3, [dWeightBal] = [dWeightBal] - @3 WHERE [vItemCode] = @1 AND [vLotDesc] = @2 AND [vWhseCode] = @4", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_updateHeaderQtyOut] @1, @2, @3, @4", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", lotNumber))
                     sqlComm.Parameters.Add(New SqlParameter("@3", wOut.Replace(",", ".")))
@@ -1319,7 +1277,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [htbl_RTIS_PGM_Manuf] SET [dWeightIn] = [dWeightIn] + @3, [dWeightBal] = [dWeightBal] + @3 WHERE [vItemCode] = @1 AND [vLotDesc] = @2 AND [vWhseCode] = @4", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_updateContQtyHeader] @1, @2, @3, @4", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", lotNumber))
                     sqlComm.Parameters.Add(New SqlParameter("@3", wIn))
@@ -1339,7 +1297,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [ltbl_RTIS_PGM_Manuf] SET [dWeightIn] = [dWeightIn] + @3 WHERE [iHeaderID] = @1 AND [vContainer] = @2", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_updateContQtyLine] @1, @2, @3", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", container))
                     sqlComm.Parameters.Add(New SqlParameter("@3", qty))
@@ -1358,8 +1316,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  UPDATE [htbl_RTIS_PGM_Manuf] SET [dRemainder] = @1, [bRemainderSet] = 1, [dtRemainderSet] = GETDATE(), [vRemainderUser] = @6
-                                                            WHERE [vItemCode] = @2 AND [vLotDesc] = @3 AND [dConcentration] = @4 AND [vWhseCode] = @5", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_setBatchRemainder] @1, @2, @3, @4, @5, @6", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", remQty.Replace(",", ".")))
                     sqlComm.Parameters.Add(New SqlParameter("@2", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@3", lot))
@@ -1382,7 +1339,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [ltbl_RTIS_PGM_Manuf] SET [dWeightIn] = [dWeightIn] + @3, [vUserEdited] = @4, [dtDateEdited] = GETDATE(), [vEditReason] = @5  WHERE [iHeaderID] = @1 AND [vContainer] = @2", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[UI_updateContQtyLine] @1, @2, @3, @4, @5", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", container))
                     sqlComm.Parameters.Add(New SqlParameter("@3", qty))
@@ -1403,7 +1360,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [ltbl_RTIS_PGM_Trans] SET [bReceived] = 1 WHERE [iLineID] = (SELECT TOP 1 [iLineID] FROM [ltbl_RTIS_PGM_Trans] WHERE [vContainer] = @1 ORDER BY [iLineID] DESC)", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_updateContReceived_PPRec] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", container))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
@@ -1420,7 +1377,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [ltbl_RTIS_PGM_Trans] SET [bReceived] = 1 WHERE [iHeaderID] = @1 AND [vContainer] = @2", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_updateContReceived] @1, @2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", container))
                     sqlConn.Open()
@@ -1438,9 +1395,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  UPDATE pl SET pl.[bManuf] = 1 FROM [ltbl_RTIS_PGM_Manuf] pl
-                                                     INNER JOIN [htbl_RTIS_PGM_Manuf] ph ON pl.[iHeaderID] = ph.[iLineID]
-                                                     WHERE ph.[vItemCode] = @1 AND ph.[vLotDesc] = @2 AND pl.[vContainer] = @3", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_updateContManufactured] @1, @2, @3", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", lotNumber))
                     sqlComm.Parameters.Add(New SqlParameter("@3", container))
@@ -1459,7 +1414,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [ltbl_RTIS_PGM_Manuf] SET [bManuf] = '1', [dtManufDate] = GETDATE(), [vUserManuf] = @3 WHERE [iHeaderID] = @1 AND [vContainer] = @2", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_updateContManufactured] @1, @2, @3", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", container))
                     sqlComm.Parameters.Add(New SqlParameter("@3", UserName))
@@ -1478,7 +1433,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [ltbl_RTIS_PGM_Manuf] SET [bManuf] = '1', [dtManufDate] = GETDATE(), [vUserManuf] = @2 WHERE [iHeaderID] = @1 AND ISNULL( [bManuf] , 0) = 0", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[UI_setPGMBatchManufactured] @1, @2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", UserName))
                     sqlConn.Open()
@@ -1495,8 +1450,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  UPDATE [htbl_RTIS_PGM_Manuf] SET [dRemainder] = @4, [dtRemainderUpdated] = GETDATE(), [vRemUpdateUser] = @5
-                                                            WHERE [vItemCode] = @1 AND [vLotDesc] = @2 AND [vWhseCode] = @3 ", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[UI_updateContainerRem] @1, @2, @3, @4, @5", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", lotNumber))
                     sqlComm.Parameters.Add(New SqlParameter("@3", location))
@@ -1516,7 +1470,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [ltbl_RTIS_PGM_Manuf] SET [bManuf] = '1', [dtManufDateManual] = GETDATE(), [vUserManufManual] = @2 WHERE [iHeaderID] = @1 AND ISNULL( [bManuf] , 0) = 0", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[UI_setPGMBatchManufacturedManual] @1, @2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", UserName))
                     sqlConn.Open()
@@ -1539,7 +1493,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("SELECT [Description_1] FROM [StkItem] WHERE [Code] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_GetItemFVDescription] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlConn.Open()
 
@@ -1572,7 +1526,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("SELECT [Description_1] FROM [StkItem] WHERE [Code] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_GetItemRecDescription] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlConn.Open()
 
@@ -1605,13 +1559,7 @@ Public Class PGM
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("SELECT l.[cLotDescription] FROM [_etblLotTrackingQty] lq
-                                                 INNER JOIN [_etblLotTracking] l ON l.[idLotTracking] = lq.[iLotTrackingID] 
-                                                 INNER JOIN [_etblLotStatus] ls ON l.[iLotStatusID] = ls.[idLotStatus]
-                                                 INNER JOIN [WhseMst] w ON w.[WhseLink] = lq.[iWarehouseID]
-                                                 INNER JOIN [StkItem] s ON s.[StockLink] = l.[iStockID]
-                                                 INNER JOIN [" + My.Settings.RTDB + "].[dbo].[htbl_RTIS_PGM_Manuf] rl ON rl.[vLotDesc] COLLATE Latin1_General_CI_AS = l.[cLotDescription]
-												 WHERE s.[Code] = @1 AND w.[Code] = @2 AND lq.[fQtyOnHand] <> 0 AND rl.[vPGMLoc] = @2", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[PGM_GetItemRecDescription] @1, @2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", code))
                     sqlComm.Parameters.Add(New SqlParameter("@2", whse))
                     sqlConn.Open()

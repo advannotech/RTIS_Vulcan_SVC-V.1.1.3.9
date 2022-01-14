@@ -2327,7 +2327,7 @@ Public Class MixedSlurry
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("SELECT [idLotTracking] FROM [_etblLotTracking] WHERE [cLotDescription] = @LOT AND [iStockID] = @ID", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[MBL_GetRecLotID] @1, @2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@LOT", lotNUmber))
                     sqlComm.Parameters.Add(New SqlParameter("@ID", stockID))
                     sqlConn.Open()
@@ -2356,9 +2356,9 @@ Public Class MixedSlurry
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("SELECT [idLotTracking] FROM [_etblLotTracking] WHERE [cLotDescription] = @LOT AND [iStockID] = @ID", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@LOT", lotNUmber))
-                    sqlComm.Parameters.Add(New SqlParameter("@ID", stockID))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[MBL_GetRecLotID] @1, @2", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@1", lotNUmber))
+                    sqlComm.Parameters.Add(New SqlParameter("@2", stockID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
