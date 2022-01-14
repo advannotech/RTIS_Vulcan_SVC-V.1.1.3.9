@@ -14,7 +14,7 @@ Public Class PGMPlanning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [iLineID], '' AS [CatalystCode], [vSlurryCode], '' AS [vPowderCode], [vPGMCode], [dtDateAdd], [vUserAdd], [dtDateEdit], [vUserEdit] FROM [rtbl_VW_Slurry_PGM]", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[UI_GetVWPGMPlanLines]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -44,7 +44,7 @@ Public Class PGMPlanning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [iLineID], '' AS [CatalystCode], [vSlurryCode], '' AS [vPowderCode], [vPGMCode], [dtDateAdd], [vUserAdd], [dtDateEdit], [vUserEdit] FROM [rtbl_T_Slurry_PGM]", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[UI_GetTOYOTAFSPlanLines]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -74,7 +74,7 @@ Public Class PGMPlanning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [iLineID], '' AS [CatalystCode], '' AS [vSlurryCode], [vPowderCode], [vPGMCode], [dtDateAdd], [vUserAdd], [dtDateEdit], [vUserEdit] FROM [rtbl_T_Powder_PGM]", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[UI_GetTOYOTAPPPlanLines]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -104,7 +104,7 @@ Public Class PGMPlanning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [iLineID], [vCatalystCode], '' AS [vSlurryCode], '' AS [vPowderCode], [vPGMCode], [dtDateAdd], [vUserAdd], [dtDateEdit], [vUserEdit] FROM [rtbl_T_Catalyst_PGM]", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[UI_GetTOYOTAAWPlanLines]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -139,13 +139,9 @@ Public Class PGMPlanning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [rtbl_VW_Slurry_PGM] 
-                                                   SET [vSlurryCode] = @Slurry,[vPGMCode] = @PGMCode
-                                                   ,[dtDateEdit] = GETDATE(),[vUserEdit] = @User
-                                                   WHERE [iLineID] = @ID", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[UI_UpdateVWPlanLines] @Slurry, @PGMCode, @User, @ID", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@Slurry", Line.Split("|")(0)))
                     sqlComm.Parameters.Add(New SqlParameter("@PGMCode", Line.Split("|")(1)))
-                    sqlComm.Parameters.Add(New SqlParameter("@DT", Line.Split("|")(2)))
                     sqlComm.Parameters.Add(New SqlParameter("@User", Line.Split("|")(3)))
                     sqlComm.Parameters.Add(New SqlParameter("@ID", Line.Split("|")(4)))
                     sqlConn.Open()
@@ -162,13 +158,9 @@ Public Class PGMPlanning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [rtbl_T_Slurry_PGM] 
-                                                   SET [vSlurryCode] = @Slurry,[vPGMCode] = @PGMCode
-                                                   ,[dtDateEdit] = GETDATE(),[vUserEdit] = @User
-                                                   WHERE [iLineID] = @ID", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[UI_UpdateTFSPlanLines] @Slurry, @PGMCode, @User, @ID", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@Slurry", Line.Split("|")(0)))
                     sqlComm.Parameters.Add(New SqlParameter("@PGMCode", Line.Split("|")(1)))
-                    sqlComm.Parameters.Add(New SqlParameter("@DT", Line.Split("|")(2)))
                     sqlComm.Parameters.Add(New SqlParameter("@User", Line.Split("|")(3)))
                     sqlComm.Parameters.Add(New SqlParameter("@ID", Line.Split("|")(4)))
                     sqlConn.Open()
@@ -185,13 +177,9 @@ Public Class PGMPlanning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [rtbl_T_Powder_PGM] 
-                                                   SET [vPowderCode] = @Powder,[vPGMCode] = @PGMCode
-                                                   ,[dtDateEdit] = GETDATE(),[vUserEdit] = @User
-                                                   WHERE [iLineID] = @ID", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[UI_UpdateTPPPlanLines] @Powder, @PGMCode, @User, @ID", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@Powder", Line.Split("|")(0)))
                     sqlComm.Parameters.Add(New SqlParameter("@PGMCode", Line.Split("|")(1)))
-                    sqlComm.Parameters.Add(New SqlParameter("@DT", Line.Split("|")(2)))
                     sqlComm.Parameters.Add(New SqlParameter("@User", Line.Split("|")(3)))
                     sqlComm.Parameters.Add(New SqlParameter("@ID", Line.Split("|")(4)))
                     sqlConn.Open()
@@ -208,13 +196,9 @@ Public Class PGMPlanning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [rtbl_T_Catalyst_PGM] 
-                                                   SET [vCatalystCode] = @Catalyst,[vPGMCode] = @PGMCode
-                                                   ,[dtDateEdit] = GETDATE(),[vUserEdit] = @User
-                                                   WHERE [iLineID] = @ID", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[UI_UpdateTAWPlanLines] @Catalyst, @PGMCode, @User, @ID", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@Catalyst", Line.Split("|")(0)))
                     sqlComm.Parameters.Add(New SqlParameter("@PGMCode", Line.Split("|")(1)))
-                    sqlComm.Parameters.Add(New SqlParameter("@DT", Line.Split("|")(2)))
                     sqlComm.Parameters.Add(New SqlParameter("@User", Line.Split("|")(3)))
                     sqlComm.Parameters.Add(New SqlParameter("@ID", Line.Split("|")(4)))
                     sqlConn.Open()
@@ -235,11 +219,9 @@ Public Class PGMPlanning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [rtbl_VW_Slurry_PGM]([vSlurryCode],[vPGMCode],[dtDateAdd],[vUserAdd])
-                                                    VALUES(@Slurry,@PGMCode,GETDATE(),@User)", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[UI_UpdateTAWPlanLines] @Slurry, @PGMCode, @User", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@Slurry", Line.Split("|")(0)))
                     sqlComm.Parameters.Add(New SqlParameter("@PGMCode", Line.Split("|")(1)))
-                    sqlComm.Parameters.Add(New SqlParameter("@DT", Line.Split("|")(2)))
                     sqlComm.Parameters.Add(New SqlParameter("@User", Line.Split("|")(3)))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
@@ -256,11 +238,9 @@ Public Class PGMPlanning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [rtbl_T_Slurry_PGM]([vSlurryCode],[vPGMCode],[dtDateAdd],[vUserAdd])
-                                                    VALUES(@Slurry,@PGMCode,GETDATE(),@User)", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[UI_InsertTFSPlanLines] @Slurry, @PGMCode, @User", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@Slurry", Line.Split("|")(0)))
                     sqlComm.Parameters.Add(New SqlParameter("@PGMCode", Line.Split("|")(1)))
-                    sqlComm.Parameters.Add(New SqlParameter("@DT", Line.Split("|")(2)))
                     sqlComm.Parameters.Add(New SqlParameter("@User", Line.Split("|")(3)))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
@@ -277,11 +257,9 @@ Public Class PGMPlanning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [rtbl_T_Powder_PGM]([vPowderCode],[vPGMCode],[dtDateAdd],[vUserAdd])
-                                                    VALUES(@Powder,@PGMCode,GETDATE(),@User)", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[UI_InsertTPPPlanLines] @Powder, @Powder, @Powder", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@Powder", Line.Split("|")(0)))
                     sqlComm.Parameters.Add(New SqlParameter("@PGMCode", Line.Split("|")(1)))
-                    sqlComm.Parameters.Add(New SqlParameter("@DT", Line.Split("|")(2)))
                     sqlComm.Parameters.Add(New SqlParameter("@User", Line.Split("|")(3)))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
@@ -298,11 +276,9 @@ Public Class PGMPlanning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [rtbl_T_Catalyst_PGM]([vCatalystCode],[vPGMCode],[dtDateAdd],[vUserAdd])
-                                                    VALUES(@Catalyst,@PGMCode,GETDATE(),@User)", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[UI_InsertTAWPlanLines] @Catalyst, @PGMCode, @User", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@Catalyst", Line.Split("|")(0)))
                     sqlComm.Parameters.Add(New SqlParameter("@PGMCode", Line.Split("|")(1)))
-                    sqlComm.Parameters.Add(New SqlParameter("@DT", Line.Split("|")(2)))
                     sqlComm.Parameters.Add(New SqlParameter("@User", Line.Split("|")(3)))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()

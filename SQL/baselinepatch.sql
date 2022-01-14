@@ -4578,6 +4578,203 @@ GO
 
 
 
+--------------------------------------------------------- PGM Planning ---------------------------------------------------------------------------
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_GetVWPGMPlanLines]') IS NOT NULL)
+	DROP PROC [dbo].[UI_GetVWPGMPlanLines]
+GO
+
+CREATE PROC [dbo].[UI_GetVWPGMPlanLines]
+AS
+	SELECT [iLineID], '' AS [CatalystCode], [vSlurryCode], '' AS [vPowderCode], [vPGMCode], [dtDateAdd], [vUserAdd], [dtDateEdit], [vUserEdit] 
+	FROM [rtbl_VW_Slurry_PGM]
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_GetTOYOTAFSPlanLines]') IS NOT NULL)
+	DROP PROC [dbo].[UI_GetTOYOTAFSPlanLines]
+GO
+
+CREATE PROC [dbo].[UI_GetTOYOTAFSPlanLines]
+AS
+	SELECT [iLineID], '' AS [CatalystCode], [vSlurryCode], '' AS [vPowderCode], [vPGMCode], [dtDateAdd], [vUserAdd], [dtDateEdit], [vUserEdit] 
+	FROM [rtbl_T_Slurry_PGM]
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_GetTOYOTAPPPlanLines]') IS NOT NULL)
+	DROP PROC [dbo].[UI_GetTOYOTAPPPlanLines]
+GO
+
+CREATE PROC [dbo].[UI_GetTOYOTAPPPlanLines]
+AS
+	SELECT [iLineID], '' AS [CatalystCode], '' AS [vSlurryCode], [vPowderCode], [vPGMCode], [dtDateAdd], [vUserAdd], [dtDateEdit], [vUserEdit] 
+	FROM [rtbl_T_Powder_PGM]
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_GetTOYOTAPPPlanLines]') IS NOT NULL)
+	DROP PROC [dbo].[UI_GetTOYOTAPPPlanLines]
+GO
+
+CREATE PROC [dbo].[UI_GetTOYOTAPPPlanLines]
+AS
+	SELECT [iLineID], '' AS [CatalystCode], '' AS [vSlurryCode], [vPowderCode], [vPGMCode], [dtDateAdd], [vUserAdd], [dtDateEdit], [vUserEdit] 
+	FROM [rtbl_T_Powder_PGM]
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_GetTOYOTAAWPlanLines]') IS NOT NULL)
+	DROP PROC [dbo].[UI_GetTOYOTAAWPlanLines]
+GO
+
+CREATE PROC [dbo].[UI_GetTOYOTAAWPlanLines]
+AS
+	SELECT [iLineID], [vCatalystCode], '' AS [vSlurryCode], '' AS [vPowderCode], [vPGMCode], [dtDateAdd], [vUserAdd], [dtDateEdit], [vUserEdit] 
+	FROM [rtbl_T_Catalyst_PGM]
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_UpdateVWPlanLines]') IS NOT NULL)
+	DROP PROC [dbo].[UI_UpdateVWPlanLines]
+GO
+
+CREATE PROC [dbo].[UI_UpdateVWPlanLines]
+	@Slurry VARCHAR(MAX),
+	@PGMCode VARCHAR(MAX),
+	@User VARCHAR(MAX),
+	@ID VARCHAR(MAX)
+AS
+	UPDATE [rtbl_VW_Slurry_PGM] 
+    SET [vSlurryCode] = @Slurry,[vPGMCode] = @PGMCode
+    ,[dtDateEdit] = GETDATE(),[vUserEdit] = @User
+    WHERE [iLineID] = @ID
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_UpdateTFSPlanLines]') IS NOT NULL)
+	DROP PROC [dbo].[UI_UpdateTFSPlanLines]
+GO
+
+CREATE PROC [dbo].[UI_UpdateTFSPlanLines]
+	@Slurry VARCHAR(MAX),
+	@PGMCode VARCHAR(MAX),
+	@User VARCHAR(MAX),
+	@ID VARCHAR(MAX)
+AS
+	UPDATE [rtbl_T_Slurry_PGM] 
+    SET [vSlurryCode] = @Slurry,[vPGMCode] = @PGMCode
+    ,[dtDateEdit] = GETDATE(),[vUserEdit] = @User
+    WHERE [iLineID] = @ID
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_UpdateTPPPlanLines]') IS NOT NULL)
+	DROP PROC [dbo].[UI_UpdateTPPPlanLines]
+GO
+
+CREATE PROC [dbo].[UI_UpdateTPPPlanLines]
+	@Powder VARCHAR(MAX),
+	@PGMCode VARCHAR(MAX),
+	@User VARCHAR(MAX),
+	@ID VARCHAR(MAX)
+AS
+	UPDATE [rtbl_T_Powder_PGM] 
+    SET [vPowderCode] = @Powder,[vPGMCode] = @PGMCode
+    ,[dtDateEdit] = GETDATE(),[vUserEdit] = @User
+    WHERE [iLineID] = @ID
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_UpdateTAWPlanLines]') IS NOT NULL)
+	DROP PROC [dbo].[UI_UpdateTAWPlanLines]
+GO
+
+CREATE PROC [dbo].[UI_UpdateTAWPlanLines]
+	@Slurry VARCHAR(MAX),
+	@PGMCode VARCHAR(MAX),
+	@User VARCHAR(MAX)
+AS
+	INSERT INTO [rtbl_VW_Slurry_PGM]([vSlurryCode],[vPGMCode],[dtDateAdd],[vUserAdd])
+    VALUES(@Slurry,@PGMCode,GETDATE(),@User)
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_InsertTFSPlanLines]') IS NOT NULL)
+	DROP PROC [dbo].[UI_InsertTFSPlanLines]
+GO
+
+CREATE PROC [dbo].[UI_InsertTFSPlanLines]
+	@Slurry VARCHAR(MAX),
+	@PGMCode VARCHAR(MAX),
+	@User VARCHAR(MAX)
+AS
+	INSERT INTO [rtbl_T_Slurry_PGM]([vSlurryCode],[vPGMCode],[dtDateAdd],[vUserAdd])
+    VALUES(@Slurry,@PGMCode,GETDATE(),@User)
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_InsertTPPPlanLines]') IS NOT NULL)
+	DROP PROC [dbo].[UI_InsertTPPPlanLines]
+GO
+
+CREATE PROC [dbo].[UI_InsertTPPPlanLines]
+	@Powder VARCHAR(MAX),
+	@PGMCode VARCHAR(MAX),
+	@User VARCHAR(MAX)
+AS
+	INSERT INTO [rtbl_T_Powder_PGM]([vPowderCode],[vPGMCode],[dtDateAdd],[vUserAdd])
+    VALUES(@Powder,@PGMCode,GETDATE(),@User)
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_InsertTAWPlanLines]') IS NOT NULL)
+	DROP PROC [dbo].[UI_InsertTAWPlanLines]
+GO
+
+CREATE PROC [dbo].[UI_InsertTAWPlanLines]
+	@Catalyst VARCHAR(MAX),
+	@PGMCode VARCHAR(MAX),
+	@User VARCHAR(MAX)
+AS
+	INSERT INTO [rtbl_T_Catalyst_PGM]([vCatalystCode],[vPGMCode],[dtDateAdd],[vUserAdd])
+    VALUES(@Catalyst,@PGMCode,GETDATE(),@User)
+GO
+
+
+
+
+
+
+
+
 
 
 

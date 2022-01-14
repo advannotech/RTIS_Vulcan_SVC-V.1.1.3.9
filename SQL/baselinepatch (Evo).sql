@@ -612,6 +612,45 @@ GO
 
 
 
+--------------------------------------------------------- PGM Planning ---------------------------------------------------------------------------
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_GetSelectCSPPGMPlanLines_1]') IS NOT NULL)
+	DROP PROC [dbo].[UI_GetSelectCSPPGMPlanLines_1]
+GO
+
+CREATE PROC [dbo].[UI_GetSelectCSPPGMPlanLines_1]
+AS
+	SELECT [StockLink], [Code], [Description_1] FROM [StkItem] WHERE [ItemGroup] IN (005) ORDER BY [Code] ASC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_GetSelectCSPPGMPlanLines_2]') IS NOT NULL)
+	DROP PROC [dbo].[UI_GetSelectCSPPGMPlanLines_2]
+GO
+
+CREATE PROC [dbo].[UI_GetSelectCSPPGMPlanLines_2]
+AS
+	SELECT [StockLink], [Code], [Description_1] FROM [StkItem] WHERE  [ItemGroup] = 011 ORDER BY [Code] ASC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_GetSelectCSPPGMPlanLines_3]') IS NOT NULL)
+	DROP PROC [dbo].[UI_GetSelectCSPPGMPlanLines_3]
+GO
+
+CREATE PROC [dbo].[UI_GetSelectCSPPGMPlanLines_3]
+AS
+	SELECT [StockLink], [Code], [Description_1] FROM [StkItem] WHERE [ItemGroup] = 010 ORDER BY [Code] ASC
+GO
+
 
 
 
