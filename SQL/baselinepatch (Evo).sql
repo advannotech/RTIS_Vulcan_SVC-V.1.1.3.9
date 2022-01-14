@@ -22,10 +22,6 @@ WHERE w.[Code] = @whseCode AND lq.[fQtyOnHand] <> 0
 GO
 
 
-
-
-
-
 IF (OBJECT_ID('[dbo].[sp_GetActivePOs]') IS NOT NULL)
 	DROP PROC [dbo].[sp_GetActivePOs]
 GO
@@ -37,7 +33,6 @@ SELECT DISTINCT TOP 1000 [OrderNum] FROM [InvNum]
 WHERE [cAccountName]=@supplier AND [AccountID] <>'' AND [DocType] = 5 AND ([DocState] = 1 OR [DocState] = 3) 
 ORDER BY [OrderNum] DESC
 GO
-
 
 
 
@@ -392,8 +387,8 @@ GO
 
 CREATE PROC [dbo].[sp_UI_GetItemCodes]
 AS
-	SELECT DISTINCT [Code] FROM [StkItem]
-    WHERE [Code] NOT LIKE 'TSP%'AND [Code] NOT LIKE 'VSP%'
+SELECT DISTINCT [Code] FROM [StkItem]
+WHERE [Code] NOT LIKE 'TSP%'AND [Code] NOT LIKE 'VSP%'
 GO
 
 
@@ -404,34 +399,21 @@ IF (OBJECT_ID('[dbo].[sp_UI_GetItemLots]') IS NOT NULL)
 GO
 
 CREATE PROC [dbo].[sp_UI_GetItemLots]
-	@itemCode VARCHAR(MAX)
+	@CODE VARCHAR(MAX)
 AS
-	SELECT DISTINCT l.[cLotDescription] FROM [_etblLotTracking] l
-    INNER JOIN [StkItem] s ON s.[StockLink] = l.[iStockID]
-    WHERE s.[Code] = @itemCode
+SELECT DISTINCT l.[cLotDescription] FROM [_etblLotTracking] l
+INNER JOIN [StkItem] s ON s.[StockLink] = l.[iStockID]
+WHERE s.[Code] = @CODE
 GO
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
 ------------------------sp_GetLabelInfo----------------
-IF (OBJECT_ID('[sp_UI_GetLabelInfo]') IS NOT NULL)
-	DROP PROC [dbo].[sp_GetLabelInfo]
+IF (OBJECT_ID('[sp_UI_GetLabelInfo_fg]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetLabelInfo_fg]
 GO
 
-CREATE PROC [dbo].[sp_GetLabelInfo]
+CREATE PROC [dbo].[sp_UI_GetLabelInfo_fg]
 (
 @Code varchar(400)
 )

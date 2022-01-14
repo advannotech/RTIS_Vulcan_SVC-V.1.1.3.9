@@ -438,7 +438,7 @@ Public Class FreshSlurry
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_InsertRMLink] @vSlurryCode, @vRMCode, @vRMDesc, @vUserAdded", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_InsertRMLink_fs] @vSlurryCode, @vRMCode, @vRMDesc, @vUserAdded", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@vSlurryCode", slurryCode))
                     sqlComm.Parameters.Add(New SqlParameter("@vRMCode", rmCode))
                     sqlComm.Parameters.Add(New SqlParameter("@vRMDesc", rmDesc))

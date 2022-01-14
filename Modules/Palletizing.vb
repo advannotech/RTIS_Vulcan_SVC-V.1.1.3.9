@@ -214,9 +214,7 @@ Public Class Palletizing
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT [iPallet_ID] FROM [ltbl_PalletBarcodes] l 
-                                                    INNER JOIN [htbl_PalletBarcodes] h ON l.[iPallet_ID] = h.[iLine_ID]
-                                                    WHERE l.[vUnqBarcode] LIKE '%' + @LOT + '%' AND h.[Printed] BETWEEN @FROM AND @TO AND h.[bRMPallet] = 1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetPalletsByLotAndDate] @LOT, @FROM, @TO", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@LOT", lot))
                     sqlComm.Parameters.Add(New SqlParameter("@FROM", from))
                     sqlComm.Parameters.Add(New SqlParameter("@TO", _to))
@@ -277,8 +275,7 @@ Public Class Palletizing
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand($"  SELECT [iLine_ID], [Printed], [vUnqBarcode] FROM [htbl_PalletBarcodes]
-                                                     WHERE [iLine_ID] IN {ids}", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[UI_sp_GetPalletsByIDList] @iLine_ID", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -339,11 +336,11 @@ Public Class Palletizing
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_UI_UpdatePalletPrinSettings_1] @VALUE", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@VALUE", printer))
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_UI_UpdatePalletPrinSettings_Printer] @Printer", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@Printer", printer))
 
-                    Dim sqlComm2 As New SqlCommand(" EXEC [dbo].[sp_UI_UpdatePalletPrinSettings_2] @VALUE", sqlConn)
-                    sqlComm2.Parameters.Add(New SqlParameter("@VALUE2", label))
+                    Dim sqlComm2 As New SqlCommand(" EXEC [dbo].[sp_UI_UpdatePalletPrinSettings_Label] @Label", sqlConn)
+                    sqlComm2.Parameters.Add(New SqlParameter("@Label", label))
 
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
@@ -365,7 +362,7 @@ Public Class Palletizing
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("exec [dbo].[sp_MBL_GetItemDesc] @Code", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetItemDesc] @Code", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@Code", itemCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()

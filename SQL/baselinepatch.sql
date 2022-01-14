@@ -1625,21 +1625,6 @@ GO
 
 
 
-
-IF (OBJECT_ID('[dbo].[sp_UI_GetAWBatchTotal]') IS NOT NULL)
-	DROP PROC [dbo].[sp_UI_GetAWBatchTotal]
-GO
-
-CREATE PROC [dbo].[sp_UI_GetAWBatchTotal]
-	@headerID VARCHAR(MAX)
-AS
-	SELECT SUM([dQty]) AS [Total] FROM [tbl_RTIS_AW_OutPut]
-    WHERE ISNULL([bManuf], 0) = 0 AND [iJobID] = @headerID
-GO
-
-
-
-
 IF (OBJECT_ID('[dbo].[sp_UI_GetAWRawMaterials]') IS NOT NULL)
 	DROP PROC [dbo].[sp_UI_GetAWRawMaterials]
 GO
@@ -2291,11 +2276,11 @@ GO
 
 
 
- ------------------------sp_UI_InsertRMLink----------------
-IF (OBJECT_ID('sp_UI_InsertRMLink') IS NOT NULL)
-	DROP PROC [dbo].[sp_UI_InsertRMLink]
+ ------------------------sp_UI_InsertRMLink_fs----------------
+IF (OBJECT_ID('sp_UI_InsertRMLink_fs') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_InsertRMLink_fs]
 GO
-CREATE PROC [dbo].[sp_UI_InsertRMLink]
+CREATE PROC [dbo].[sp_UI_InsertRMLink_fs]
 (
 @vSlurryCode varchar(max), 
 @vRMCode varchar(max), 
@@ -2533,21 +2518,6 @@ AS
 	WHERE [dtStarted] >= DATEADD(DAY, -(@days), GETDATE()) AND [vAWCode] = @itemCode AND ISNULL([bJobRunning], 0) = 0
 GO
 
-
-
-
-IF (OBJECT_ID('[dbo].[sp_AW_GetValidReopenJobLots]') IS NOT NULL)
-	DROP PROC [dbo].[sp_AW_GetValidReopenJobLots]
-GO
-
-CREATE PROC [dbo].[sp_AW_GetValidReopenJobLots]
-	@itemCode VARCHAR(MAX),
-	@days INT
-AS
-	SELECT [vLotNumber] 
-	FROM [tbl_RTIS_AW_Jobs] 
-	WHERE [dtStarted] >= DATEADD(DAY, -(@days), GETDATE()) AND [vAWCode] = @itemCode AND ISNULL([bJobRunning], 0) = 0
-GO
 
 
 
@@ -2874,6 +2844,7 @@ GO
 
 
 
+
 IF (OBJECT_ID('[dbo].[sp_MBL_GetPalletPrintSettings]') IS NOT NULL)
 	DROP PROC [dbo].[sp_MBL_GetPalletPrintSettings]
 GO
@@ -2917,11 +2888,11 @@ IF (OBJECT_ID('[dbo].[sp_UI_GetPalletsByDate]') IS NOT NULL)
 GO
 
 CREATE PROC [dbo].[sp_UI_GetPalletsByDate]
-	@from VARCHAR(MAX),
-	@_to VARCHAR(MAX)
+	@FROM nvarchar(MAX),
+	@TO nvarchar(MAX)
 AS
 	SELECT [iLine_ID], [Printed], [vUnqBarcode] FROM 
-    [htbl_PalletBarcodes] WHERE [Printed] BETWEEN @from AND @_to AND [bRMPallet] = 1
+    [htbl_PalletBarcodes] WHERE [Printed] BETWEEN @FROM AND @TO AND [bRMPallet] = 1
 GO
 
 
@@ -2933,7 +2904,7 @@ IF (OBJECT_ID('[dbo].[sp_UI_GetPalletsByItem]') IS NOT NULL)
 GO
 
 CREATE PROC [dbo].[sp_UI_GetPalletsByItem]
-	@itemCode VARCHAR(MAX)
+	@ItemCode VARCHAR(MAX)
 AS
 	SELECT [iLine_ID], [Printed], [vUnqBarcode] 
 	FROM [htbl_PalletBarcodes] WHERE [vUnqBarcode] LIKE '%' + @ItemCode + '%' AND [bRMPallet] = 1
@@ -2948,9 +2919,9 @@ IF (OBJECT_ID('[dbo].[sp_UI_GetPalletsByItemAndDate]') IS NOT NULL)
 GO
 
 CREATE PROC [dbo].[sp_UI_GetPalletsByItemAndDate]
-	@itemCode VARCHAR(MAX),
-	@from VARCHAR(MAX),
-	@_to VARCHAR(MAX)
+	@ItemCode VARCHAR(MAX),
+	@FROM VARCHAR(MAX),
+	@TO VARCHAR(MAX)
 AS
 	SELECT [iLine_ID], [Printed], [vUnqBarcode] FROM 
     [htbl_PalletBarcodes] WHERE [vUnqBarcode] LIKE '%' + @itemCode + '%' 
@@ -2966,11 +2937,11 @@ IF (OBJECT_ID('[dbo].[sp_UI_GetPalletsByLot]') IS NOT NULL)
 GO
 
 CREATE PROC [dbo].[sp_UI_GetPalletsByLot]
-	@lot VARCHAR(MAX)
+	@LOT VARCHAR(MAX)
 AS
 	SELECT [iPallet_ID] FROM [ltbl_PalletBarcodes] l 
     INNER JOIN [htbl_PalletBarcodes] h ON l.[iPallet_ID] = h.[iLine_ID]
-    WHERE l.[vUnqBarcode] LIKE '%' + @lot + '%' AND h.[bRMPallet] = 1
+    WHERE l.[vUnqBarcode] LIKE '%' + @LOT + '%' AND h.[bRMPallet] = 1
 GO
 
 
@@ -2982,15 +2953,28 @@ IF (OBJECT_ID('[dbo].[sp_UI_GetPalletsByLotAndDate]') IS NOT NULL)
 GO
 
 CREATE PROC [dbo].[sp_UI_GetPalletsByLotAndDate]
-	@lot VARCHAR(MAX),
-	@from VARCHAR(MAX),
-	@_to VARCHAR(MAX)
+	@LOT varchar(max),
+	@FROM varchar,
+	@TO varchar
 AS
-	SELECT [iPallet_ID] FROM [ltbl_PalletBarcodes] l 
-    INNER JOIN [htbl_PalletBarcodes] h ON l.[iPallet_ID] = h.[iLine_ID]
-    WHERE l.[vUnqBarcode] LIKE '%' + @lot + '%' AND h.[Printed] BETWEEN @from AND @_to AND h.[bRMPallet] = 1
+SELECT [iPallet_ID] FROM [ltbl_PalletBarcodes] l 
+INNER JOIN [htbl_PalletBarcodes] h ON l.[iPallet_ID] = h.[iLine_ID]
+WHERE l.[vUnqBarcode] LIKE '%' + @LOT + '%' AND h.[Printed] BETWEEN @FROM AND @TO AND h.[bRMPallet] = 1
 GO
 
+
+
+IF (OBJECT_ID('[dbo].[UI_sp_GetPalletsByIDList]') IS NOT NULL)
+	DROP PROC [dbo].[UI_sp_GetPalletsByIDList]
+GO
+CREATE PROC [dbo].[UI_sp_GetPalletsByIDList]
+	@iLine_ID int
+AS
+SELECT [iLine_ID], [Printed], [vUnqBarcode] FROM [htbl_PalletBarcodes]
+WHERE [iLine_ID] IN (@iLine_ID)
+GO
+
+e
 
 
 IF (OBJECT_ID('[dbo].[sp_UI_GetPalletLots]') IS NOT NULL)
@@ -2998,44 +2982,47 @@ IF (OBJECT_ID('[dbo].[sp_UI_GetPalletLots]') IS NOT NULL)
 GO
 
 CREATE PROC [dbo].[sp_UI_GetPalletLots]
-	@palletId VARCHAR(MAX)
+	@ID VARCHAR(MAX)
 AS
-	SELECT l.[vUnqBarcode] FROM [ltbl_PalletBarcodes] l WHERE l.[iPallet_ID] = @palletId
+	SELECT l.[vUnqBarcode] FROM [ltbl_PalletBarcodes] l WHERE l.[iPallet_ID] = @ID
 GO
 
 
 IF (OBJECT_ID('[dbo].[sp_UI_GetPalletLines]') IS NOT NULL)
 	DROP PROC [dbo].[sp_UI_GetPalletLines]
 GO
-
 CREATE PROC [dbo].[sp_UI_GetPalletLines]
-	@palletId VARCHAR(MAX)
+	@ID VARCHAR(MAX)
 AS
-	SELECT l.[vUnqBarcode], l.[bOnPallet] FROM [ltbl_PalletBarcodes] l WHERE l.[iPallet_ID] = @palletId
+	SELECT l.[vUnqBarcode], l.[bOnPallet] FROM [ltbl_PalletBarcodes] l WHERE l.[iPallet_ID] = @ID
 GO
 
 
-IF (OBJECT_ID('[dbo].[sp_UI_UpdatePalletPrinSettings_1]') IS NOT NULL)
-	DROP PROC [dbo].[sp_UI_UpdatePalletPrinSettings_1]
+IF (OBJECT_ID('[dbo].[sp_UI_UpdatePalletPrinSettings_Printer]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_UpdatePalletPrinSettings_Printer]
 GO
 
-CREATE PROC [dbo].[sp_UI_UpdatePalletPrinSettings_1]
-	@printer VARCHAR(MAX)
+CREATE PROC [dbo].[sp_UI_UpdatePalletPrinSettings_Printer]
+	@Printer VARCHAR(MAX)
 AS
-	UPDATE [tbl_RTSettings] SET [SettingValue] = @printer WHERE [Setting_Name] = 'Pallet Printer'
+	UPDATE [tbl_RTSettings] SET [SettingValue] = @Printer WHERE [Setting_Name] = 'Pallet Printer'
 GO
 
 
 
-IF (OBJECT_ID('[dbo].[sp_UI_UpdatePalletPrinSettings_2]') IS NOT NULL)
-	DROP PROC [dbo].[sp_UI_UpdatePalletPrinSettings_2]
+IF (OBJECT_ID('[dbo].[sp_UI_UpdatePalletPrinSettings_Label]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_UpdatePalletPrinSettings_Label]
 GO
 
-CREATE PROC [dbo].[sp_UI_UpdatePalletPrinSettings_2]
-	@label VARCHAR(MAX)
+CREATE PROC [dbo].[sp_UI_UpdatePalletPrinSettings_Label]
+	@Label VARCHAR(MAX)
 AS
-	UPDATE [tbl_RTSettings] SET [SettingValue] = @label WHERE [Setting_Name] = 'Pallet Label'
+	UPDATE [tbl_RTSettings] SET [SettingValue] = @Label WHERE [Setting_Name] = 'Pallet Label'
 GO
+
+
+
+
 
 
 
