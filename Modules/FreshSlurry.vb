@@ -397,7 +397,7 @@ Public Class FreshSlurry
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_InsertFreshSlurry] @vTrolleyCode,@vItemCode,@vLotNumber,@dWetWeight,@vUserEntered,@vItemDesc)", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_InsertFreshSlurry] @vTrolleyCode,@vItemCode,@vLotNumber,@dWetWeight,@vUserEntered,@vItemDesc", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@vTrolleyCode", trolleyCode))
                     sqlComm.Parameters.Add(New SqlParameter("@vItemCode", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@vLotNumber", lot))

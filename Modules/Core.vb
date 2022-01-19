@@ -692,17 +692,22 @@ Public Class User_Management
                 End Try
             End Function
 
-            Public Shared Function UI_CheckUserLogon(ByVal username As String, ByVal password As String) As String
+            Public Shared Function UI_CheckUserLogon(ByVal username As String, ByVal pin As String) As String
                 Try
-
-
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
+<<<<<<< HEAD
                     Dim sqlComm As New SqlCommand("EXEC  [dbo].[sp_UI_CheckUserLogon] @vUser_Username, @vUser_Password", sqlConn)
                     password = password.Replace(" ", "+")
 
                     sqlComm.Parameters.Add(New SqlParameter("@vUser_Username", username))
                     sqlComm.Parameters.Add(New SqlParameter("@vUser_Password", password))
+=======
+                    Dim sqlComm As New SqlCommand(" SELECT [vUser_Username]
+	                                                FROM [tbl_users] WHERE [vUser_Username] = @1 AND [vUser_Password] = @2  AND [bUser_IsActive] = 1", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@1", username))
+                    sqlComm.Parameters.Add(New SqlParameter("@2", pin))
+>>>>>>> 8fb829a8b54d25dd22bbd4af8347556a2269f418
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()

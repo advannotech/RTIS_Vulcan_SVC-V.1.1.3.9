@@ -408,6 +408,11 @@ GO
 
 
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 8fb829a8b54d25dd22bbd4af8347556a2269f418
 ------------------------sp_GetLabelInfo----------------
 IF (OBJECT_ID('[sp_UI_GetLabelInfo_fg]') IS NOT NULL)
 	DROP PROC [dbo].[sp_UI_GetLabelInfo_fg]
@@ -629,6 +634,202 @@ GO
 
 
 
+
+
+
+
+
+
+
+
+--------------------------------------------------------- Mixed Slurry ---------------------------------------------------------------------------
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[MBL_GetItemDesc]') IS NOT NULL)
+	DROP PROC [dbo].[MBL_GetItemDesc]
+GO
+
+CREATE PROC [dbo].[MBL_GetItemDesc]
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT [Description_1] FROM [StkItem]
+    WHERE [Code] = @itemCode
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[MBL_GetFeshSlurryInfo]') IS NOT NULL)
+	DROP PROC [dbo].[MBL_GetFeshSlurryInfo]
+GO
+
+CREATE PROC [dbo].[MBL_GetFeshSlurryInfo]
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT [StockLink], [AveUCst] FROM [StkItem] WHERE [Code] = @itemCode
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[MBL_GetFeshSlurryLotID]') IS NOT NULL)
+	DROP PROC [dbo].[MBL_GetFeshSlurryLotID]
+GO
+
+CREATE PROC [dbo].[MBL_GetFeshSlurryLotID]
+	@lotNUmber VARCHAR(MAX),
+	@stockID VARCHAR(MAX)
+AS
+	SELECT [idLotTracking] FROM [_etblLotTracking] WHERE [cLotDescription] = @lotNUmber AND [iStockID] = @stockID
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[MBL_GetRecLotID]') IS NOT NULL)
+	DROP PROC [dbo].[MBL_GetRecLotID]
+GO
+
+CREATE PROC [dbo].[MBL_GetRecLotID]
+	@lotNUmber VARCHAR(MAX),
+	@stockID VARCHAR(MAX)
+AS
+	SELECT [idLotTracking] FROM [_etblLotTracking] WHERE [cLotDescription] = @lotNUmber AND [iStockID] = @stockID
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[MBL_GetRecLotID]') IS NOT NULL)
+	DROP PROC [dbo].[MBL_GetRecLotID]
+GO
+
+CREATE PROC [dbo].[MBL_GetRecLotID]
+	@lotNUmber VARCHAR(MAX),
+	@stockID VARCHAR(MAX)
+AS
+	SELECT [idLotTracking] FROM [_etblLotTracking] WHERE [cLotDescription] = @lotNUmber AND [iStockID] = @stockID
+GO
+
+
+
+
+--------------------------------------------------------- PGM ---------------------------------------------------------------------------
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_GetItemFVDescription]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_GetItemFVDescription]
+GO
+
+CREATE PROC [dbo].[PGM_GetItemFVDescription]
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT [Description_1] FROM [StkItem] WHERE [Code] = @itemCode
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_GetItemRecDescription]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_GetItemRecDescription]
+GO
+
+CREATE PROC [dbo].[PGM_GetItemRecDescription]
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT [Description_1] FROM [StkItem] WHERE [Code] = @itemCode
+GO
+
+
+
+
+--=========================================================================================================--
+	------------------------	CHECK BUG	--------------------------
+--=========================================================================================================--
+
+
+IF (OBJECT_ID('[dbo].[PGM_GetItemRecDescription]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_GetItemRecDescription]
+GO
+
+CREATE PROC [dbo].[PGM_GetItemRecDescription]
+	@code VARCHAR(MAX),
+	@whse VARCHAR(MAX)
+AS
+	--SELECT l.[cLotDescription] FROM [_etblLotTrackingQty] lq
+ --   INNER JOIN [_etblLotTracking] l ON l.[idLotTracking] = lq.[iLotTrackingID] 
+ --   INNER JOIN [_etblLotStatus] ls ON l.[iLotStatusID] = ls.[idLotStatus]
+ --   INNER JOIN [WhseMst] w ON w.[WhseLink] = lq.[iWarehouseID]
+ --   INNER JOIN [StkItem] s ON s.[StockLink] = l.[iStockID]
+ --   INNER JOIN [CAT_RTIS].[dbo].[htbl_RTIS_PGM_Manuf] rl ON rl.[vLotDesc] COLLATE Latin1_General_CI_AS = l.[cLotDescription]
+	--WHERE s.[Code] = @code AND w.[Code] = @whse AND lq.[fQtyOnHand] <> 0 AND rl.[vPGMLoc] = @whse
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_InsertPGmForManufacture]') IS NOT NULL)
+	DROP PROC [dbo].[UI_InsertPGmForManufacture]
+GO
+
+CREATE PROC [dbo].[UI_InsertPGmForManufacture]
+	@itemCode VARCHAR(MAX),
+	@qty FLOAT,
+	@lotNumber VARCHAR(MAX),
+	@project VARCHAR(MAX)
+AS
+	INSERT INTO __SLtbl_MFPImports (sBOMItemCode, fQtyToProduce, sLotNumber, sProjectCode ) 
+	VALUES ( @itemCode, @qty, @lotNumber, @project)
+GO
+
+
+
+
+--------------------------------------------------------- PGM Planning ---------------------------------------------------------------------------
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_GetSelectCSPPGMPlanLines_1]') IS NOT NULL)
+	DROP PROC [dbo].[UI_GetSelectCSPPGMPlanLines_1]
+GO
+
+CREATE PROC [dbo].[UI_GetSelectCSPPGMPlanLines_1]
+AS
+	SELECT [StockLink], [Code], [Description_1] FROM [StkItem] WHERE [ItemGroup] IN (005) ORDER BY [Code] ASC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_GetSelectCSPPGMPlanLines_2]') IS NOT NULL)
+	DROP PROC [dbo].[UI_GetSelectCSPPGMPlanLines_2]
+GO
+
+CREATE PROC [dbo].[UI_GetSelectCSPPGMPlanLines_2]
+AS
+	SELECT [StockLink], [Code], [Description_1] FROM [StkItem] WHERE  [ItemGroup] = 011 ORDER BY [Code] ASC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_GetSelectCSPPGMPlanLines_3]') IS NOT NULL)
+	DROP PROC [dbo].[UI_GetSelectCSPPGMPlanLines_3]
+GO
+
+CREATE PROC [dbo].[UI_GetSelectCSPPGMPlanLines_3]
+AS
+	SELECT [StockLink], [Code], [Description_1] FROM [StkItem] WHERE [ItemGroup] = 010 ORDER BY [Code] ASC
+GO
 
 
 

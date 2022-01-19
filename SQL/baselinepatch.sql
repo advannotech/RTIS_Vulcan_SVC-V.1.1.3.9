@@ -1612,7 +1612,10 @@ GO
 
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8fb829a8b54d25dd22bbd4af8347556a2269f418
 IF (OBJECT_ID('[dbo].[sp_UI_GetAWBatchTotal]') IS NOT NULL)
 	DROP PROC [dbo].[sp_UI_GetAWBatchTotal]
 GO
@@ -2506,7 +2509,10 @@ GO
 
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8fb829a8b54d25dd22bbd4af8347556a2269f418
 IF (OBJECT_ID('[dbo].[sp_AW_GetValidReopenJobLots]') IS NOT NULL)
 	DROP PROC [dbo].[sp_AW_GetValidReopenJobLots]
 GO
@@ -2522,7 +2528,10 @@ GO
 
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8fb829a8b54d25dd22bbd4af8347556a2269f418
 
 IF (OBJECT_ID('[dbo].[sp_AW_GetReprintJobNumber_RO]') IS NOT NULL)
 	DROP PROC [dbo].[sp_AW_GetReprintJobNumber_RO]
@@ -2667,7 +2676,7 @@ CREATE PROC [dbo].[sp_UI_InsertNewAWJob]
 	@lotNumber VARCHAR(MAX),
 	@PGM VARCHAR(MAX),
 	@PGMLot VARCHAR(MAX),
-	@qty VARCHAR(MAX),
+	@qty DECIMAL,
 	@username VARCHAR(MAX)
 AS
 	INSERT INTO [tbl_RTIS_AW_Jobs] ([vJobUnq], [vAWCode], [vLotNumber], [vPGMCode], [vPGMLot], [dQty], [vUserStarted], [dtStarted], [bJobRunning], [dQtyManuf])
@@ -2686,7 +2695,7 @@ CREATE PROC [dbo].[sp_AW_AddNewPallet]
 	@jobID VARCHAR(MAX),
 	@palletCode VARCHAR(MAX),
 	@palletNo VARCHAR(MAX),
-	@qty VARCHAR(MAX),
+	@qty DECIMAL,
 	@username VARCHAR(MAX)
 AS
 	INSERT INTO [tbl_RTIS_AW_OutPut] ([iJobID], [vPalletCode], [vPalletNo], [dQty], [vUserRecorded], [dtDateRecorded])
@@ -2696,15 +2705,15 @@ GO
 
 
 
-IF (OBJECT_ID('[dbo].[sp_UI_InsertNewAWJob]') IS NOT NULL)
-	DROP PROC [dbo].[sp_UI_InsertNewAWJob]
+IF (OBJECT_ID('[dbo].[sp_UI_InsertNewAWJobRawMaterial]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_InsertNewAWJobRawMaterial]
 GO
 
-CREATE PROC [dbo].[sp_UI_InsertNewAWJob]
+CREATE PROC [dbo].[sp_UI_InsertNewAWJobRawMaterial]
 	@jobID VARCHAR(MAX),
 	@code VARCHAR(MAX),
 	@lotNumber VARCHAR(MAX),
-	@qty VARCHAR(MAX),
+	@qty DECIMAL,
 	@username VARCHAR(MAX),
 	@palletNo VARCHAR(MAX),
 	@ZectJob VARCHAR(MAX),
@@ -2737,7 +2746,7 @@ GO
 
 CREATE PROC [dbo].[sp_AW_UpdateManufacturedQty]
 	@jobNo VARCHAR(MAX),
-	@qty VARCHAR(MAX)
+	@qty DECIMAL
 AS
 	UPDATE [tbl_RTIS_AW_Jobs] SET [dQtyManuf] = ISNULL([dQtyManuf], 0) + @qty
     WHERE [vJobUnq] = @jobNo
@@ -5235,6 +5244,1902 @@ GO
 
 
  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------------------------- Mixed Slurry ---------------------------------------------------------------------------
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_CheckMixedSlurryBufferTankInUse]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_CheckMixedSlurryBufferTankInUse]
+GO
+
+CREATE PROC [dbo].[sp_MBL_CheckMixedSlurryBufferTankInUse]
+	@tankType VARCHAR(MAX),
+	@tankCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [iLineID] FROM [tbl_RTIS_MS_Main]
+    WHERE [vTankType] = @tankType AND [vTankCode] = @tankCode AND [vItemCode] = @itemCode AND ISNULL([bBufferClosed], 0) = 0
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_CheckMixedSlurryTankInUse]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_CheckMixedSlurryTankInUse]
+GO
+
+CREATE PROC [dbo].[sp_MBL_CheckMixedSlurryTankInUse]
+	@tankType VARCHAR(MAX),
+	@tankCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [vLotNumber] FROM [tbl_RTIS_MS_Main]
+    WHERE [vTankType] = @tankType AND [vTankCode] = @tankCode AND [vItemCode] = @itemCode AND ISNULL([bReceived], 0) = 0
+	ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_CheckMixedSlurryRemENtered]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_CheckMixedSlurryRemENtered]
+GO
+
+CREATE PROC [dbo].[sp_MBL_CheckMixedSlurryRemENtered]
+	@tankType VARCHAR(MAX),
+	@tankCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [vUserRemaining] FROM [tbl_RTIS_MS_Main]
+    WHERE [vTankType] = @tankType AND [vTankCode] = @tankCode AND [vItemCode] = @itemCode
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_CheckMixedSlurryRecEntered]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_CheckMixedSlurryRecEntered]
+GO
+
+CREATE PROC [dbo].[sp_MBL_CheckMixedSlurryRecEntered]
+	@tankType VARCHAR(MAX),
+	@tankCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [vUserRecovered] FROM [tbl_RTIS_MS_Main]
+    WHERE [vTankType] = @tankType AND [vTankCode] = @tankCode AND [vItemCode] = @itemCode
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_CheckSlurryInBufferTank]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_CheckSlurryInBufferTank]
+GO
+
+CREATE PROC [dbo].[sp_MBL_CheckSlurryInBufferTank]
+	@tankType VARCHAR(MAX),
+	@tankCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [iLineID] FROM [tbl_RTIS_MS_Main]
+    WHERE [vTankType] = @tankType AND [vTankCode] = @tankCode AND [vItemCode] = @itemCode AND ISNULL([bBufferClosed], 0) = 0
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetTankFreshSlurries]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetTankFreshSlurries]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetTankFreshSlurries]
+	@headerID VARCHAR(MAX)
+AS
+	SELECT
+    s.[vTrolleyCode]
+    ,s.[vItemCode]
+    ,s.[vItemDesc]
+    ,s.[vLotNumber]
+    ,s.[dWeight]
+    FROM [tbl_RTIS_MS_Slurries] s
+    WHERE s.[iHeaderID] = @headerID
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_CheckSlurryInTank]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_CheckSlurryInTank]
+GO
+
+CREATE PROC [dbo].[sp_MBL_CheckSlurryInTank]
+	@tankType VARCHAR(MAX),
+	@tankCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [iLineID] FROM [tbl_RTIS_MS_Main]
+    WHERE [vTankType] = @tankType AND [vTankCode] = @tankCode AND [vItemCode] = @itemCode AND ISNULL([bReceived], 0) = 0
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetMixedSlurryHeaderID]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetMixedSlurryHeaderID]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetMixedSlurryHeaderID]
+	@tankType VARCHAR(MAX),
+	@tankCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [iLineID] FROM [tbl_RTIS_MS_Main]
+    WHERE [vTankType] = @tankType AND [vTankCode] = @tankCode AND [vItemCode] = @itemCode AND ISNULL([bReceived], 0) = 0
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetTrolleyInfo]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetTrolleyInfo]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetTrolleyInfo]
+	@trolleyNo VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [vLotNumber], s.[Description_1]
+    FROM [tbl_RTIS_Fresh_Slurry] ms
+    INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[Code] = ms.[vItemCode]
+    WHERE [vTrolleyCode] = @trolleyNo AND [vItemCode] = @itemCode AND [dSolidity] IS NOT NULL AND ISNULL([bRecTrans], 0) = 1 
+	ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_CheckSlurryAlreadyInTank]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_CheckSlurryAlreadyInTank]
+GO
+
+CREATE PROC [dbo].[sp_MBL_CheckSlurryAlreadyInTank]
+	@headerId VARCHAR(MAX),
+	@trolleyCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX),
+	@lotNumber VARCHAR(MAX)
+AS
+	SELECT [iLineID] FROM [tbl_RTIS_MS_Slurries] WHERE [iHeaderID] = @headerId 
+	AND [vTrolleyCode] = @trolleyCode 
+	AND [vItemCode] = @itemCode 
+	AND [vLotNumber] = @lotNumber
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetBufferTankSlurryID]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetBufferTankSlurryID]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetBufferTankSlurryID]
+	@tankType VARCHAR(MAX),
+	@tankCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [iLineID] FROM [tbl_RTIS_MS_Main]
+    WHERE [vTankType] = @tankType AND [vTankCode] = @tankCode AND [vItemCode] = @itemCode AND ISNULL([bBufferClosed], 0) = 0
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetTankSlurryID]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetTankSlurryID]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetTankSlurryID]
+	@tankType VARCHAR(MAX),
+	@tankCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [iLineID] FROM [tbl_RTIS_MS_Main]
+    WHERE [vTankType] = @tankType AND [vTankCode] = @tankCode AND [vItemCode] = @itemCode AND ISNULL([bReceived], 0) = 0
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetTrolleyTolerance]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetTrolleyTolerance]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetTrolleyTolerance]
+AS
+	SELECT [SettingValue] FROM [tbl_RTSettings]
+    WHERE [Setting_Name] = 'FSTol'
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetFreshSlurryTrolleyInfo]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetFreshSlurryTrolleyInfo]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetFreshSlurryTrolleyInfo]
+	@trolleyCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [iLIneID], [dWetWeight], [dTotalDecantedWeight] FROM [tbl_RTIS_Fresh_Slurry]
+    WHERE [vTrolleyCode] = @trolleyCode AND [vItemCode] = @itemCode ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_CheckSlurryAvailableToDecant]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_CheckSlurryAvailableToDecant]
+GO
+
+CREATE PROC [dbo].[sp_MBL_CheckSlurryAvailableToDecant]
+	@tankType VARCHAR(MAX),
+	@tankCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [vLotNumber], [vDescription] FROM [tbl_RTIS_MS_Main]
+    WHERE [vTankType] = @tankType AND [vTankCode] = @tankCode AND [vItemCode] = @itemCode AND ISNULL([bBufferClosed], 0) = 0 AND [dRemainingWeight] IS NOT NULL AND [dRecoveredWeight] IS NOT NULL
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_CheckMobileTankAvailable]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_CheckMobileTankAvailable]
+GO
+
+CREATE PROC [dbo].[sp_MBL_CheckMobileTankAvailable]
+	@tankCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [vLotNumber] FROM [tbl_RTIS_MS_Decant]
+    WHERE [vTankCode] = @tankCode AND [vItemCode]= @itemCode AND ISNULL([bReceived], 0) = 0
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetMixedSlurryHeaderInfo]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetMixedSlurryHeaderInfo]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetMixedSlurryHeaderInfo]
+	@tankType VARCHAR(MAX),
+	@tankCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [iLineID], [vDescription], [vLotNumber] FROM [tbl_RTIS_MS_Main]
+    WHERE [vTankType] = @tankType AND [vTankCode] = @tankCode AND [vItemCode] = @itemCode AND ISNULL([bBufferClosed], 0) = 0 AND [dRemainingWeight] IS NOT NULL AND [dRecoveredWeight] IS NOT NULL
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_CheckSlurryInMobileTankZAC]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_CheckSlurryInMobileTankZAC]
+GO
+
+CREATE PROC [dbo].[sp_MBL_CheckSlurryInMobileTankZAC]
+	@tankCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [vLotNumber], [vItemDesc] FROM [tbl_RTIS_MS_Decant]
+    WHERE [vTankCode] = @tankCode AND [vItemCode] = @itemCode AND ISNULL([bTransferred], 0) = 0 AND ISNULL([bReceived], 0) = 0 AND [dSolidity] IS NULL
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_CheckSlurryTankZAC]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_CheckSlurryTankZAC]
+GO
+
+CREATE PROC [dbo].[sp_MBL_CheckSlurryTankZAC]
+	@tankType VARCHAR(MAX),
+	@tankCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [vLotNumber], [vDescription] FROM [tbl_RTIS_MS_Main]
+    WHERE [vTankType] = @tankType AND [vTankCode] = @tankCode AND [vItemCode] = @itemCode AND ISNULL([bTransferred], 0) = 0 AND ISNULL([bReceived], 0) = 0 AND [dSolidity] IS NULL
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetZacChems]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetZacChems]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetZacChems]
+AS
+	SELECT [vChemicalName] FROM [tbl_RTIS_MS_Chemical_List]
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetMobileTankSlurryID]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetMobileTankSlurryID]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetMobileTankSlurryID]
+	@tankCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [iLineID] FROM [tbl_RTIS_MS_Decant]
+    WHERE [vTankCode] = @tankCode AND [vItemCode] = @itemCode
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetMobileTankChemicalID]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetMobileTankChemicalID]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetMobileTankChemicalID]
+	@tankID VARCHAR(MAX),
+	@chemical VARCHAR(MAX)
+AS
+	SElECT [iLineID] FROM [tbl_RTIS_MS_Chemicals] WHERE [iMTNKID] = @tankID AND [vChemicalName] = @chemical
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetTankChemicalID]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetTankChemicalID]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetTankChemicalID]
+	@tankID VARCHAR(MAX),
+	@chemical VARCHAR(MAX)
+AS
+	SElECT [iLineID] FROM [tbl_RTIS_MS_Chemicals] WHERE [iTNKID] = @tankID AND [vChemicalName] = @chemical
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetAllChemicals]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetAllChemicals]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetAllChemicals]
+AS
+	SELECT [vChemicalName]
+    FROM [tbl_RTIS_MS_Chemical_List]
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetMobileTankSlurryID]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetMobileTankSlurryID]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetMobileTankSlurryID]
+	@tankCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [vLotNumber], [vItemDesc] FROM [tbl_RTIS_MS_Decant]
+    WHERE [vTankCode] = @tankCode AND [vItemCode] = @itemCode AND ISNULL([bTransferred], 0) = 0 AND ISNULL([bReceived], 0) = 0 AND [dSolidity] IS NULL
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetSlurryTankInfoSolidity]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetSlurryTankInfoSolidity]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetSlurryTankInfoSolidity]
+	@tankType VARCHAR(MAX),
+	@tankCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [vLotNumber], [vDescription] FROM [tbl_RTIS_MS_Main]
+    WHERE [vTankType] = @tankType AND [vTankCode] = @tankCode AND [vItemCode] = @itemCode AND ISNULL([bTransferred], 0) = 0 AND ISNULL([bReceived], 0) = 0 AND [dSolidity] IS NULL
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetMobileTankSolidityInfo]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetMobileTankSolidityInfo]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetMobileTankSolidityInfo]
+	@tankCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [iLineID], [vLotNumber] FROM [tbl_RTIS_MS_Decant]
+    WHERE [vTankCode] = @tankCode AND [vItemCode] = @itemCode AND ISNULL([bTransferred], 0) = 0 AND ISNULL([bReceived], 0) = 0 AND [dSolidity] IS NULL
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetSlurryTankSolidityInfo]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetSlurryTankSolidityInfo]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetSlurryTankSolidityInfo]
+	@tankType VARCHAR(MAX),
+	@tankCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1  [iLineID], [vLotNumber] FROM [tbl_RTIS_MS_Main]
+    WHERE [vTankType] = @tankType AND [vTankCode] = @tankCode AND [vItemCode] = @itemCode AND ISNULL([bTransferred], 0) = 0 AND ISNULL([bReceived], 0) = 0 AND [dSolidity] IS NULL
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetFreshSlurryInfoRecTrans]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetFreshSlurryInfoRecTrans]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetFreshSlurryInfoRecTrans]
+	@trolleyCode VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [vLotNumber], [dDryWeight], ISNULL([bRecTrans], 'False'), s.[Description_1] FROM [tbl_RTIS_Fresh_Slurry] ms
+    INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[Code] = [vItemCode]
+    WHERE [vTrolleyCode] = @trolleyCode AND [vItemCode] = @itemCode ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[MBL_GetMobileTankTransferInfo]') IS NOT NULL)
+	DROP PROC [dbo].[MBL_GetMobileTankTransferInfo]
+GO
+
+CREATE PROC [dbo].[MBL_GetMobileTankTransferInfo]
+	@tankNo VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [vLotNumber], [dDryWeight], ISNULL([bTransferred], 0), [vItemDesc]
+    FROM [tbl_RTIS_MS_Decant] WHERE [vTankCode] = @tankNo AND [vItemCode] = @itemCode AND [dSolidity] IS NOT NULL
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[MBL_GetMobileTankTransferd]') IS NOT NULL)
+	DROP PROC [dbo].[MBL_GetMobileTankTransferd]
+GO
+
+CREATE PROC [dbo].[MBL_GetMobileTankTransferd]
+	@tankNo VARCHAR(MAX),
+	@itemCode VARCHAR(MAX),
+	@lotNumber VARCHAR(MAX)
+AS
+	SELECT TOP 1 ISNULL([bTransferred], 0) FROM [tbl_RTIS_MS_Decant]
+	WHERE [vTankCode] = @tankNo AND [vItemCode] = @itemCode AND [vLotNumber] = @lotNumber
+	ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[MBL_GetLargeTankTransferd]') IS NOT NULL)
+	DROP PROC [dbo].[MBL_GetLargeTankTransferd]
+GO
+
+CREATE PROC [dbo].[MBL_GetLargeTankTransferd]
+	@tankTye VARCHAR(MAX),
+	@tankNo VARCHAR(MAX),
+	@itemCode VARCHAR(MAX),
+	@lotNumber VARCHAR(MAX)
+AS
+	SELECT TOP 1 ISNULL([bTransferred], 0) FROM [tbl_RTIS_MS_Main]
+    WHERE [vTankType] = @tankTye AND [vTankCode] = @tankNo 
+	AND [vItemCode] = @itemCode AND [vLotNumber] = @lotNumber 
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[MBL_GetTankTransferInfo]') IS NOT NULL)
+	DROP PROC [dbo].[MBL_GetTankTransferInfo]
+GO
+
+CREATE PROC [dbo].[MBL_GetTankTransferInfo]
+	@tankTye VARCHAR(MAX),
+	@tankNo VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT TOP 1 [vLotNumber], [dDryWeight], ISNULL([bTransferred], 0), [vDescription]
+    FROM [tbl_RTIS_MS_Main] WHERE [vTankType] = @tankTye AND [vTankCode] = @tankNo 
+	AND [vItemCode] = @itemCode AND [dSolidity] IS NOT NULL
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+--------------------------------------------------------- PGM ---------------------------------------------------------------------------
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_GetItemBatch]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_GetItemBatch]
+GO
+
+CREATE PROC [dbo].[PGM_GetItemBatch]
+	@itemCode VARCHAR(MAX),
+	@lot VARCHAR(MAX),
+	@location VARCHAR(MAX)
+AS
+	SELECT [dWeightIn], [dWeightOut], [dWeightBal], [dConcentration] FROM [htbl_RTIS_PGM_Manuf]
+    WHERE [vItemCode] = @itemCode AND [vLotDesc] = @lot AND [vWhseCode] = @location
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_CheckContainerUsed_Global]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_CheckContainerUsed_Global]
+GO
+
+CREATE PROC [dbo].[PGM_CheckContainerUsed_Global]
+	@container VARCHAR(MAX)
+AS
+	SELECT TOP 1 [bTransferred] FROM [ltbl_RTIS_PGM_Manuf]
+    WHERE [vContainer] = @container ORDER BY [iLineID] DESC
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_CheckContainerUsed]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_CheckContainerUsed]
+GO
+
+CREATE PROC [dbo].[PGM_CheckContainerUsed]
+	@headerID VARCHAR(MAX),
+	@container VARCHAR(MAX)
+AS
+	SELECT [vContainer] FROM [ltbl_RTIS_PGM_Manuf]
+    WHERE [iHeaderID] = @headerID AND [vContainer] = @container
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_CheckContTransState]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_CheckContTransState]
+GO
+
+CREATE PROC [dbo].[PGM_CheckContTransState]
+	@container VARCHAR(MAX),
+	@headerID VARCHAR(MAX)
+AS
+	SELECT TOP 1 ISNULL([bTransferred], 0) FROM [ltbl_RTIS_PGM_Manuf] 
+	WHERE [vContainer] = @container AND [iHeaderID] = @headerID ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_CheckContRecState_Global]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_CheckContRecState_Global]
+GO
+
+CREATE PROC [dbo].[PGM_CheckContRecState_Global]
+	@container VARCHAR(MAX)
+AS
+	SELECT TOP 1 ISNULL([bReceived], 0) FROM [ltbl_RTIS_PGM_Trans] 
+	WHERE [vContainer] = @container ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_CheckContRecState]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_CheckContRecState]
+GO
+
+CREATE PROC [dbo].[PGM_CheckContRecState]
+	@container VARCHAR(MAX),
+	@headerID VARCHAR(MAX)
+AS
+	SELECT TOP 1 ISNULL([bReceived], 0) FROM [ltbl_RTIS_PGM_Trans] 
+	WHERE [vContainer] = @headerID AND [iHeaderID] = @container
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_GetRemainderCaptured]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_GetRemainderCaptured]
+GO
+
+CREATE PROC [dbo].[PGM_GetRemainderCaptured]
+	@itemCode VARCHAR(MAX),
+	@lot VARCHAR(MAX),
+	@location VARCHAR(MAX)
+AS
+	SELECT ISNULL([bRemainderSet], 0) FROM [htbl_RTIS_PGM_Manuf]
+	WHERE [vItemCode] = @itemCode AND [vLotDesc] = @lot AND [vWhseCode] = @location
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_GetBatchLines]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_GetBatchLines]
+GO
+
+CREATE PROC [dbo].[PGM_GetBatchLines]
+	@itemCode VARCHAR(MAX),
+	@lot VARCHAR(MAX),
+	@location VARCHAR(MAX)
+AS
+	SELECT pl.[vContainer], pl.[dWeightIn], ISNULL(pl.[bManuf], 0), ISNULL(pl.[bTransferred], 0) FROM [ltbl_RTIS_PGM_Manuf] pl 
+	INNER JOIN [htbl_RTIS_PGM_Manuf] ph ON pl.[iHeaderID] = ph.[iLineID]
+	WHERE ph.[vItemCode] = @itemCode AND ph.[vLotDesc] = @lot AND ph.[vWhseCode] = @location
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_GetHeaderID]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_GetHeaderID]
+GO
+
+CREATE PROC [dbo].[PGM_GetHeaderID]
+	@itemCode VARCHAR(MAX),
+	@lot VARCHAR(MAX),
+	@location VARCHAR(MAX)
+AS
+	SELECT TOP 1 [iLineID] FROM [htbl_RTIS_PGM_Manuf]
+    WHERE [vItemCode] = @itemCode AND [vLotDesc] = @lot AND [vWhseCode] = @location ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_GetContOldInfo]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_GetContOldInfo]
+GO
+
+CREATE PROC [dbo].[PGM_GetContOldInfo]
+	@cont VARCHAR(MAX)
+AS
+	SELECT TOP 1 tl.[dWeightOut], tl.[vWhseTo], tl.[vDestWhse], tl.[iLineID], h.[vItemCode], h.[vLotDesc] FROM [ltbl_RTIS_PGM_Trans] tl 
+    INNER JOIN [htbl_RTIS_PGM_Manuf] h ON h.[iLineID] = tl.[iHeaderID]
+    WHERE [vContainer] = @cont
+    ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_SelectVWTransferSlurries]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_SelectVWTransferSlurries]
+GO
+
+CREATE PROC [dbo].[PGM_SelectVWTransferSlurries]
+AS
+	SELECT DISTINCT [vSlurryCode] FROM [rtbl_VW_Slurry_PGM]
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_SelectTTransferPowders]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_SelectTTransferPowders]
+GO
+
+CREATE PROC [dbo].[PGM_SelectTTransferPowders]
+AS
+	SELECT DISTINCT [vPowderCode] FROM [rtbl_T_Powder_PGM]
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_SelectTTransferSlurries]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_SelectTTransferSlurries]
+GO
+
+CREATE PROC [dbo].[PGM_SelectTTransferSlurries]
+AS
+	SELECT DISTINCT [vSlurryCode] FROM [rtbl_T_Slurry_PGM]
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_SelectTTransferAW]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_SelectTTransferAW]
+GO
+
+CREATE PROC [dbo].[PGM_SelectTTransferAW]
+AS
+	SELECT DISTINCT [vCatalystCode] FROM [rtbl_T_Catalyst_PGM]
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_SelectTTransferAW]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_SelectTTransferAW]
+GO
+
+CREATE PROC [dbo].[PGM_SelectTTransferAW]
+AS
+	SELECT DISTINCT [vCatalystCode] FROM [rtbl_T_Catalyst_PGM]
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_CheckItemAllowedVW]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_CheckItemAllowedVW]
+GO
+
+CREATE PROC [dbo].[PGM_CheckItemAllowedVW]
+	@manufItem VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT [iLineID] FROM [rtbl_VW_Slurry_PGM] WHERE [vSlurryCode] = @manufItem AND [vPGMCode] = @itemCode
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_CheckItemAllowedTP]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_CheckItemAllowedTP]
+GO
+
+CREATE PROC [dbo].[PGM_CheckItemAllowedTP]
+	@manufItem VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT [iLineID] FROM [rtbl_T_Powder_PGM] WHERE [vPowderCode] = @manufItem AND [vPGMCode] = @itemCode
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_CheckItemAllowedTS]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_CheckItemAllowedTS]
+GO
+
+CREATE PROC [dbo].[PGM_CheckItemAllowedTS]
+	@manufItem VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT [iLineID] FROM [rtbl_T_Slurry_PGM] WHERE [vSlurryCode] = @manufItem AND [vPGMCode] = @itemCode
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_CheckItemAllowedTAW]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_CheckItemAllowedTAW]
+GO
+
+CREATE PROC [dbo].[PGM_CheckItemAllowedTAW]
+	@manufItem VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT [iLineID] FROM [rtbl_T_Catalyst_PGM] WHERE [vCatalystCode] = @manufItem AND [vPGMCode] = @itemCode
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_GetVWWIPLoc]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_GetVWWIPLoc]
+GO
+
+CREATE PROC [dbo].[PGM_GetVWWIPLoc]
+AS
+	SELECT [SettingValue] FROM [tbl_RTSettings] WHERE [Setting_Name] = 'PGMVW'
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_GetVWDestLoc]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_GetVWDestLoc]
+GO
+
+CREATE PROC [dbo].[PGM_GetVWDestLoc]
+AS
+	SELECT [SettingValue] FROM [tbl_RTSettings] WHERE [Setting_Name] = 'PGMVW-WIP'
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_GetTPWIPLoc]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_GetTPWIPLoc]
+GO
+
+CREATE PROC [dbo].[PGM_GetTPWIPLoc]
+AS
+	SELECT [SettingValue] FROM [tbl_RTSettings] WHERE [Setting_Name] = 'PGMTP'
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_GetTPDestLoc]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_GetTPDestLoc]
+GO
+
+CREATE PROC [dbo].[PGM_GetTPDestLoc]
+AS
+	SELECT [SettingValue] FROM [tbl_RTSettings] WHERE [Setting_Name] = 'PGMTP-WIP'
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_GetTSWIPLoc]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_GetTSWIPLoc]
+GO
+
+CREATE PROC [dbo].[PGM_GetTSWIPLoc]
+AS
+	SELECT [SettingValue] FROM [tbl_RTSettings] WHERE [Setting_Name] = 'PGMTS'
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_GetTSDestLoc]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_GetTSDestLoc]
+GO
+
+CREATE PROC [dbo].[PGM_GetTSDestLoc]
+AS
+	SELECT [SettingValue] FROM [tbl_RTSettings] WHERE [Setting_Name] = 'PGMTS-WIP'
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_GetTAWWIPLoc]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_GetTAWWIPLoc]
+GO
+
+CREATE PROC [dbo].[PGM_GetTAWWIPLoc]
+AS
+	SELECT [SettingValue] FROM [tbl_RTSettings] WHERE [Setting_Name] = 'PGMTAW'
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_GetTAWDestLoc]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_GetTAWDestLoc]
+GO
+
+CREATE PROC [dbo].[PGM_GetTAWDestLoc]
+AS
+	SELECT [SettingValue] FROM [tbl_RTSettings] WHERE [Setting_Name] = 'PGMTAW-WIP'
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_GetContainerInfo]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_GetContainerInfo]
+GO
+
+CREATE PROC [dbo].[PGM_GetContainerInfo]
+	@container VARCHAR(MAX),
+	@location VARCHAR(MAX)
+AS
+	SELECT TOP 1 ph.[vItemCode], ph.[vLotDesc], pl.[dWeightIn], ph.[iLineID] FROM [ltbl_RTIS_PGM_Manuf] pl 
+	INNER JOIN [htbl_RTIS_PGM_Manuf] ph ON pl.[iHeaderID] = ph.[iLineID]
+	WHERE pl.[vContainer] = @container AND ph.[vWhseCode] = @location ORDER BY pl.[iLineID] DESC
+GO
+
+
+
+--=========================================================================================================--
+	------------------------	CHECK BUG	--------------------------
+--=========================================================================================================--
+
+
+IF (OBJECT_ID('[dbo].[PGM_GetItemLocQty]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_GetItemLocQty]
+GO
+
+CREATE PROC [dbo].[PGM_GetItemLocQty]
+	@itemCode VARCHAR(MAX),
+	@lot VARCHAR(MAX),
+	@location VARCHAR(MAX)
+AS
+	--SELECT [dWeightBal] FROM [htbl_RTIS_PGM_Manuf]
+ --   WHERE [vItemCode] = @itemCode AND [vLotDesc] = @lot AND [vPGMLoc] = @location
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_CheckItemTransferred]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_CheckItemTransferred]
+GO
+
+CREATE PROC [dbo].[PGM_CheckItemTransferred]
+	@container VARCHAR(MAX),
+	@headerID VARCHAR(MAX)
+AS
+	SELECT TOP 1 [bReceived] FROM [ltbl_RTIS_PGM_Trans] 
+	WHERE [vContainer] = @container AND [iHeaderID] = @headerID ORDER BY [iLineID] DESC
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_GetAllPGM]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_GetAllPGM]
+GO
+
+CREATE PROC [dbo].[PGM_GetAllPGM]
+	@whseCode VARCHAR(MAX)
+AS
+	SELECT DISTINCT [vItemCode] FROM [htbl_RTIS_PGM_Manuf] WHERE [vWhseCode] = @whseCode
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_GetAllPGMItemHeaders]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_GetAllPGMItemHeaders]
+GO
+
+CREATE PROC [dbo].[PGM_GetAllPGMItemHeaders]
+	@itemCode VARCHAR(MAX),
+	@whseCode VARCHAR(MAX)
+AS
+	SELECT [vLotDesc], [dConcentration], [dWeightIn], [dWeightOut], [dWeightBal]
+    FROM [htbl_RTIS_PGM_Manuf] WHERE [vItemCode] = @itemCode AND [vWhseCode] = @whseCode
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_GetAllPGMItemHeaderRows]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_GetAllPGMItemHeaderRows]
+GO
+
+CREATE PROC [dbo].[PGM_GetAllPGMItemHeaderRows]
+	@itemCode VARCHAR(MAX),
+	@whseCode VARCHAR(MAX),
+	@rowCount INT
+AS
+	SELECT TOP(@rowCount) [vLotDesc], [dConcentration], [dWeightIn], [dWeightOut], [dWeightBal]
+    FROM [htbl_RTIS_PGM_Manuf] 
+	WHERE [vItemCode] = @itemCode AND [vWhseCode] = @rowCount ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_GetAllPGMItemTransactions]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_GetAllPGMItemTransactions]
+GO
+
+CREATE PROC [dbo].[PGM_GetAllPGMItemTransactions]
+	@itemCode VARCHAR(MAX),
+	@lotNumber VARCHAR(MAX),
+	@whseCode VARCHAR(MAX)
+AS
+	SELECT pl.[vUserAdded], pl.[dtDateAdded], pl.[vContainer],ph.[dConcentration], pl.[dWeightIn], pl.[dWeightOut], ph.[vLotDesc], pl.[dtDateAdded]  FROM [ltbl_RTIS_PGM_Manuf] pl 
+    INNER JOIN [htbl_RTIS_PGM_Manuf] ph ON pl.[iHeaderID] = ph.[iLineID]
+    WHERE ph.[vItemCode] = @itemCode AND ph.[vLotDesc] = @lotNumber AND  ph.[vWhseCode] = @whseCode
+    UNION
+    SELECT pl.[vUserAdded],  pl.[dtDateAdded], pl.[vContainer],ph.[dConcentration], pl.[dWeightIn], pl.[dWeightOut], ph.[vLotDesc], pl.[dtDateAdded]  FROM [ltbl_RTIS_PGM_Trans] pl 
+    INNER JOIN [htbl_RTIS_PGM_Manuf] ph ON pl.[iHeaderID] = ph.[iLineID]
+    WHERE ph.[vItemCode] = @itemCode AND ph.[vLotDesc] = @lotNumber AND  ph.[vWhseCode] = @whseCode
+    ORDER BY pl.[dtDateAdded] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_GetContainerInfoForRecTrans]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_GetContainerInfoForRecTrans]
+GO
+
+CREATE PROC [dbo].[PGM_GetContainerInfoForRecTrans]
+	@container VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT  TOP 1 ph.[vItemCode], ph.[vLotDesc], pl.[dWeightOut], s.[Description_1], ISNULL([bReceived], 0), ph.[iLineID] FROM [ltbl_RTIS_PGM_Trans] pl 
+	INNER JOIN [htbl_RTIS_PGM_Manuf] ph ON pl.[iHeaderID] = ph.[iLineID]
+	INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[Code] = ph.[vItemCode]
+	WHERE pl.[vContainer] = @container AND ph.[vItemCode] = @itemCode ORDER BY ph.[iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_GetContainerInfoForRecTrans]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_GetContainerInfoForRecTrans]
+GO
+
+CREATE PROC [dbo].[PGM_GetContainerInfoForRecTrans]
+	@container VARCHAR(MAX),
+	@itemCode VARCHAR(MAX)
+AS
+	SELECT  TOP 1 ph.[vItemCode], ph.[vLotDesc], pl.[dWeightOut], s.[Description_1], ISNULL([bReceived], 0), ph.[iLineID] FROM [ltbl_RTIS_PGM_Trans] pl 
+	INNER JOIN [htbl_RTIS_PGM_Manuf] ph ON pl.[iHeaderID] = ph.[iLineID]
+	INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[Code] = ph.[vItemCode]
+	WHERE pl.[vContainer] = @container AND ph.[vItemCode] = @itemCode ORDER BY ph.[iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_GetPGMHeaderID]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_GetPGMHeaderID]
+GO
+
+CREATE PROC [dbo].[PGM_GetPGMHeaderID]
+	@itemCode VARCHAR(MAX),
+	@lotNo VARCHAR(MAX)
+AS
+	SELECT [iLineID] FROM [htbl_RTIS_PGM_Manuf] WHERE [vItemCode] = @itemCode AND [vLotDesc] = @lotNo
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_GetPGMReceived]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_GetPGMReceived]
+GO
+
+CREATE PROC [dbo].[PGM_GetPGMReceived]
+	@headerID VARCHAR(MAX),
+	@contNo VARCHAR(MAX)
+AS
+	SELECT ISNULL([bReceived], 0) FROM [ltbl_RTIS_PGM_Trans]
+	WHERE [iHeaderID] = @headerID AND [vContainer] = @contNo
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_GetCheckContainerManuf]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_GetCheckContainerManuf]
+GO
+
+CREATE PROC [dbo].[PGM_GetCheckContainerManuf]
+	@headerID VARCHAR(MAX),
+	@contNo VARCHAR(MAX)
+AS
+	SELECT ISNULL([bManuf], 0) FROM [ltbl_RTIS_PGM_Manuf] 
+	WHERE [iHeaderID] = @headerID AND [vContainer] = @contNo
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_GetPGMJobLines]') IS NOT NULL)
+	DROP PROC [dbo].[UI_GetPGMJobLines]
+GO
+
+CREATE PROC [dbo].[UI_GetPGMJobLines]
+AS
+	SELECT [vItemCode], [vLotDesc], [vWhseCode], [dWeightIn], [dWeightOut], [dWeightBal], [dConcentration], [dtDateAdded]
+    FROM [htbl_RTIS_PGM_Manuf]
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_GetPGMJobrows]') IS NOT NULL)
+	DROP PROC [dbo].[UI_GetPGMJobrows]
+GO
+
+CREATE PROC [dbo].[UI_GetPGMJobrows]
+	@rowCount INT
+AS
+	SELECT TOP(@rowCount) [vItemCode], [vLotDesc], [vWhseCode], [dWeightIn], [dWeightOut], [dWeightBal], [dConcentration], [dtDateAdded]
+    FROM [htbl_RTIS_PGM_Manuf] ORDER BY [iLineID] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_GetPGMJobsByDate]') IS NOT NULL)
+	DROP PROC [dbo].[UI_GetPGMJobsByDate]
+GO
+
+CREATE PROC [dbo].[UI_GetPGMJobsByDate]
+	@dateFrom VARCHAR(MAX),
+	@dateTo VARCHAR(MAX)
+AS
+	SELECT [vItemCode], [vLotDesc], [vWhseCode], [dWeightIn], [dWeightOut], [dWeightBal], [dConcentration], [dtDateAdded]
+    FROM [htbl_RTIS_PGM_Manuf] 
+	WHERE [dtDateAdded] BETWEEN @dateFrom AND @dateTo ORDER BY [iLineID] DESC, [dtDateAdded] DESC
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_GetPGMContainers]') IS NOT NULL)
+	DROP PROC [dbo].[UI_GetPGMContainers]
+GO
+
+CREATE PROC [dbo].[UI_GetPGMContainers]
+	@itemCode VARCHAR(MAX),
+	@lotNumber VARCHAR(MAX)
+AS
+	SELECT pl.[vContainer], pl.[dWeightIn], pl.[vUserAdded], pl.[dtDateAdded], ISNULL( pl.[bManuf], 'false'), pl.[dtManufDate], pl.[vUserManuf], pl.[vUserEdited], pl.[dtDateEdited], pl.[vEditReason]
+    FROM [ltbl_RTIS_PGM_Manuf] pl
+    INNER JOIN [htbl_RTIS_PGM_Manuf] ph ON ph.[iLineID] = pl.[iHeaderID]
+    WHERE ph.[vItemCode] = @itemCode AND ph.[vLotDesc] = @lotNumber
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_GetPGMManufactureHeaders]') IS NOT NULL)
+	DROP PROC [dbo].[UI_GetPGMManufactureHeaders]
+GO
+
+CREATE PROC [dbo].[UI_GetPGMManufactureHeaders]
+AS
+	SELECT ph.[vItemCode], ph.[vLotDesc], ph.[vWhseCode], ph.[dConcentration], SUM(pl.[dWeightIn]) AS [Qty Waiting], ISNULL(ph.[bRemainderSet], 1) , ISNULL(ph.[dRemainder], 0) FROM [ltbl_RTIS_PGM_Manuf] pl
+    INNER JOIN [htbl_RTIS_PGM_Manuf] ph ON ph.[iLineID] = pl.[iHeaderID]
+    WHERE ISNULL([bManuf], 0) = 0 GROUP BY ph.[vItemCode], ph.[vLotDesc],ph.[vWhseCode], ph.[dConcentration], ph.[bRemainderSet], ph.[dRemainder]
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_GetPGMManufactureContainers]') IS NOT NULL)
+	DROP PROC [dbo].[UI_GetPGMManufactureContainers]
+GO
+
+CREATE PROC [dbo].[UI_GetPGMManufactureContainers]
+	@itemCode VARCHAR(MAX),
+	@lotNumber VARCHAR(MAX),
+	@location VARCHAR(MAX),
+	@concentration VARCHAR(MAX)
+AS
+	SELECT pl.[vContainer], pl.[dWeightIn], pl.[vUserAdded], pl.[dtDateAdded], '' AS [Manuf], '' AS [Edit]
+    FROM [ltbl_RTIS_PGM_Manuf] pl
+    INNER JOIN [htbl_RTIS_PGM_Manuf] ph ON ph.[iLineID] = pl.[iHeaderID]
+    WHERE ph.[vItemCode] = @itemCode AND ph.[vLotDesc] = @lotNumber AND ph.[vWhseCode] = @location 
+	AND ph.[dConcentration] = @concentration AND ISNULL(pl.[bManuf], 0) = 0
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_GetPGMBatchTotal]') IS NOT NULL)
+	DROP PROC [dbo].[UI_GetPGMBatchTotal]
+GO
+
+CREATE PROC [dbo].[UI_GetPGMBatchTotal]
+	@headerID VARCHAR(MAX)
+AS
+	SELECT SUM(l.[dWeightIn]) + ISNULL(h.[dRemainder], 0) AS [Total] FROM [ltbl_RTIS_PGM_Manuf] l
+    INNER JOIN [htbl_RTIS_PGM_Manuf] h ON h.[iLineID] = l.[iHeaderID]
+    WHERE ISNULL([bManuf], 0) = 0 AND [iHeaderID] = @headerID
+    GROUP BY h.[dRemainder]
+GO
+
+
+IF (OBJECT_ID('[dbo].[PGM_AddWhseTransferLog]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_AddWhseTransferLog]
+GO
+
+CREATE PROC [dbo].[PGM_AddWhseTransferLog]
+	@itemCode VARCHAR(MAX),
+	@lotNumber VARCHAR(MAX),
+	@whseFrom VARCHAR(MAX),
+	@whseTo VARCHAR(MAX),
+	@qty DECIMAL,
+	@username VARCHAR(MAX),
+	@process VARCHAR(MAX)
+AS
+	INSERT INTO [stbl_WHTLog] ([vItemCode], [vLotNumber], [vWarehouse_From], [vWarehouse_To], [dQtyTransfered], [dtDateTransfered], [vUsername], [vProcess])
+    VALUES (@itemCode, @lotNumber, @whseFrom, @whseTo, @qty, GETDATE(), @username, @process)
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_ManufactureHeader]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_ManufactureHeader]
+GO
+
+CREATE PROC [dbo].[PGM_ManufactureHeader]
+	@itemCode VARCHAR(MAX),
+	@lotNumber VARCHAR(MAX),
+	@wIn VARCHAR(MAX),
+	@wBal VARCHAR(MAX),
+	@concentration VARCHAR(MAX),
+	@location VARCHAR(MAX),
+	@userName VARCHAR(MAX)
+AS
+	INSERT INTO [htbl_RTIS_PGM_Manuf] ([vItemCode], [vLotDesc], [dWeightIn], [dWeightOut], [dWeightBal], [dConcentration], [vWhseCode], [dtDateAdded], [vUserAdded]) OUTPUT INSERTED.iLineID
+    VALUES (@itemCode, @lotNumber, @wIn, 0, @wBal, @concentration, @location, GETDATE(), @userName)
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_ManufactureHeader]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_ManufactureHeader]
+GO
+
+CREATE PROC [dbo].[PGM_ManufactureHeader]
+	@itemCode VARCHAR(MAX),
+	@lotNumber VARCHAR(MAX),
+	@wIn VARCHAR(MAX),
+	@wBal VARCHAR(MAX),
+	@concentration VARCHAR(MAX),
+	@location VARCHAR(MAX),
+	@userName VARCHAR(MAX)
+AS
+	INSERT INTO [htbl_RTIS_PGM_Manuf] ([vItemCode], [vLotDesc], [dWeightIn], [dWeightOut], [dWeightBal], [dConcentration], [vWhseCode], [dtDateAdded], [vUserAdded]) OUTPUT INSERTED.iLineID
+    VALUES (@itemCode, @lotNumber, @wIn, 0, @wBal, @concentration, @location, GETDATE(), @userName)
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_ManufactureLine]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_ManufactureLine]
+GO
+
+CREATE PROC [dbo].[PGM_ManufactureLine]
+	@HeaderID VARCHAR(MAX),
+	@container VARCHAR(MAX),
+	@weightIn VARCHAR(MAX),
+	@userName VARCHAR(MAX)
+AS
+	INSERT INTO [ltbl_RTIS_PGM_Manuf] ([iHeaderID],[vContainer], [dWeightIn], [dWeightOut], [dtDateAdded], [vUserAdded], [bTransferred])
+    VALUES (@HeaderID, @container, @weightIn, 0, GETDATE(), @userName, 0)
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_AddTransferOutLine]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_AddTransferOutLine]
+GO
+
+CREATE PROC [dbo].[PGM_AddTransferOutLine]
+	@HeaderID VARCHAR(MAX),
+	@container VARCHAR(MAX),
+	@weightOut VARCHAR(MAX),
+	@userName VARCHAR(MAX),
+	@whseFrom VARCHAR(MAX),
+	@whseTo VARCHAR(MAX),
+	@manufItem VARCHAR(MAX),
+	@manufBatch VARCHAR(MAX),
+	@dsetWhse VARCHAR(MAX)
+AS
+	INSERT INTO [ltbl_RTIS_PGM_Trans] ([iHeaderID],[vContainer], [dWeightIn], [dWeightOut], [dtDateAdded], [vUserAdded], [vWhseFrom], [vWhseTo], [ManufItem], [ManufBatch], [vDestWhse])
+    VALUES (@HeaderID, @container, 0, @weightOut, GETDATE(), @userName, @whseFrom, @whseTo,@manufItem, @manufBatch, @dsetWhse)
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_updateContRec]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_updateContRec]
+GO
+
+CREATE PROC [dbo].[PGM_updateContRec]
+	@lineID VARCHAR(MAX)
+AS
+	UPDATE [ltbl_RTIS_PGM_Trans] SET [bReceived] = 1 WHERE [iLineID] = @lineID
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_updateHeader]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_updateHeader]
+GO
+
+CREATE PROC [dbo].[PGM_updateHeader]
+	@itemCode VARCHAR(MAX),
+	@lotNumber VARCHAR(MAX),
+	@wIn VARCHAR(MAX),
+	@location VARCHAR(MAX)
+AS
+	UPDATE [htbl_RTIS_PGM_Manuf] SET [dWeightIn] = [dWeightIn] + @wIn, [dWeightBal] = [dWeightBal] + @wIn 
+	WHERE [vItemCode] = @itemCode AND [vLotDesc] = @lotNumber AND [vWhseCode] = @location
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_updateManufOut]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_updateManufOut]
+GO
+
+CREATE PROC [dbo].[PGM_updateManufOut]
+	@cont VARCHAR(MAX),
+	@headerID VARCHAR(MAX)
+AS
+	UPDATE [ltbl_RTIS_PGM_Manuf] SET [bTransferred] = 1 
+	WHERE [vContainer] = @cont AND [iHeaderID] = @headerID 
+	AND [iLineID] = (SELECT TOP 1 [iLineID] FROM [ltbl_RTIS_PGM_Manuf] 
+	WHERE [vContainer] = @cont AND [iHeaderID] = @headerID ORDER BY [iLineID] DESC)
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_updateHeaderQtyOut]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_updateHeaderQtyOut]
+GO
+
+CREATE PROC [dbo].[PGM_updateHeaderQtyOut]
+	@itemCode VARCHAR(MAX),
+	@lotNumber VARCHAR(MAX),
+	@wOut VARCHAR(MAX),
+	@location VARCHAR(MAX)
+AS
+	UPDATE [htbl_RTIS_PGM_Manuf] 
+	SET [dWeightOut] = [dWeightOut] + @wOut, [dWeightBal] = [dWeightBal] - @wOut 
+	WHERE [vItemCode] = @itemCode AND [vLotDesc] = @lotNumber AND [vWhseCode] = @location
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_updateContQtyHeader]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_updateContQtyHeader]
+GO
+
+CREATE PROC [dbo].[PGM_updateContQtyHeader]
+	@itemCode VARCHAR(MAX),
+	@lotNumber VARCHAR(MAX),
+	@wIn VARCHAR(MAX),
+	@location VARCHAR(MAX)
+AS
+	UPDATE [htbl_RTIS_PGM_Manuf] 
+	SET [dWeightIn] = [dWeightIn] + @wIn, [dWeightBal] = [dWeightBal] + @wIn 
+	WHERE [vItemCode] = @itemCode AND [vLotDesc] = @lotNumber AND [vWhseCode] = @location
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_updateContQtyLine]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_updateContQtyLine]
+GO
+
+CREATE PROC [dbo].[PGM_updateContQtyLine]
+	@headerID VARCHAR(MAX),
+	@container VARCHAR(MAX),
+	@qty DECIMAL
+AS
+	UPDATE [ltbl_RTIS_PGM_Manuf] SET [dWeightIn] = [dWeightIn] + @qty 
+	WHERE [iHeaderID] = @headerID AND [vContainer] = @container
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_setBatchRemainder]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_setBatchRemainder]
+GO
+
+CREATE PROC [dbo].[PGM_setBatchRemainder]
+	@remQty VARCHAR(MAX),
+	@itemCode VARCHAR(MAX),
+	@lot VARCHAR(MAX),
+	@con VARCHAR(MAX),
+	@whse VARCHAR(MAX),
+	@username VARCHAR(MAX)
+AS
+	UPDATE [htbl_RTIS_PGM_Manuf] 
+	SET [dRemainder] = @remQty, [bRemainderSet] = 1, [dtRemainderSet] = GETDATE(), [vRemainderUser] = @username
+    WHERE [vItemCode] = @itemCode AND [vLotDesc] = @lot AND [dConcentration] = @con AND [vWhseCode] = @whse
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_updateContQtyLine]') IS NOT NULL)
+	DROP PROC [dbo].[UI_updateContQtyLine]
+GO
+
+CREATE PROC [dbo].[UI_updateContQtyLine]
+	@headerID VARCHAR(MAX),
+	@container VARCHAR(MAX),
+	@qty DECIMAL,
+	@username VARCHAR(MAX),
+	@reason VARCHAR(MAX)
+AS
+	UPDATE [ltbl_RTIS_PGM_Manuf] 
+	SET [dWeightIn] = [dWeightIn] + @qty, [vUserEdited] = @username, [dtDateEdited] = GETDATE(), [vEditReason] = @reason  
+	WHERE [iHeaderID] = @headerID AND [vContainer] = @container
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_updateContReceived_PPRec]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_updateContReceived_PPRec]
+GO
+
+CREATE PROC [dbo].[PGM_updateContReceived_PPRec]
+	@container VARCHAR(MAX)
+AS
+	UPDATE [ltbl_RTIS_PGM_Trans] SET [bReceived] = 1 WHERE [iLineID] = (SELECT TOP 1 [iLineID] 
+	FROM [ltbl_RTIS_PGM_Trans] 
+	WHERE [vContainer] = @container ORDER BY [iLineID] DESC)
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_updateContReceived]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_updateContReceived]
+GO
+
+CREATE PROC [dbo].[PGM_updateContReceived]
+	@headerID VARCHAR(MAX),
+	@container VARCHAR(MAX)
+AS
+	UPDATE [ltbl_RTIS_PGM_Trans] SET [bReceived] = 1 
+	WHERE [iHeaderID] = @headerID AND [vContainer] = @container
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_updateContManufactured]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_updateContManufactured]
+GO
+
+CREATE PROC [dbo].[PGM_updateContManufactured]
+	@itemCode VARCHAR(MAX),
+	@lotNumber VARCHAR(MAX),
+	@container VARCHAR(MAX)
+AS
+	UPDATE pl SET pl.[bManuf] = 1 FROM [ltbl_RTIS_PGM_Manuf] pl
+    INNER JOIN [htbl_RTIS_PGM_Manuf] ph ON pl.[iHeaderID] = ph.[iLineID]
+    WHERE ph.[vItemCode] = @itemCode AND ph.[vLotDesc] = @lotNumber AND pl.[vContainer] = @container
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[PGM_updateContManufactured]') IS NOT NULL)
+	DROP PROC [dbo].[PGM_updateContManufactured]
+GO
+
+CREATE PROC [dbo].[PGM_updateContManufactured]
+	@itemCode VARCHAR(MAX),
+	@container VARCHAR(MAX),
+	@UserName VARCHAR(MAX)
+AS
+	UPDATE [ltbl_RTIS_PGM_Manuf] SET [bManuf] = '1', [dtManufDate] = GETDATE(), [vUserManuf] = @UserName 
+	WHERE [iHeaderID] = @itemCode AND [vContainer] = @container
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_setPGMBatchManufactured]') IS NOT NULL)
+	DROP PROC [dbo].[UI_setPGMBatchManufactured]
+GO
+
+CREATE PROC [dbo].[UI_setPGMBatchManufactured]
+	@itemCode VARCHAR(MAX),
+	@UserName VARCHAR(MAX)
+AS
+	UPDATE [ltbl_RTIS_PGM_Manuf] 
+	SET [bManuf] = '1', [dtManufDate] = GETDATE(), [vUserManuf] = @UserName 
+	WHERE [iHeaderID] = @itemCode AND ISNULL( [bManuf] , 0) = 0
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_updateContainerRem]') IS NOT NULL)
+	DROP PROC [dbo].[UI_updateContainerRem]
+GO
+
+CREATE PROC [dbo].[UI_updateContainerRem]
+	@itemCode VARCHAR(MAX),
+	@lotNumber VARCHAR(MAX),
+	@location VARCHAR(MAX),
+	@qty DECIMAL,
+	@UserName VARCHAR(MAX)
+AS
+	UPDATE [htbl_RTIS_PGM_Manuf] 
+	SET [dRemainder] = @qty, [dtRemainderUpdated] = GETDATE(), [vRemUpdateUser] = @UserName
+    WHERE [vItemCode] = @itemCode AND [vLotDesc] = @lotNumber AND [vWhseCode] = @location
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_setPGMBatchManufacturedManual]') IS NOT NULL)
+	DROP PROC [dbo].[UI_setPGMBatchManufacturedManual]
+GO
+
+CREATE PROC [dbo].[UI_setPGMBatchManufacturedManual]
+	@headerID VARCHAR(MAX),
+	@UserName VARCHAR(MAX)
+AS
+	UPDATE [ltbl_RTIS_PGM_Manuf] 
+	SET [bManuf] = '1', [dtManufDateManual] = GETDATE(), [vUserManufManual] = @UserName 
+	WHERE [iHeaderID] = @headerID AND ISNULL( [bManuf] , 0) = 0
+GO
+
+
+
+--------------------------------------------------------- PGM Planning ---------------------------------------------------------------------------
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_GetVWPGMPlanLines]') IS NOT NULL)
+	DROP PROC [dbo].[UI_GetVWPGMPlanLines]
+GO
+
+CREATE PROC [dbo].[UI_GetVWPGMPlanLines]
+AS
+	SELECT [iLineID], '' AS [CatalystCode], [vSlurryCode], '' AS [vPowderCode], [vPGMCode], [dtDateAdd], [vUserAdd], [dtDateEdit], [vUserEdit] 
+	FROM [rtbl_VW_Slurry_PGM]
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_GetTOYOTAFSPlanLines]') IS NOT NULL)
+	DROP PROC [dbo].[UI_GetTOYOTAFSPlanLines]
+GO
+
+CREATE PROC [dbo].[UI_GetTOYOTAFSPlanLines]
+AS
+	SELECT [iLineID], '' AS [CatalystCode], [vSlurryCode], '' AS [vPowderCode], [vPGMCode], [dtDateAdd], [vUserAdd], [dtDateEdit], [vUserEdit] 
+	FROM [rtbl_T_Slurry_PGM]
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_GetTOYOTAPPPlanLines]') IS NOT NULL)
+	DROP PROC [dbo].[UI_GetTOYOTAPPPlanLines]
+GO
+
+CREATE PROC [dbo].[UI_GetTOYOTAPPPlanLines]
+AS
+	SELECT [iLineID], '' AS [CatalystCode], '' AS [vSlurryCode], [vPowderCode], [vPGMCode], [dtDateAdd], [vUserAdd], [dtDateEdit], [vUserEdit] 
+	FROM [rtbl_T_Powder_PGM]
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_GetTOYOTAPPPlanLines]') IS NOT NULL)
+	DROP PROC [dbo].[UI_GetTOYOTAPPPlanLines]
+GO
+
+CREATE PROC [dbo].[UI_GetTOYOTAPPPlanLines]
+AS
+	SELECT [iLineID], '' AS [CatalystCode], '' AS [vSlurryCode], [vPowderCode], [vPGMCode], [dtDateAdd], [vUserAdd], [dtDateEdit], [vUserEdit] 
+	FROM [rtbl_T_Powder_PGM]
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_GetTOYOTAAWPlanLines]') IS NOT NULL)
+	DROP PROC [dbo].[UI_GetTOYOTAAWPlanLines]
+GO
+
+CREATE PROC [dbo].[UI_GetTOYOTAAWPlanLines]
+AS
+	SELECT [iLineID], [vCatalystCode], '' AS [vSlurryCode], '' AS [vPowderCode], [vPGMCode], [dtDateAdd], [vUserAdd], [dtDateEdit], [vUserEdit] 
+	FROM [rtbl_T_Catalyst_PGM]
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_UpdateVWPlanLines]') IS NOT NULL)
+	DROP PROC [dbo].[UI_UpdateVWPlanLines]
+GO
+
+CREATE PROC [dbo].[UI_UpdateVWPlanLines]
+	@Slurry VARCHAR(MAX),
+	@PGMCode VARCHAR(MAX),
+	@User VARCHAR(MAX),
+	@ID VARCHAR(MAX)
+AS
+	UPDATE [rtbl_VW_Slurry_PGM] 
+    SET [vSlurryCode] = @Slurry,[vPGMCode] = @PGMCode
+    ,[dtDateEdit] = GETDATE(),[vUserEdit] = @User
+    WHERE [iLineID] = @ID
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_UpdateTFSPlanLines]') IS NOT NULL)
+	DROP PROC [dbo].[UI_UpdateTFSPlanLines]
+GO
+
+CREATE PROC [dbo].[UI_UpdateTFSPlanLines]
+	@Slurry VARCHAR(MAX),
+	@PGMCode VARCHAR(MAX),
+	@User VARCHAR(MAX),
+	@ID VARCHAR(MAX)
+AS
+	UPDATE [rtbl_T_Slurry_PGM] 
+    SET [vSlurryCode] = @Slurry,[vPGMCode] = @PGMCode
+    ,[dtDateEdit] = GETDATE(),[vUserEdit] = @User
+    WHERE [iLineID] = @ID
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_UpdateTPPPlanLines]') IS NOT NULL)
+	DROP PROC [dbo].[UI_UpdateTPPPlanLines]
+GO
+
+CREATE PROC [dbo].[UI_UpdateTPPPlanLines]
+	@Powder VARCHAR(MAX),
+	@PGMCode VARCHAR(MAX),
+	@User VARCHAR(MAX),
+	@ID VARCHAR(MAX)
+AS
+	UPDATE [rtbl_T_Powder_PGM] 
+    SET [vPowderCode] = @Powder,[vPGMCode] = @PGMCode
+    ,[dtDateEdit] = GETDATE(),[vUserEdit] = @User
+    WHERE [iLineID] = @ID
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_UpdateTAWPlanLines]') IS NOT NULL)
+	DROP PROC [dbo].[UI_UpdateTAWPlanLines]
+GO
+
+CREATE PROC [dbo].[UI_UpdateTAWPlanLines]
+	@Slurry VARCHAR(MAX),
+	@PGMCode VARCHAR(MAX),
+	@User VARCHAR(MAX)
+AS
+	INSERT INTO [rtbl_VW_Slurry_PGM]([vSlurryCode],[vPGMCode],[dtDateAdd],[vUserAdd])
+    VALUES(@Slurry,@PGMCode,GETDATE(),@User)
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_InsertTFSPlanLines]') IS NOT NULL)
+	DROP PROC [dbo].[UI_InsertTFSPlanLines]
+GO
+
+CREATE PROC [dbo].[UI_InsertTFSPlanLines]
+	@Slurry VARCHAR(MAX),
+	@PGMCode VARCHAR(MAX),
+	@User VARCHAR(MAX)
+AS
+	INSERT INTO [rtbl_T_Slurry_PGM]([vSlurryCode],[vPGMCode],[dtDateAdd],[vUserAdd])
+    VALUES(@Slurry,@PGMCode,GETDATE(),@User)
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_InsertTPPPlanLines]') IS NOT NULL)
+	DROP PROC [dbo].[UI_InsertTPPPlanLines]
+GO
+
+CREATE PROC [dbo].[UI_InsertTPPPlanLines]
+	@Powder VARCHAR(MAX),
+	@PGMCode VARCHAR(MAX),
+	@User VARCHAR(MAX)
+AS
+	INSERT INTO [rtbl_T_Powder_PGM]([vPowderCode],[vPGMCode],[dtDateAdd],[vUserAdd])
+    VALUES(@Powder,@PGMCode,GETDATE(),@User)
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_InsertTAWPlanLines]') IS NOT NULL)
+	DROP PROC [dbo].[UI_InsertTAWPlanLines]
+GO
+
+CREATE PROC [dbo].[UI_InsertTAWPlanLines]
+	@Catalyst VARCHAR(MAX),
+	@PGMCode VARCHAR(MAX),
+	@User VARCHAR(MAX)
+AS
+	INSERT INTO [rtbl_T_Catalyst_PGM]([vCatalystCode],[vPGMCode],[dtDateAdd],[vUserAdd])
+    VALUES(@Catalyst,@PGMCode,GETDATE(),@User)
+GO
+
+
+
+--------------------------------------------------------- PGM Manufacture ---------------------------------------------------------------------------
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_GetPGMMF]') IS NOT NULL)
+	DROP PROC [dbo].[UI_GetPGMMF]
+GO
+
+CREATE PROC [dbo].[UI_GetPGMMF]
+AS
+	SELECT l.[iLineID],h.[vItemCode],h.[vLotDesc],l.[dWeightIn],l.[dtDateAdded],l.[vUserAdded]
+    FROM [htbl_RTIS_PGM_Manuf] h
+    LEFT JOIN [ltbl_RTIS_PGM_Manuf] l ON l.[iHeaderID] = h.[iLineID]
+    WHERE (l.[bManuf] = '0' OR l.[bManuf] IS NULL)
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_GetPGMMF]') IS NOT NULL)
+	DROP PROC [dbo].[UI_GetPGMMF]
+GO
+
+CREATE PROC [dbo].[UI_GetPGMMF]
+	@LineID INT,
+	@UserName VARCHAR(MAX)
+AS
+	UPDATE [ltbl_RTIS_PGM_Manuf] SET [bManuf] = '1', [dtManufDate] = GETDATE(), [vUserManuf] = @UserName 
+	WHERE [iLineID] = @LineID
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[UI_setPGMContainerManufactured]') IS NOT NULL)
+	DROP PROC [dbo].[UI_setPGMContainerManufactured]
+GO
+
+CREATE PROC [dbo].[UI_setPGMContainerManufactured]
+	@headerID INT,
+	@container VARCHAR(MAX),
+	@UserName VARCHAR(MAX)
+AS
+DECLARE @res int
+	UPDATE [ltbl_RTIS_PGM_Manuf] SET [bManuf] = '1', [dtManufDate] = GETDATE(), [vUserManuf] = @UserName 
+	WHERE [iHeaderID] = @headerID AND [vContainer] = @container
+GO
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
