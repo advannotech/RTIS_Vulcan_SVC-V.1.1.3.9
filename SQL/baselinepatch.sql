@@ -2497,8 +2497,8 @@ GO
 CREATE PROC [dbo].[sp_AW_GetJobInfo_RO]
 	@jobNo VARCHAR(MAX)
 AS
-	SELECT [vAWCode], [vLotNumber], [vPGMCode], [vPGMLot], [dQty], [dQtyManuf]
-    FROM [tbl_RTIS_AW_Jobs] WHERE [vJobUnq] = @jobNo
+SELECT [vAWCode], [vLotNumber], [vPGMCode], [vPGMLot], [dQty], [dQtyManuf]
+FROM [tbl_RTIS_AW_Jobs] WHERE [vJobUnq] = @jobNo
 GO
 
 
@@ -2897,8 +2897,6 @@ GO
 
 
 
-
-
 IF (OBJECT_ID('[dbo].[sp_UI_GetPalletsByItem]') IS NOT NULL)
 	DROP PROC [dbo].[sp_UI_GetPalletsByItem]
 GO
@@ -2920,12 +2918,12 @@ GO
 
 CREATE PROC [dbo].[sp_UI_GetPalletsByItemAndDate]
 	@ItemCode VARCHAR(MAX),
-	@FROM VARCHAR(MAX),
-	@TO VARCHAR(MAX)
+	@FROM datetime,
+	@TO datetime
 AS
 	SELECT [iLine_ID], [Printed], [vUnqBarcode] FROM 
     [htbl_PalletBarcodes] WHERE [vUnqBarcode] LIKE '%' + @itemCode + '%' 
-    AND [Printed] BETWEEN @from AND @_to AND [bRMPallet] = 1
+    AND [Printed] BETWEEN @FROM AND @TO AND [bRMPallet] = 1
 GO
 
 
@@ -2954,8 +2952,8 @@ GO
 
 CREATE PROC [dbo].[sp_UI_GetPalletsByLotAndDate]
 	@LOT varchar(max),
-	@FROM varchar,
-	@TO varchar
+	@FROM datetime,
+	@TO datetime
 AS
 SELECT [iPallet_ID] FROM [ltbl_PalletBarcodes] l 
 INNER JOIN [htbl_PalletBarcodes] h ON l.[iPallet_ID] = h.[iLine_ID]
@@ -2974,7 +2972,7 @@ SELECT [iLine_ID], [Printed], [vUnqBarcode] FROM [htbl_PalletBarcodes]
 WHERE [iLine_ID] IN (@iLine_ID)
 GO
 
-e
+
 
 
 IF (OBJECT_ID('[dbo].[sp_UI_GetPalletLots]') IS NOT NULL)
@@ -3019,6 +3017,2241 @@ CREATE PROC [dbo].[sp_UI_UpdatePalletPrinSettings_Label]
 AS
 	UPDATE [tbl_RTSettings] SET [SettingValue] = @Label WHERE [Setting_Name] = 'Pallet Label'
 GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetPowderPlanLines]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetPowderPlanLines]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetPowderPlanLines]
+AS
+SELECT [iLineID], '' AS [vAWCode], '' AS [CatalystCode], [vSlurryCode], [vPowderCode], '' AS [CoatNum], [dtDateAdd], [vUserAdd], [dtDateEdit], [vUserEdit]
+FROM [rtbl_Slurry_Powders]
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetZECT1PlanLines]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetZECT1PlanLines]
+GO
+CREATE PROC [dbo].[sp_UI_GetZECT1PlanLines]
+AS
+SELECT [iLineID], '' AS [vAWCode], [vCatalystCode], [vSlurryCode], '' AS [PowderCode], [vCoatNum], [dtDateAdd], [vUserAdd], [dtDateEdit], [vUserEdit] 
+FROM [rtbl_Slurry_Catalyst] 
+WHERE [iZectLine] = 1
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetZECT2PlanLines]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetZECT2PlanLines]
+GO
+CREATE PROC [dbo].[sp_UI_GetZECT2PlanLines]
+AS
+SELECT [iLineID], '' AS [vAWCode], [vCatalystCode], [vSlurryCode], '' AS [PowderCode], [vCoatNum], [dtDateAdd], [vUserAdd], [dtDateEdit], [vUserEdit] 
+FROM [rtbl_Slurry_Catalyst] 
+WHERE [iZectLine] = 2
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetAWPlanLines]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetAWPlanLines]
+GO
+CREATE PROC [dbo].[sp_UI_GetAWPlanLines]
+AS
+SELECT [iLineID], [vAWCode], [vCatalystCode], '' AS [vSlurryCode], '' AS [PowderCode], '' AS [vCoatNum], [dtDateAdd], [vUserAdd], [dtDateEdit], [vUserEdit] 
+FROM [rtbl_Catalyst_AW]
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_UpdateZECTPlanLines]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_UpdateZECTPlanLines]
+GO
+CREATE PROC [dbo].[sp_UI_UpdateZECTPlanLines]
+@Cataylst varchar(max),
+@Slurry varchar(max),
+@Coat varchar(max),
+@User varchar(max),
+@ZECTnum int,
+@iLineID int
+AS
+UPDATE [rtbl_Slurry_Catalyst] 
+SET [vCatalystCode] = @Cataylst,[vSlurryCode] = @Slurry,[vCoatNum] = @Coat
+,[dtDateEdit] = GETDATE(),[vUserEdit] = @User,[iZectLine] = @ZECTnum 
+WHERE [iLineID] = @iLineID
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_UpdatePowderPlanLines]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_UpdatePowderPlanLines]
+GO
+CREATE PROC [dbo].[sp_UI_UpdatePowderPlanLines]
+@Slurry varchar(max),
+@Powder varchar(max),
+@User varchar(max),
+@ID int
+AS
+UPDATE [rtbl_Slurry_Powders] 
+SET [vSlurryCode] = @Slurry,[vPowderCode] = @Powder
+,[dtDateEdit] = GETDATE(),[vUserEdit] = @User
+WHERE [iLineID] = @ID
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_InsertZECTPlanLines]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_InsertZECTPlanLines]
+GO
+CREATE PROC [dbo].[sp_UI_InsertZECTPlanLines]
+@Cataylst varchar(max),
+@Slurry varchar(max),
+@Coat varchar(max),
+@User varchar(max),
+@ZECTnum int
+AS
+INSERT INTO [rtbl_Slurry_Catalyst]([vCatalystCode],[vSlurryCode],[vCoatNum],[dtDateAdd],[vUserAdd],[iZectLine])
+VALUES(@Cataylst,@Slurry,@Coat,GETDATE(),@User,@ZECTnum)
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_InsertPowderPlanLines]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_InsertPowderPlanLines]
+GO
+CREATE PROC [dbo].[sp_UI_InsertPowderPlanLines]
+@Slurry varchar(max),
+@Powder varchar(max),
+@User varchar(max)
+AS
+INSERT INTO [rtbl_Slurry_Powders]([vSlurryCode],[vPowderCode],[dtDateAdd],[vUserAdd])
+VALUES(@Slurry,@Powder,GETDATE(),@User)
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetPowderPrepWhes]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetPowderPrepWhes]
+GO
+CREATE PROC [dbo].[sp_MBL_GetPowderPrepWhes]
+AS
+SELECT w.[Code], w.[Name] FROM [RTIS_WarehouseLookUp_PPtFS] wl
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
+WHERE [bEnabled] = 1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetWaitingPowders]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetWaitingPowders]
+GO
+CREATE PROC [dbo].[sp_UI_GetWaitingPowders]
+AS
+SELECT [iLineID],[vItemCode],[vItemDesc],[vLotDesc],[dQty],[vUsername],[dtDateAdded], '' AS [ManufactureButton], ''  AS [EditButton]
+FROM [tbl_RTIS_Powder_Prep] 
+WHERE [bManufactured] = '0'
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetPowderManufactured]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetPowderManufactured]
+GO
+CREATE PROC [dbo].[sp_UI_GetPowderManufactured]
+(
+@iLineID int
+)
+AS
+SELECT ISNULL([bManufactured], 0) 
+FROM [tbl_RTIS_Powder_Prep] WHERE [iLineID] = @iLineID
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetPowderPrepMF]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetPowderPrepMF]
+GO
+CREATE PROC [dbo].[sp_UI_GetPowderPrepMF]
+AS
+SELECT [iLineID],[vItemCode],[vItemDesc],[vLotDesc],[dQty],[dtDateAdded]
+FROM [tbl_RTIS_Powder_Prep] WHERE [bManufactured] = '0'
+ORDER BY [dtDateAdded] DESC
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetPowderPrepRecords]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetPowderPrepRecords]
+GO
+CREATE PROC [dbo].[sp_UI_GetPowderPrepRecords]
+(
+@dateFrom datetime,
+@dateTo datetime
+)
+AS
+SELECT [vItemCode], [vItemDesc], [vLotDesc], [dQty], [vUsername], [dtDateAdded], ISNULL([bManufactured], 0), [dtManufDate], [vUserManuf], ISNULL([bTransfered], 0)       
+,[dtTransDate]
+,[vUserTrans]
+, ISNULL([bRecTrans], 0)
+,[dtRecTrans]
+,[vUserRec]
+,[vUserEdited]
+,[dtDateEdited]
+,[vEditReason]
+,[dOldQty] 
+FROM [tbl_RTIS_Powder_Prep] 
+WHERE [dtDateAdded] BETWEEN @dateFrom AND @dateTo
+ORDER BY [dtDateAdded] DESC
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetPowderRMs]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetPowderRMs]
+GO
+CREATE PROC [dbo].[sp_UI_GetPowderRMs]
+(
+@itemCode varchar(max),
+@lotNumber varchar(max)
+)
+AS
+SELECT h.[vItemCode], h.[vLotDesc],  SUM(l.[dWeightOut]) FROM [ltbl_RTIS_PGM_Trans] l 
+INNER JOIN [htbl_RTIS_PGM_Manuf] h ON h.[iLineID] = l.[iHeaderID]
+WHERE [ManufItem] = @itemCode AND [ManufBatch] = @lotNumber GROUP BY h.[vItemCode], h.[vLotDesc]
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_editPowderQty]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_editPowderQty]
+GO
+CREATE PROC [dbo].[sp_UI_editPowderQty]
+(
+@LineID int,
+@newQty decimal(16,3),
+@oldQty decimal(16,3),
+@UserName varchar(max),
+@reason varchar(max)
+)
+AS
+UPDATE [tbl_RTIS_Powder_Prep] 
+SET [dQty] = @newQty, [dOldQty] = @oldQty, [vUserEdited] = @UserName, [dtDateEdited] = GETDATE(), [vEditReason] = @reason
+WHERE [iLineID] = @LineID
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_setPPManufactured]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_setPPManufactured]
+GO
+CREATE PROC [dbo].[sp_UI_setPPManufactured]
+(
+@LineID int,
+@UserName varchar(max)
+)
+AS
+UPDATE [tbl_RTIS_Powder_Prep] SET [bManufactured] = '1', [dtManufDate] = GETDATE(), [vUserManuf] = @UserName WHERE [iLineID] = @LineID
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_setPPManufacturedManual]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_setPPManufacturedManual]
+GO
+CREATE PROC [dbo].[sp_UI_setPPManufacturedManual]
+(
+@LineID int,
+@UserName varchar(max)
+)
+AS
+UPDATE [tbl_RTIS_Powder_Prep] SET [bManufactured] = '1', [dtManufDateManual] = GETDATE(), [vUserManufManual] = @UserName WHERE [iLineID] = @LineID
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_insertPowderPrep]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_insertPowderPrep]
+GO
+CREATE PROC [dbo].[sp_UI_insertPowderPrep]
+(
+@iStockID int,
+@vItemCode varchar(max),
+@vItemDesc varchar(max),
+@iLotTrackingID int,
+@vLotDesc varchar(max),
+@dQty decimal(16,3),
+@vUsername varchar(max)
+)
+AS
+INSERT INTO [tbl_RTIS_Powder_Prep] ([iStockID], [vItemCode], [vItemDesc], [iLotTrackingID], [vLotDesc], [dQty], [vUsername], [dtDateAdded], [bManufactured], [bTransfered])
+VALUES (@iStockID, @vItemCode, @vItemDesc, @iLotTrackingID, @vLotDesc, @dQty, @vUsername, GETDATE(), 0, 0)
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWhseProcLookUp]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWhseProcLookUp]
+GO
+CREATE PROC [dbo].[sp_UI_getWhseProcLookUp]
+(
+@vProcessName varchar(60)
+)
+AS
+SELECT wm.[WhseLink], wm.[Name], '' AS [Remove] 
+FROM [tbl_WHTLocations] wl 
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] wm ON wm.[WhseLink] = wl.[iWhseID]
+WHERE wl.[vProcessName] = @vProcessName AND [bIsRec] = 0
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWhseProcLookUpRec]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWhseProcLookUpRec]
+GO
+CREATE PROC [dbo].[sp_UI_getWhseProcLookUpRec]
+(
+@vProcessName varchar(60)
+)
+AS
+SELECT wm.[WhseLink], wm.[Name], '' AS [Remove] 
+FROM [tbl_WHTLocations] wl 
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] wm ON wm.[WhseLink] = wl.[iWhseID]
+WHERE wl.[vProcessName] = @vProcessName AND [bIsRec] = 1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_checkProcRefExists]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_checkProcRefExists]
+GO
+CREATE PROC [dbo].[sp_UI_checkProcRefExists]
+(
+@vProcessName varchar(60),
+@iWhseID int
+)
+AS
+SELECT [iLine_ID] FROM [tbl_WHTLocations]
+WHERE [vProcessName] = @vProcessName AND [iWhseID] = @iWhseID AND [bIsRec] = 0
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWhtProcesses]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWhtProcesses]
+GO
+CREATE PROC [dbo].[sp_UI_getWhtProcesses]
+AS
+SELECT [vDisplayName], [vProcName] FROM [tbl_ProcNames] WHERE ISNULL([bHasOutTransfer], 'false') = 1
+GO
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWhtProcesses]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWhtProcesses]
+GO
+CREATE PROC [dbo].[sp_UI_getWhtProcesses]
+AS
+SELECT [vDisplayName], [vProcName] FROM [tbl_ProcNames] WHERE ISNULL([bHasOutTransfer], 'false') = 1
+GO
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWhtProcessesRec]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWhtProcessesRec]
+GO
+CREATE PROC [dbo].[sp_UI_getWhtProcessesRec]
+AS
+SELECT [vDisplayName], [vProcName] FROM [tbl_ProcNames] WHERE ISNULL([bHasRecTrans], 0) <> 0
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWarehouseLookUp_PPtFS]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWarehouseLookUp_PPtFS]
+GO
+CREATE PROC [dbo].[sp_UI_getWarehouseLookUp_PPtFS]
+AS
+SELECT w.[WhseLink], w.[Name], ISNULL(wl.[bEnabled],0) FROM [RTIS_WarehouseLookUp_PPtFS] wl
+RIGHT JOIN [Cataler_SCN].[dbo].[WhseMst] w 
+ON w.[WhseLink] = wl.[iWhse_Link]
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWarehouseLookUp_PP_Rec]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWarehouseLookUp_PP_Rec]
+GO
+CREATE PROC [dbo].[sp_UI_getWarehouseLookUp_PP_Rec]
+AS
+SELECT w.[WhseLink], w.[Name], ISNULL(wl.[bEnabled],0) FROM [Rec_Transfers].[RTIS_WhseLookUp_PP_Rec] wl
+RIGHT JOIN [Cataler_SCN].[dbo].[WhseMst] w 
+ON w.[WhseLink] = wl.[iWhse_Link]
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWarehouseLookUp_FStMS]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWarehouseLookUp_FStMS]
+GO
+CREATE PROC [dbo].[sp_UI_getWarehouseLookUp_FStMS]
+AS
+SELECT w.[WhseLink], w.[Name], ISNULL(wl.[bEnabled],0) FROM [RTIS_WarehouseLookUp_FStMS] wl
+RIGHT JOIN [Cataler_SCN].[dbo].[WhseMst] w 
+ON w.[WhseLink] = wl.[iWhse_Link]
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWarehouseLookUp_FS_Rec]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWarehouseLookUp_FS_Rec]
+GO
+CREATE PROC [dbo].[sp_UI_getWarehouseLookUp_FS_Rec]
+AS
+SELECT w.[WhseLink], w.[Name], ISNULL(wl.[bEnabled],0) FROM [Rec_Transfers].[RTIS_WhseLookUp_FS_Rec] wl
+RIGHT JOIN [Cataler_SCN].[dbo].[WhseMst] w 
+ON w.[WhseLink] = wl.[iWhse_Link]
+GO
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWarehouseLookUp_MStZect]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWarehouseLookUp_MStZect]
+GO
+CREATE PROC [dbo].[sp_UI_getWarehouseLookUp_MStZect]
+AS
+SELECT w.[WhseLink], w.[Name], ISNULL(wl.[bEnabled],0) FROM [RTIS_WarehouseLookUp_MStZect] wl
+RIGHT JOIN [Cataler_SCN].[dbo].[WhseMst] w 
+ON w.[WhseLink] = wl.[iWhse_Link]
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWarehouseLookUp_MS_Rec]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWarehouseLookUp_MS_Rec]
+GO
+CREATE PROC [dbo].[sp_UI_getWarehouseLookUp_MS_Rec]
+AS
+SELECT w.[WhseLink], w.[Name], ISNULL(wl.[bEnabled],0) FROM [Rec_Transfers].[RTIS_WhseLookUp_MS_Rec] wl
+RIGHT JOIN [Cataler_SCN].[dbo].[WhseMst] w 
+ON w.[WhseLink] = wl.[iWhse_Link]
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWarehouseLookUp_Zect1]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWarehouseLookUp_Zect1]
+GO
+CREATE PROC [dbo].[sp_UI_getWarehouseLookUp_Zect1]
+AS
+SELECT w.[WhseLink], w.[Name], ISNULL(wl.[bEnabled],0) FROM [RTIS_WarehouseLookUp_Zect1] wl
+RIGHT JOIN [Cataler_SCN].[dbo].[WhseMst] w 
+ON w.[WhseLink] = wl.[iWhse_Link]
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWarehouseLookUp_Zect1_Rec]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWarehouseLookUp_Zect1_Rec]
+GO
+CREATE PROC [dbo].[sp_UI_getWarehouseLookUp_Zect1_Rec]
+AS
+SELECT w.[WhseLink], w.[Name], ISNULL(wl.[bEnabled],0) FROM [Rec_Transfers].[RTIS_WhseLookUp_Zect1_Rec] wl
+RIGHT JOIN [Cataler_SCN].[dbo].[WhseMst] w 
+ON w.[WhseLink] = wl.[iWhse_Link]
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWarehouseLookUp_Zect2]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWarehouseLookUp_Zect2]
+GO
+CREATE PROC [dbo].[sp_UI_getWarehouseLookUp_Zect2]
+AS
+SELECT w.[WhseLink], w.[Name], ISNULL(wl.[bEnabled],0) FROM [RTIS_WarehouseLookUp_Zect2] wl
+RIGHT JOIN [Cataler_SCN].[dbo].[WhseMst] w 
+ON w.[WhseLink] = wl.[iWhse_Link]
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWarehouseLookUp_Zect2_Rec]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWarehouseLookUp_Zect2_Rec]
+GO
+CREATE PROC [dbo].[sp_UI_getWarehouseLookUp_Zect2_Rec]
+AS
+SELECT w.[WhseLink], w.[Name], ISNULL(wl.[bEnabled],0) FROM [Rec_Transfers].[RTIS_WhseLookUp_Zect2_Rec] wl
+RIGHT JOIN [Cataler_SCN].[dbo].[WhseMst] w 
+ON w.[WhseLink] = wl.[iWhse_Link]
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWarehouseLookUp_Canning]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWarehouseLookUp_Canning]
+GO
+CREATE PROC [dbo].[sp_UI_getWarehouseLookUp_Canning]
+AS
+SELECT w.[WhseLink], w.[Name], ISNULL(wl.[bEnabled],0) FROM [RTIS_WarehouseLookUp_Canning] wl
+RIGHT JOIN [Cataler_SCN].[dbo].[WhseMst] w 
+ON w.[WhseLink] = wl.[iWhse_Link]
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWarehouseLookUp_Can_Rec]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWarehouseLookUp_Can_Rec]
+GO
+CREATE PROC [dbo].[sp_UI_getWarehouseLookUp_Can_Rec]
+AS
+SELECT w.[WhseLink], w.[Name], ISNULL(wl.[bEnabled],0) FROM [Rec_Transfers].[RTIS_WhseLookUp_Canning_Rec] wl
+RIGHT JOIN [Cataler_SCN].[dbo].[WhseMst] w 
+ON w.[WhseLink] = wl.[iWhse_Link]
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWarehouseLookUp_AW]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWarehouseLookUp_AW]
+GO
+CREATE PROC [dbo].[sp_UI_getWarehouseLookUp_AW]
+AS
+SELECT w.[WhseLink], w.[Name], ISNULL(wl.[bEnabled],0) FROM [RTIS_WarehouseLookUp_AW] wl
+RIGHT JOIN [Cataler_SCN].[dbo].[WhseMst] w 
+ON w.[WhseLink] = wl.[iWhse_Link]
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWarehouseLookUp_AW_Rec]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWarehouseLookUp_AW_Rec]
+GO
+CREATE PROC [dbo].[sp_UI_getWarehouseLookUp_AW_Rec]
+AS
+SELECT w.[WhseLink], w.[Name], ISNULL(wl.[bEnabled],0) FROM [Rec_Transfers].[RTIS_WhseLookUp_AW_Rec] wl
+RIGHT JOIN [Cataler_SCN].[dbo].[WhseMst] w 
+ON w.[WhseLink] = wl.[iWhse_Link]
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWarehouseLookUp_PGM_Rec]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWarehouseLookUp_PGM_Rec]
+GO
+CREATE PROC [dbo].[sp_UI_getWarehouseLookUp_PGM_Rec]
+AS
+SELECT w.[WhseLink], w.[Name], ISNULL(wl.[bEnabled],0) FROM [Rec_Transfers].[RTIS_WhseLookUp_PGM_Rec] wl
+RIGHT JOIN [Cataler_SCN].[dbo].[WhseMst] w 
+ON w.[WhseLink] = wl.[iWhse_Link]
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWarehouseLookUp_ToProd]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWarehouseLookUp_ToProd]
+GO
+CREATE PROC [dbo].[sp_UI_getWarehouseLookUp_ToProd]
+AS
+SELECT w.[WhseLink], w.[Name], ISNULL(wl.[bEnabled],0) FROM [RTIS_WarehouseLookUp_ToProd] wl
+RIGHT JOIN [Cataler_SCN].[dbo].[WhseMst] w 
+ON w.[WhseLink] = wl.[iWhse_Link]
+GO
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWarehouseExistes_PPtFS]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWarehouseExistes_PPtFS]
+GO
+CREATE PROC [dbo].[sp_UI_getWarehouseExistes_PPtFS]
+(
+@iWhse_Link int
+)
+AS
+SELECT [bEnabled] 
+FROM [RTIS_WarehouseLookUp_PPtFS] 
+WHERE [iWhse_Link] = @iWhse_Link
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWarehouseExistes_PP_Rec]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWarehouseExistes_PP_Rec]
+GO
+CREATE PROC [dbo].[sp_UI_getWarehouseExistes_PP_Rec]
+(
+@iWhse_Link int
+)
+AS
+SELECT [bEnabled] FROM [Rec_Transfers].[RTIS_WhseLookUp_PP_Rec] WHERE [iWhse_Link] = @iWhse_Link
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWarehouseExistes_FS_Rec]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWarehouseExistes_FS_Rec]
+GO
+CREATE PROC [dbo].[sp_UI_getWarehouseExistes_FS_Rec]
+(
+@iWhse_Link int
+)
+AS
+SELECT [bEnabled] FROM [Rec_Transfers].[RTIS_WhseLookUp_FS_Rec] WHERE [iWhse_Link] = @iWhse_Link
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWarehouseExistes_MS_Rec]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWarehouseExistes_MS_Rec]
+GO
+CREATE PROC [dbo].[sp_UI_getWarehouseExistes_MS_Rec]
+(
+@iWhse_Link int
+)
+AS
+SELECT [bEnabled] FROM [Rec_Transfers].[RTIS_WhseLookUp_MS_Rec] WHERE [iWhse_Link] = @iWhse_Link
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWarehouseExistes_Zect1_Rec]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWarehouseExistes_Zect1_Rec]
+GO
+CREATE PROC [dbo].[sp_UI_getWarehouseExistes_Zect1_Rec]
+(
+@iWhse_Link int
+)
+AS
+SELECT [bEnabled] FROM [Rec_Transfers].[RTIS_WhseLookUp_Zect1_Rec] WHERE [iWhse_Link] = @iWhse_Link
+GO
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWarehouseExistes_Zect2_Rec]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWarehouseExistes_Zect2_Rec]
+GO
+CREATE PROC [dbo].[sp_UI_getWarehouseExistes_Zect2_Rec]
+(
+@iWhse_Link int
+)
+AS
+SELECT [bEnabled] FROM [Rec_Transfers].[RTIS_WhseLookUp_Zect2_Rec] WHERE [iWhse_Link] = @iWhse_Link
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWarehouseExistes_Can_Rec]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWarehouseExistes_Can_Rec]
+GO
+CREATE PROC [dbo].[sp_UI_getWarehouseExistes_Can_Rec]
+(
+@iWhse_Link int
+)
+AS
+SELECT [bEnabled] FROM [Rec_Transfers].[RTIS_WhseLookUp_Canning_Rec] WHERE [iWhse_Link] = @iWhse_Link
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWarehouseExistes_AW_Rec]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWarehouseExistes_AW_Rec]
+GO
+CREATE PROC [dbo].[sp_UI_getWarehouseExistes_AW_Rec]
+(
+@iWhse_Link int
+)
+AS
+SELECT [bEnabled] FROM [Rec_Transfers].[RTIS_WhseLookUp_AW_Rec] WHERE [iWhse_Link] = @iWhse_Link
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWarehouseExistes_PGM_Rec]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWarehouseExistes_PGM_Rec]
+GO
+CREATE PROC [dbo].[sp_UI_getWarehouseExistes_PGM_Rec]
+(
+@iWhse_Link int
+)
+AS
+SELECT [bEnabled] FROM [Rec_Transfers].[RTIS_WhseLookUp_PGM_Rec] WHERE [iWhse_Link] = @iWhse_Link
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWarehouseExistes_FStMS]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWarehouseExistes_FStMS]
+GO
+CREATE PROC [dbo].[sp_UI_getWarehouseExistes_FStMS]
+(
+@iWhse_Link int
+)
+AS
+SELECT [bEnabled] FROM [RTIS_WarehouseLookUp_FStMS] WHERE [iWhse_Link] = @iWhse_Link
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWarehouseExistes_MStZect]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWarehouseExistes_MStZect]
+GO
+CREATE PROC [dbo].[sp_UI_getWarehouseExistes_MStZect]
+(
+@iWhse_Link int
+)
+AS
+SELECT [bEnabled] FROM [RTIS_WarehouseLookUp_MStZect] WHERE [iWhse_Link] = @iWhse_Link
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWarehouseExistes_Zect1]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWarehouseExistes_Zect1]
+GO
+CREATE PROC [dbo].[sp_UI_getWarehouseExistes_Zect1]
+(
+@iWhse_Link int
+)
+AS
+SELECT [bEnabled] FROM [RTIS_WarehouseLookUp_Zect1] WHERE [iWhse_Link] = @iWhse_Link
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWarehouseExistes_Zect2]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWarehouseExistes_Zect2]
+GO
+CREATE PROC [dbo].[sp_UI_getWarehouseExistes_Zect2]
+(
+@iWhse_Link int
+)
+AS
+SELECT [bEnabled] FROM [RTIS_WarehouseLookUp_Zect2] WHERE [iWhse_Link] = @iWhse_Link
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWarehouseExistes_Can]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWarehouseExistes_Can]
+GO
+CREATE PROC [dbo].[sp_UI_getWarehouseExistes_Can]
+(
+@iWhse_Link int
+)
+AS
+SELECT [bEnabled] FROM [RTIS_WarehouseLookUp_Canning] WHERE [iWhse_Link] = @iWhse_Link
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWarehouseExistes_AW]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWarehouseExistes_AW]
+GO
+CREATE PROC [dbo].[sp_UI_getWarehouseExistes_AW]
+(
+@iWhse_Link int
+)
+AS
+SELECT [bEnabled] FROM [RTIS_WarehouseLookUp_AW] WHERE [iWhse_Link] = @iWhse_Link
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWarehouseExistes_ToProd]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWarehouseExistes_ToProd]
+GO
+CREATE PROC [dbo].[sp_UI_getWarehouseExistes_ToProd]
+(
+@iWhse_Link int
+)
+AS
+SELECT [bEnabled] FROM [RTIS_WarehouseLookUp_ToProd] WHERE [iWhse_Link] = @iWhse_Link
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_addNewWhseCrossRef]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_addNewWhseCrossRef]
+GO
+CREATE PROC [dbo].[sp_UI_addNewWhseCrossRef]
+(
+@vProcessName varchar(60),
+@iWhseID int,
+@bIsRec bit
+)
+AS
+INSERT INTO [tbl_WHTLocations] ([vProcessName], [iWhseID], [bIsRec]) VALUES (@vProcessName, @iWhseID, @bIsRec)
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_addNewWhseCrossRef_PPtFS]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_addNewWhseCrossRef_PPtFS]
+GO
+CREATE PROC [dbo].[sp_UI_addNewWhseCrossRef_PPtFS]
+(
+@iWhse_Link int,
+@bEnabled bit
+)
+AS
+INSERT INTO [RTIS_WarehouseLookUp_PPtFS] ([iWhse_Link], [bEnabled]) VALUES (@iWhse_Link, @bEnabled)
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_addNewWhseCrossRef_PP_Rec]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_addNewWhseCrossRef_PP_Rec]
+GO
+CREATE PROC [dbo].[sp_UI_addNewWhseCrossRef_PP_Rec]
+(
+@iWhse_Link int,
+@bEnabled bit
+)
+AS
+INSERT INTO [Rec_Transfers].[RTIS_WhseLookUp_PP_Rec] ([iWhse_Link], [bEnabled]) VALUES (@iWhse_Link, @bEnabled)
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_addNewWhseCrossRef_FS_Rec]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_addNewWhseCrossRef_FS_Rec]
+GO
+CREATE PROC [dbo].[sp_UI_addNewWhseCrossRef_FS_Rec]
+(
+@iWhse_Link int,
+@bEnabled bit
+)
+AS
+INSERT INTO [Rec_Transfers].[RTIS_WhseLookUp_FS_Rec] ([iWhse_Link], [bEnabled]) VALUES (@iWhse_Link, @bEnabled)
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_addNewWhseCrossRef_MS_Rec]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_addNewWhseCrossRef_MS_Rec]
+GO
+CREATE PROC [dbo].[sp_UI_addNewWhseCrossRef_MS_Rec]
+(
+@iWhse_Link int,
+@bEnabled bit
+)
+AS
+INSERT INTO [Rec_Transfers].[RTIS_WhseLookUp_MS_Rec] ([iWhse_Link], [bEnabled]) VALUES (@iWhse_Link, @bEnabled)
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_addNewWhseCrossRef_Zect1_Rec]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_addNewWhseCrossRef_Zect1_Rec]
+GO
+CREATE PROC [dbo].[sp_UI_addNewWhseCrossRef_Zect1_Rec]
+(
+@iWhse_Link int,
+@bEnabled bit
+)
+AS
+INSERT INTO [Rec_Transfers].[RTIS_WhseLookUp_Zect1_Rec] ([iWhse_Link], [bEnabled]) VALUES (@iWhse_Link, @bEnabled)
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_addNewWhseCrossRef_Zect2_Rec]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_addNewWhseCrossRef_Zect2_Rec]
+GO
+CREATE PROC [dbo].[sp_UI_addNewWhseCrossRef_Zect2_Rec]
+(
+@iWhse_Link int,
+@bEnabled bit
+)
+AS
+INSERT INTO [Rec_Transfers].[RTIS_WhseLookUp_Zect2_Rec] ([iWhse_Link], [bEnabled]) VALUES (@iWhse_Link, @bEnabled)
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_addNewWhseCrossRef_Can_Rec]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_addNewWhseCrossRef_Can_Rec]
+GO
+CREATE PROC [dbo].[sp_UI_addNewWhseCrossRef_Can_Rec]
+(
+@iWhse_Link int,
+@bEnabled bit
+)
+AS
+INSERT INTO [Rec_Transfers].[RTIS_WhseLookUp_Canning_Rec] ([iWhse_Link], [bEnabled]) VALUES (@iWhse_Link, @bEnabled)
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_addNewWhseCrossRef_AW_Rec]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_addNewWhseCrossRef_AW_Rec]
+GO
+CREATE PROC [dbo].[sp_UI_addNewWhseCrossRef_AW_Rec]
+(
+@iWhse_Link int,
+@bEnabled bit
+)
+AS
+INSERT INTO [Rec_Transfers].[RTIS_WhseLookUp_AW_Rec] ([iWhse_Link], [bEnabled]) VALUES (@iWhse_Link, @bEnabled)
+GO
+
+IF (OBJECT_ID('[dbo].[sp_UI_addNewWhseCrossRef_PGM_Rec]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_addNewWhseCrossRef_PGM_Rec]
+GO
+CREATE PROC [dbo].[sp_UI_addNewWhseCrossRef_PGM_Rec]
+(
+@iWhse_Link int,
+@bEnabled bit
+)
+AS
+INSERT INTO [Rec_Transfers].[RTIS_WhseLookUp_PGM_Rec] ([iWhse_Link], [bEnabled]) VALUES (@iWhse_Link, @bEnabled)
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_addNewWhseCrossRef_FStMS]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_addNewWhseCrossRef_FStMS]
+GO
+CREATE PROC [dbo].[sp_UI_addNewWhseCrossRef_FStMS]
+(
+@iWhse_Link int,
+@bEnabled bit
+)
+AS
+INSERT INTO [RTIS_WarehouseLookUp_FStMS] ([iWhse_Link], [bEnabled]) VALUES (@iWhse_Link, @bEnabled)
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_addNewWhseCrossRef_MStZect]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_addNewWhseCrossRef_MStZect]
+GO
+CREATE PROC [dbo].[sp_UI_addNewWhseCrossRef_MStZect]
+(
+@iWhse_Link int,
+@bEnabled bit
+)
+AS
+INSERT INTO [RTIS_WarehouseLookUp_MStZect] ([iWhse_Link], [bEnabled]) VALUES (@iWhse_Link, @bEnabled)
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_addNewWhseCrossRef_Zect1]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_addNewWhseCrossRef_Zect1]
+GO
+CREATE PROC [dbo].[sp_UI_addNewWhseCrossRef_Zect1]
+(
+@iWhse_Link int,
+@bEnabled bit
+)
+AS
+INSERT INTO [RTIS_WarehouseLookUp_Zect1] ([iWhse_Link], [bEnabled]) VALUES (@iWhse_Link, @bEnabled)
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_addNewWhseCrossRef_Zect2]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_addNewWhseCrossRef_Zect2]
+GO
+CREATE PROC [dbo].[sp_UI_addNewWhseCrossRef_Zect2]
+(
+@iWhse_Link int,
+@bEnabled bit
+)
+AS
+INSERT INTO [RTIS_WarehouseLookUp_Zect2] ([iWhse_Link], [bEnabled]) VALUES (@iWhse_Link, @bEnabled)
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_addNewWhseCrossRef_Canning]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_addNewWhseCrossRef_Canning]
+GO
+CREATE PROC [dbo].[sp_UI_addNewWhseCrossRef_Canning]
+(
+@iWhse_Link int,
+@bEnabled bit
+)
+AS
+INSERT INTO [RTIS_WarehouseLookUp_Canning] ([iWhse_Link], [bEnabled]) VALUES (@iWhse_Link, @bEnabled)
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_addNewWhseCrossRef_AW]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_addNewWhseCrossRef_AW]
+GO
+CREATE PROC [dbo].[sp_UI_addNewWhseCrossRef_AW]
+(
+@iWhse_Link int,
+@bEnabled bit
+)
+AS
+INSERT INTO [RTIS_WarehouseLookUp_AW] ([iWhse_Link], [bEnabled]) VALUES (@iWhse_Link, @bEnabled)
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_addNewWhseCrossRef_ToProd]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_addNewWhseCrossRef_ToProd]
+GO
+CREATE PROC [dbo].[sp_UI_addNewWhseCrossRef_ToProd]
+(
+@iWhse_Link int,
+@bEnabled bit
+)
+AS
+INSERT INTO [RTIS_WarehouseLookUp_ToProd] ([iWhse_Link], [bEnabled]) VALUES (@iWhse_Link, @bEnabled)
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_resetWhseCrossRef_PPtFS]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_resetWhseCrossRef_PPtFS]
+GO
+CREATE PROC [dbo].[sp_UI_resetWhseCrossRef_PPtFS]
+AS
+UPDATE [RTIS_WarehouseLookUp_PPtFS] SET [bEnabled] = 0
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_resetWhseCrossRef_FStMS]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_resetWhseCrossRef_FStMS]
+GO
+CREATE PROC [dbo].[sp_UI_resetWhseCrossRef_FStMS]
+AS
+UPDATE [RTIS_WarehouseLookUp_FStMS] SET [bEnabled] = 0
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_resetWhseCrossRef_MStZext]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_resetWhseCrossRef_MStZext]
+GO
+CREATE PROC [dbo].[sp_UI_resetWhseCrossRef_MStZext]
+AS
+UPDATE [RTIS_WarehouseLookUp_MStZect] SET [bEnabled] = 0
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_updateWhseCrossRef_PPtFS]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_updateWhseCrossRef_PPtFS]
+GO
+CREATE PROC [dbo].[sp_UI_updateWhseCrossRef_PPtFS]
+(
+@iWhse_Link int,
+@bEnabled bit
+)
+AS
+UPDATE [RTIS_WarehouseLookUp_PPtFS] SET [bEnabled] = @bEnabled WHERE [iWhse_Link] = @iWhse_Link
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_updateWhseCrossRef_PP_Rec]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_updateWhseCrossRef_PP_Rec]
+GO
+CREATE PROC [dbo].[sp_UI_updateWhseCrossRef_PP_Rec]
+(
+@iWhse_Link int,
+@bEnabled bit
+)
+AS
+UPDATE [Rec_Transfers].[RTIS_WhseLookUp_PP_Rec] SET [bEnabled] = @bEnabled WHERE [iWhse_Link] = @iWhse_Link
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_updateWhseCrossRef_FS_Rec]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_updateWhseCrossRef_FS_Rec]
+GO
+CREATE PROC [dbo].[sp_UI_updateWhseCrossRef_FS_Rec]
+(
+@iWhse_Link int,
+@bEnabled bit
+)
+AS
+UPDATE [Rec_Transfers].[RTIS_WhseLookUp_FS_Rec] SET [bEnabled] =@bEnabled  WHERE [iWhse_Link] = @iWhse_Link
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_updateWhseCrossRef_MS_Rec]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_updateWhseCrossRef_MS_Rec]
+GO
+CREATE PROC [dbo].[sp_UI_updateWhseCrossRef_MS_Rec]
+(
+@iWhse_Link int,
+@bEnabled bit
+)
+AS
+UPDATE [Rec_Transfers].[RTIS_WhseLookUp_MS_Rec] SET [bEnabled] = @bEnabled WHERE [iWhse_Link] = @iWhse_Link
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_updateWhseCrossRef_Zect1_Rec]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_updateWhseCrossRef_Zect1_Rec]
+GO
+CREATE PROC [dbo].[sp_UI_updateWhseCrossRef_Zect1_Rec]
+(
+@iWhse_Link int,
+@bEnabled bit
+)
+AS
+UPDATE [Rec_Transfers].[RTIS_WhseLookUp_Zect1_Rec] SET [bEnabled] = @bEnabled WHERE [iWhse_Link] = @iWhse_Link
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_updateWhseCrossRef_Zect1_Rec]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_updateWhseCrossRef_Zect1_Rec]
+GO
+CREATE PROC [dbo].[sp_UI_updateWhseCrossRef_Zect1_Rec]
+(
+@iWhse_Link int,
+@bEnabled bit
+)
+AS
+UPDATE [Rec_Transfers].[RTIS_WhseLookUp_Zect1_Rec] SET [bEnabled] = @bEnabled WHERE [iWhse_Link] = @iWhse_Link
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_updateWhseCrossRef_Zect2_Rec]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_updateWhseCrossRef_Zect2_Rec]
+GO
+CREATE PROC [dbo].[sp_UI_updateWhseCrossRef_Zect2_Rec]
+(
+@iWhse_Link int,
+@bEnabled bit
+)
+AS
+UPDATE [Rec_Transfers].[RTIS_WhseLookUp_Zect2_Rec] SET [bEnabled] = @bEnabled WHERE [iWhse_Link] = @iWhse_Link
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_updateWhseCrossRef_Can_Rec]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_updateWhseCrossRef_Can_Rec]
+GO
+CREATE PROC [dbo].[sp_UI_updateWhseCrossRef_Can_Rec]
+(
+@iWhse_Link int,
+@bEnabled bit
+)
+AS
+UPDATE [Rec_Transfers].[RTIS_WhseLookUp_Canning_Rec] SET [bEnabled] = @bEnabled WHERE [iWhse_Link] = @iWhse_Link
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_updateWhseCrossRef_AW_Rec]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_updateWhseCrossRef_AW_Rec]
+GO
+CREATE PROC [dbo].[sp_UI_updateWhseCrossRef_AW_Rec]
+(
+@iWhse_Link int,
+@bEnabled bit
+)
+AS
+UPDATE [Rec_Transfers].[RTIS_WhseLookUp_AW_Rec] SET [bEnabled] = @bEnabled WHERE [iWhse_Link] = @iWhse_Link
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_updateWhseCrossRef_PGM_Rec]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_updateWhseCrossRef_PGM_Rec]
+GO
+CREATE PROC [dbo].[sp_UI_updateWhseCrossRef_PGM_Rec]
+(
+@iWhse_Link int,
+@bEnabled bit
+)
+AS
+UPDATE [Rec_Transfers].[RTIS_WhseLookUp_PGM_Rec] SET [bEnabled] = @bEnabled WHERE [iWhse_Link] = @iWhse_Link
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_updateWhseCrossRef__FStMS]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_updateWhseCrossRef_PGM_Rec]
+GO
+CREATE PROC [dbo].[sp_UI_updateWhseCrossRef_PGM_Rec]
+(
+@iWhse_Link int,
+@bEnabled bit
+)
+AS
+UPDATE [RTIS_WarehouseLookUp_FStMS] SET [bEnabled] = @bEnabled WHERE [iWhse_Link] = @iWhse_Link
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_updateWhseCrossRef__MStZectS]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_updateWhseCrossRef__MStZectS]
+GO
+CREATE PROC [dbo].[sp_UI_updateWhseCrossRef__MStZectS]
+(
+@iWhse_Link int,
+@bEnabled bit
+)
+AS
+UPDATE [RTIS_WarehouseLookUp_MStZect] SET [bEnabled] = @bEnabled WHERE [iWhse_Link] = @iWhse_Link
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_updateWhseCrossRef__Zect1]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_updateWhseCrossRef__Zect1]
+GO
+CREATE PROC [dbo].[sp_UI_updateWhseCrossRef__Zect1]
+(
+@iWhse_Link int,
+@bEnabled bit
+)
+AS
+UPDATE [RTIS_WarehouseLookUp_Zect1] SET [bEnabled] = @bEnabled WHERE [iWhse_Link] = @iWhse_Link
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_updateWhseCrossRef__Zect2]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_updateWhseCrossRef__Zect2]
+GO
+CREATE PROC [dbo].[sp_UI_updateWhseCrossRef__Zect2]
+(
+@iWhse_Link int,
+@bEnabled bit
+)
+AS
+UPDATE [RTIS_WarehouseLookUp_Zect2] SET [bEnabled] = @bEnabled WHERE [iWhse_Link] = @iWhse_Link
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_updateWhseCrossRef__Canning]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_updateWhseCrossRef__Canning]
+GO
+CREATE PROC [dbo].[sp_UI_updateWhseCrossRef__Canning]
+(
+@iWhse_Link int,
+@bEnabled bit
+)
+AS
+UPDATE [RTIS_WarehouseLookUp_Canning] SET [bEnabled] = @bEnabled WHERE [iWhse_Link] = @iWhse_Link
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_updateWhseCrossRef__AW]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_updateWhseCrossRef__AW]
+GO
+CREATE PROC [dbo].[sp_UI_updateWhseCrossRef__AW]
+(
+@iWhse_Link int,
+@bEnabled bit
+)
+AS
+UPDATE [RTIS_WarehouseLookUp_AW] SET [bEnabled] = @bEnabled WHERE [iWhse_Link] = @iWhse_Link
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_updateWhseCrossRef_ToProd]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_updateWhseCrossRef_ToProd]
+GO
+CREATE PROC [dbo].[sp_UI_updateWhseCrossRef_ToProd]
+(
+@iWhse_Link int,
+@bEnabled bit
+)
+AS
+UPDATE [RTIS_WarehouseLookUp_ToProd] SET [bEnabled] = @bEnabled WHERE [iWhse_Link] = @iWhse_Link
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_deleteNewWhseCrossRef]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_deleteNewWhseCrossRef]
+GO
+CREATE PROC [dbo].[sp_UI_deleteNewWhseCrossRef]
+(
+@vProcessName varchar(60),
+@iWhseID int,
+@bIsRec bit
+)
+AS
+DELETE FROM [tbl_WHTLocations] WHERE [vProcessName] = @vProcessName AND [iWhseID] = @iWhseID AND [bIsRec] = @bIsRec
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_GetActiveModules]') IS NOT NULL)
+	DROP PROC [dbo].[sp_GetActiveModules]
+GO
+CREATE PROC [dbo].[sp_GetActiveModules]
+AS
+SELECT [iModule_ID], [vModule_Name] FROM [htbl_Modules] WHERE [bModuleActive] = 1 ORDER BY [Indx] ASC
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetModuleUserPermission]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetModuleUserPermission]
+GO
+CREATE PROC [dbo].[sp_UI_GetModuleUserPermission]
+(
+@iModuleID int,
+@vUser_Username varchar(200)
+)
+AS
+SELECT p.[vPermission_Name], p.[vNestNode] 
+FROM [ltbl_Module_Perms] p
+INNER JOIN [ltbl_userRoleLines] rl ON p.[iPermission_ID] = rl.[iPermission_ID]
+INNER JOIN [tbl_users] u ON u.[iRoleID] = rl.[iRole_ID]
+WHERE rl.[bPermission_Active] = 1 AND p.[iModuleID] = @iModuleID AND u.[vUser_Username] = @vUser_Username AND p.[bUIPerm] = 1
+ORDER BY p.[Indx]
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_PGM_GetModuleUserPermission]') IS NOT NULL)
+	DROP PROC [dbo].[sp_PGM_GetModuleUserPermission]
+GO
+CREATE PROC [dbo].[sp_PGM_GetModuleUserPermission]
+(
+@vUser_Username varchar(200)
+)
+AS
+SELECT p.[vPermission_Name]
+FROM [ltbl_Module_Perms] p
+INNER JOIN [ltbl_userRoleLines] rl ON p.[iPermission_ID] = rl.[iPermission_ID]
+INNER JOIN [tbl_users] u ON u.[iRoleID] = rl.[iRole_ID]
+WHERE rl.[bPermission_Active] = 1 AND u.[vUser_Username] = @vUser_Username AND p.[bPGMPerm] = 1
+ORDER BY p.[Indx]
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_PGM_GetModuleUserPermission]') IS NOT NULL)
+	DROP PROC [dbo].[sp_PGM_GetModuleUserPermission]
+GO
+CREATE PROC [dbo].[sp_PGM_GetModuleUserPermission]
+(
+@vUser_Username varchar(200)
+)
+AS
+SELECT p.[vPermission_Name]
+FROM [ltbl_Module_Perms] p
+INNER JOIN [ltbl_userRoleLines] rl ON p.[iPermission_ID] = rl.[iPermission_ID]
+INNER JOIN [tbl_users] u ON u.[iRoleID] = rl.[iRole_ID]
+WHERE rl.[bPermission_Active] = 1 AND u.[vUser_Username] = @vUser_Username AND p.[bPGMPerm] = 1
+ORDER BY p.[Indx]
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetActiveLabelTypes]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetActiveLabelTypes]
+GO
+CREATE PROC [dbo].[sp_UI_GetActiveLabelTypes]
+(
+@vUser_Username varchar(200)
+)
+AS
+SELECT DISTINCT lt.[vLabel_Type_Name] 
+FROM [tbl_labelTypes] lt
+INNER JOIN [rtbl_LabelPermCom] lpc ON lpc.[iLabelID] = lt.[iLabel_ID]
+INNER JOIN [ltbl_userRoleLines] rl ON rl.[iPermission_ID] = lpc.[iPermissionID]
+INNER JOIN [htbl_userRoles] rh ON rl.[iRole_ID] = rh.[iRole_ID]
+INNER JOIN [tbl_users] u ON u.[iRoleID] = rh.[iRole_ID]
+WHERE rl.[bPermission_Active] = '1' AND u.[vUser_Username] = @vUser_Username
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetCompatiblelabels]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetCompatiblelabels]
+GO
+CREATE PROC [dbo].[sp_UI_GetCompatiblelabels]
+(
+@vPermission_Name varchar(max)
+)
+AS
+SELECT l.[vLabel_Type_Name] FROM [rtbl_LabelPermCom] lpc 
+INNER JOIN [ltbl_Module_Perms] p ON lpc.[iPermissionID] = p.[iPermission_ID]
+INNER JOIN [tbl_labelTypes] l ON lpc.[iLabelID] = l.[iLabel_ID]
+WHERE p.[vPermission_Name] = @vPermission_Name
+GO
+
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetPermissionHasLabel]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetPermissionHasLabel]
+GO
+CREATE PROC [dbo].[sp_UI_GetPermissionHasLabel]
+(
+@vPermission_Name varchar(max)
+)
+AS
+SELECT [bHasLabel] FROM [ltbl_Module_Perms] WHERE [vPermission_Name] = @vPermission_Name
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetPermID]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetPermID]
+GO
+CREATE PROC [dbo].[sp_UI_GetPermID]
+(
+@vPermission_Name varchar(max)
+)
+AS
+SELECT [iPermission_ID]
+FROM [ltbl_Module_Perms] WHERE [vPermission_Name] = @vPermission_Name
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetPermLabelsNew]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetPermLabelsNew]
+GO
+CREATE PROC [dbo].[sp_UI_GetPermLabelsNew]
+(
+@iPermID int
+)
+AS
+ SELECT [vLabelName] FROM [rtbl_PermLabels]
+ WHERE [iPermID] = @iPermID
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetGridOverridePassword]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetGridOverridePassword]
+GO
+CREATE PROC [dbo].[sp_UI_GetGridOverridePassword]
+AS
+SELECT [SettingValue] FROM [tbl_RTSettings] WHERE [Setting_Name] = 'GRIDOVERRIDE'
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_DeletePermLabels]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_DeletePermLabels]
+GO
+CREATE PROC [dbo].[sp_UI_DeletePermLabels]
+(
+@iPermID int
+)
+AS
+DELETE FROM [rtbl_PermLabels] WHERE [iPermID] = @iPermID
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_GetAllRoles]') IS NOT NULL)
+	DROP PROC [dbo].[sp_GetAllRoles]
+GO
+CREATE PROC [dbo].[sp_GetAllRoles]
+AS
+SELECT rh.[iRole_ID], rh.[vRole_Name], rh.[vRole_Desc], STUFF((SELECT ',' + CAST(p.[vPermission_Name] AS VARCHAR(MAX)) FROM [ltbl_userRoleLines] rl
+INNER JOIN [ltbl_Module_Perms] p ON p.[iPermission_ID] = rl.iPermission_ID
+WHERE rh.iRole_ID = rl.[iRole_ID] AND rl.[bPermission_Active] = 1
+FOR XML PATH('')),1,1,''), rh.[bRole_Active] FROM [htbl_userRoles] rh
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_GetActivePermissions]') IS NOT NULL)
+	DROP PROC [dbo].[sp_GetActivePermissions]
+GO
+CREATE PROC [dbo].[sp_GetActivePermissions]
+AS
+SELECT [vPermission_Name] FROM [ltbl_Module_Perms] WHERE [bPermissionActive] = 1
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetAddedRoleID]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetAddedRoleID]
+GO
+CREATE PROC [dbo].[sp_UI_GetAddedRoleID]
+(
+@vRole_Name varchar(max)
+)
+AS
+SELECT [iRole_ID] FROM [htbl_userRoles] WHERE [vRole_Name] = @vRole_Name
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_GetPermID]') IS NOT NULL)
+	DROP PROC [dbo].[sp_GetPermID]
+GO
+CREATE PROC [dbo].[sp_GetPermID]
+(
+@vPermission_Name varchar(max)
+)
+AS
+SELECT [iPermission_ID]
+FROM [ltbl_Module_Perms] WHERE [vPermission_Name] = @vPermission_Name
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_GetAllRolePerms]') IS NOT NULL)
+	DROP PROC [dbo].[sp_GetAllRolePerms]
+GO
+CREATE PROC [dbo].[sp_GetAllRolePerms]
+(
+@iRole_ID int
+)
+AS
+SELECT p.[vPermission_Name]
+,rp.[bPermission_Active]
+FROM [ltbl_userRoleLines] rp 
+INNER JOIN [ltbl_Module_Perms] p ON p.[iPermission_ID] = rp.[iPermission_ID]
+WHERE rp.[iRole_ID] = @iRole_ID
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_CheckRoleInUse]') IS NOT NULL)
+	DROP PROC [dbo].[sp_CheckRoleInUse]
+GO
+CREATE PROC [dbo].[sp_CheckRoleInUse]
+(
+@iRole_ID int
+)
+AS
+SELECT [iRoleID]
+FROM [tbl_users] WHERE [iRoleID] = @iRole_ID
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_AddRoleHeader]') IS NOT NULL)
+	DROP PROC [dbo].[sp_AddRoleHeader]
+GO
+CREATE PROC [dbo].[sp_AddRoleHeader]
+(
+@vRole_Name varchar(max),
+@vRole_Desc varchar(max)
+)
+AS
+INSERT INTO [htbl_userRoles] (
+ [vRole_Name]
+,[vRole_Desc]
+,[bRole_Active]
+,[dRole_Created]
+)
+VALUES (@vRole_Name, @vRole_Desc, 1, GETDATE())
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_AddRoleLine]') IS NOT NULL)
+	DROP PROC [dbo].[sp_AddRoleLine]
+GO
+CREATE PROC [dbo].[sp_AddRoleLine]
+(
+@iRole_ID int,
+@iPermission_ID int
+)
+AS
+INSERT INTO [ltbl_userRoleLines] ([iRole_ID]
+,[iPermission_ID]
+,[bPermission_Active]
+,[dPermission_Added]
+)
+VALUES (@iRole_ID, @iPermission_ID, 1, GETDATE())
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UpdateRoleHeader]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UpdateRoleHeader]
+GO
+CREATE PROC [dbo].[sp_UpdateRoleHeader]
+(
+@iRole_ID int,
+@vRole_Name varchar(max),
+@vRole_Desc varchar(max)
+
+)
+AS
+UPDATE [htbl_userRoles] SET [vRole_Name] = @vRole_Name, [vRole_Desc] = @vRole_Desc, [dRole_Modified] =  GETDATE() WHERE [iRole_ID] = @iRole_ID
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UpdateRolePermActive]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UpdateRolePermActive]
+GO
+CREATE PROC [dbo].[sp_UpdateRolePermActive]
+(
+@iRole_ID int,
+@iPermission_ID int,
+@bPermission_Active bit
+)
+AS
+UPDATE [ltbl_userRoleLines] SET [bPermission_Active] = @bPermission_Active, [dPermission_Removed] =  GETDATE() WHERE [iRole_ID] = @iRole_ID AND [iPermission_ID] = @iPermission_ID
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_DeactivateRole]') IS NOT NULL)
+	DROP PROC [dbo].[sp_DeactivateRole]
+GO
+CREATE PROC [dbo].[sp_DeactivateRole]
+(
+@iRole_ID int
+)
+AS
+UPDATE [htbl_userRoles] SET [bRole_Active] = 0, [dRole_Modified] =  GETDATE() WHERE [iRole_ID] = @iRole_ID
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_ActivateRole]') IS NOT NULL)
+	DROP PROC [dbo].[sp_ActivateRole]
+GO
+CREATE PROC [dbo].[sp_ActivateRole]
+(
+@iRole_ID int
+)
+AS
+UPDATE [htbl_userRoles] SET [bRole_Active] = 1, [dRole_Modified] =  GETDATE() WHERE [iRole_ID] = @iRole_ID
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_RemoveRole]') IS NOT NULL)
+	DROP PROC [dbo].[sp_RemoveRole]
+GO
+CREATE PROC [dbo].[sp_RemoveRole]
+(
+@iRole_ID int
+)
+AS
+DELETE FROM [htbl_userRoles] WHERE [iRole_ID] = @iRole_ID
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetAllUsers]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetAllUsers]
+GO
+CREATE PROC [dbo].[sp_UI_GetAllUsers]
+AS
+ SELECT u.[iUser_ID]
+,u.[vUser_Name]
+,u.[vUser_Username]
+,u.[vUser_PIN]
+,u.[vUser_Password]
+,r.[vRole_Name]
+,u.[bUser_IsActive]
+,u.[bHasAgent]
+,u.[vAgentName]
+FROM [tbl_users] u INNER JOIN [htbl_userRoles] r 
+ON u.[iRoleID] = r.[iRole_ID]
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetUsersnames]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetUsersnames]
+GO
+CREATE PROC [dbo].[sp_UI_GetUsersnames]
+AS
+SELECT [vUser_Username]
+FROM [tbl_users] WHERE [bUser_IsActive] = 1
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_CheckUserLogon]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_CheckUserLogon]
+GO
+CREATE PROC [dbo].[sp_UI_CheckUserLogon]
+(
+@vUser_Username varchar(200),
+@vUser_Password varchar(50)
+)
+AS
+SELECT [vUser_Username]
+FROM [tbl_users] WHERE [vUser_Username] = @vUser_Username AND [vUser_Password] = @vUser_Password  AND [bUser_IsActive] = 1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetActiveRoles]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetActiveRoles]
+GO
+CREATE PROC [dbo].[sp_UI_GetActiveRoles]
+AS
+SELECT [vRole_Name]
+FROM [htbl_userRoles] WHERE [bRole_Active] = 1
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_CheckUsername]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_CheckUsername]
+GO
+CREATE PROC [dbo].[sp_UI_CheckUsername]
+(
+@vUser_Username varchar(200)
+)
+AS
+SELECT [vUser_Username]
+FROM [tbl_users] WHERE [vUser_Username] = @vUser_Username
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_CheckUserPin') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_CheckUserPin]
+GO
+CREATE PROC [dbo].[sp_UI_CheckUserPin]
+(
+@vUser_PIN varchar(6)
+)
+AS
+SELECT [vUser_PIN]
+FROM [tbl_users] WHERE [vUser_PIN] = @vUser_PIN
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetRoleIDByName') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetRoleIDByName]
+GO
+CREATE PROC [dbo].[sp_UI_GetRoleIDByName]
+(
+@vRole_Name varchar(max)
+)
+AS
+SELECT [iRole_ID]
+FROM [htbl_userRoles] WHERE [vRole_Name] = @vRole_Name
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetRolePermsByName') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetRolePermsByName]
+GO
+CREATE PROC [dbo].[sp_UI_GetRolePermsByName]
+(
+@vRole_Name varchar(max)
+)
+AS
+SELECT mp.[vPermission_Name] 
+FROM [ltbl_userRoleLines] rl
+INNER JOIN [ltbl_Module_Perms] mp ON mp.[iPermission_ID] = rl.[iPermission_ID]
+INNER JOIN [htbl_userRoles] rh ON rl.[iRole_ID] = rh.[iRole_ID]
+WHERE rh.[vRole_Name] = @vRole_Name AND [bPermission_Active] = 1
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetUsersname') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetUsersname]
+GO
+CREATE PROC [dbo].[sp_MBL_GetUsersname]
+(
+@vUser_PIN varchar(6)
+)
+AS
+SELECT [vUser_Username]
+FROM [tbl_users] WHERE [vUser_PIN] = @vUser_PIN
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_ZECT_GetUsersname') IS NOT NULL)
+	DROP PROC [dbo].[sp_ZECT_GetUsersname]
+GO
+CREATE PROC [dbo].[sp_ZECT_GetUsersname]
+(
+@vUser_PIN varchar(6)
+)
+AS
+SELECT [vUser_Username]
+FROM [tbl_users] WHERE [vUser_PIN] = @vUser_PIN
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_AW_GetUsersname') IS NOT NULL)
+	DROP PROC [dbo].[sp_AW_GetUsersname]
+GO
+CREATE PROC [dbo].[sp_AW_GetUsersname]
+(
+@vUser_PIN varchar(6)
+)
+AS
+SELECT [vUser_Username]
+FROM [tbl_users] WHERE [vUser_PIN] = @vUser_PIN
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_Canning_GetUsersname') IS NOT NULL)
+	DROP PROC [dbo].[sp_Canning_GetUsersname]
+GO
+CREATE PROC [dbo].[sp_Canning_GetUsersname]
+(
+@vUser_PIN varchar(6)
+)
+AS
+SELECT [vUser_Username]
+FROM [tbl_users] WHERE [vUser_PIN] = @vUser_PIN
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_AddUser') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_AddUser]
+GO
+CREATE PROC [dbo].[sp_UI_AddUser]
+(
+@vUser_Name varchar(200),
+@vUser_Username varchar(200),
+@vUser_PIN varchar(6), 
+@vUser_Password varchar(50), 
+@bUser_IsActive bit,
+@dUser_Created datetime, 
+@iRoleID int, 
+@bHasAgent bit, 
+@vAgentName varchar(255)
+)
+AS
+INSERT INTO [tbl_users] (
+ [vUser_Name]
+,[vUser_Username]
+,[vUser_PIN]
+,[vUser_Password]
+,[bUser_IsActive]
+,[dUser_Created]
+,[iRoleID]
+,[bHasAgent]
+,[vAgentName]
+)
+VALUES (@vUser_Name, @vUser_Username, @vUser_PIN, @vUser_Password, 1, GETDATE(), @iRoleID, @bHasAgent, @vAgentName)
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_RemoveUser') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_RemoveUser]
+GO
+CREATE PROC [dbo].[sp_UI_RemoveUser]
+(
+@iUser_ID int
+)
+AS
+DELETE FROM [tbl_users] WHERE [iUser_ID] = @iUser_ID
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_UpdateUser') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_UpdateUser]
+GO
+CREATE PROC [dbo].[sp_UI_UpdateUser]
+(
+@iUser_ID int,
+@vUser_Name varchar(200), 
+@vUser_Username varchar(200),
+@vUser_PIN varchar(200), 
+@vUser_Password varchar(50),
+@dUser_Modified datetime, 
+@iRoleID int,
+@bHasAgent bit, 
+@vAgentName varchar(255)
+)
+AS
+UPDATE [tbl_users] SET 
+ [vUser_Name] = @vUser_Name
+,[vUser_Username] = @vUser_Username
+,[vUser_PIN] = @vUser_PIN
+,[vUser_Password] = @vUser_Password
+,[dUser_Modified] = GETDATE()
+,[iRoleID] = @iRoleID
+,[bHasAgent] = @bHasAgent
+,[vAgentName] = @vAgentName
+WHERE [iUser_ID] = @iUser_ID
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_ActivateUser') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_ActivateUser]
+GO
+CREATE PROC [dbo].[sp_UI_ActivateUser]
+(
+@iUser_ID int
+)
+AS
+UPDATE [tbl_users] SET [bUser_IsActive] = 1,[dUser_Modified] =  GETDATE() WHERE [iUser_ID] = @iUser_ID
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_DeactivateUser') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_DeactivateUser]
+GO
+CREATE PROC [dbo].[sp_UI_DeactivateUser]
+(
+@iUser_ID int
+)
+AS
+UPDATE [tbl_users] SET [bUser_IsActive] = 0,[dUser_Modified] =  GETDATE() WHERE [iUser_ID] = @iUser_ID
+GO
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

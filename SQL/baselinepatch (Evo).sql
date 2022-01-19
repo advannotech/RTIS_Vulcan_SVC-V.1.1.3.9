@@ -454,6 +454,188 @@ GO
 
 
 
+IF (OBJECT_ID('[dbo].[sp_UI_GetSelectCSPlanLines_Catalyst]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetSelectCSPlanLines_Catalyst]
+GO
+CREATE PROC [dbo].[sp_UI_GetSelectCSPlanLines_Catalyst]
+AS
+SELECT [StockLink], [Code], [Description_1] 
+FROM [StkItem] 
+WHERE [Code] Like '18461-%' AND [Code] Not Like '%A&W%' AND [Code] Not Like '%AW%' 
+ORDER BY [Code] ASC
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetSelectCSPlanLines_Slurry]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetSelectCSPlanLines_Slurry]
+GO
+CREATE PROC [dbo].[sp_UI_GetSelectCSPlanLines_Slurry]
+AS
+SELECT [StockLink], [Code], [Description_1] 
+FROM [StkItem] 
+WHERE [Code] Like 'TSP-%' OR [Code] Like 'VSP-%' 
+ORDER BY [Code] ASC
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetSelectCSPlanLines_AW]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetSelectCSPlanLines_AW]
+GO
+CREATE PROC [dbo].[sp_UI_GetSelectCSPlanLines_AW]
+AS
+SELECT [StockLink], [Code], [Description_1] 
+FROM [StkItem] 
+WHERE [Code] Like '%A&W%' OR [Code] Like '%AW%' 
+ORDER BY [Code] ASC
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetSelectSPPlanLines_Catalyst]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetSelectSPPlanLines_Catalyst]
+GO
+CREATE PROC [dbo].[sp_UI_GetSelectSPPlanLines_Catalyst]
+AS
+SELECT [StockLink], [Code], [Description_1] 
+FROM [StkItem] 
+WHERE [Code] Like 'TSP-%' OR [Code] Like 'VSP-%' 
+ORDER BY [Code] ASC
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetSelectSPPlanLines_Slurry]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetSelectSPPlanLines_Slurry]
+GO
+CREATE PROC [dbo].[sp_UI_GetSelectSPPlanLines_Slurry]
+AS
+SELECT [StockLink], [Code], [Description_1] 
+FROM [StkItem] 
+WHERE [Code] Like 'TPP-%' 
+ORDER BY [Code] ASC
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetSelectSPPlanLines_AW]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetSelectSPPlanLines_AW]
+GO
+CREATE PROC [dbo].[sp_UI_GetSelectSPPlanLines_AW]
+AS
+SELECT [StockLink], [Code], [Description_1] 
+FROM [StkItem] 
+WHERE [Code] Like '18461-%' AND [Code] Not Like '%A&W%' AND [Code] Not Like '%AW%' 
+ORDER BY [Code] ASC
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_ValidatePPItem]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_ValidatePPItem]
+GO
+CREATE PROC [dbo].[sp_MBL_ValidatePPItem]
+(
+@Code varchar(400)
+)
+AS
+SELECT [StockLink] FROM [StkItem] WHERE [Code] = @Code
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetPPItemDesc]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetPPItemDesc]
+GO
+CREATE PROC [dbo].[sp_MBL_GetPPItemDesc]
+(
+@Code varchar(400)
+)
+AS
+SELECT [Description_1] FROM [StkItem] WHERE [Code] = @Code
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_ValidatePPLot]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_ValidatePPLot]
+GO
+CREATE PROC [dbo].[sp_MBL_ValidatePPLot]
+(
+@cLotDescription varchar(50)
+)
+AS
+SELECT [idLotTracking] FROM [_etblLotTracking] WHERE [cLotDescription] = @cLotDescription
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetLotID]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetLotID]
+GO
+CREATE PROC [dbo].[sp_MBL_GetLotID]
+(
+@cLotDescription varchar(50)
+)
+AS
+SELECT [idLotTracking] FROM [_etblLotTracking] WHERE [cLotDescription] = @cLotDescription
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetPPItemInfo]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetPPItemInfo]
+GO
+CREATE PROC [dbo].[sp_MBL_GetPPItemInfo]
+(
+@Code varchar(400)
+)
+AS
+SELECT [StockLink], [Description_1] FROM [StkItem] WHERE [Code] = @Code
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_InsertPowderForManufacture]') IS NOT NULL)
+	DROP PROC [dbo].[UI_InsertPowderForManufacture]
+GO
+CREATE PROC [dbo].[UI_InsertPowderForManufacture]
+(
+@sBOMItemCode varchar(500),
+@fQtyToProduce float,
+@sLotNumber varchar(500),
+@sProjectCode varchar(500)
+)
+AS
+INSERT INTO __SLtbl_MFPImports (sBOMItemCode, fQtyToProduce, sLotNumber, sProjectCode )
+VALUES ( @sBOMItemCode, @fQtyToProduce, @sLotNumber, @sProjectCode)
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWhseAllEvoWhses]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWhseAllEvoWhses]
+GO
+CREATE PROC [dbo].[sp_UI_getWhseAllEvoWhses]
+AS
+SELECT [WhseLink], [Name], '' AS [Add]
+FROM [WhseMst]
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetEvoAgents') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetEvoAgents]
+GO
+CREATE PROC [dbo].[sp_UI_GetEvoAgents]
+AS
+SELECT [cAgentName] 
+FROM [_rtblAgents]
+GO
+
+
+
+
+
+
+
+
+
+
+
 
 
 

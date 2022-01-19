@@ -13,7 +13,7 @@ Public Class Core
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [iModule_ID], [vModule_Name] FROM [htbl_Modules] WHERE [bModuleActive] = 1 ORDER BY [Indx] ASC", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_GetActiveModules]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -44,15 +44,10 @@ Public Class Core
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
 
-                    Dim sqlComm As New SqlCommand(" SELECT p.[vPermission_Name], p.[vNestNode] 
-                                                    FROM [ltbl_Module_Perms] p
-                                                    INNER JOIN [ltbl_userRoleLines] rl ON p.[iPermission_ID] = rl.[iPermission_ID]
-                                                    INNER JOIN [tbl_users] u ON u.[iRoleID] = rl.[iRole_ID]
-                                                    WHERE rl.[bPermission_Active] = 1 AND p.[iModuleID] = @1 AND u.[vUser_Username] = @2 AND p.[bUIPerm] = 1
-                                                    ORDER BY p.[Indx]", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetModuleUserPermission] @iModuleID, @vUser_Username", sqlConn)
 
-                    sqlComm.Parameters.Add(New SqlParameter("@1", moduleID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", userName))
+                    sqlComm.Parameters.Add(New SqlParameter("@iModuleID", moduleID))
+                    sqlComm.Parameters.Add(New SqlParameter("@vUser_Username", userName))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -82,13 +77,8 @@ Public Class Core
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT p.[vPermission_Name]
-                                                    FROM [ltbl_Module_Perms] p
-                                                    INNER JOIN [ltbl_userRoleLines] rl ON p.[iPermission_ID] = rl.[iPermission_ID]
-                                                    INNER JOIN [tbl_users] u ON u.[iRoleID] = rl.[iRole_ID]
-                                                    WHERE rl.[bPermission_Active] = 1 AND u.[vUser_Username] = @1 AND p.[bPGMPerm] = 1
-                                                    ORDER BY p.[Indx]", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", userName))
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_PGM_GetModuleUserPermission] @vUser_Username", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@vUser_Username", userName))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -116,14 +106,8 @@ Public Class Core
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT DISTINCT lt.[vLabel_Type_Name] 
-                                                    FROM [tbl_labelTypes] lt
-                                                    INNER JOIN [rtbl_LabelPermCom] lpc ON lpc.[iLabelID] = lt.[iLabel_ID]
-                                                    INNER JOIN [ltbl_userRoleLines] rl ON rl.[iPermission_ID] = lpc.[iPermissionID]
-                                                    INNER JOIN [htbl_userRoles] rh ON rl.[iRole_ID] = rh.[iRole_ID]
-                                                    INNER JOIN [tbl_users] u ON u.[iRoleID] = rh.[iRole_ID]
-                                                    WHERE rl.[bPermission_Active] = '1' AND u.[vUser_Username] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", userName))
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_UI_GetActiveLabelTypes] @vUser_Username", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@vUser_Username", userName))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -153,11 +137,8 @@ Public Class Core
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT l.[vLabel_Type_Name] FROM [rtbl_LabelPermCom] lpc 
-                                                    INNER JOIN [ltbl_Module_Perms] p ON lpc.[iPermissionID] = p.[iPermission_ID]
-                                                    INNER JOIN [tbl_labelTypes] l ON lpc.[iLabelID] = l.[iLabel_ID]
-                                                    WHERE p.[vPermission_Name] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", permission))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetCompatiblelabels] @vPermission_Name", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@vPermission_Name", permission))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -187,8 +168,8 @@ Public Class Core
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [bHasLabel] FROM [ltbl_Module_Perms] WHERE [vPermission_Name] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", permissionName))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetPermissionHasLabel] @vPermission_Name", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@vPermission_Name", permissionName))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -214,9 +195,8 @@ Public Class Core
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT [iPermission_ID]
-                                                    FROM [ltbl_Module_Perms] WHERE [vPermission_Name] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", permName))
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_UI_GetPermID] @vPermission_Name", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@vPermission_Name", permName))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -243,9 +223,8 @@ Public Class Core
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT [vLabelName] FROM [rtbl_PermLabels]
-                                                    WHERE [iPermID] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", permID))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetPermLabelsNew] @iPermID", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iPermID", permID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -276,7 +255,7 @@ Public Class Core
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [SettingValue] FROM [tbl_RTSettings] WHERE [Setting_Name] = 'GRIDOVERRIDE'", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetGridOverridePassword]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -322,8 +301,8 @@ Public Class Core
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("DELETE FROM [rtbl_PermLabels] WHERE [iPermID] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", permID))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_DeletePermLabels] @iPermID", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iPermID", permID))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -347,10 +326,7 @@ Public Class Role_Managemet
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT rh.[iRole_ID], rh.[vRole_Name], rh.[vRole_Desc], STUFF((SELECT ',' + CAST(p.[vPermission_Name] AS VARCHAR(MAX)) FROM [ltbl_userRoleLines] rl
-				                                     INNER JOIN [ltbl_Module_Perms] p ON p.[iPermission_ID] = rl.iPermission_ID
-				                                     WHERE rh.iRole_ID = rl.[iRole_ID] AND rl.[bPermission_Active] = 1
-				                                     FOR XML PATH('')),1,1,''), rh.[bRole_Active] FROM [htbl_userRoles] rh", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_GetAllRoles]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -379,7 +355,7 @@ Public Class Role_Managemet
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [vPermission_Name] FROM [ltbl_Module_Perms] WHERE [bPermissionActive] = 1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_GetActivePermissions] ", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -409,8 +385,8 @@ Public Class Role_Managemet
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [iRole_ID] FROM [htbl_userRoles] WHERE [vRole_Name] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", roleName))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetAddedRoleID] @vRole_Name", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@vRole_Name", roleName))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -437,9 +413,8 @@ Public Class Role_Managemet
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT [iPermission_ID]
-                                                    FROM [ltbl_Module_Perms] WHERE [vPermission_Name] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", permName))
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_GetPermID] @vPermission_Name", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@vPermission_Name", permName))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -466,12 +441,8 @@ Public Class Role_Managemet
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT p.[vPermission_Name]
-		                                                 ,rp.[bPermission_Active]
-	                                               FROM [ltbl_userRoleLines] rp 
-                                                   INNER JOIN [ltbl_Module_Perms] p ON p.[iPermission_ID] = rp.[iPermission_ID]
-                                                   WHERE rp.[iRole_ID] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", roleID))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_GetAllRolePerms] @iRole_ID", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iRole_ID", roleID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -501,9 +472,8 @@ Public Class Role_Managemet
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [iRoleID]
-	                                           FROM [tbl_users] WHERE [iRoleID] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", roleID))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_CheckRoleInUse] @iRole_ID", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iRole_ID", roleID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -532,14 +502,9 @@ Public Class Role_Managemet
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [htbl_userRoles] ([vRole_Name]
-                                                                                ,[vRole_Desc]
-                                                                                ,[bRole_Active]
-                                                                                ,[dRole_Created]
-                                                                                )
-                                                VALUES (@1, @2, 1, GETDATE())", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", RoleName))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", RoleDesc))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_AddRoleHeader] @vRole_Name, @vRole_Desc", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@vRole_Name", RoleName))
+                    sqlComm.Parameters.Add(New SqlParameter("@vRole_Desc", RoleDesc))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -554,14 +519,9 @@ Public Class Role_Managemet
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [ltbl_userRoleLines] ([iRole_ID]
-                                                                                ,[iPermission_ID]
-                                                                                ,[bPermission_Active]
-                                                                                ,[dPermission_Added]
-                                                                                )
-                                                VALUES (@1, @2, 1, GETDATE())", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", RoleID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", PermID))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_AddRoleLine] @iRole_ID, @iPermission_ID", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iRole_ID", RoleID))
+                    sqlComm.Parameters.Add(New SqlParameter("@iPermission_ID", PermID))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -578,10 +538,10 @@ Public Class Role_Managemet
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [htbl_userRoles] SET [vRole_Name] = @2, [vRole_Desc] = @3, [dRole_Modified] =  GETDATE() WHERE [iRole_ID] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", RoleID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", roleName))
-                    sqlComm.Parameters.Add(New SqlParameter("@3", roleDesc))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UpdateRoleHeader] @iRole_ID, @vRole_Name, @vRole_Desc", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iRole_ID", RoleID))
+                    sqlComm.Parameters.Add(New SqlParameter("@vRole_Name", roleName))
+                    sqlComm.Parameters.Add(New SqlParameter("@vRole_Desc", roleDesc))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -596,10 +556,10 @@ Public Class Role_Managemet
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [ltbl_userRoleLines] SET [bPermission_Active] = @3, [dPermission_Removed] =  GETDATE() WHERE [iRole_ID] = @1 AND [iPermission_ID] = @2", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", RoleID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", permissionID))
-                    sqlComm.Parameters.Add(New SqlParameter("@3", Active))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UpdateRolePermActive] @iRole_ID, @iPermission_ID, @bPermission_Active", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iRole_ID", RoleID))
+                    sqlComm.Parameters.Add(New SqlParameter("@iPermission_ID", permissionID))
+                    sqlComm.Parameters.Add(New SqlParameter("@bPermission_Active", Active))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -614,8 +574,8 @@ Public Class Role_Managemet
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [htbl_userRoles] SET [bRole_Active] = 0, [dRole_Modified] =  GETDATE() WHERE [iRole_ID] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", RoleID))
+                    Dim sqlComm As New SqlCommand("EXEC  [dbo].[sp_DeactivateRole] @iRole_ID", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iRole_ID", RoleID))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -630,8 +590,8 @@ Public Class Role_Managemet
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [htbl_userRoles] SET [bRole_Active] = 1, [dRole_Modified] =  GETDATE() WHERE [iRole_ID] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", RoleID))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_ActivateRole] @iRole_ID", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iRole_ID", RoleID))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -648,8 +608,8 @@ Public Class Role_Managemet
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("DELETE FROM [htbl_userRoles] WHERE [iRole_ID] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", RoleID))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_RemoveRole] @iRole_ID", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iRole_ID", RoleID))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -675,17 +635,7 @@ Public Class User_Management
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT u.[iUser_ID]
-                                                ,u.[vUser_Name]
-                                                ,u.[vUser_Username]
-                                                ,u.[vUser_PIN]
-                                                ,u.[vUser_Password]
-	                                            ,r.[vRole_Name]
-                                                ,u.[bUser_IsActive]
-                                                ,u.[bHasAgent]
-                                                ,u.[vAgentName]
-	                                            FROM [tbl_users] u INNER JOIN [htbl_userRoles] r 
-	                                            ON u.[iRoleID] = r.[iRole_ID]", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetAllUsers]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -715,8 +665,7 @@ Public Class User_Management
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT [vUser_Username]
-	                                                 FROM [tbl_users] WHERE [bUser_IsActive] = 1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetUsersnames]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -749,12 +698,11 @@ Public Class User_Management
 
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT [vUser_Username]
-	                                                FROM [tbl_users] WHERE [vUser_Username] = @1 AND [vUser_Password] = @2  AND [bUser_IsActive] = 1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC  [dbo].[sp_UI_CheckUserLogon] @vUser_Username, @vUser_Password", sqlConn)
                     password = password.Replace(" ", "+")
 
-                    sqlComm.Parameters.Add(New SqlParameter("@1", username))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", password))
+                    sqlComm.Parameters.Add(New SqlParameter("@vUser_Username", username))
+                    sqlComm.Parameters.Add(New SqlParameter("@vUser_Password", password))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -782,8 +730,7 @@ Public Class User_Management
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT [vRole_Name]
-                                                    FROM [htbl_userRoles] WHERE [bRole_Active] = 1", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_UI_GetActiveRoles]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -813,9 +760,8 @@ Public Class User_Management
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [vUser_Username]
-                                                   FROM [tbl_users] WHERE [vUser_Username] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", username))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_CheckUsername] @vUser_Username", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@vUser_Username", username))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -842,9 +788,8 @@ Public Class User_Management
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [vUser_PIN]
-                                                   FROM [tbl_users] WHERE [vUser_PIN] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", pin))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_CheckUserPin] @vUser_PIN", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@vUser_PIN", pin))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -871,9 +816,8 @@ Public Class User_Management
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT [iRole_ID]
-                                                    FROM [htbl_userRoles] WHERE [vRole_Name] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", roleName))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetRoleIDByName] @vRole_Name ", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@vRole_Name", roleName))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -900,11 +844,8 @@ Public Class User_Management
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT mp.[vPermission_Name] FROM [ltbl_userRoleLines] rl
-                                                     INNER JOIN [ltbl_Module_Perms] mp ON mp.[iPermission_ID] = rl.[iPermission_ID]
-                                                     INNER JOIN [htbl_userRoles] rh ON rl.[iRole_ID] = rh.[iRole_ID]
-                                                     WHERE rh.[vRole_Name] = @1 AND [bPermission_Active] = 1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", roleName))
+                    Dim sqlComm As New SqlCommand("  EXEC [dbo].[sp_UI_GetRolePermsByName] @vRole_Name", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@vRole_Name", roleName))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -934,9 +875,8 @@ Public Class User_Management
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT [vUser_Username]
-	                                                 FROM [tbl_users] WHERE [vUser_PIN] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", userPin))
+                    Dim sqlComm As New SqlCommand("  EXEC [dbo].[sp_MBL_GetUsersname] @vUser_PIN", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@vUser_PIN", userPin))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -960,9 +900,8 @@ Public Class User_Management
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT [vUser_Username]
-	                                                 FROM [tbl_users] WHERE [vUser_PIN] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", userPin))
+                    Dim sqlComm As New SqlCommand("  EXEC [dbo].[sp_ZECT_GetUsersname] @vUser_PIN", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@vUser_PIN", userPin))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -986,9 +925,8 @@ Public Class User_Management
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT [vUser_Username]
-	                                                 FROM [tbl_users] WHERE [vUser_PIN] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", userPin))
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_AW_GetUsersname] @vUser_PIN", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@vUser_PIN", userPin))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -1011,9 +949,8 @@ Public Class User_Management
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT [vUser_Username]
-	                                                 FROM [tbl_users] WHERE [vUser_PIN] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", userPin))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_Canning_GetUsersname] @vUser_PIN", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@vUser_PIN", userPin))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -1040,24 +977,14 @@ Public Class User_Management
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [tbl_users] ([vUser_Name]
-                                                                                ,[vUser_Username]
-                                                                                ,[vUser_PIN]
-                                                                                ,[vUser_Password]
-                                                                                ,[bUser_IsActive]
-                                                                                ,[dUser_Created]
-                                                                                ,[iRoleID]
-                                                                                ,[bHasAgent]
-                                                                                ,[vAgentName]
-                                                                                )
-                                                VALUES (@1, @2, @3, @4, 1, GETDATE(), @5, @6, @7)", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", name))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", username))
-                    sqlComm.Parameters.Add(New SqlParameter("@3", pin))
-                    sqlComm.Parameters.Add(New SqlParameter("@4", password))
-                    sqlComm.Parameters.Add(New SqlParameter("@5", roleId))
-                    sqlComm.Parameters.Add(New SqlParameter("@6", hasAgent))
-                    sqlComm.Parameters.Add(New SqlParameter("@7", evoAgent))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_AddUser] @vUser_Name, @vUser_Username, @vUser_PIN, @vUser_Password, 1, GETDATE(), @iRoleID, @bHasAgent, @vAgentName", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@vUser_Name", name))
+                    sqlComm.Parameters.Add(New SqlParameter("@vUser_Username", username))
+                    sqlComm.Parameters.Add(New SqlParameter("@vUser_PIN", pin))
+                    sqlComm.Parameters.Add(New SqlParameter("@vUser_Password", password))
+                    sqlComm.Parameters.Add(New SqlParameter("@iRoleID", roleId))
+                    sqlComm.Parameters.Add(New SqlParameter("@bHasAgent", hasAgent))
+                    sqlComm.Parameters.Add(New SqlParameter("@vAgentName", evoAgent))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1074,8 +1001,8 @@ Public Class User_Management
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("DELETE FROM [tbl_users] WHERE [iUser_ID] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", RoleID))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_RemoveUser] @iUser_ID", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iUser_ID", RoleID))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1092,23 +1019,15 @@ Public Class User_Management
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [tbl_users] SET [vUser_Name] = @2
-                                                                                ,[vUser_Username] = @3
-                                                                                ,[vUser_PIN] = @4
-                                                                                ,[vUser_Password] = @5
-                                                                                ,[dUser_Modified] = GETDATE()
-                                                                                ,[iRoleID] = @6
-                                                                                ,[bHasAgent] = @7
-                                                                                ,[vAgentName] = @8
-                                                                                WHERE [iUser_ID] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", userID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", name))
-                    sqlComm.Parameters.Add(New SqlParameter("@3", userName))
-                    sqlComm.Parameters.Add(New SqlParameter("@4", pin))
-                    sqlComm.Parameters.Add(New SqlParameter("@5", password))
-                    sqlComm.Parameters.Add(New SqlParameter("@6", roleID))
-                    sqlComm.Parameters.Add(New SqlParameter("@7", hasAgent))
-                    sqlComm.Parameters.Add(New SqlParameter("@8", evoAgent))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_UpdateUser]@iUser_ID, @vUser_Name, @vUser_Username, @vUser_PIN, @vUser_Password, GETDATE(), @iRoleID,@bHasAgent,@vAgentName", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iUser_ID", userID))
+                    sqlComm.Parameters.Add(New SqlParameter("@vUser_Name", name))
+                    sqlComm.Parameters.Add(New SqlParameter("@vUser_Username", userName))
+                    sqlComm.Parameters.Add(New SqlParameter("@vUser_PIN", pin))
+                    sqlComm.Parameters.Add(New SqlParameter("@vUser_Password", password))
+                    sqlComm.Parameters.Add(New SqlParameter("@iRoleID", roleID))
+                    sqlComm.Parameters.Add(New SqlParameter("@bHasAgent", hasAgent))
+                    sqlComm.Parameters.Add(New SqlParameter("@vAgentName", evoAgent))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1123,8 +1042,8 @@ Public Class User_Management
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [tbl_users] SET [bUser_IsActive] = 1,[dUser_Modified] =  GETDATE() WHERE [iUser_ID] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", UserID))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_ActivateUser] @iUser_ID", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iUser_ID", UserID))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1139,8 +1058,8 @@ Public Class User_Management
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [tbl_users] SET [bUser_IsActive] = 0,[dUser_Modified] =  GETDATE() WHERE [iUser_ID] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", UserID))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_DeactivateUser] @iUser_ID ", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iUser_ID", UserID))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1160,9 +1079,7 @@ Public Class User_Management
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand(" SELECT
-                                                [cAgentName] 
-                                                FROM [_rtblAgents]", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetEvoAgents] ", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
