@@ -13,9 +13,7 @@ Public Class PowderPrep
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("    SELECT w.[Code], w.[Name] FROM [RTIS_WarehouseLookUp_PPtFS] wl
-                                                       INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
-                                                       WHERE [bEnabled] = 1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetPowderPrepWhes]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -45,8 +43,7 @@ Public Class PowderPrep
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT [iLineID],[vItemCode],[vItemDesc],[vLotDesc],[dQty],[vUsername],[dtDateAdded], '' AS [ManufactureButton], ''  AS [EditButton]
-                                                    FROM [tbl_RTIS_Powder_Prep] WHERE [bManufactured] = '0'", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetWaitingPowders]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -75,8 +72,8 @@ Public Class PowderPrep
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT ISNULL([bManufactured], 0) FROM [tbl_RTIS_Powder_Prep] WHERE [iLineID] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", lineID))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetPowderManufactured] @iLineID", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iLineID", lineID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -105,9 +102,7 @@ Public Class PowderPrep
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [iLineID],[vItemCode],[vItemDesc],[vLotDesc],[dQty],[dtDateAdded]
-                                                FROM [tbl_RTIS_Powder_Prep] WHERE [bManufactured] = '0'
-                                                ORDER BY [dtDateAdded] DESC", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetPowderPrepMF]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -136,19 +131,9 @@ Public Class PowderPrep
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [vItemCode], [vItemDesc], [vLotDesc], [dQty], [vUsername], [dtDateAdded], ISNULL([bManufactured], 0), [dtManufDate], [vUserManuf], ISNULL([bTransfered], 0)       
-                                                  ,[dtTransDate]
-                                                  ,[vUserTrans]
-                                                  , ISNULL([bRecTrans], 0)
-                                                  ,[dtRecTrans]
-                                                  ,[vUserRec]
-                                                  ,[vUserEdited]
-                                                  ,[dtDateEdited]
-                                                  ,[vEditReason]
-                                                  ,[dOldQty] FROM [tbl_RTIS_Powder_Prep] WHERE [dtDateAdded] BETWEEN @1 AND @2
-                                                   ORDER BY [dtDateAdded] DESC", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", dateFrom))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", dateTo))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetPowderPrepRecords] @dateFrom, @dateTo", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@dateFrom", dateFrom))
+                    sqlComm.Parameters.Add(New SqlParameter("@dateTo", dateTo))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -178,11 +163,9 @@ Public Class PowderPrep
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT h.[vItemCode], h.[vLotDesc],  SUM(l.[dWeightOut]) FROM [ltbl_RTIS_PGM_Trans] l 
-                                                    INNER JOIN [htbl_RTIS_PGM_Manuf] h ON h.[iLineID] = l.[iHeaderID]
-                                                    WHERE [ManufItem] = @1 AND [ManufBatch] = @2 GROUP BY h.[vItemCode], h.[vLotDesc]", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", lotNumber))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetPowderRMs] @itemCode, @lotNumber", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@itemCode", itemCode))
+                    sqlComm.Parameters.Add(New SqlParameter("@lotNumber", lotNumber))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -211,12 +194,12 @@ Public Class PowderPrep
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [tbl_RTIS_Powder_Prep] SET [dQty] = @2, [dOldQty] = @3, [vUserEdited] = @4, [dtDateEdited] = GETDATE(), [vEditReason] = @5 WHERE [iLineID] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", LineID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", newQty))
-                    sqlComm.Parameters.Add(New SqlParameter("@3", oldQty))
-                    sqlComm.Parameters.Add(New SqlParameter("@4", UserName))
-                    sqlComm.Parameters.Add(New SqlParameter("@5", reason))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_editPowderQty] @LineID, @newQty, @oldQty, @UserName, @reason", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@LineID", LineID))
+                    sqlComm.Parameters.Add(New SqlParameter("@newQty", newQty))
+                    sqlComm.Parameters.Add(New SqlParameter("@oldQty", oldQty))
+                    sqlComm.Parameters.Add(New SqlParameter("@UserName", UserName))
+                    sqlComm.Parameters.Add(New SqlParameter("@reason", reason))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -232,9 +215,9 @@ Public Class PowderPrep
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [tbl_RTIS_Powder_Prep] SET [bManufactured] = '1', [dtManufDate] = GETDATE(), [vUserManuf] = @2 WHERE [iLineID] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", LineID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", UserName))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_setPPManufactured] @LineID, @UserName", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@LineID", LineID))
+                    sqlComm.Parameters.Add(New SqlParameter("@UserName", UserName))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -250,9 +233,9 @@ Public Class PowderPrep
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [tbl_RTIS_Powder_Prep] SET [bManufactured] = '1', [dtManufDateManual] = GETDATE(), [vUserManufManual] = @2 WHERE [iLineID] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", LineID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", UserName))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_setPPManufacturedManual] @LineID, @UserName", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@LineID", LineID))
+                    sqlComm.Parameters.Add(New SqlParameter("@UserName", UserName))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -270,15 +253,14 @@ Public Class PowderPrep
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [tbl_RTIS_Powder_Prep] ([iStockID], [vItemCode], [vItemDesc], [iLotTrackingID], [vLotDesc], [dQty], [vUsername], [dtDateAdded], [bManufactured], [bTransfered])
-                                                                               VALUES (@1, @2, @3, @4, @5, @6, @7, GETDATE(), 0, 0)", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", stockID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", itemCode))
-                    sqlComm.Parameters.Add(New SqlParameter("@3", itemDesc))
-                    sqlComm.Parameters.Add(New SqlParameter("@4", lotID))
-                    sqlComm.Parameters.Add(New SqlParameter("@5", lotDesc))
-                    sqlComm.Parameters.Add(New SqlParameter("@6", qty))
-                    sqlComm.Parameters.Add(New SqlParameter("@7", username))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_insertPowderPrep] @iStockID, @vItemCode, @vItemDesc, @iLotTrackingID, @vLotDesc, @dQty, @vUsername", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iStockID", stockID))
+                    sqlComm.Parameters.Add(New SqlParameter("@vItemCode", itemCode))
+                    sqlComm.Parameters.Add(New SqlParameter("@vItemDesc", itemDesc))
+                    sqlComm.Parameters.Add(New SqlParameter("@iLotTrackingID", lotID))
+                    sqlComm.Parameters.Add(New SqlParameter("@vLotDesc", lotDesc))
+                    sqlComm.Parameters.Add(New SqlParameter("@dQty", qty))
+                    sqlComm.Parameters.Add(New SqlParameter("@vUsername", username))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -299,8 +281,8 @@ Public Class PowderPrep
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("  SELECT [StockLink] FROM [StkItem] WHERE [Code] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_MBL_ValidatePPItem] @Code", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@Code", itemCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -331,8 +313,8 @@ Public Class PowderPrep
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("  SELECT [Description_1] FROM [StkItem] WHERE [Code] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetPPItemDesc] @Code", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@Code", itemCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -363,8 +345,8 @@ Public Class PowderPrep
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("  SELECT [idLotTracking] FROM [_etblLotTracking] WHERE [cLotDescription] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", lotNumber))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_ValidatePPLot] @cLotDescription", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@cLotDescription", lotNumber))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -395,8 +377,8 @@ Public Class PowderPrep
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("  SELECT [idLotTracking] FROM [_etblLotTracking] WHERE [cLotDescription] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", lotNumber))
+                    Dim sqlComm As New SqlCommand("  EXEC [dbo].[sp_MBL_GetLotID] @cLotDescription", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@cLotDescription", lotNumber))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -427,7 +409,7 @@ Public Class PowderPrep
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("  SELECT [StockLink], [Description_1] FROM [StkItem] WHERE [Code] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("  EXEC [dbo].[sp_MBL_GetPPItemInfo] @Code", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -461,11 +443,11 @@ Public Class PowderPrep
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO __SLtbl_MFPImports (sBOMItemCode, fQtyToProduce, sLotNumber, sProjectCode ) VALUES ( @1, @2, @3, @4)", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", qty))
-                    sqlComm.Parameters.Add(New SqlParameter("@3", lotNumber))
-                    sqlComm.Parameters.Add(New SqlParameter("@4", project))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[UI_InsertPowderForManufacture] @sBOMItemCode, @fQtyToProduce, @sLotNumber, @sProjectCode", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@sBOMItemCode", itemCode))
+                    sqlComm.Parameters.Add(New SqlParameter("@fQtyToProduce", qty))
+                    sqlComm.Parameters.Add(New SqlParameter("@sLotNumber", lotNumber))
+                    sqlComm.Parameters.Add(New SqlParameter("@sProjectCode", project))
 
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()

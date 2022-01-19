@@ -13,9 +13,9 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [vRMCode], [vRMDesc], '' FROM [tbl_RTIS_AW_Raws] WHERE [vAWCode] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetAWCatalystRaws] @catalystCode", sqlConn)
                     sqlConn.Open()
-                    sqlComm.Parameters.Add(New SqlParameter("@1", catalystCode))
+                    sqlComm.Parameters.Add(New SqlParameter("@catalystCode", catalystCode))
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
                         ReturnData &= Convert.ToString(sqlReader.Item(0)) + "|" + Convert.ToString(sqlReader.Item(1)) + "|" + Convert.ToString(sqlReader.Item(2)) + "~"
@@ -37,10 +37,10 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [vRMCode] FROM [tbl_RTIS_AW_Raws] WHERE [vAWCode] = @1 AND [vRMCode] = @2", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetAWLinkExists] @catalystCode, @rmCode", sqlConn)
                     sqlConn.Open()
-                    sqlComm.Parameters.Add(New SqlParameter("@1", catalystCode))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", rmCode))
+                    sqlComm.Parameters.Add(New SqlParameter("@catalystCode", catalystCode))
+                    sqlComm.Parameters.Add(New SqlParameter("@rmCode", rmCode))
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
                         ReturnData = Convert.ToString(sqlReader.Item(0))
@@ -63,9 +63,7 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT aj.[iLIneID], aj.[vJobUnq], aj.[vAWCode], aj.[vLotNumber], aj.[dQty], aj.[dQtyManuf], SUM(ao.dQty), aj.[dtStarted], aj.[vUserStarted],[bJobRunning] FROM [tbl_RTIS_AW_Jobs] aj
-  INNER JOIN [tbl_RTIS_AW_OutPut] ao ON ao.[iJobID] = aj.[iLIneID]
-  WHERE ISNULL(ao.[bManuf], 0) = 0 GROUP BY aj.[iLIneID], aj.[vJobUnq], aj.[vAWCode], aj.[vLotNumber], aj.[dQty], aj.[dQtyManuf], aj.[dtStarted], aj.[vUserStarted],[bJobRunning]", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GeAWJobsToManufacture]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -88,8 +86,8 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [iLIneID], [vPalletCode], [vPalletNo], [dQty], [dtDateRecorded], [vUserRecorded], '' FROM [tbl_RTIS_AW_OutPut] WHERE [iJobID] = @1 AND ISNULL([bManuf], 0) = 0", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetAWPalletsToManufacture] @headerID", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@headerID", headerID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -113,9 +111,8 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("	SELECT SUM([dQty]) AS [Total] FROM [tbl_RTIS_AW_OutPut]
-                                                    WHERE ISNULL([bManuf], 0) = 0 AND [iJobID] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetAWBatchTotal] @headerID", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@headerID", headerID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -138,8 +135,8 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("	SELECT [vCatalystCode], [vCatalystLot] FROM [tbl_RTIS_AW_Input] WHERE [iJobID] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetAWRawMaterials] @headerID", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@headerID", headerID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     Dim builder As New Text.StringBuilder()
@@ -164,7 +161,7 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [vJobUnq] FROM [tbl_RTIS_AW_Jobs] WHERE [bJobRunning] = 1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_AW_CheckJobRunning]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -187,8 +184,8 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [bJobRunning] FROM [tbl_RTIS_AW_Jobs] WHERE [bJobRunning] = 1 AND [vJobUnq] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", jobNo))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_AW_CheckSpecificJobRunning] @jobNo", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@jobNo", jobNo))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -211,8 +208,8 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [iLIneID] FROM [tbl_RTIS_AW_Jobs] WHERE [bJobRunning] = 1 AND [vJobUnq] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", jobNo))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_AW_GetJobID] @jobNo", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@jobNo", jobNo))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -235,9 +232,8 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT [vAWCode], [vLotNumber], [vPGMCode], [vPGMLot], [dQty], [dQtyManuf]
-                                                     FROM [tbl_RTIS_AW_Jobs] WHERE [vJobUnq] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", jobNo))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_AW_GetJobInfo] @jobNo", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@jobNo", jobNo))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -260,8 +256,8 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT TOP 1 [vPalletCode] FROM [tbl_RTIS_AW_OutPut] WHERE [iJobID] = @1 ORDER BY [iLIneID] DESC", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", jobId))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_AW_GetLastJobPallet] @jobNo", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@jobNo", jobId))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -289,10 +285,8 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand(" SELECT [Code], [Bar_Code], [cSimpleCode], b.[cBinLocationName], [Description_1], [Description_2], [Description_3], [ItemGroup] 
-                                                FROM [StkItem] s
-                                                LEFT JOIN [_btblBINLocation] b ON s.[iBinLocationID] = b.[idBinLocation] WHERE [ucIICoatStage] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_AW_GetLabelInfo_AWTags] @itemCode", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@itemCode", itemCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -319,9 +313,9 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT [vLotNumber] FROM [tbl_RTIS_AW_Jobs] WHERE [dtStarted] >= DATEADD(DAY, -@2, GETDATE()) AND [vAWCode] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", Convert.ToInt32(days)))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_AW_GetValidReprintJobLots] @itemCode, @days", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@itemCode", itemCode))
+                    sqlComm.Parameters.Add(New SqlParameter("@days", Convert.ToInt32(days)))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -344,9 +338,9 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [vJobUnq] froM [tbl_RTIS_AW_Jobs] WHERE [vAWCode] = @1 AND [vLotNumber] = @2", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", lot))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_AW_GetReprintJobNumber] @itemCode, @lot", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@itemCode", itemCode))
+                    sqlComm.Parameters.Add(New SqlParameter("@lot", lot))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -369,8 +363,8 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT [vAWCode], [vLotNumber], [dQty], [dQtyManuf], [vPGMCode], [vPGMLot]  FROM [tbl_RTIS_AW_Jobs] WHERE [vJobUnq] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", jobNo))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_AW_GetReprintJobInfo] @jobNo", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@jobNo", jobNo))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -398,10 +392,8 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand(" SELECT [Code], [Bar_Code], [cSimpleCode], b.[cBinLocationName], [Description_1], [Description_2], [Description_3], [ItemGroup] 
-                                                FROM [StkItem] s
-                                                LEFT JOIN [_btblBINLocation] b ON s.[iBinLocationID] = b.[idBinLocation] WHERE [ucIICoatStage] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_AW_GetReprintLabelInfo] @itemCode", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@itemCode", itemCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -428,9 +420,8 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT ao.[vPalletNo], ao.[vPalletCode], aj.[vAWCode], aj.[vLotNumber], ao.[dQty] FROM [tbl_RTIS_AW_OutPut] ao
-	                                                INNER JOIN [tbl_RTIS_AW_Jobs] aj ON aj.[iLIneID] = ao.[iJobID] WHERE aj.[vJobUnq] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", jobNo))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_AW_GetJobPallets] @jobNo", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@jobNo", jobNo))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -458,10 +449,9 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELEcT [vUnqBarcode] FROM [tbl_unqBarcodes]
-                                                        WHERE [vUnqBarcode] LIKE @1 AND [vUnqBarcode] LIKE @2", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", "%" + itemCode + "%"))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", "%" + jobNO + "%"))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_AW_GetAWUnq] @itemCode, @jobNo", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@itemCode", "%" + itemCode + "%"))
+                    sqlComm.Parameters.Add(New SqlParameter("@jobNo", "%" + jobNO + "%"))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -489,10 +479,8 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand(" SELECT [Code], [Bar_Code], [cSimpleCode], b.[cBinLocationName], [Description_1], [Description_2], [Description_3], [ItemGroup] 
-                                                FROM [StkItem] s
-                                                LEFT JOIN [_btblBINLocation] b ON s.[iBinLocationID] = b.[idBinLocation] WHERE [ucIICoatStage] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_AW_GetReprintInfo_AWTag] @itemCode", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@itemCode", itemCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -519,9 +507,8 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT [vAWCode], [vLotNumber], [vPGMCode], [vPGMLot], [dQty], [dQtyManuf]
-                                                     FROM [tbl_RTIS_AW_Jobs] WHERE [vJobUnq] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", jobNo))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_AW_GetJobInfo_CJ] @jobNo", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@jobNo", jobNo))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -544,7 +531,7 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [vJobUnq] FROM [tbl_RTIS_AW_Jobs] WHERE [bJobRunning] = 1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_AW_CheckJobRunning_RO]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -567,9 +554,8 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT [vAWCode], [vLotNumber], [vPGMCode], [vPGMLot], [dQty], [dQtyManuf]
-                                                     FROM [tbl_RTIS_AW_Jobs] WHERE [vJobUnq] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", jobNo))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_AW_GetJobInfo_RO] @jobNo", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@jobNo", jobNo))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -592,9 +578,9 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT [vLotNumber] FROM [tbl_RTIS_AW_Jobs] WHERE [dtStarted] >= DATEADD(DAY, -@2, GETDATE()) AND [vAWCode] = @1 AND ISNULL([bJobRunning], 0) = 0", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", Convert.ToInt32(days)))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_AW_GetValidReopenJobLots] @itemCode, @days", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@itemCode", itemCode))
+                    sqlComm.Parameters.Add(New SqlParameter("@days", Convert.ToInt32(days)))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -617,9 +603,9 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [vJobUnq] froM [tbl_RTIS_AW_Jobs] WHERE [vAWCode] = @1 AND [vLotNumber] = @2", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", lot))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_AW_GetReprintJobNumber_RO] @itemCode, @lot", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@itemCode", itemCode))
+                    sqlComm.Parameters.Add(New SqlParameter("@lot", lot))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -645,9 +631,8 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT [vAWCode], [vLotNumber]
-                                                     FROM [tbl_RTIS_AW_Jobs] WHERE [vJobUnq] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", jobNo))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetJobInfo] @jobNo", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@jobNo", jobNo))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -670,8 +655,8 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [bJobRunning] FROM [tbl_RTIS_AW_Jobs] WHERE [vJobUnq] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", jobNo))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetJobRunning] @jobNo", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@jobNo", jobNo))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -694,8 +679,8 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [iLIneID] FROM [tbl_RTIS_AW_Jobs] WHERE [bJobRunning] = 1 AND [vJobUnq] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", jobNo))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetJobID] @jobNo", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@jobNo", jobNo))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -718,8 +703,8 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [vUnq] FROM [tbl_RTIS_AW_Input] WHERE [vUnq] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", unq))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetUnqOnJob] @unq", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@unq", unq))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -742,10 +727,9 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT [iLIneID], [vJobUnq], [vAWCode], [vLotNumber], [vPGMCode], [vPGMLot], [dQty], [dQtyManuf], [dtStarted] ,[vUserStarted] ,[dtStopped] ,[vUserStopped] ,[dtSReopened] ,[vUserReopened], [bJobRunning]
-                                                     FROM [tbl_RTIS_AW_Jobs] WHERE [dtStarted] BETWEEN @1 AND @2 ORDER BY [dtStarted] DESC", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", dateFrom))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", dateTo))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetAllAWJobs] @dateFrom, @dateTo", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@dateFrom", dateFrom))
+                    sqlComm.Parameters.Add(New SqlParameter("@dateTo", dateTo))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -769,10 +753,8 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT [vCatalystCode], [vCatalystLot], [dQty], [dtDateRecorded], [vUserRecorded]
-                                                     FROM [tbl_RTIS_AW_Input]
-                                                     WHERE [iJobID] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetAWJobInPuts] @headerID", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@headerID", headerID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -795,9 +777,8 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT [vPalletNo], [dQty], [vUserRecorded], [dtDateRecorded],ISNULL([bManuf], 0),[dtDateManuf],[vUserManuf]
-                                                      FROM [tbl_RTIS_AW_OutPut] WHERE [iJobID] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetAWJobOutputs] @headerID", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@headerID", headerID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -826,13 +807,12 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [tbl_RTIS_AW_Raws] ([vAWCode], [vAWDesc], [vRMCode], [vRMDesc], [vUserAdded], [dtDateAdded])
-                                                   VALUES (@1, @2, @3, @4, @5, GETDATE())", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", awCode))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", awDesc))
-                    sqlComm.Parameters.Add(New SqlParameter("@3", rmCode))
-                    sqlComm.Parameters.Add(New SqlParameter("@4", rmDesc))
-                    sqlComm.Parameters.Add(New SqlParameter("@5", username))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_InsertRMLink] @awCode,@awDesc,@rmCode,@rmDesc,@username", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@awCode", awCode))
+                    sqlComm.Parameters.Add(New SqlParameter("@awDesc", awDesc))
+                    sqlComm.Parameters.Add(New SqlParameter("@rmCode", rmCode))
+                    sqlComm.Parameters.Add(New SqlParameter("@rmDesc", rmDesc))
+                    sqlComm.Parameters.Add(New SqlParameter("@username", username))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -850,15 +830,14 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [tbl_RTIS_AW_Jobs] ([vJobUnq], [vAWCode], [vLotNumber], [vPGMCode], [vPGMLot], [dQty], [vUserStarted], [dtStarted], [bJobRunning], [dQtyManuf])
-                                                   VALUES (@1, @2, @3, @4, @5, @6, @7, GETDATE(), 1, 0)", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", jobNumber))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", code))
-                    sqlComm.Parameters.Add(New SqlParameter("@3", lotNumber))
-                    sqlComm.Parameters.Add(New SqlParameter("@4", PGM))
-                    sqlComm.Parameters.Add(New SqlParameter("@5", PGMLot))
-                    sqlComm.Parameters.Add(New SqlParameter("@6", qty))
-                    sqlComm.Parameters.Add(New SqlParameter("@7", username))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_InsertNewAWJob] @jobNumber,@code,@lotNumber,@PGM,@PGMLot,@qty,@username", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@jobNumber", jobNumber))
+                    sqlComm.Parameters.Add(New SqlParameter("@code", code))
+                    sqlComm.Parameters.Add(New SqlParameter("@lotNumber", lotNumber))
+                    sqlComm.Parameters.Add(New SqlParameter("@PGM", PGM))
+                    sqlComm.Parameters.Add(New SqlParameter("@PGMLot", PGMLot))
+                    sqlComm.Parameters.Add(New SqlParameter("@qty", qty))
+                    sqlComm.Parameters.Add(New SqlParameter("@username", username))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -874,13 +853,12 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  INSERT INTO [tbl_RTIS_AW_OutPut] ([iJobID], [vPalletCode], [vPalletNo], [dQty], [vUserRecorded], [dtDateRecorded])
-							VALUES (@1, @2, @3, @4, @5, GETDATE())", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", jobID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", palletCode))
-                    sqlComm.Parameters.Add(New SqlParameter("@3", palletNo))
-                    sqlComm.Parameters.Add(New SqlParameter("@4", qty))
-                    sqlComm.Parameters.Add(New SqlParameter("@5", username))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_AW_AddNewPallet] @jobID, @palletCode, @palletNo, @qty, @username", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@jobID", jobID))
+                    sqlComm.Parameters.Add(New SqlParameter("@palletCode", palletCode))
+                    sqlComm.Parameters.Add(New SqlParameter("@palletNo", palletNo))
+                    sqlComm.Parameters.Add(New SqlParameter("@qty", qty))
+                    sqlComm.Parameters.Add(New SqlParameter("@username", username))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -898,16 +876,15 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  INSERT INTO [tbl_RTIS_AW_Input] ([iJobID], [vCatalystCode], [vCatalystLot], [dQty], [dtDateRecorded], [vUserRecorded], [vPalletNo], [vZectJobNo], [vUnq])
-                                                     VALUES (@1, @2, @3, @4, GETDATE(), @5, @6, @7, @8)", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", jobID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", code))
-                    sqlComm.Parameters.Add(New SqlParameter("@3", lotNumber))
-                    sqlComm.Parameters.Add(New SqlParameter("@4", qty))
-                    sqlComm.Parameters.Add(New SqlParameter("@5", username))
-                    sqlComm.Parameters.Add(New SqlParameter("@6", palletNo))
-                    sqlComm.Parameters.Add(New SqlParameter("@7", ZectJob))
-                    sqlComm.Parameters.Add(New SqlParameter("@8", palletUnq))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_InsertNewAWJob] @jobID, @code, @lotNumber, @qty, @username, @palletNo, @ZectJob, @palletUnq", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@jobID", jobID))
+                    sqlComm.Parameters.Add(New SqlParameter("@code", code))
+                    sqlComm.Parameters.Add(New SqlParameter("@lotNumber", lotNumber))
+                    sqlComm.Parameters.Add(New SqlParameter("@qty", qty))
+                    sqlComm.Parameters.Add(New SqlParameter("@username", username))
+                    sqlComm.Parameters.Add(New SqlParameter("@palletNo", palletNo))
+                    sqlComm.Parameters.Add(New SqlParameter("@ZectJob", ZectJob))
+                    sqlComm.Parameters.Add(New SqlParameter("@palletUnq", palletUnq))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -928,9 +905,9 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("DELETE FROM [tbl_RTIS_AW_Raws] WHERE [vAWCode] = @1 AND [vRMCode] = @2", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", awCode))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", rmCode))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_DeleteRMLink] @awCode, @rmCode", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@awCode", awCode))
+                    sqlComm.Parameters.Add(New SqlParameter("@rmCode", rmCode))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -950,10 +927,9 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [tbl_RTIS_AW_Jobs] SET [dQtyManuf] = ISNULL([dQtyManuf], 0) + @2
-                                                    WHERE [vJobUnq] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", jobNo))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", qty.Replace(",", ".")))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_AW_UpdateManufacturedQty] @jobNo, @qty", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@jobNo", jobNo))
+                    sqlComm.Parameters.Add(New SqlParameter("@qty", qty.Replace(",", ".")))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -968,10 +944,9 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [tbl_RTIS_AW_Jobs] SET [bJobRunning] =0, [vUserStopped] = @2, [dtStopped] = GETDATE()
-                                                    WHERE [vJobUnq] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", jobNo))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", username))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_AW_UpdateJobClosed] @jobNo, @username", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@jobNo", jobNo))
+                    sqlComm.Parameters.Add(New SqlParameter("@username", username))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -986,10 +961,9 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [tbl_RTIS_AW_Jobs] SET [bJobRunning] =1, [vUserReopened] = @2, [dtSReopened] = GETDATE()
-                                                    WHERE [vJobUnq] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", jobNo))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", username))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_AW_UpdateJobReOpened] @jobNo, @username", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@jobNo", jobNo))
+                    sqlComm.Parameters.Add(New SqlParameter("@username", username))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1004,11 +978,10 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [tbl_RTIS_AW_OutPut] SET [bManuf] = 1, [dtDateManuf] = GETDATE(), [vUserManuf] = @3
-                                                    WHERE [iLIneID] = @1 AND [iJobID] = @2", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", lineID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", jobID))
-                    sqlComm.Parameters.Add(New SqlParameter("@3", userName))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_UpdatePalletManufactured] @lineID, @jobID, @userName", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@lineID", lineID))
+                    sqlComm.Parameters.Add(New SqlParameter("@jobID", jobID))
+                    sqlComm.Parameters.Add(New SqlParameter("@userName", userName))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1023,9 +996,9 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [tbl_RTIS_AW_OutPut] SET [bManuf] = '1', [dtDateManuf] = GETDATE(), [vUserManuf] = @2 WHERE [iJobID] = @1 AND ISNULL( [bManuf] , 0) = 0", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", UserName))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_setAWBatchManufactured] @headerID, @userName", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@headerID", headerID))
+                    sqlComm.Parameters.Add(New SqlParameter("@userName", UserName))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1041,9 +1014,9 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [tbl_RTIS_AW_OutPut] SET [bManuf] = '1', [dtManufDateManual] = GETDATE(), [vUserManufManual] = @2 WHERE [iJobID] = @1 AND ISNULL( [bManuf] , 0) = 0", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", UserName))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_setAWBatchManufacturedManual] @headerID, @userName", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@headerID", headerID))
+                    sqlComm.Parameters.Add(New SqlParameter("@userName", UserName))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1051,6 +1024,26 @@ Public Class AW
                     Return "1*"
                 Catch ex As Exception
                     EventLog.WriteEntry("RTIS Vulcan SVC", "UI_setAWBatchManufactured: " + ex.ToString())
+                    Return ExHandler.returnErrorEx(ex)
+                End Try
+            End Function
+            Public Shared Function AW_ManualCloseJob(ByVal lotNo As String) As String
+                Try
+                    Dim ReturnData As String = ""
+                    Dim sqlConn As New SqlConnection(RTString)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_ManualCloseAWJob] @lot", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@lot", lotNo))
+                    sqlConn.Open()
+                    Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
+                    While sqlReader.Read()
+                        ReturnData = Convert.ToString(sqlReader.Item(0))
+                    End While
+                    sqlReader.Close()
+                    sqlComm.Dispose()
+                    sqlConn.Close()
+                    Return ReturnData
+                Catch ex As Exception
+                    EventLog.WriteEntry("RTIS Vulcan SVC", "AW_ManualCloseJob: " + ex.ToString())
                     Return ExHandler.returnErrorEx(ex)
                 End Try
             End Function
@@ -1065,8 +1058,7 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("   SELECT [ucIICoatStage],[Description_1],[Description_2], '' FROM [StkItem]
-                                                      WHERE [ucIICoatStage] LIKE '%A&W%'", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetAllAWCatalysts]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -1089,8 +1081,7 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("   SELECT [ucIICoatStage],[Description_1], '' FROM [StkItem]
-                                                      WHERE [ucIICoatStage] Like 'SOL-%' OR [ucIICoatStage] Like 'CHEM-1180%' OR [ucIICoatStage] Like 'CHEM-1640%' OR [ItemGroup] = '005'", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetAllAWWRMs]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -1116,9 +1107,9 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("SELECT [ucIICoatStage] FROM [StkItem] WHERE [Code] = @1", sqlConn) 
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_AW_GetZectMFCode] @baseCode", sqlConn)
                     sqlConn.Open()
-                    sqlComm.Parameters.Add(New SqlParameter("@1", baseCode))
+                    sqlComm.Parameters.Add(New SqlParameter("@baseCode", baseCode))
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
                         ReturnData = Convert.ToString(sqlReader.Item(0))
@@ -1140,9 +1131,9 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("SELECT [ucIICoatStage] FROM [StkItem] WHERE [ucIICoatStage] LIKE @1 AND [ucIICoatStage] LIKE '%A&W'", sqlConn) 
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_AW_GetAWItemCode] @baseCode", sqlConn)
                     sqlConn.Open()
-                    sqlComm.Parameters.Add(New SqlParameter("@1", baseCode + "%"))
+                    sqlComm.Parameters.Add(New SqlParameter("@baseCode", baseCode + "%"))
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
                         ReturnData = Convert.ToString(sqlReader.Item(0))
@@ -1164,16 +1155,10 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("  SELECT DISTINCT aw.[vRMCode], l.[cLotDescription], lq.[fQtyOnHand] FROM [_etblLotTrackingQty] lq
-                                                     INNER JOIN [_etblLotTracking] l ON l.[idLotTracking] = lq.[iLotTrackingID] 
-                                                     INNER JOIN [_etblLotStatus] ls ON l.[iLotStatusID] = ls.[idLotStatus]
-												     INNER JOIN [WhseMst] w ON w.[WhseLink] = lq.[iWarehouseID]
-                                                     INNER JOIN [StkItem] s ON s.[StockLink] = l.[iStockID]  
-												     INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_AW_Raws] aw ON aw.[vRMCode] = s.[Code]                       
-												     WHERE aw.[vAWCode] = @1 AND w.[Code] = @2 AND lq.[fQtyOnHand]  <> 0 ", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_AW_GetAWAvailablePGMs] @itemCode, @whseCode", sqlConn)
                     sqlConn.Open()
-                    sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", whseCode))
+                    sqlComm.Parameters.Add(New SqlParameter("@itemCode", itemCode))
+                    sqlComm.Parameters.Add(New SqlParameter("@whseCode", whseCode))
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
                         ReturnData += Convert.ToString(sqlReader.Item(0)) + "|" + Convert.ToString(sqlReader.Item(1)) + "|" + Convert.ToString(sqlReader.Item(2)) + "~"
@@ -1195,10 +1180,8 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand(" SELECT [Bar_Code], [cSimpleCode], b.[cBinLocationName], [Description_1], [Description_2], [Description_3], [ItemGroup] 
-                                                FROM [StkItem] s
-                                                LEFT JOIN [_btblBINLocation] b ON s.[iBinLocationID] = b.[idBinLocation] WHERE [ucIICoatStage] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_AW_GetLabelInfo] @itemCode", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@itemCode", itemCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()

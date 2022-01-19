@@ -13,10 +13,8 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("	SELECT wm.[WhseLink], wm.[Name], '' AS [Remove] FROM [tbl_WHTLocations] wl 
-	                                                INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] wm ON wm.[WhseLink] = wl.[iWhseID]
-	                                                WHERE wl.[vProcessName] = @1 AND [bIsRec] = 0", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", process))
+                    Dim sqlComm As New SqlCommand("	EXEC [dbo].[sp_UI_getWhseProcLookUp] @vProcessName", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@vProcessName", process))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -44,10 +42,8 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("	SELECT wm.[WhseLink], wm.[Name], '' AS [Remove] FROM [tbl_WHTLocations] wl 
-	                                                INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] wm ON wm.[WhseLink] = wl.[iWhseID]
-	                                                WHERE wl.[vProcessName] = @1 AND [bIsRec] = 1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", process))
+                    Dim sqlComm As New SqlCommand("	EXEC  [dbo].[sp_UI_getWhseProcLookUpRec] @vProcessName", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@vProcessName", process))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -75,7 +71,7 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("	SELECT [WhseLink], [Name], '' AS [Add] FROM [WhseMst]", sqlConn)
+                    Dim sqlComm As New SqlCommand("	EXEC [dbo].[sp_UI_getWhseAllEvoWhses]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -103,10 +99,9 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT [iLine_ID] FROM [tbl_WHTLocations]
-                                                    WHERE [vProcessName] = @1 AND [iWhseID] = @2 AND [bIsRec] = 0", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", procName))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", Convert.ToInt32(whseID)))
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_UI_checkProcRefExists] @vProcessName, @iWhseID", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@vProcessName", procName))
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhseID", Convert.ToInt32(whseID)))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -134,10 +129,9 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT [iLine_ID] FROM [tbl_WHTLocations]
-                                                    WHERE [vProcessName] = @1 AND [iWhseID] = @2 AND [bIsRec] =1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", procName))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", whseID))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_checkProcRefExistsRec] @vProcessName, @iWhseID", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@vProcessName", procName))
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhseID", whseID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -166,7 +160,7 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT [vDisplayName], [vProcName] FROM [tbl_ProcNames] WHERE ISNULL([bHasOutTransfer], 'false') = 1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_getWhtProcesses]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -197,7 +191,7 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT [vDisplayName], [vProcName] FROM [tbl_ProcNames] WHERE ISNULL([bHasRecTrans], 0) <> 0", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_getWhtProcessesRec]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -227,9 +221,7 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT w.[WhseLink], w.[Name], ISNULL(wl.[bEnabled],0) FROM [RTIS_WarehouseLookUp_PPtFS] wl
-                                                    RIGHT JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w 
-                                                    ON w.[WhseLink] = wl.[iWhse_Link]", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_getWarehouseLookUp_PPtFS]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -260,9 +252,7 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT w.[WhseLink], w.[Name], ISNULL(wl.[bEnabled],0) FROM [Rec_Transfers].[RTIS_WhseLookUp_PP_Rec] wl
-                                                    RIGHT JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w 
-                                                    ON w.[WhseLink] = wl.[iWhse_Link]", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_getWarehouseLookUp_PP_Rec]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -293,9 +283,7 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT w.[WhseLink], w.[Name], ISNULL(wl.[bEnabled],0) FROM [RTIS_WarehouseLookUp_FStMS] wl
-                                                    RIGHT JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w 
-                                                    ON w.[WhseLink] = wl.[iWhse_Link]", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_getWarehouseLookUp_FStMS]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -326,9 +314,7 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT w.[WhseLink], w.[Name], ISNULL(wl.[bEnabled],0) FROM [Rec_Transfers].[RTIS_WhseLookUp_FS_Rec] wl
-                                                    RIGHT JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w 
-                                                    ON w.[WhseLink] = wl.[iWhse_Link]", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_getWarehouseLookUp_FS_Rec]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -359,9 +345,7 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT w.[WhseLink], w.[Name], ISNULL(wl.[bEnabled],0) FROM [RTIS_WarehouseLookUp_MStZect] wl
-                                                    RIGHT JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w 
-                                                    ON w.[WhseLink] = wl.[iWhse_Link]", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_getWarehouseLookUp_MStZect]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -391,9 +375,7 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT w.[WhseLink], w.[Name], ISNULL(wl.[bEnabled],0) FROM [Rec_Transfers].[RTIS_WhseLookUp_MS_Rec] wl
-                                                    RIGHT JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w 
-                                                    ON w.[WhseLink] = wl.[iWhse_Link]", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_getWarehouseLookUp_MS_Rec]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -423,9 +405,7 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT w.[WhseLink], w.[Name], ISNULL(wl.[bEnabled],0) FROM [RTIS_WarehouseLookUp_Zect1] wl
-                                                    RIGHT JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w 
-                                                    ON w.[WhseLink] = wl.[iWhse_Link]", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_getWarehouseLookUp_Zect1]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -455,9 +435,7 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT w.[WhseLink], w.[Name], ISNULL(wl.[bEnabled],0) FROM [Rec_Transfers].[RTIS_WhseLookUp_Zect1_Rec] wl
-                                                    RIGHT JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w 
-                                                    ON w.[WhseLink] = wl.[iWhse_Link]", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_getWarehouseLookUp_Zect1_Rec]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -487,9 +465,7 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT w.[WhseLink], w.[Name], ISNULL(wl.[bEnabled],0) FROM [RTIS_WarehouseLookUp_Zect2] wl
-                                                    RIGHT JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w 
-                                                    ON w.[WhseLink] = wl.[iWhse_Link]", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_getWarehouseLookUp_Zect2]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -519,9 +495,7 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT w.[WhseLink], w.[Name], ISNULL(wl.[bEnabled],0) FROM [Rec_Transfers].[RTIS_WhseLookUp_Zect2_Rec] wl
-                                                    RIGHT JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w 
-                                                    ON w.[WhseLink] = wl.[iWhse_Link]", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_getWarehouseLookUp_Zect2_Rec]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -551,9 +525,7 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT w.[WhseLink], w.[Name], ISNULL(wl.[bEnabled],0) FROM [RTIS_WarehouseLookUp_Canning] wl
-                                                    RIGHT JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w 
-                                                    ON w.[WhseLink] = wl.[iWhse_Link]", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_getWarehouseLookUp_Canning]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -583,9 +555,7 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT w.[WhseLink], w.[Name], ISNULL(wl.[bEnabled],0) FROM [Rec_Transfers].[RTIS_WhseLookUp_Canning_Rec] wl
-                                                    RIGHT JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w 
-                                                    ON w.[WhseLink] = wl.[iWhse_Link]", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_getWarehouseLookUp_Can_Rec]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -615,9 +585,7 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT w.[WhseLink], w.[Name], ISNULL(wl.[bEnabled],0) FROM [RTIS_WarehouseLookUp_AW] wl
-                                                    RIGHT JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w 
-                                                    ON w.[WhseLink] = wl.[iWhse_Link]", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_getWarehouseLookUp_AW]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -647,9 +615,7 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT w.[WhseLink], w.[Name], ISNULL(wl.[bEnabled],0) FROM [Rec_Transfers].[RTIS_WhseLookUp_AW_Rec] wl
-                                                    RIGHT JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w 
-                                                    ON w.[WhseLink] = wl.[iWhse_Link]", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_getWarehouseLookUp_AW_Rec]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -679,9 +645,7 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT w.[WhseLink], w.[Name], ISNULL(wl.[bEnabled],0) FROM [Rec_Transfers].[RTIS_WhseLookUp_PGM_Rec] wl
-                                                    RIGHT JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w 
-                                                    ON w.[WhseLink] = wl.[iWhse_Link]", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_getWarehouseLookUp_PGM_Rec]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -711,9 +675,7 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT w.[WhseLink], w.[Name], ISNULL(wl.[bEnabled],0) FROM [RTIS_WarehouseLookUp_ToProd] wl
-                                                    RIGHT JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w 
-                                                    ON w.[WhseLink] = wl.[iWhse_Link]", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_getWarehouseLookUp_ToProd]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -743,8 +705,8 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [bEnabled] FROM [RTIS_WarehouseLookUp_PPtFS] WHERE [iWhse_Link] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", stockID))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_getWarehouseExistes_PPtFS] @iWhse_Link", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", stockID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -773,8 +735,8 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [bEnabled] FROM [Rec_Transfers].[RTIS_WhseLookUp_PP_Rec] WHERE [iWhse_Link] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", stockID))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_getWarehouseExistes_PP_Rec] @iWhse_Link", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", stockID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -802,8 +764,8 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [bEnabled] FROM [Rec_Transfers].[RTIS_WhseLookUp_FS_Rec] WHERE [iWhse_Link] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", stockID))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_getWarehouseExistes_FS_Rec] @iWhse_Link", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", stockID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -831,8 +793,8 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [bEnabled] FROM [Rec_Transfers].[RTIS_WhseLookUp_MS_Rec] WHERE [iWhse_Link] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", stockID))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_getWarehouseExistes_MS_Rec] @iWhse_Link", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", stockID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -860,8 +822,8 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [bEnabled] FROM [Rec_Transfers].[RTIS_WhseLookUp_Zect1_Rec] WHERE [iWhse_Link] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", stockID))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_getWarehouseExistes_Zect1_Rec] @iWhse_Link", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", stockID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -889,8 +851,8 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [bEnabled] FROM [Rec_Transfers].[RTIS_WhseLookUp_Zect2_Rec] WHERE [iWhse_Link] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", stockID))
+                    Dim sqlComm As New SqlCommand("EXEC  [dbo].[sp_UI_getWarehouseExistes_Zect2_Rec] @iWhse_Link", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", stockID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -918,8 +880,8 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [bEnabled] FROM [Rec_Transfers].[RTIS_WhseLookUp_Canning_Rec] WHERE [iWhse_Link] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", stockID))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_getWarehouseExistes_Can_Rec] @iWhse_Link", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", stockID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -947,8 +909,8 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [bEnabled] FROM [Rec_Transfers].[RTIS_WhseLookUp_AW_Rec] WHERE [iWhse_Link] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", stockID))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_getWarehouseExistes_AW_Rec] @iWhse_Link", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", stockID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -976,8 +938,8 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [bEnabled] FROM [Rec_Transfers].[RTIS_WhseLookUp_PGM_Rec] WHERE [iWhse_Link] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", stockID))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_getWarehouseExistes_PGM_Rec] @iWhse_Link", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", stockID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -1006,8 +968,8 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [bEnabled] FROM [RTIS_WarehouseLookUp_FStMS] WHERE [iWhse_Link] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", stockID))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_getWarehouseExistes_FStMS] @iWhse_Link", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", stockID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -1035,8 +997,8 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [bEnabled] FROM [RTIS_WarehouseLookUp_MStZect] WHERE [iWhse_Link] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", stockID))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_getWarehouseExistes_MStZect] @iWhse_Link", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", stockID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -1064,8 +1026,8 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [bEnabled] FROM [RTIS_WarehouseLookUp_Zect1] WHERE [iWhse_Link] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", stockID))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_getWarehouseExistes_Zect1] @iWhse_Link", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", stockID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -1093,8 +1055,8 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [bEnabled] FROM [RTIS_WarehouseLookUp_Zect2] WHERE [iWhse_Link] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", stockID))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_getWarehouseExistes_Zect2] @iWhse_Link", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", stockID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -1122,8 +1084,8 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [bEnabled] FROM [RTIS_WarehouseLookUp_Canning] WHERE [iWhse_Link] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", stockID))
+                    Dim sqlComm As New SqlCommand("EXEC  [dbo].[sp_UI_getWarehouseExistes_Can] @iWhse_Link", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", stockID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -1151,8 +1113,8 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [bEnabled] FROM [RTIS_WarehouseLookUp_AW] WHERE [iWhse_Link] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", stockID))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_getWarehouseExistes_AW] @iWhse_Link", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", stockID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -1180,8 +1142,8 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [bEnabled] FROM [RTIS_WarehouseLookUp_ToProd] WHERE [iWhse_Link] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", stockID))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_getWarehouseExistes_ToProd] @iWhse_Link", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", stockID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -1211,10 +1173,10 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [tbl_WHTLocations] ([vProcessName], [iWhseID], [bIsRec]) VALUES (@1, @2, @3)", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", procName))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", whseID))
-                    sqlComm.Parameters.Add(New SqlParameter("@3", isRec))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_addNewWhseCrossRef] @vProcessName, @iWhseID, @bIsRec", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@vProcessName", procName))
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhseID", whseID))
+                    sqlComm.Parameters.Add(New SqlParameter("@bIsRec", isRec))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1229,9 +1191,9 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [RTIS_WarehouseLookUp_PPtFS] ([iWhse_Link], [bEnabled]) VALUES (@1, @2)", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", whseID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", selected))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_addNewWhseCrossRef_PPtFS] @iWhse_Link, @bEnabled", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", whseID))
+                    sqlComm.Parameters.Add(New SqlParameter("@bEnabled", selected))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1249,9 +1211,9 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [Rec_Transfers].[RTIS_WhseLookUp_PP_Rec] ([iWhse_Link], [bEnabled]) VALUES (@1, @2)", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", whseID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", selected))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_addNewWhseCrossRef_PP_Rec] @iWhse_Link, @bEnabled", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", whseID))
+                    sqlComm.Parameters.Add(New SqlParameter("@bEnabled", selected))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1267,9 +1229,9 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [Rec_Transfers].[RTIS_WhseLookUp_FS_Rec] ([iWhse_Link], [bEnabled]) VALUES (@1, @2)", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", whseID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", selected))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_addNewWhseCrossRef_FS_Rec] @iWhse_Link, @bEnabled", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", whseID))
+                    sqlComm.Parameters.Add(New SqlParameter("@bEnabled", selected))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1285,9 +1247,9 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [Rec_Transfers].[RTIS_WhseLookUp_MS_Rec] ([iWhse_Link], [bEnabled]) VALUES (@1, @2)", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", whseID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", selected))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_addNewWhseCrossRef_MS_Rec] @iWhse_Link, @bEnabled", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", whseID))
+                    sqlComm.Parameters.Add(New SqlParameter("@bEnabled", selected))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1303,9 +1265,9 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [Rec_Transfers].[RTIS_WhseLookUp_Zect1_Rec] ([iWhse_Link], [bEnabled]) VALUES (@1, @2)", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", whseID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", selected))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_addNewWhseCrossRef_Zect1_Rec] @iWhse_Link, @bEnabled", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", whseID))
+                    sqlComm.Parameters.Add(New SqlParameter("@bEnabled", selected))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1321,9 +1283,9 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [Rec_Transfers].[RTIS_WhseLookUp_Zect2_Rec] ([iWhse_Link], [bEnabled]) VALUES (@1, @2)", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", whseID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", selected))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_addNewWhseCrossRef_Zect2_Rec] @iWhse_Link, @bEnabled", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", whseID))
+                    sqlComm.Parameters.Add(New SqlParameter("@bEnabled", selected))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1339,9 +1301,9 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [Rec_Transfers].[RTIS_WhseLookUp_Canning_Rec] ([iWhse_Link], [bEnabled]) VALUES (@1, @2)", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", whseID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", selected))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_addNewWhseCrossRef_Can_Rec] @iWhse_Link, @bEnabled", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", whseID))
+                    sqlComm.Parameters.Add(New SqlParameter("@bEnabled", selected))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1357,9 +1319,9 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [Rec_Transfers].[RTIS_WhseLookUp_AW_Rec] ([iWhse_Link], [bEnabled]) VALUES (@1, @2)", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", whseID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", selected))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_addNewWhseCrossRef_AW_Rec] @iWhse_Link, @bEnabled", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", whseID))
+                    sqlComm.Parameters.Add(New SqlParameter("@bEnabled", selected))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1375,9 +1337,9 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [Rec_Transfers].[RTIS_WhseLookUp_PGM_Rec] ([iWhse_Link], [bEnabled]) VALUES (@1, @2)", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", whseID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", selected))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_addNewWhseCrossRef_PGM_Rec] @iWhse_Link, @bEnabled", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", whseID))
+                    sqlComm.Parameters.Add(New SqlParameter("@bEnabled", selected))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1394,9 +1356,9 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [RTIS_WarehouseLookUp_FStMS] ([iWhse_Link], [bEnabled]) VALUES (@1, @2)", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", whseID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", selected))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_addNewWhseCrossRef_FStMS] @iWhse_Link, @bEnabled", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", whseID))
+                    sqlComm.Parameters.Add(New SqlParameter("@bEnabled", selected))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1412,9 +1374,9 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [RTIS_WarehouseLookUp_MStZect] ([iWhse_Link], [bEnabled]) VALUES (@1, @2)", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", whseID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", selected))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_addNewWhseCrossRef_MStZect] @iWhse_Link, @bEnabled", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", whseID))
+                    sqlComm.Parameters.Add(New SqlParameter("@bEnabled", selected))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1430,9 +1392,9 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [RTIS_WarehouseLookUp_Zect1] ([iWhse_Link], [bEnabled]) VALUES (@1, @2)", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", whseID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", selected))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_addNewWhseCrossRef_Zect1] @iWhse_Link, @bEnabled", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", whseID))
+                    sqlComm.Parameters.Add(New SqlParameter("@bEnabled", selected))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1448,9 +1410,9 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [RTIS_WarehouseLookUp_Zect2] ([iWhse_Link], [bEnabled]) VALUES (@1, @2)", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", whseID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", selected))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_addNewWhseCrossRef_Zect2] @iWhse_Link, @bEnabled", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", whseID))
+                    sqlComm.Parameters.Add(New SqlParameter("@bEnabled", selected))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1466,9 +1428,9 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [RTIS_WarehouseLookUp_Canning] ([iWhse_Link], [bEnabled]) VALUES (@1, @2)", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", whseID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", selected))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_addNewWhseCrossRef_Canning] @iWhse_Link, @bEnabled", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", whseID))
+                    sqlComm.Parameters.Add(New SqlParameter("@bEnabled", selected))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1484,9 +1446,9 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [RTIS_WarehouseLookUp_AW] ([iWhse_Link], [bEnabled]) VALUES (@1, @2)", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", whseID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", selected))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_addNewWhseCrossRef_AW] @iWhse_Link, @bEnabled", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", whseID))
+                    sqlComm.Parameters.Add(New SqlParameter("@bEnabled", selected))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1502,9 +1464,9 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [RTIS_WarehouseLookUp_ToProd] ([iWhse_Link], [bEnabled]) VALUES (@1, @2)", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", whseID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", selected))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_addNewWhseCrossRef_ToProd] @iWhse_Link, @bEnabled", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", whseID))
+                    sqlComm.Parameters.Add(New SqlParameter("@bEnabled", selected))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1523,7 +1485,7 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [RTIS_WarehouseLookUp_PPtFS] SET [bEnabled] = 0", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_resetWhseCrossRef_PPtFS]", sqlConn)
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1538,7 +1500,7 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [RTIS_WarehouseLookUp_FStMS] SET [bEnabled] = 0", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_resetWhseCrossRef_FStMS]", sqlConn)
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1553,7 +1515,7 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [RTIS_WarehouseLookUp_MStZect] SET [bEnabled] = 0", sqlConn)
+                    Dim sqlComm As New SqlCommand("[dbo].[sp_UI_resetWhseCrossRef_MStZext]", sqlConn)
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1568,9 +1530,9 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [RTIS_WarehouseLookUp_PPtFS] SET [bEnabled] = @2 WHERE [iWhse_Link] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", whseID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", selected))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_updateWhseCrossRef_PPtFS] @iWhse_Link, @bEnabled", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", whseID))
+                    sqlComm.Parameters.Add(New SqlParameter("@bEnabled", selected))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1588,9 +1550,9 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [Rec_Transfers].[RTIS_WhseLookUp_PP_Rec] SET [bEnabled] = @2 WHERE [iWhse_Link] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", whseID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", selected))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_updateWhseCrossRef_PP_Rec] @iWhse_Link, @bEnabled", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", whseID))
+                    sqlComm.Parameters.Add(New SqlParameter("@bEnabled", selected))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1606,9 +1568,9 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [Rec_Transfers].[RTIS_WhseLookUp_FS_Rec] SET [bEnabled] = @2 WHERE [iWhse_Link] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", whseID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", selected))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_updateWhseCrossRef_FS_Rec] @iWhse_Link, @bEnabled ", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", whseID))
+                    sqlComm.Parameters.Add(New SqlParameter("@bEnabled", selected))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1624,9 +1586,9 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [Rec_Transfers].[RTIS_WhseLookUp_MS_Rec] SET [bEnabled] = @2 WHERE [iWhse_Link] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", whseID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", selected))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_updateWhseCrossRef_MS_Rec] @iWhse_Link, @bEnabled ", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", whseID))
+                    sqlComm.Parameters.Add(New SqlParameter("@bEnabled", selected))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1642,9 +1604,9 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [Rec_Transfers].[RTIS_WhseLookUp_Zect1_Rec] SET [bEnabled] = @2 WHERE [iWhse_Link] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", whseID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", selected))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_updateWhseCrossRef_Zect1_Rec] @iWhse_Link, @bEnabled", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", whseID))
+                    sqlComm.Parameters.Add(New SqlParameter("@bEnabled", selected))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1660,9 +1622,9 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [Rec_Transfers].[RTIS_WhseLookUp_Zect2_Rec] SET [bEnabled] = @2 WHERE [iWhse_Link] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", whseID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", selected))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_updateWhseCrossRef_Zect2_Rec] @iWhse_Link, @bEnabled", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", whseID))
+                    sqlComm.Parameters.Add(New SqlParameter("@bEnabled", selected))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1678,9 +1640,9 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [Rec_Transfers].[RTIS_WhseLookUp_Canning_Rec] SET [bEnabled] = @2 WHERE [iWhse_Link] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", whseID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", selected))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_updateWhseCrossRef_Can_Rec] @iWhse_Link, @bEnabled", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", whseID))
+                    sqlComm.Parameters.Add(New SqlParameter("@bEnabled", selected))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1696,9 +1658,9 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [Rec_Transfers].[RTIS_WhseLookUp_AW_Rec] SET [bEnabled] = @2 WHERE [iWhse_Link] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", whseID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", selected))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_updateWhseCrossRef_AW_Rec] @iWhse_Link, @bEnabled", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", whseID))
+                    sqlComm.Parameters.Add(New SqlParameter("@bEnabled", selected))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1714,9 +1676,9 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [Rec_Transfers].[RTIS_WhseLookUp_PGM_Rec] SET [bEnabled] = @2 WHERE [iWhse_Link] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", whseID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", selected))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_updateWhseCrossRef_PGM_Rec] @iWhse_Link, @bEnabled", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", whseID))
+                    sqlComm.Parameters.Add(New SqlParameter("@bEnabled", selected))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1733,9 +1695,9 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [RTIS_WarehouseLookUp_FStMS] SET [bEnabled] = @2 WHERE [iWhse_Link] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", whseID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", selected))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_updateWhseCrossRef_PGM_Rec] @iWhse_Link, @bEnabled ", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", whseID))
+                    sqlComm.Parameters.Add(New SqlParameter("@bEnabled", selected))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1751,9 +1713,9 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [RTIS_WarehouseLookUp_MStZect] SET [bEnabled] = @2 WHERE [iWhse_Link] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", whseID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", selected))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_updateWhseCrossRef__MStZectS] @iWhse_Link, @bEnabled", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", whseID))
+                    sqlComm.Parameters.Add(New SqlParameter("@bEnabled", selected))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1769,9 +1731,9 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [RTIS_WarehouseLookUp_Zect1] SET [bEnabled] = @2 WHERE [iWhse_Link] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", whseID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", selected))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_updateWhseCrossRef__Zect1] @iWhse_Link, @bEnabled", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", whseID))
+                    sqlComm.Parameters.Add(New SqlParameter("@bEnabled", selected))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1787,9 +1749,9 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [RTIS_WarehouseLookUp_Zect2] SET [bEnabled] = @2 WHERE [iWhse_Link] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", whseID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", selected))
+                    Dim sqlComm As New SqlCommand("EXEC  [dbo].[sp_UI_updateWhseCrossRef__Zect2] @iWhse_Link, @bEnabled ", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", whseID))
+                    sqlComm.Parameters.Add(New SqlParameter("@bEnabled", selected))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1805,9 +1767,9 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [RTIS_WarehouseLookUp_Canning] SET [bEnabled] = @2 WHERE [iWhse_Link] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", whseID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", selected))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_updateWhseCrossRef__Canning] @iWhse_Link, @bEnabled", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", whseID))
+                    sqlComm.Parameters.Add(New SqlParameter("@bEnabled", selected))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1823,9 +1785,9 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [RTIS_WarehouseLookUp_AW] SET [bEnabled] = @2 WHERE [iWhse_Link] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", whseID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", selected))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_updateWhseCrossRef__AW] @iWhse_Link, @bEnabled", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", whseID))
+                    sqlComm.Parameters.Add(New SqlParameter("@bEnabled", selected))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1841,9 +1803,9 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [RTIS_WarehouseLookUp_ToProd] SET [bEnabled] = @2 WHERE [iWhse_Link] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", whseID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", selected))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_updateWhseCrossRef_ToProd] @iWhse_Link, @bEnabled", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhse_Link", whseID))
+                    sqlComm.Parameters.Add(New SqlParameter("@bEnabled", selected))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1861,10 +1823,10 @@ Public Class WhseManagement
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("DELETE FROM [tbl_WHTLocations] WHERE [vProcessName] = @1 AND [iWhseID] = @2 AND [bIsRec] = @3", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", procName))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", whseID))
-                    sqlComm.Parameters.Add(New SqlParameter("@3", isRec))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_deleteNewWhseCrossRef] @vProcessName, @iWhseID, @bIsRec ", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@vProcessName", procName))
+                    sqlComm.Parameters.Add(New SqlParameter("@iWhseID", whseID))
+                    sqlComm.Parameters.Add(New SqlParameter("@bIsRec", isRec))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()

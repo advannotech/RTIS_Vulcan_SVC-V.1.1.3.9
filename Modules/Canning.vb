@@ -12,9 +12,10 @@ Public Class Canning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [vRMCode], [vRMDesc], '' FROM [tbl_RTIS_Canning_Raws] WHERE [vItemCode] = @1", sqlConn)
+                    'Dim sqlComm As New SqlCommand("SELECT [vRMCode], [vRMDesc], '' FROM [tbl_RTIS_Canning_Raws] WHERE [vItemCode] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetCanningCatalystRaws] @vItemCode", sqlConn)
                     sqlConn.Open()
-                    sqlComm.Parameters.Add(New SqlParameter("@1", catalystCode))
+                    sqlComm.Parameters.Add(New SqlParameter("@vItemCode", catalystCode))
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
                         ReturnData &= Convert.ToString(sqlReader.Item(0)) + "|" + Convert.ToString(sqlReader.Item(1)) + "|" + Convert.ToString(sqlReader.Item(2)) + "~"
@@ -36,10 +37,11 @@ Public Class Canning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [vRMCode] FROM [tbl_RTIS_Canning_Raws] WHERE [vItemCode] = @1 AND [vRMCode] = @2", sqlConn)
+                    'Dim sqlComm As New SqlCommand("SELECT [vRMCode] FROM [tbl_RTIS_Canning_Raws] WHERE [vItemCode] = @1 AND [vRMCode] = @2", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetCanningLinkExists] @vItemCode, @vRMCode", sqlConn)
                     sqlConn.Open()
-                    sqlComm.Parameters.Add(New SqlParameter("@1", catalystCode))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", rmCode))
+                    sqlComm.Parameters.Add(New SqlParameter("@vItemCode", catalystCode))
+                    sqlComm.Parameters.Add(New SqlParameter("@vRMCode", rmCode))
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
                         ReturnData = Convert.ToString(sqlReader.Item(0))
@@ -61,23 +63,9 @@ Public Class Canning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT 
-                                                  [vCanningCode]
-                                                  ,[vCanningDesc]
-                                                  ,[vQty]
-	                                              ,[vRMCode]
-                                                  ,[vRMDesc]
-                                                  ,[vRMQty]
-	                                              ,[vLotNumber]
-                                                  ,[vOldJobCode]
-                                                  ,[vPalletNo]      
-                                                  ,[vUserAdded]
-                                                  ,[dtDateAdded]
-                                                   FROM [tbl_RTIS_Canning_Out] 
-                                                   WHERE [dtDateAdded] BETWEEN @1 AND @2
-                                                   ORDER BY [dtDateAdded] DESC", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", dateFrom))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", dateTo))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetCanningRecords] @dateFrom, @dateTo", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@dateFrom", dateFrom))
+                    sqlComm.Parameters.Add(New SqlParameter("@dateTo", dateTo))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -100,8 +88,7 @@ Public Class Canning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT [iLIneID],[vCanningCode], [vCanningDesc], [vLotNumber],[vQty],[vUserAdded], [dtDateAdded]
-                                                     FROM [tbl_RTIS_Canning_Out] WHERE ISNULL([bManuf], 0) = 0", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetCanningLinesToManufacture]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -124,8 +111,8 @@ Public Class Canning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("	SELECT [vRMCode], [vLotNumber] FROM [tbl_RTIS_Canning_Out] WHERE [iLIneID] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", lineID))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetCanningRM] @iLIneID", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iLIneID", lineID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     Dim builder As New Text.StringBuilder()
@@ -150,9 +137,9 @@ Public Class Canning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [vItemCode] , [vItemDesc], '' FROM [tbl_RTIS_Canning_Raws] WHERE [vRMCode] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetCanningProducts] @vRMCode", sqlConn)
                     sqlConn.Open()
-                    sqlComm.Parameters.Add(New SqlParameter("@1", rmCode))
+                    sqlComm.Parameters.Add(New SqlParameter("@vRMCode", rmCode))
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
                         ReturnData &= Convert.ToString(sqlReader.Item(0)) + "|" + Convert.ToString(sqlReader.Item(1)) + "|" + Convert.ToString(sqlReader.Item(2)) + "~"
@@ -174,10 +161,8 @@ Public Class Canning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand(" SELECT [Code], [Bar_Code], [cSimpleCode], b.[cBinLocationName], [Description_1], [Description_2], [Description_3], [ItemGroup] 
-                                                FROM [StkItem] s
-                                                LEFT JOIN [_btblBINLocation] b ON s.[iBinLocationID] = b.[idBinLocation] WHERE [Code] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_Canning_GetLabelInfo] @Code", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@Code", itemCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -205,7 +190,7 @@ Public Class Canning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT DISTINCT [vCanningCode] FROM [tbl_RTIS_Canning_Out]", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_Canning_GetReprintItemList]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -234,10 +219,10 @@ Public Class Canning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT DISTINCT [vLotNumber] FROM [tbl_RTIS_Canning_Out] WHERE [vCanningCode] = @1 AND [dtDateAdded] BETWEEN @2 AND @3", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", dateFrom))
-                    sqlComm.Parameters.Add(New SqlParameter("@3", dateTo))
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_Canning_GetReprintLotList] @vCanningCode, @dateFrom, @dateTo", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@vCanningCode", itemCode))
+                    sqlComm.Parameters.Add(New SqlParameter("@dateFrom", dateFrom))
+                    sqlComm.Parameters.Add(New SqlParameter("@dateTo", dateTo))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -260,9 +245,9 @@ Public Class Canning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [vCanningCode], [vLotNumber], [vQty], [vRMCode], [vPalletNo], [vRMDesc] FROM [tbl_RTIS_Canning_Out] WHERE [vCanningCode] = @1 AND [vLotNumber] = @2", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", lotNumber))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_Canning_GetPalletList] @vCanningCode, @vLotNumber", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@vCanningCode", itemCode))
+                    sqlComm.Parameters.Add(New SqlParameter("@vLotNumber", lotNumber))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -298,7 +283,6 @@ Public Class Canning
                     sqlComm.Parameters.Add(New SqlParameter("@3", rmCode))
                     sqlComm.Parameters.Add(New SqlParameter("@4", rmDesc))
                     sqlComm.Parameters.Add(New SqlParameter("@5", username))
-                    sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
                     sqlConn.Close()
@@ -328,6 +312,18 @@ Public Class Canning
                     sqlComm.Parameters.Add(New SqlParameter("@9", qty))
                     sqlComm.Parameters.Add(New SqlParameter("@10", username))
                     sqlComm.Parameters.Add(New SqlParameter("@11", palletNo))
+
+                    sqlComm.Parameters.Add(New SqlParameter("@vOldJobCode", jobNo))
+                    sqlComm.Parameters.Add(New SqlParameter("@vPalletCode", palletCode))
+                    sqlComm.Parameters.Add(New SqlParameter("@vRMCode", rmCode))
+                    sqlComm.Parameters.Add(New SqlParameter("@vRMDesc", rmDesc))
+                    sqlComm.Parameters.Add(New SqlParameter("@vRMQty", rmQty))
+                    sqlComm.Parameters.Add(New SqlParameter("@vLotNumber", lotNumber))
+                    sqlComm.Parameters.Add(New SqlParameter("@vCanningCode", canningCode))
+                    sqlComm.Parameters.Add(New SqlParameter("vCanningDesc", canningDesc))
+                    sqlComm.Parameters.Add(New SqlParameter("@vQty", qty))
+                    sqlComm.Parameters.Add(New SqlParameter("@vUserAdded", username))
+                    sqlComm.Parameters.Add(New SqlParameter("@vPalletNo", palletNo))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -369,10 +365,9 @@ Public Class Canning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [tbl_RTIS_Canning_Out] SET [bManuf] = 1, [dtDateManuf] = GETDATE(), [vUserManuf] = @2
-                                                    WHERE [iLIneID] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", lineID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", userName))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_UpdatePalletManufactured] @iLIneID, @vUserManuf", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iLIneID", lineID))
+                    sqlComm.Parameters.Add(New SqlParameter("@vUserManuf", userName))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -388,10 +383,9 @@ Public Class Canning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [tbl_RTIS_Canning_Out] SET [bManuf] = 1, [dtManufDateManual] = GETDATE(), [vUserManufManual] = @2
-                                                    WHERE [iLIneID] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", lineID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", userName))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_UpdatePalletManufacturedManual] @iLIneID, @vUserManufManual", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@iLIneID", lineID))
+                    sqlComm.Parameters.Add(New SqlParameter("@vUserManufManual", userName))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -414,8 +408,9 @@ Public Class Canning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("   SELECT [Code],[Description_1],[Description_2], '' FROM [StkItem]
-                                                      WHERE [Code] LIKE '18450%'", sqlConn)
+                    'Dim sqlComm As New SqlCommand("   SELECT [Code],[Description_1],[Description_2], '' FROM [StkItem]
+                    '                                  WHERE [Code] LIKE '18450%'", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_GetAllCanningCatalysts]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -438,8 +433,9 @@ Public Class Canning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("   SELECT [Code],[Description_1], '' FROM [StkItem]
-                                                      WHERE [Code] LIKE '18471%' OR [Code] LIKE '18461%' OR [Code] LIKE '%A&W%' OR ([Code] LIKE 'V%' AND [Code] NOT LIKE 'VSP%')", sqlConn)
+                    'Dim sqlComm As New SqlCommand("   SELECT [Code],[Description_1], '' FROM [StkItem]
+                    '                                  WHERE [Code] LIKE '18471%' OR [Code] LIKE '18461%' OR [Code] LIKE '%A&W%' OR ([Code] LIKE 'V%' AND [Code] NOT LIKE 'VSP%')", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_GetAllCanningWRMs]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -465,9 +461,11 @@ Public Class Canning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand(" SELECT [Description_1] FROM [StkItem]
-                                                    WHERE [Code] = @1", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
+                    'Dim sqlComm As New SqlCommand(" SELECT [Description_1] FROM [StkItem]
+                    '                                WHERE [Code] = @1", sqlConn)
+                    'sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetItemDesc] @Code", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@Code", itemCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()

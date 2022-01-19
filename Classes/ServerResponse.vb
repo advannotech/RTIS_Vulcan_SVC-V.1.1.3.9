@@ -6586,6 +6586,9 @@ Public Class ServerResponse
                             transferDescription = "Powder Prep Transfer from IT"
                         Case "FStMS"
                             transferDescription = "Fresh Slurry Transfer from IT"
+                            If Not lotNumber.Contains("-") Then
+                                lotNumber = lotNumber.Insert(lotNumber.Length - 3, "-")
+                            End If
                         Case "MStZECT"
                             transferDescription = "MIxed Slurry Transfer from IT"
                         Case "AW"
@@ -6666,6 +6669,7 @@ Public Class ServerResponse
                     Select Case procCode
                         Case "PPtFS"
                             transferDescription = "Powder Prep Transfer from IT"
+                            'lotNumber = lotNumber.Insert(lotNumber.Length - 3, "-")
                         Case "FStMS"
                             transferDescription = "Fresh Slurry Transfer from IT"
                         Case "MStZECT"
@@ -6815,6 +6819,7 @@ Public Class ServerResponse
                     Select Case procCode
                         Case "PPtFS"
                             transferDescription = "Powder Prep Transfer from IT"
+                            'lotNumber = lotNumber.Insert(lotNumber.Length - 3, "-")
                         Case "FStMS"
                             transferDescription = "Fresh Slurry Transfer from IT"
                         Case "MStZECT"
@@ -6924,6 +6929,9 @@ Public Class ServerResponse
                     Dim dqty As Double = Convert.ToDouble(qty) / 10000
                     qty = Convert.ToString(dqty)
 
+                    'If Not lot.Contains("-") Then
+                    '    lot = lot.Insert(lot.Length - 3, "-")
+                    'End If
                     Dim procCode As String = "PPtFS"
                     Dim transferDescription As String = "Powder Prep Transfer to IT"
 
@@ -11765,6 +11773,18 @@ Public Class ServerResponse
                 End Try
 #End Region
 
+#Region "AWManualClose"
+
+            Case "*AWMANUALCLOSEJOB*"
+                Try
+                    Dim lotNumber As String = ClientData
+                    Server.Listener.SendResponse(ClientSocket, AW.RTSQL.Update.AW_ManualCloseJob(lotNumber))
+                Catch ex As Exception
+                    Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
+                End Try
+
+#End Region
+
 #Region "ReOpen Job"
             Case "*GETAWREOPENJOBLOTS*"
                 Try
@@ -11816,6 +11836,18 @@ Public Class ServerResponse
                 Catch ex As Exception
                     Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
                 End Try
+#End Region
+
+#Region "ZectManualClose"
+
+            Case "*ZECTMANUALCLOSEJOB*"
+                Try
+                    Dim lotNumber As String = ClientData
+                    Server.Listener.SendResponse(ClientSocket, Zect.RTSQL.Update.Zect_ManualCloseJob(lotNumber))
+                Catch ex As Exception
+                    Server.Listener.SendResponse(ClientSocket, ExHandler.returnErrorEx(ex))
+                End Try
+
 #End Region
 
 #End Region

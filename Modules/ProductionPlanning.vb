@@ -14,7 +14,7 @@ Public Class ProductionPlanning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [iLineID], '' AS [vAWCode], '' AS [CatalystCode], [vSlurryCode], [vPowderCode], '' AS [CoatNum], [dtDateAdd], [vUserAdd], [dtDateEdit], [vUserEdit] FROM [rtbl_Slurry_Powders]", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetPowderPlanLines]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -44,7 +44,7 @@ Public Class ProductionPlanning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [iLineID], '' AS [vAWCode], [vCatalystCode], [vSlurryCode], '' AS [PowderCode], [vCoatNum], [dtDateAdd], [vUserAdd], [dtDateEdit], [vUserEdit] FROM [rtbl_Slurry_Catalyst] WHERE [iZectLine] = 1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetZECT1PlanLines]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -63,7 +63,7 @@ Public Class ProductionPlanning
                     If ex.Message = "Invalid attempt to read when no data is present." Then
                         Return "0*No Lines found for zect 1"
                     Else
-                        EventLog.WriteEntry("RTIS Vulcan SVC", "UI_GetZECT1PlanLines: " + ex.ToString())
+                        EventLog.WriteEntry("RTIS Vulcan SVC", "sp_UI_GetZECT1PlanLines: " + ex.ToString())
                         Return ExHandler.returnErrorEx(ex)
                     End If
                 End Try
@@ -74,7 +74,7 @@ Public Class ProductionPlanning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [iLineID], '' AS [vAWCode], [vCatalystCode], [vSlurryCode], '' AS [PowderCode], [vCoatNum], [dtDateAdd], [vUserAdd], [dtDateEdit], [vUserEdit] FROM [rtbl_Slurry_Catalyst] WHERE [iZectLine] = 2", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetZECT2PlanLines]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -103,7 +103,7 @@ Public Class ProductionPlanning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [iLineID], [vAWCode], [vCatalystCode], '' AS [vSlurryCode], '' AS [PowderCode], '' AS [vCoatNum], [dtDateAdd], [vUserAdd], [dtDateEdit], [vUserEdit] FROM [rtbl_Catalyst_AW]", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetAWPlanLines]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -136,10 +136,7 @@ Public Class ProductionPlanning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [rtbl_Slurry_Catalyst] 
-                                                   SET [vCatalystCode] = @Cataylst,[vSlurryCode] = @Slurry,[vCoatNum] = @Coat
-                                                   ,[dtDateEdit] = GETDATE(),[vUserEdit] = @User,[iZectLine] = @ZECTnum 
-                                                   WHERE [iLineID] = @ID", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_UpdateZECTPlanLines] @iLineID, @Cataylst, @Slurry, @Coat, @User, @ZECTnum", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@Cataylst", Line.Split("|")(0)))
                     sqlComm.Parameters.Add(New SqlParameter("@Slurry", Line.Split("|")(1)))
                     sqlComm.Parameters.Add(New SqlParameter("@Coat", Line.Split("|")(2)))
@@ -162,10 +159,7 @@ Public Class ProductionPlanning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [rtbl_Slurry_Powders] 
-                                                   SET [vSlurryCode] = @Slurry,[vPowderCode] = @Powder
-                                                   ,[dtDateEdit] = GETDATE(),[vUserEdit] = @User
-                                                   WHERE [iLineID] = @ID", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_UpdatePowderPlanLines] @Slurry, @Powder, @User, @ID", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@Slurry", Line.Split("|")(0)))
                     sqlComm.Parameters.Add(New SqlParameter("@Powder", Line.Split("|")(1)))
                     sqlComm.Parameters.Add(New SqlParameter("@DT", Line.Split("|")(2)))
@@ -233,8 +227,7 @@ Public Class ProductionPlanning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [rtbl_Slurry_Catalyst]([vCatalystCode],[vSlurryCode],[vCoatNum],[dtDateAdd],[vUserAdd],[iZectLine])
-                                                    VALUES(@Cataylst,@Slurry,@Coat,GETDATE(),@User,@ZECTnum)", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_InsertZECTPlanLines] @Cataylst, @Slurry, @Coat, @User, @ZECTnum", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@Cataylst", Line.Split("|")(0)))
                     sqlComm.Parameters.Add(New SqlParameter("@Slurry", Line.Split("|")(1)))
                     sqlComm.Parameters.Add(New SqlParameter("@Coat", Line.Split("|")(2)))
@@ -256,8 +249,7 @@ Public Class ProductionPlanning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [rtbl_Slurry_Powders]([vSlurryCode],[vPowderCode],[dtDateAdd],[vUserAdd])
-                                                   VALUES(@Slurry,@Powder,GETDATE(),@User)", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_InsertPowderPlanLines] @Slurry, @Powder, @User", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@Slurry", Line.Split("|")(0)))
                     sqlComm.Parameters.Add(New SqlParameter("@Powder", Line.Split("|")(1)))
                     sqlComm.Parameters.Add(New SqlParameter("@DT", Line.Split("|")(2)))
@@ -282,9 +274,9 @@ Public Class ProductionPlanning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlCommCatalyst As New SqlCommand("SELECT [StockLink], [Code], [Description_1] FROM [StkItem] WHERE [Code] Like '18461-%' AND [Code] Not Like '%A&W%' AND [Code] Not Like '%AW%' ORDER BY [Code] ASC", sqlConn)
-                    Dim sqlCommSlurry As New SqlCommand("SELECT [StockLink], [Code], [Description_1] FROM [StkItem] WHERE [Code] Like 'TSP-%' OR [Code] Like 'VSP-%' ORDER BY [Code] ASC", sqlConn)
-                    Dim sqlCommAW As New SqlCommand("SELECT [StockLink], [Code], [Description_1] FROM [StkItem] WHERE [Code] Like '%A&W%' OR [Code] Like '%AW%' ORDER BY [Code] ASC", sqlConn)
+                    Dim sqlCommCatalyst As New SqlCommand("EXEC [dbo].[sp_UI_GetSelectCSPlanLines_Catalyst]", sqlConn)
+                    Dim sqlCommSlurry As New SqlCommand("EXEC [dbo].[sp_UI_GetSelectCSPlanLines_Slurry]", sqlConn)
+                    Dim sqlCommAW As New SqlCommand("EXEC [dbo].[sp_UI_GetSelectCSPlanLines_AW]", sqlConn)
                     sqlConn.Open()
 
                     Dim sqlReaderCatalyst As SqlDataReader = sqlCommCatalyst.ExecuteReader()
@@ -346,9 +338,9 @@ Public Class ProductionPlanning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlCommCatalyst As New SqlCommand("SELECT [StockLink], [Code], [Description_1] FROM [StkItem] WHERE [Code] Like 'TSP-%' OR [Code] Like 'VSP-%' ORDER BY [Code] ASC", sqlConn)
-                    Dim sqlCommSlurry As New SqlCommand("SELECT [StockLink], [Code], [Description_1] FROM [StkItem] WHERE [Code] Like 'TPP-%' ORDER BY [Code] ASC", sqlConn)
-                    Dim sqlCommAW As New SqlCommand("SELECT [StockLink], [Code], [Description_1] FROM [StkItem] WHERE [Code] Like '18461-%' AND [Code] Not Like '%A&W%' AND [Code] Not Like '%AW%' ORDER BY [Code] ASC", sqlConn)
+                    Dim sqlCommCatalyst As New SqlCommand("EXEC [dbo].[sp_UI_GetSelectSPPlanLines_Catalyst]", sqlConn)
+                    Dim sqlCommSlurry As New SqlCommand("EXEC [dbo].[sp_UI_GetSelectSPPlanLines_Slurry]", sqlConn)
+                    Dim sqlCommAW As New SqlCommand("EXEC [dbo].[sp_UI_GetSelectSPPlanLines_AW]", sqlConn)
                     sqlConn.Open()
 
                     Dim sqlReaderAW As SqlDataReader = sqlCommAW.ExecuteReader()

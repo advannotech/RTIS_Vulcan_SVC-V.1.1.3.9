@@ -11,12 +11,6 @@
     <Setting Name="EvoComDB" Type="System.String" Scope="User">
       <Value Profile="(Default)">EvolutionCommon</Value>
     </Setting>
-    <Setting Name="RTDB" Type="System.String" Scope="User">
-      <Value Profile="(Default)">CAT_RTIS</Value>
-    </Setting>
-    <Setting Name="EvoDB" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Cataler_SCN</Value>
-    </Setting>
     <Setting Name="RTUser" Type="System.String" Scope="User">
       <Value Profile="(Default)">sa</Value>
     </Setting>
@@ -26,15 +20,6 @@
     <Setting Name="EvoComUser" Type="System.String" Scope="User">
       <Value Profile="(Default)">sa</Value>
     </Setting>
-    <Setting Name="EvoComServer" Type="System.String" Scope="User">
-      <Value Profile="(Default)">LAPTOP-BURSESPP</Value>
-    </Setting>
-    <Setting Name="RTServer" Type="System.String" Scope="User">
-      <Value Profile="(Default)">LAPTOP-BURSESPP</Value>
-    </Setting>
-    <Setting Name="EvoServer" Type="System.String" Scope="User">
-      <Value Profile="(Default)">LAPTOP-BURSESPP</Value>
-    </Setting>
     <Setting Name="EvoComPassword" Type="System.String" Scope="User">
       <Value Profile="(Default)">62017</Value>
     </Setting>
@@ -43,6 +28,21 @@
     </Setting>
     <Setting Name="EvoPassword" Type="System.String" Scope="User">
       <Value Profile="(Default)">62017</Value>
+    </Setting>
+    <Setting Name="RTDB" Type="System.String" Scope="User">
+      <Value Profile="(Default)">CAT_RTIS</Value>
+    </Setting>
+    <Setting Name="EvoDB" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Cataler_SCN</Value>
+    </Setting>
+    <Setting Name="RTServer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">LAPTOP-BURSESPP</Value>
+    </Setting>
+    <Setting Name="EvoServer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">LAPTOP-BURSESPP</Value>
+    </Setting>
+    <Setting Name="EvoComServer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">LAPTOP-BURSESPP</Value>
     </Setting>
   </Settings>
 </SettingsFile>
