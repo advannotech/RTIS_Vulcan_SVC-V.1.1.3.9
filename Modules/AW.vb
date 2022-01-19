@@ -876,7 +876,6 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-<<<<<<< HEAD
                     Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_InsertNewAWJob] @jobID, @code, @lotNumber, @qty, @username, @palletNo, @ZectJob, @palletUnq", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@jobID", jobID))
                     sqlComm.Parameters.Add(New SqlParameter("@code", code))
@@ -886,17 +885,6 @@ Public Class AW
                     sqlComm.Parameters.Add(New SqlParameter("@palletNo", palletNo))
                     sqlComm.Parameters.Add(New SqlParameter("@ZectJob", ZectJob))
                     sqlComm.Parameters.Add(New SqlParameter("@palletUnq", palletUnq))
-=======
-                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_InsertNewAWJobRawMaterial] @1, @2, @3, @4, @5, @6, @7, @8", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", jobID))
-                    sqlComm.Parameters.Add(New SqlParameter("@2", code))
-                    sqlComm.Parameters.Add(New SqlParameter("@3", lotNumber))
-                    sqlComm.Parameters.Add(New SqlParameter("@4", qty))
-                    sqlComm.Parameters.Add(New SqlParameter("@5", username))
-                    sqlComm.Parameters.Add(New SqlParameter("@6", palletNo))
-                    sqlComm.Parameters.Add(New SqlParameter("@7", ZectJob))
-                    sqlComm.Parameters.Add(New SqlParameter("@8", palletUnq))
->>>>>>> 8fb829a8b54d25dd22bbd4af8347556a2269f418
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -1119,11 +1107,8 @@ Public Class AW
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-<<<<<<< HEAD
+
                     Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_AW_GetZectMFCode] @baseCode", sqlConn)
-=======
-                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_AW_GetZectMFCode] @1", sqlConn)
->>>>>>> 8fb829a8b54d25dd22bbd4af8347556a2269f418
                     sqlConn.Open()
                     sqlComm.Parameters.Add(New SqlParameter("@baseCode", baseCode))
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
