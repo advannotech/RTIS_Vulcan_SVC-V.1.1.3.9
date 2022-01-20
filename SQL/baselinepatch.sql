@@ -533,9 +533,6 @@ IF (OBJECT_ID('[dbo].[vw_GetStockTakeVariancesArchives]') IS NOT NULL)
 GO
 
 
-<<<<<<< HEAD
-=======
-
 
 CREATE VIEW [dbo].[vw_GetStockTakeVariancesArchives]
 AS
@@ -1612,10 +1609,7 @@ GO
 
 
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 8fb829a8b54d25dd22bbd4af8347556a2269f418
 IF (OBJECT_ID('[dbo].[sp_UI_GetAWBatchTotal]') IS NOT NULL)
 	DROP PROC [dbo].[sp_UI_GetAWBatchTotal]
 GO
@@ -2507,12 +2501,6 @@ FROM [tbl_RTIS_AW_Jobs] WHERE [vJobUnq] = @jobNo
 GO
 
 
-
-
-<<<<<<< HEAD
-
-=======
->>>>>>> 8fb829a8b54d25dd22bbd4af8347556a2269f418
 IF (OBJECT_ID('[dbo].[sp_AW_GetValidReopenJobLots]') IS NOT NULL)
 	DROP PROC [dbo].[sp_AW_GetValidReopenJobLots]
 GO
@@ -2528,10 +2516,6 @@ GO
 
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 8fb829a8b54d25dd22bbd4af8347556a2269f418
 
 IF (OBJECT_ID('[dbo].[sp_AW_GetReprintJobNumber_RO]') IS NOT NULL)
 	DROP PROC [dbo].[sp_AW_GetReprintJobNumber_RO]
@@ -6906,8 +6890,7 @@ GO
 
 CREATE PROC [dbo].[UI_GetTOYOTAAWPlanLines]
 AS
-	SELECT [iLineID], [vCatalystCode], '' AS [vSlurryCode], '' AS [vPowderCode], [vPGMCode], [dtDateAdd], [vUserAdd], [dtDateEdit], [vUserEdit] 
-	FROM [rtbl_T_Catalyst_PGM]
+SELECT [iLineID], [vCatalystCode], '' AS [vSlurryCode], '' AS [vPowderCode], [vPGMCode], [dtDateAdd], [vUserAdd], [dtDateEdit], [vUserEdit] FROM [rtbl_T_Catalyst_PGM]
 GO
 
 
@@ -7087,231 +7070,6 @@ GO
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
->>>>>>> 8c9f37f9d2f689588657cd1656c6e38825040da3
 
 
 

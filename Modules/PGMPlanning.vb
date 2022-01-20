@@ -100,6 +100,7 @@ Public Class PGMPlanning
 
             End Function
 
+
             Public Shared Function UI_GetTOYOTAAWPlanLines() As String
                 Try
                     Dim ReturnData As String = ""
@@ -300,9 +301,9 @@ Public Class PGMPlanning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlCommCatalyst As New SqlCommand("SELECT [StockLink], [Code], [Description_1] FROM [StkItem] WHERE [ItemGroup] IN (005) ORDER BY [Code] ASC", sqlConn)
-                    Dim sqlCommSlurry As New SqlCommand("SELECT [StockLink], [Code], [Description_1] FROM [StkItem] WHERE  [ItemGroup] = 011 ORDER BY [Code] ASC", sqlConn)
-                    Dim sqlCommPowder As New SqlCommand("SELECT [StockLink], [Code], [Description_1] FROM [StkItem] WHERE [ItemGroup] = 010 ORDER BY [Code] ASC", sqlConn)
+                    Dim sqlCommCatalyst As New SqlCommand("EXEC [dbo].[sp_UI_GetSelectCSPPGMPlanLines_Catalyst]", sqlConn)
+                    Dim sqlCommSlurry As New SqlCommand("EXEC [dbo].[sp_UI_GetSelectCSPPGMPlanLines_Slurry]", sqlConn)
+                    Dim sqlCommPowder As New SqlCommand("EXEC [dbo].[sp_UI_GetSelectCSPPGMPlanLines_Powder]", sqlConn)
                     sqlConn.Open()
 
                     Dim sqlReaderCatalyst As SqlDataReader = sqlCommCatalyst.ExecuteReader()
@@ -349,7 +350,7 @@ Public Class PGMPlanning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlCommPGM As New SqlCommand("SELECT [StockLink], [Code], [Description_1] FROM [StkItem] WHERE [ItemGroup] IN (002,009) ORDER BY [Code] ASC", sqlConn)
+                    Dim sqlCommPGM As New SqlCommand("EXEC  [dbo].[sp_UI_GetSelectPGMPlanLines]", sqlConn)
                     sqlConn.Open()
 
                     Dim sqlReaderPGM As SqlDataReader = sqlCommPGM.ExecuteReader()

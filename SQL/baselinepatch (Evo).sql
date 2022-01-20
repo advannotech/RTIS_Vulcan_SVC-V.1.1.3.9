@@ -408,11 +408,6 @@ GO
 
 
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 8fb829a8b54d25dd22bbd4af8347556a2269f418
 ------------------------sp_GetLabelInfo----------------
 IF (OBJECT_ID('[sp_UI_GetLabelInfo_fg]') IS NOT NULL)
 	DROP PROC [dbo].[sp_UI_GetLabelInfo_fg]
@@ -830,6 +825,59 @@ CREATE PROC [dbo].[UI_GetSelectCSPPGMPlanLines_3]
 AS
 	SELECT [StockLink], [Code], [Description_1] FROM [StkItem] WHERE [ItemGroup] = 010 ORDER BY [Code] ASC
 GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetSelectCSPPGMPlanLines_Catalyst]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetSelectCSPPGMPlanLines_Catalyst]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetSelectCSPPGMPlanLines_Catalyst]
+AS
+SELECT [StockLink], [Code], [Description_1] FROM [StkItem] WHERE [ItemGroup] IN (005) ORDER BY [Code] ASC
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetSelectCSPPGMPlanLines_Slurry]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetSelectCSPPGMPlanLines_Slurry]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetSelectCSPPGMPlanLines_Slurry]
+AS
+SELECT [StockLink], [Code], [Description_1] FROM [StkItem] WHERE  [ItemGroup] = 011 ORDER BY [Code] ASC
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetSelectCSPPGMPlanLines_Powder]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetSelectCSPPGMPlanLines_Powder]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetSelectCSPPGMPlanLines_Powder]
+AS
+SELECT [StockLink], [Code], [Description_1] FROM [StkItem] WHERE [ItemGroup] = 010 ORDER BY [Code] ASC
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetSelectPGMPlanLines]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetSelectPGMPlanLines]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetSelectPGMPlanLines]
+AS
+SELECT [StockLink], [Code], [Description_1] FROM [StkItem] WHERE [ItemGroup] IN (002,009) ORDER BY [Code] ASC
+GO
+
+
+
+
+
+
+
+ 
+
+
+
+
 
 
 
