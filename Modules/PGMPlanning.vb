@@ -193,13 +193,15 @@ Public Class PGMPlanning
                     Return ExHandler.returnErrorEx(ex)
                 End Try
             End Function
+
             Public Shared Function UI_UpdateTAWPlanLines(ByVal Line As String) As String
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("EXEC [dbo].[UI_UpdateTAWPlanLines] @Catalyst, @PGMCode, @User, @ID", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_UpdateTAWPlanLines] @ID, @Catalyst, @PGMCode, @User", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@Catalyst", Line.Split("|")(0)))
                     sqlComm.Parameters.Add(New SqlParameter("@PGMCode", Line.Split("|")(1)))
+                    sqlComm.Parameters.Add(New SqlParameter("@DT", Line.Split("|")(2)))
                     sqlComm.Parameters.Add(New SqlParameter("@User", Line.Split("|")(3)))
                     sqlComm.Parameters.Add(New SqlParameter("@ID", Line.Split("|")(4)))
                     sqlConn.Open()
@@ -277,9 +279,10 @@ Public Class PGMPlanning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("EXEC [dbo].[UI_InsertTAWPlanLines] @Catalyst, @PGMCode, @User", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_InsertTAWPlanLines] @Catalyst,@PGMCode,@User ", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@Catalyst", Line.Split("|")(0)))
                     sqlComm.Parameters.Add(New SqlParameter("@PGMCode", Line.Split("|")(1)))
+                    sqlComm.Parameters.Add(New SqlParameter("@DT", Line.Split("|")(2)))
                     sqlComm.Parameters.Add(New SqlParameter("@User", Line.Split("|")(3)))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
