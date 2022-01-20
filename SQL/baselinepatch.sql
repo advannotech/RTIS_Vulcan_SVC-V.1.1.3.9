@@ -6952,21 +6952,21 @@ GO
 
 
 
-
 IF (OBJECT_ID('[dbo].[sp_UI_UpdateTAWPlanLines]') IS NOT NULL)
 	DROP PROC [dbo].[sp_UI_UpdateTAWPlanLines]
 GO
 
 CREATE PROC [dbo].[sp_UI_UpdateTAWPlanLines]
-(
-@ID int, @Catalyst varchar(max), @PGMCode varchar(max), @User varchar(max)
-)
+	@Slurry VARCHAR(MAX),
+	@PGMCode VARCHAR(MAX),
+	@User VARCHAR(MAX)
 AS
-UPDATE [rtbl_T_Catalyst_PGM] 
-SET [vCatalystCode] = @Catalyst,[vPGMCode] = @PGMCode
-,[dtDateEdit] = GETDATE(),[vUserEdit] = @User
-WHERE [iLineID] = @ID
+INSERT INTO [rtbl_VW_Slurry_PGM]([vSlurryCode],[vPGMCode],[dtDateAdd],[vUserAdd])
+VALUES(@Slurry,@PGMCode,GETDATE(),@User)
 GO
+
+
+
 
 
 IF (OBJECT_ID('[dbo].[UI_InsertTFSPlanLines]') IS NOT NULL)
@@ -7010,18 +7010,24 @@ CREATE PROC [dbo].[sp_UI_InsertTAWPlanLines]
 	@PGMCode VARCHAR(MAX),
 	@User VARCHAR(MAX)
 AS
-INSERT INTO [rtbl_T_Catalyst_PGM]
-(
-[vCatalystCode],
-[vPGMCode],
-[dtDateAdd],
-[vUserAdd]
-)
+INSERT INTO [rtbl_T_Catalyst_PGM]([vCatalystCode],[vPGMCode],[dtDateAdd],[vUserAdd])
 VALUES(@Catalyst,@PGMCode,GETDATE(),@User)
 GO
 
 
 
+IF (OBJECT_ID('[dbo].[sp_UI_InsertVWPlanLines]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_InsertVWPlanLines]
+GO
+
+CREATE PROC [dbo].[sp_UI_InsertVWPlanLines]
+	@Slurry VARCHAR(MAX),
+	@PGMCode VARCHAR(MAX),
+	@User VARCHAR(MAX)
+AS
+INSERT INTO [rtbl_VW_Slurry_PGM]([vSlurryCode],[vPGMCode],[dtDateAdd],[vUserAdd])
+VALUES(@Slurry,@PGMCode,GETDATE(),@User)
+GO
 
 
 

@@ -218,13 +218,18 @@ Public Class PGMPlanning
         End Class
         Partial Public Class Insert
 
+
+
+
+
             Public Shared Function UI_InsertVWPlanLines(ByVal Line As String) As String
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("EXEC [dbo].[UI_UpdateTAWPlanLines] @Slurry, @PGMCode, @User", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC  [dbo].[sp_UI_InsertVWPlanLines] @Slurry, @PGMCode, @User", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@Slurry", Line.Split("|")(0)))
                     sqlComm.Parameters.Add(New SqlParameter("@PGMCode", Line.Split("|")(1)))
+                    sqlComm.Parameters.Add(New SqlParameter("@DT", Line.Split("|")(2)))
                     sqlComm.Parameters.Add(New SqlParameter("@User", Line.Split("|")(3)))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
@@ -236,6 +241,7 @@ Public Class PGMPlanning
                     Return ExHandler.returnErrorEx(ex)
                 End Try
             End Function
+
 
             Public Shared Function UI_InsertTFSPlanLines(ByVal Line As String) As String
                 Try
@@ -260,7 +266,7 @@ Public Class PGMPlanning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("EXEC [dbo].[UI_InsertTPPPlanLines] @Powder, @Powder, @Powder", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[UI_InsertTPPPlanLines] @Powder, @PGMCode, @User", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@Powder", Line.Split("|")(0)))
                     sqlComm.Parameters.Add(New SqlParameter("@PGMCode", Line.Split("|")(1)))
                     sqlComm.Parameters.Add(New SqlParameter("@User", Line.Split("|")(3)))
@@ -279,7 +285,7 @@ Public Class PGMPlanning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_InsertTAWPlanLines] @Catalyst,@PGMCode,@User ", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_UpdateTAWPlanLines] @Slurry, @PGMCode, @User ", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@Catalyst", Line.Split("|")(0)))
                     sqlComm.Parameters.Add(New SqlParameter("@PGMCode", Line.Split("|")(1)))
                     sqlComm.Parameters.Add(New SqlParameter("@DT", Line.Split("|")(2)))
