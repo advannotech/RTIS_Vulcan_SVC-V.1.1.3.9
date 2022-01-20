@@ -226,7 +226,7 @@ Public Class PGMPlanning
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" EXEC  [dbo].[sp_UI_InsertVWPlanLines] @Slurry, @PGMCode, @User", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_UI_InsertVWPlanLines] @Slurry, @PGMCode, @User", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@Slurry", Line.Split("|")(0)))
                     sqlComm.Parameters.Add(New SqlParameter("@PGMCode", Line.Split("|")(1)))
                     sqlComm.Parameters.Add(New SqlParameter("@DT", Line.Split("|")(2)))
