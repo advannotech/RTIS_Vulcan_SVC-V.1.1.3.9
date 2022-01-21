@@ -869,7 +869,15 @@ GO
 
 
 
+IF (OBJECT_ID('[dbo].[sp_UI_GetAllFreshSlurries]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetAllFreshSlurries]
+GO
 
+CREATE PROC [dbo].[sp_UI_GetAllFreshSlurries]
+AS
+SELECT [Code],[Description_1],[Description_2], '' FROM [StkItem]
+WHERE [ItemGroup] LIKE '%011%'
+GO
 
 
 
