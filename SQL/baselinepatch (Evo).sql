@@ -1,11 +1,6 @@
 USE Cataler_SCN
 GO
 
-
-
-
-
-
 IF (OBJECT_ID('[dbo].[sp_GetWhseStockQtys]') IS NOT NULL)
 	DROP PROC [dbo].[sp_GetWhseStockQtys]
 GO
@@ -607,6 +602,8 @@ GO
 
 
 
+
+
 IF (OBJECT_ID('[dbo].[sp_UI_getWhseAllEvoWhses]') IS NOT NULL)
 	DROP PROC [dbo].[sp_UI_getWhseAllEvoWhses]
 GO
@@ -878,6 +875,431 @@ AS
 SELECT [Code],[Description_1],[Description_2], '' FROM [StkItem]
 WHERE [ItemGroup] LIKE '%011%'
 GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_GetItemDesc]') IS NOT NULL)
+	DROP PROC [dbo].[sp_GetItemDesc]
+GO
+
+CREATE PROC [dbo].[sp_GetItemDesc]
+(
+@1 varchar(400)
+)
+AS
+SELECT [Description_1] FROM [StkItem] WHERE [Code] = @1
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_CheckWhseStockAso]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_CheckWhseStockAso]
+GO
+
+CREATE PROC [dbo].[sp_MBL_CheckWhseStockAso]
+(
+@1 varchar(400),
+@2 varchar(20)
+)
+AS
+SELECT [IdWhseStk] FROM [WhseStk] wstk
+INNER JOIN [WhseMst] w ON w.[WhseLink] = wstk.[WHWhseID]
+INNER JOIN [StkItem] s ON s.[StockLink] = wstk.[WHStockLink]
+WHERE s.[Code] = @1 AND w.[Code] = @2
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_ValidatePPItem]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_ValidatePPItem]
+GO
+
+CREATE PROC [dbo].[sp_MBL_ValidatePPItem]
+(
+@1 varchar(400)
+)
+AS
+SELECT [StockLink] FROM [StkItem] WHERE [Code] = @1
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_ValidatePPLot]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_ValidatePPLot]
+GO
+
+CREATE PROC [dbo].[sp_MBL_ValidatePPLot]
+(
+@1 varchar(50)
+)
+AS
+SELECT [idLotTracking] FROM [_etblLotTracking] WHERE [cLotDescription] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetLotID]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetLotID]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetLotID]
+(
+@1 varchar(50)
+)
+AS
+SELECT [idLotTracking] FROM [_etblLotTracking] WHERE [cLotDescription] = @1
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetPPItemInfo]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetPPItemInfo]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetPPItemInfo]
+(
+@1 varchar(400)
+)
+AS
+SELECT [StockLink], [Description_1] FROM [StkItem] WHERE [Code] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_Zect_GetConfigTagInfo]') IS NOT NULL)
+	DROP PROC [dbo].[sp_Zect_GetConfigTagInfo]
+GO
+CREATE PROC [dbo].[sp_Zect_GetConfigTagInfo]
+(
+@1 varchar(400)
+)
+AS
+SELECT [Bar_Code], [cSimpleCode], b.[cBinLocationName], [Description_1], [Description_2], [Description_3], [ItemGroup] 
+FROM [StkItem] s
+LEFT JOIN [_btblBINLocation] b ON s.[iBinLocationID] = b.[idBinLocation] WHERE [Code] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_Zect_GetLabelInfo]') IS NOT NULL)
+	DROP PROC [dbo].[sp_Zect_GetLabelInfo]
+GO
+CREATE PROC [dbo].[sp_Zect_GetLabelInfo]
+(
+@1 varchar(400)
+)
+AS
+SELECT [Code], [Bar_Code], [cSimpleCode], b.[cBinLocationName], [Description_1], [Description_2], [Description_3], [ItemGroup] 
+FROM [StkItem] s
+LEFT JOIN [_btblBINLocation] b ON s.[iBinLocationID] = b.[idBinLocation] WHERE [Code] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_Zect_GetLabelInfo_ZectTage]') IS NOT NULL)
+	DROP PROC [dbo].[sp_Zect_GetLabelInfo_ZectTage]
+GO
+CREATE PROC [dbo].[sp_Zect_GetLabelInfo_ZectTage]
+(
+@1 varchar(400)
+)
+AS
+SELECT [Code], [Bar_Code], [cSimpleCode], b.[cBinLocationName], [Description_1], [Description_2], [Description_3], [ItemGroup] 
+FROM [StkItem] s
+LEFT JOIN [_btblBINLocation] b ON s.[iBinLocationID] = b.[idBinLocation] WHERE [Code] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_Zect_GetReprintInfo_ZectTag]') IS NOT NULL)
+	DROP PROC [dbo].[sp_Zect_GetReprintInfo_ZectTag]
+GO
+CREATE PROC [dbo].[sp_Zect_GetReprintInfo_ZectTag]
+(
+@1 varchar(400)
+)
+AS
+SELECT [Code], [Bar_Code], [cSimpleCode], b.[cBinLocationName], [Description_1], [Description_2], [Description_3], [ItemGroup] 
+FROM [StkItem] s
+LEFT JOIN [_btblBINLocation] b ON s.[iBinLocationID] = b.[idBinLocation] WHERE [Code] = @1
+GO
+
+IF (OBJECT_ID('[dbo].[sp_Zect_GetreOpenLabelInfo]') IS NOT NULL)
+	DROP PROC [dbo].[sp_Zect_GetreOpenLabelInfo]
+GO
+CREATE PROC [dbo].[sp_Zect_GetreOpenLabelInfo]
+(
+@1 varchar(400)
+)
+AS
+SELECT [Code], [Bar_Code], [cSimpleCode], b.[cBinLocationName], [Description_1], [Description_2], [Description_3], [ItemGroup] 
+FROM [StkItem] s
+LEFT JOIN [_btblBINLocation] b ON s.[iBinLocationID] = b.[idBinLocation] WHERE [Code] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_Zect_GetReprintLabelInfo]') IS NOT NULL)
+	DROP PROC [dbo].[sp_Zect_GetReprintLabelInfo]
+GO
+CREATE PROC [dbo].[sp_Zect_GetReprintLabelInfo]
+(
+@1 varchar(400)
+)
+AS
+SELECT [Code], [Bar_Code], [cSimpleCode], b.[cBinLocationName], [Description_1], [Description_2], [Description_3], [ItemGroup] 
+FROM [StkItem] s
+LEFT JOIN [_btblBINLocation] b ON s.[iBinLocationID] = b.[idBinLocation] WHERE [Code] = @1
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetAllCatalysts]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetAllCatalysts]
+GO
+CREATE PROC [dbo].[sp_UI_GetAllCatalysts]
+AS
+Select [Code],[Description_1],[Description_2], '' FROM [StkItem]
+WHERE [Code] Like '18461%' OR ([Code] LIKE 'V%' AND [Code] NOT LIKE 'VS%')
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetAllCatalystRMs]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetAllCatalystRMs]
+GO
+CREATE PROC [dbo].[sp_UI_GetAllCatalystRMs]
+AS
+SELECT [Code],[Description_1], '' FROM [StkItem]
+WHERE [ItemGroup] LIKE '%007%' OR [ItemGroup] LIKE '%011%' OR [ItemGroup] LIKE '%005%'
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_Zect_GetMFCode]') IS NOT NULL)
+	DROP PROC [dbo].[sp_Zect_GetMFCode]
+GO
+CREATE PROC [dbo].[sp_Zect_GetMFCode]
+(
+@1 varchar(30)
+)
+AS
+SELECT [Code] FROM [StkItem] WHERE [ucIICoatStage] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_Zect_GetItemCodeFromMFCode]') IS NOT NULL)
+	DROP PROC [dbo].[sp_Zect_GetItemCodeFromMFCode]
+GO
+CREATE PROC [dbo].[sp_Zect_GetItemCodeFromMFCode]
+(
+@1 varchar(400)
+)
+AS
+SELECT [ucIICoatStage] FROM [StkItem] WHERE [Code] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_Zect_GetItemCode]') IS NOT NULL)
+	DROP PROC [dbo].[sp_Zect_GetItemCode]
+GO
+CREATE PROC [dbo].[sp_Zect_GetItemCode]
+(
+@1 varchar(400),
+@2 varchar(400)
+)
+AS
+SELECT [Code] FROM [StkItem] WHERE [Code] LIKE @1 AND [Code] LIKE @2
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_Zect_GetItemLotsFromTanks]') IS NOT NULL)
+	DROP PROC [dbo].[sp_Zect_GetItemLotsFromTanks]
+GO
+CREATE PROC [dbo].[sp_Zect_GetItemLotsFromTanks]
+(
+@1 varchar(400),
+@2 varchar(400)
+)
+AS
+SELECT DISTINCT 'Large Tank', rl.vTankCode, l.[cLotDescription], 'TNK', rl.[dWetWeight], rl.[dDryWeight] FROM [_etblLotTrackingQty] lq
+INNER JOIN [_etblLotTracking] l ON l.[idLotTracking] = lq.[iLotTrackingID] 
+INNER JOIN [_etblLotStatus] ls ON l.[iLotStatusID] = ls.[idLotStatus]
+INNER JOIN [WhseMst] w ON w.[WhseLink] = lq.[iWarehouseID]
+INNER JOIN [StkItem] s ON s.[StockLink] = l.[iStockID]
+INNER JOIN [CAT_RTIS].[dbo].[tbl_RTIS_MS_Main] rl ON rl.[vLotNumber] COLLATE Latin1_General_CI_AS = l.[cLotDescription] AND rl.[vItemCode] = s.[Code]
+WHERE s.[Code] = @1 AND w.[Code] = @2 AND rl.[vTankType] = 'TNK'  AND lq.[fQtyOnHand]  > 0 AND rl.[bTransferred] = 1 AND rl.[dSolidity] >0 
+UNION
+SELECT DISTINCT 'Mobile Tank', rd.vTankCode, l.[cLotDescription], 'MTNK', rd.[dFinalWetWeight], rd.[dDryWeight] FROM [_etblLotTrackingQty] lq
+INNER JOIN [_etblLotTracking] l ON l.[idLotTracking] = lq.[iLotTrackingID] 
+INNER JOIN [_etblLotStatus] ls ON l.[iLotStatusID] = ls.[idLotStatus]
+INNER JOIN [WhseMst] w ON w.[WhseLink] = lq.[iWarehouseID]
+INNER JOIN [StkItem] s ON s.[StockLink] = l.[iStockID]
+INNER JOIN [CAT_RTIS].[dbo].[tbl_RTIS_MS_Main] rl ON rl.[vLotNumber] COLLATE Latin1_General_CI_AS = l.[cLotDescription] AND rl.[vItemCode] = s.[Code]
+INNER JOIN [CAT_RTIS].[dbo].[tbl_RTIS_MS_Decant] rd ON rd.[iHeaderID] = rl.[iLineID] 
+WHERE s.[Code] = @1 AND w.[Code] = @2 AND rl.[vTankType] = 'BTNK'  AND lq.[fQtyOnHand]  > 0 AND rd.[bTransferred] = 1 AND rd.[dSolidity] >0
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_Zect_GetSlurryTanks]') IS NOT NULL)
+	DROP PROC [dbo].[sp_Zect_GetSlurryTanks]
+GO
+CREATE PROC [dbo].[sp_Zect_GetSlurryTanks]
+(
+@1 varchar(max),
+@2 varchar(max)
+)
+AS
+SELECT m.[iLineID], m.[vTankType] + '_' + m.[vTankCode], m.[vItemCode], m.[vDescription], m.[vLotNumber], ISNULL( COUNT( s.[iLineID]), 0)
+FROM [CAT_RTIS].[dbo].[tbl_RTIS_MS_Main] m
+LEFT JOIN [CAT_RTIS].[dbo].[tbl_RTIS_MS_Slurries] s ON s.[iHeaderID] = m.[iLineID]
+WHERE m.[vTankType] = 'TNK' AND m.[vItemCode] = @1 AND m.[vLotNumber] = @2
+GROUP BY m.[iLineID], m.[vTankType] , m.[vTankCode], m.[vItemCode], m.[vDescription], m.[vLotNumber] 													  
+UNION
+SELECT 0, 'MTNK_' + d.[vTankCode], d.[vItemCode], m.[vDescription], d.[vLotNumber], ISNULL( COUNT( s.[iLineID]), 0) FROM [CAT_RTIS].[dbo].[tbl_RTIS_MS_Decant] d
+INNER JOIN [CAT_RTIS].[dbo].[tbl_RTIS_MS_Main] m ON m.[iLineID] = d.[iHeaderID]
+INNER JOIN [CAT_RTIS].[dbo].[tbl_RTIS_MS_Slurries] s ON m.[iLineID] = s.[iHeaderID]
+WHERE d.[vItemCode] = @1 AND d.[vLotNumber] = @2
+GROUP BY d.[vTankCode], d.[vItemCode], m.[vDescription], d.[vLotNumber] 
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_Zect_GetReOpenCatalystCoats]') IS NOT NULL)
+	DROP PROC [dbo].[sp_Zect_GetReOpenCatalystCoats]
+GO
+CREATE PROC [dbo].[sp_Zect_GetReOpenCatalystCoats]
+(
+@1 varchar(400)
+)
+AS
+SELECT [Code] FROM [StkItem]
+WHERE [Code] LIKE @1
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_Zect_GetReOpenCatalystCoats]') IS NOT NULL)
+	DROP PROC [dbo].[sp_Zect_GetReOpenCatalystCoats]
+GO
+CREATE PROC [dbo].[sp_Zect_GetReOpenCatalystCoats]
+(
+@1 varchar(400)
+)
+AS
+SELECT [Code] FROM [StkItem]
+WHERE [Code] LIKE @1
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_Zect_GetItemDescription]') IS NOT NULL)
+	DROP PROC [dbo].[sp_Zect_GetItemDescription]
+GO
+CREATE PROC [dbo].[sp_Zect_GetItemDescription]
+(
+@1 varchar(400)
+)
+AS
+SELECT [Description_1] FROM [StkItem] WHERE [Code] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_Zect_GetItemLotsFromTank_AddSlurry]') IS NOT NULL)
+	DROP PROC [dbo].[sp_Zect_GetItemLotsFromTank_AddSlurry]
+GO
+CREATE PROC [dbo].[sp_Zect_GetItemLotsFromTank_AddSlurry]
+(
+@1 varchar(max),
+@2 varchar(max)
+)
+AS
+SELECT DISTINCT 'Large Tank', rl.vTankCode, l.[cLotDescription], 'TNK', rl.[dWetWeight], rl.[dDryWeight] FROM [_etblLotTrackingQty] lq
+INNER JOIN [_etblLotTracking] l ON l.[idLotTracking] = lq.[iLotTrackingID] 
+INNER JOIN [_etblLotStatus] ls ON l.[iLotStatusID] = ls.[idLotStatus]
+INNER JOIN [WhseMst] w ON w.[WhseLink] = lq.[iWarehouseID]
+INNER JOIN [StkItem] s ON s.[StockLink] = l.[iStockID]
+INNER JOIN [CAT_RTIS].[dbo].[tbl_RTIS_MS_Main] rl ON rl.[vLotNumber] COLLATE Latin1_General_CI_AS = l.[cLotDescription] AND rl.[vItemCode] = s.[Code]
+WHERE s.[Code] = @1 AND w.[Code] = @2 AND rl.[vTankType] = 'TNK'  AND lq.[fQtyOnHand]  > 0 AND rl.[bTransferred] = 1 AND rl.[dSolidity] >0
+UNION
+SELECT DISTINCT 'Mobile Tank', rd.vTankCode, l.[cLotDescription], 'MTNK', rd.[dFinalWetWeight], rd.[dDryWeight] FROM [_etblLotTrackingQty] lq
+INNER JOIN [_etblLotTracking] l ON l.[idLotTracking] = lq.[iLotTrackingID] 
+INNER JOIN [_etblLotStatus] ls ON l.[iLotStatusID] = ls.[idLotStatus]
+INNER JOIN [WhseMst] w ON w.[WhseLink] = lq.[iWarehouseID]
+INNER JOIN [StkItem] s ON s.[StockLink] = l.[iStockID]
+INNER JOIN [CAT_RTIS].[dbo].[tbl_RTIS_MS_Main] rl ON rl.[vLotNumber] COLLATE Latin1_General_CI_AS = l.[cLotDescription] AND rl.[vItemCode] = s.[Code]
+INNER JOIN [CAT_RTIS].[dbo].[tbl_RTIS_MS_Decant] rd ON rd.[iHeaderID] = rl.[iLineID] 
+WHERE s.[Code] = @1 AND w.[Code] = @2 AND rl.[vTankType] = 'BTNK'  AND lq.[fQtyOnHand]  > 0 AND rd.[bTransferred] = 1  AND rd.[dSolidity] >0
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetEvoStockTakes') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetEvoStockTakes]
+GO
+CREATE PROC [dbo].[sp_UI_GetEvoStockTakes]
+(
+@1 varchar(max)
+)
+AS
+SELECT [cInvCountNo],[cDescription]
+FROM [_btblInvCount]
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetEvoWhseID') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetEvoWhseID]
+GO
+CREATE PROC [dbo].[sp_MBL_GetEvoWhseID]
+(
+@1 varchar(max)
+)
+AS
+SELECT [WhseLink]
+FROM [WhseMst] WHERE [Code] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetLotTrackingID') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetLotTrackingID]
+GO
+CREATE PROC [dbo].[sp_MBL_GetLotTrackingID]
+(
+@1 varchar(max),
+@2 int
+)
+AS
+SELECT [idLotTracking]
+FROM [_etblLotTracking] WHERE [cLotDescription] = @1 AND [iStockID] = @2
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetItemInfoForST') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetItemInfoForST]
+GO
+CREATE PROC [dbo].[sp_MBL_GetItemInfoForST]
+(
+@1 varchar(max)
+)
+AS
+SELECT [StockLink],[Bar_Code]
+FROM [StkItem] WHERE [Code] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetLotInEvo') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetLotInEvo]
+GO
+CREATE PROC [dbo].[sp_MBL_GetLotInEvo]
+(
+@1 varchar(max),
+@2 varchar(max)
+)
+AS
+SELECT l.[idLotTracking] 
+FROM [_etblLotTracking] l INNER JOIN [StkItem] s ON l.[iStockID] = s.[StockLink]
+WHERE l.[cLotDescription] = @1 AND s.[Code] = @2
+GO
+
+
+
 
 
 

@@ -47,7 +47,7 @@ Public Class WhseTransfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT [vDisplayName], [vProcName] FROM [tbl_ProcNames]", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_UI_getWhtProcesses] ", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -115,31 +115,7 @@ Public Class WhseTransfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("
-                    SELECT fg.[iLineID], 
-                    fg.[vItemCode], 
-                    fg.[vLotNumber], 
-                    fg.[vWarehouse_From], 
-                    fg.[vWarehouse_To], 
-                    fg.[dQtyTransfered], 
-                    ISNULL(lq.[fQtyOnHand], 0) AS [QtyOnHand],
-                    fg.[vUsername],
-                    fg.[vProcess], 
-                    fg.[dtDateTransfered],
-                    CASE 
-                    WHEN l.[cLotDescription] IS NULL THEN
-	                    'The lot was not found in evolution, has the lot been manufactured.'		
-                    WHEN lq.[fQtyOnHand] < fg.[dQtyTransfered] THEN
-	                    'Insufficient quantity of this lot was found in the out going warehouse.'			
-                    ELSE
-	                    ''
-                    END  AS [Warnings]
-                    FROM [tbl_WHTFGRequests] fg
-                    INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[Code] = fg.[vItemCode]
-                    INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[Code] = fg.[vWarehouse_From]
-                    LEFT JOIN [Cataler_SCN].[dbo].[_etblLotTracking] l ON l.[cLotDescription] = fg.[vLotNumber]
-                    LEFT JOIN   [Cataler_SCN].[dbo].[_etblLotTrackingQty] lq ON l.[idLotTracking] = lq.[iLotTrackingID] AND lq.[iWarehouseID] = w.[WhseLink] WHERE [dtDateTransfered] BETWEEN @1 AND @2 
-                    ORDER BY [dtDateTransfered] DESC ", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_getWhtFGRequests] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", dateFrom))
                     sqlComm.Parameters.Add(New SqlParameter("@2", dateTo))
                     sqlConn.Open()
@@ -169,17 +145,7 @@ Public Class WhseTransfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT [iLineID]
-      ,[vItemCode]
-      ,[vLotNumber]
-      ,[vWarehouse_From]
-      ,[vWarehouse_To]
-      ,[dQtyTransfered]
-      ,[dtDateRequested]
-      ,[vUserRequested]
-      ,[dtDateTransfered]
-      ,[vUsername]
-      ,[vProcess] FROM [tbl_WHTFGRequests_Completed] WHERE [dtDateTransfered] BETWEEN @1 AND @2", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_UI_getWhtFGReports] @1, @2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", dateFrom))
                     sqlComm.Parameters.Add(New SqlParameter("@2", dateTo))
                     sqlConn.Open()
@@ -210,8 +176,7 @@ Public Class WhseTransfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT [vItemCode], [vLotNumber], [vWarehouse_From], [vWarehouse_To], [dQtyTransfered], [dtDateTransfered], [vProcess] ,[vUsername]
-                                                     FROM [tbl_WHTFGRequests] WHERE [iLineID] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("  EXEC [dbo].[sp_UI_GetFGTransferInfo] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", iLineID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -310,8 +275,7 @@ Public Class WhseTransfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT TOP 1000 [iLineID], [vItemCode], [vLotNumber], [vWarehouse_From], [vWarehouse_To], [dQtyTransfered], [vUsername] ,[vProcess] ,[vTransDesc], [dtDateTransfered] 
-                                                     FROM [tbl_WHTPending] WHERE [vStatus] = 'Pending'", sqlConn)
+                    Dim sqlComm As New SqlCommand("  EXEC [dbo].[sp_SVC_GetPendingWhseTransfers] ", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -344,8 +308,7 @@ Public Class WhseTransfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  UPDATE [tbl_WHTPending] SET [vStatus] = 'Failed', [vFailureReason] = @2, [dtDateFailed] = GETDATE()
-                                                     WHERE [iLineID] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("  EXEC [dbo].[sp_SVC_UpdateWhseTransferFailed] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", id))
                     sqlComm.Parameters.Add(New SqlParameter("@2", reason))
                     sqlConn.Open()
@@ -362,7 +325,7 @@ Public Class WhseTransfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [tbl_WHTPending] SET [vLotNumber] = @1, [dQtyTransfered] = @2, [vStatus] = @3 WHERE [iLineID] = @4", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_SVC_UpdateWhseTransferLine] @1, @2, @3, @4", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", lot))
                     sqlComm.Parameters.Add(New SqlParameter("@2", qty.Replace(",", ".")))
                     sqlComm.Parameters.Add(New SqlParameter("@3", status))
@@ -381,7 +344,7 @@ Public Class WhseTransfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [tbl_WHTPending] SET [vLotNumber] = @1, [dQtyTransfered] = @2, [vStatus] = @3, [vFailureReason] = NULL, [dtDateFailed] = NULL WHERE [iLineID] = @4", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_SVC_UpdateWhseTransferLinePending] @1, @2, @3, @4", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", lot))
                     sqlComm.Parameters.Add(New SqlParameter("@2", qty.Replace(",", ".")))
                     sqlComm.Parameters.Add(New SqlParameter("@3", status))
@@ -401,7 +364,7 @@ Public Class WhseTransfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [tbl_WHTPending] SET [vStatus] = 'Pending', [vFailureReason] = NULL, [dtDateFailed] = NULL WHERE [vStatus] = 'Failed'", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_SVC_UpdateWhseTransfersFailedToPending] ", sqlConn)
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
@@ -420,10 +383,7 @@ Public Class WhseTransfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" INSERT INTO [tbl_WHTCompleted] 
-                                                    ([iLineID], [vItemCode], [vLotNumber], [vWarehouse_From], [vWarehouse_To], [dQtyTransfered], [dtDateEntered], [dtDateTransfered], [vUsername], [vProcess], [vTransDesc]) 
-                                                    VALUES 
-                                                    (@1, @2, @3, @4, @5, @6, @7, GETDATE(), @8, @9, @10)", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_SVC_InsertWHTLineCompleted] @1, @2, @3, @4, @5, @6, @7, @8, @9, @10 ", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", id))
                     sqlComm.Parameters.Add(New SqlParameter("@2", code))
                     sqlComm.Parameters.Add(New SqlParameter("@3", lotnumber))
@@ -450,10 +410,7 @@ Public Class WhseTransfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" INSERT INTO [tbl_WHTFGRequests_Completed] 
-                                                    ([iLineID], [vItemCode], [vLotNumber], [vWarehouse_From], [vWarehouse_To], [dQtyTransfered], [dtDateRequested], [vUserRequested], [dtDateTransfered], [vUsername], [vProcess], [vStatus])
-                                                    VALUES
-                                                    (@1, @2, @3, @4, @5, @6, @7, @8, GETDATE(), @9, @10, @11)", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_SVC_InsertFGWHTLineCompleted] @1, @2, @3, @4, @5, @6, @7, @8, @9, @10, @11 ", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", id))
                     sqlComm.Parameters.Add(New SqlParameter("@2", code))
                     sqlComm.Parameters.Add(New SqlParameter("@3", lotnumber))
@@ -482,7 +439,7 @@ Public Class WhseTransfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" DELETE FROM [tbl_WHTFGRequests]  WHERE [iLineID] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_UI_DeleteFGWhseTransLineComplete] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", id))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
@@ -498,7 +455,7 @@ Public Class WhseTransfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" DELETE FROM [tbl_WHTPending]  WHERE [iLineID] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_SVC_DeleteWhseTransLineComplete] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", id))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
@@ -519,7 +476,7 @@ Public Class WhseTransfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("  SELECT [Description_1] FROM [StkItem] WHERE [Code] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("  EXEC [dbo].[sp_GetItemDesc] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()

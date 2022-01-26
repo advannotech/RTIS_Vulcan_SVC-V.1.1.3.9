@@ -410,7 +410,7 @@ Public Class PowderPrep
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
                     Dim sqlComm As New SqlCommand("  EXEC [dbo].[sp_MBL_GetPPItemInfo] @Code", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
+                    sqlComm.Parameters.Add(New SqlParameter("@Code", itemCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()

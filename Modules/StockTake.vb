@@ -13,8 +13,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT [cInvCountNo] ,[cDescription]
-                                                    FROM [RTIS_InvCount] WHERE [iStatus] = 1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetRTStockTakes]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -44,8 +43,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT [cInvCountNo]
-                                                    FROM [RTIS_InvCount] WHERE [iStatus] = 1 AND [cInvCountNo] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_CheckSTHeader] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", stNo))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -76,9 +74,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT [iLineID],[vTicketNo],[dCountQty],[vCountUser] ,[dtDateCounted],[dCountQty2],[vCountUser2],[dtDateCounted2],[vBarcodeType],[bCountValid],[bRecountTicket]
-                                                     FROM [RTIS_InvCountLines_Tickets]
-                                                     WHERE [iHeaderID] =@1 AND [bCountValid] = 1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_getInvCountLineTickets] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -108,9 +104,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT [iLineID],[vTicketNo],[dCountQty],[vCountUser] ,[dtDateCounted],[dCountQty2],[vCountUser2],[dtDateCounted2],[vBarcodeType],[bCountValid],[bRecountTicket]
-                                                     FROM [RTIS_InvCountArchiveLines_Tickets]
-                                                     WHERE [iHeaderID] =@1 AND [bCountValid] = 1", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_UI_getInvCountLineTickets_Archive] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -140,8 +134,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT ISNULL([dCountQty],0), ISNULL([dCountQty2], 0), [vUnqBarcode] FROM [RTIS_InvCountLines_Tickets]
-                                                    WHERE [vTicketNo] = @1 AND [iHeaderID] = @2", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_getTicketInfo] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", ticketNo))
                     sqlComm.Parameters.Add(New SqlParameter("@2", headerID))
                     sqlConn.Open()
@@ -172,8 +165,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT [iHeaderID], ISNULL([dCountQty],0), ISNULL([dCountQty2], 0), [vUnqBarcode] FROM [RTIS_InvCountLines_Tickets]
-                                                    WHERE [vTicketNo] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_UI_getAllTicketInfo] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", ticketNo))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -202,8 +194,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT [fCountQty] , [fCountQty2] FROM [RTIS_InvCountLines]
-                                                    WHERE [idInvCountLines] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_getStQtys] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -232,8 +223,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [vFormatName]
-                                                FROM [tbl_ExportFormats] ", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC  [dbo].[sp_UI_GetExportFormats]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -263,8 +253,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [vFormatString], [vDelimeter]
-                                                FROM [tbl_ExportFormats] WHERE [vFormatName] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetExportFormatString] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", name))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -292,8 +281,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [vFormatName]
-                                                FROM [tbl_ExportFormats] WHERE [vFormatName] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_CheckExportFormatExists] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", name))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -321,9 +309,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT COUNT([iStockID]) FROM [RTIS_InvCountLines] il
-                                                     INNER JOIN [RTIS_InvCount] i ON il.[iInvCountID] = i.[idInvCount]
-                                                     WHERE i.[cInvCountNo] = @1 AND [bOnST] = 1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetSTLinesCount] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", stNum))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -352,9 +338,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT COUNT([iStockID]) FROM [RTIS_InvCountArchiveLines] il
-                                                     INNER JOIN [RTIS_InvCount] i ON il.[iInvCountID] = i.[idInvCount]
-                                                     WHERE i.[cInvCountNo] = @1 AND [bOnST] = 1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetSTLinesCountArchive] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", stNum))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -384,9 +368,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT COUNT([iStockID]) FROM [RTIS_InvCountLines] il
-                                                     INNER JOIN [RTIS_InvCount] i ON il.[iInvCountID] = i.[idInvCount]
-                                                     WHERE i.[cInvCountNo] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetSTLinesCountAll] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", stNum))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -415,9 +397,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT COUNT([iStockID]) FROM [RTIS_InvCountArchiveLines] il
-                                                     INNER JOIN [RTIS_InvCount] i ON il.[iInvCountID] = i.[idInvCount]
-                                                     WHERE i.[cInvCountNo] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetSTLinesCountAllArchive] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", stNum))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -446,9 +426,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT COUNT([iStockID]) FROM [RTIS_InvCountLines] il
-                                                    INNER JOIN [RTIS_InvCount] i ON il.[iInvCountID] = i.[idInvCount]
-                                                    WHERE i.[cInvCountNo] = @1 AND [fCountQty] <> 0", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetSTLinesCount1] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", stNum))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -477,9 +455,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT COUNT([iStockID]) FROM [RTIS_InvCountArchiveLines] il
-                                                    INNER JOIN [RTIS_InvCount] i ON il.[iInvCountID] = i.[idInvCount]
-                                                    WHERE i.[cInvCountNo] = @1 AND [fCountQty] <> 0", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetSTLinesCount1Archive] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", stNum))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -508,9 +484,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT COUNT([iStockID]) FROM [RTIS_InvCountLines] il
-                                                    INNER JOIN [RTIS_InvCount] i ON il.[iInvCountID] = i.[idInvCount]
-                                                    WHERE i.[cInvCountNo] = @1 AND [fCountQty2] <> 0", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetSTLinesCount2] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", stNum))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -539,9 +513,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT COUNT([iStockID]) FROM [RTIS_InvCountArchiveLines] il
-                                                    INNER JOIN [RTIS_InvCount] i ON il.[iInvCountID] = i.[idInvCount]
-                                                    WHERE i.[cInvCountNo] = @1 AND [fCountQty2] <> 0", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetSTLinesCount2Archive] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", stNum))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -570,8 +542,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [cInvCountNo],[cDescription]
-                                                FROM [RTIS_InvCount] WHERE [iStatus] = 0", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetRTArchiveStockTakes] ", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -604,8 +575,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [cInvCountNo]
-                                                FROM [RTIS_InvCount] WHERE [iStatus] = 1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetRTStockTakes] ", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -635,10 +605,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT DISTINCT w.[Code], w.[Name] FROM [" + My.Settings.RTDB + "].[dbo].[RTIS_InvCountLines] il
-                                               INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = il.[iWarehouseID] 
-                                               INNER JOIN [" + My.Settings.RTDB + "].[dbo].[RTIS_InvCount] i ON i.[idInvCount] = il.[iInvCountID]
-                                               WHERE i.[cInvCountNo] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetStockTakeWarehosesBySTNum] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", stockTakeNumber))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -669,7 +636,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [idInvCount] FROM [RTIS_InvCount] WHERE [cInvCountNo] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetStockTakIDBySTNum] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", stockTakeNumber))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -698,11 +665,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT l.[idInvCountLines] FROM [RTIS_InvCountLines] l
-                                                    INNER JOIN [RTIS_InvCount] h ON h.[idInvCount] = l.[iInvCountID]
-                                                    INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[StkItem] s ON s.[StockLink] = l.[iStockID]
-                                                    INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = l.[iWarehouseID] 
-                                                    WHERE h.[cInvCountNo] = @1 AND s.[Code] = @2 AND w.[Code] = @3 AND l.[bLotItem] = 0", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetSTLineIDNoLot] @1,@2,@3", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", stNum))
                     sqlComm.Parameters.Add(New SqlParameter("@2", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@3", whseCode))
@@ -733,12 +696,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT l.[idInvCountLines] FROM [RTIS_InvCountLines] l
-                                                    INNER JOIN [RTIS_InvCount] h ON h.[idInvCount] = l.[iInvCountID]
-                                                    INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[StkItem] s ON s.[StockLink] = l.[iStockID]
-                                                    INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = l.[iWarehouseID] 
-                                                    INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[_etblLotTracking] lo ON lo.[idLotTracking] = l.[iLotTrackingID]
-                                                    WHERE h.[cInvCountNo] = @1 AND s.[Code] = @2 AND w.[Code] = @3 AND lo.[cLotDescription] = @4", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetSTLineIDLot] @1,@2,@3,@4", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", stNum))
                     sqlComm.Parameters.Add(New SqlParameter("@2", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@3", whseCode))
@@ -808,8 +766,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT TOP 1 [bCountValid] FROM [RTIS_InvCountLines_Tickets]
-                                                    WHERE [iHeaderID] = @1 AND [vUnqBarcode] = @2 ORDER BY [iLineID] DESC", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_checkRT2dForRecount] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", unq))
                     sqlConn.Open()
@@ -869,8 +826,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT TOP 1 [bCountValid] FROM [RTIS_InvCountLines_Tickets]
-                                                    WHERE [iHeaderID] = @1 AND [vUnqBarcode] = @2 AND ISNULL([bCountValid], 0) = 0 ORDER BY [iLineID] DESC", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_checkPowderPrepForRecount] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", unq))
                     sqlConn.Open()
@@ -930,7 +886,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT [vTicketNo] FROM [RTIS_InvCountLines_Tickets] WHERE [iHeaderID] = @1 AND [vTicketNo] = @2", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_checkTicketNumber] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", ticket))
                     sqlConn.Open()
@@ -960,8 +916,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT TOP 1 [vLotNumber], [dDryWeight], ISNULL([bRecTrans], 0)  FROM [tbl_RTIS_Fresh_Slurry]
-                                                    WHERE [vTrolleyCode] = @1 AND [vItemCode] = @2 ORDER BY [iLineID] DESC", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_MBL_getFreshSlurryInfo] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", trolleyCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", itemCode))
                     sqlConn.Open()
@@ -986,8 +941,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT TOP 1 [vLotNumber], [dDryWeight], ISNULL([bRecTrans], 0)  FROM [tbl_RTIS_Fresh_Slurry]
-                                                    WHERE [vTrolleyCode] = @1 AND [vItemCode] = @2 ORDER BY [iLineID] DESC", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_getFreshSlurryInfo_CheckAddLot] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", trolleyCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", itemCode))
                     sqlConn.Open()
@@ -1012,7 +966,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT ISNULL([dCountQty], 0), ISNULL([dCountQty2],0) FROM [RTIS_InvCountLines_Tickets] WHERE [iHeaderID] = @1 AND [vUnqBarcode] = @2 AND [bCountValid] = 1", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_MBL_getSlurryTicketInfo] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", tankCode))
                     sqlConn.Open()
@@ -1074,8 +1028,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT TOP 1 ISNULL([dCountQty], 0), ISNULL([dCountQty2], 0), [vUnqBarcode], [bCountValid] FROM [RTIS_InvCountLines_Tickets]
-                                                     WHERE [iHeaderID] = @1 AND [vTicketNo] = @2", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_MBL_getTicketUpdateInfo] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", ticketNumber))
                     sqlConn.Open()
@@ -1105,8 +1058,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT TOP 1 [vTicketNo] FROM [RTIS_InvCountLines_Tickets]
-                                                     WHERE [iHeaderID] = @1 AND [vUnqBarcode] = @2 AND [bCountValid] = 1 ORDER BY [iLineID] DESC", sqlConn) ' AND [bCountValid] = 1
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_getFreshSlurryUnqTicket] @1,@2", sqlConn) ' AND [bCountValid] = 1
                     sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", unq))
                     sqlConn.Open()
@@ -1136,8 +1088,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT TOP 1 [vTicketNo] FROM [RTIS_InvCountLines_Tickets]
-                                                     WHERE [iHeaderID] = @1 AND [vUnqBarcode] = @2  AND [bCountValid] = 1 ORDER BY [iLineID] DESC", sqlConn) ' 
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_getUnqcodeTicket] @1,@2", sqlConn) ' 
                     sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", unq))
                     sqlConn.Open()
@@ -1167,8 +1118,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT TOP 1 [vLotNumber], [dDryWeight], ISNULL([bReceived], 0), ISNULL([bManualclose], 0)  FROM [tbl_RTIS_MS_Main]
-                                                     WHERE [vTankCode] = @1 AND [vItemCode] = @2 AND [vTankType] = 'TNK' ORDER BY [iLineID] DESC", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_getMixedSlurryTankInfo] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", tankNo))
                     sqlComm.Parameters.Add(New SqlParameter("@2", itemCode))
                     sqlConn.Open()
@@ -1193,8 +1143,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT TOP 1 [vLotNumber], [dDryWeight], ISNULL([bReceived], 0), ISNULL([bManualclose], 0)  FROM [tbl_RTIS_MS_Main]
-                                                     WHERE [vTankCode] = @1 AND [vItemCode] = @2 AND [vTankType] = 'TNK' ORDER BY [iLineID] DESC", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC  [dbo].[sp_MBL_getMixedSlurryTankInfo_CheckLot] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", tankNo))
                     sqlComm.Parameters.Add(New SqlParameter("@2", itemCode))
                     sqlConn.Open()
@@ -1219,9 +1168,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("     SELECT TOP 1 m.[vLotNumber], md.[dDryWeight], ISNULL(md.[bReceived], 0), ISNULL(md.[bManualclose], 0)  FROM [tbl_RTIS_MS_Decant] md 
-                                                        INNER JOIN [tbl_RTIS_MS_Main] m ON m.[iLineID] = md.[iHeaderID]
-                                                        WHERE md.[vTankCode] = @1 AND md.[vItemCode] = @2 ORDER BY md.[iLineID] DESC", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_getMixedSlurryMobileTankInfo_CheckLot] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", tankNo))
                     sqlComm.Parameters.Add(New SqlParameter("@2", itemCode))
                     sqlConn.Open()
@@ -1246,9 +1193,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("     SELECT TOP 1 m.[vLotNumber], md.[dDryWeight], ISNULL(md.[bReceived], 0), ISNULL(md.[bManualclose], 0)  FROM [tbl_RTIS_MS_Decant] md 
-                                                        INNER JOIN [tbl_RTIS_MS_Main] m ON m.[iLineID] = md.[iHeaderID]
-                                                        WHERE md.[vTankCode] = @1 AND md.[vItemCode] = @2 ORDER BY md.[iLineID] DESC", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_getMixedSlurryMobileTankInfo] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", tankNo))
                     sqlComm.Parameters.Add(New SqlParameter("@2", itemCode))
                     sqlConn.Open()
@@ -1273,10 +1218,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("     SELECT t.[vTicketNo] FROM [RTIS_InvCountLines_Tickets] t 
-                                                        INNER JOIN [RTIS_InvCountLines] il ON il.[idInvCountLines] = t.[iHeaderID]
-                                                        INNER JOIN [RTIS_InvCount] i ON il.[iInvCountID] = i.[idInvCount]
-                                                        WHERE i.[cInvCountNo] = @1 AND t.[vTicketNo] = @2", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_checkTicketRef] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", stockTakeNumber))
                     sqlComm.Parameters.Add(New SqlParameter("@2", ticketNo))
                     sqlConn.Open()
@@ -1301,11 +1243,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("     SELECT TOP 1 ph.[vLotDesc], pl.[dWeightIn], ISNULL(pt.[bReceived], 0)  FROM [ltbl_RTIS_PGM_Manuf] pl --
-                                                        INNER JOIN [htbl_RTIS_PGM_Manuf] ph ON pl.[iHeaderID] = ph.[iLineID]
-                                                        LEFT JOIN [ltbl_RTIS_PGM_Trans] pt ON pt.[iHeaderID] = ph.[iLineID] 
-                                                        WHERE pl.[vContainer] = @1 AND ph.[vItemCode] = @2
-                                                        ORDER BY pl.[iLineID] DESC", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_getPGMContainerInfo] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", contNo))
                     sqlComm.Parameters.Add(New SqlParameter("@2", itemCode))
                     sqlConn.Open()
@@ -1330,9 +1268,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("   SELECT l.[vUnqBarcode] FROM [ltbl_PalletBarcodes] l
-                                                      INNER JOIN [htbl_PalletBarcodes] h ON h.[iLine_ID] = l.[iPallet_ID]
-                                                      WHERE h.[vUnqBarcode] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC  [dbo].[sp_MBL_GetAllPalletBarcodes] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", unq))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -1361,9 +1297,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("   SELECT l.[vUnqBarcode] FROM [ltbl_PalletBarcodes] l
-                                                      INNER JOIN [htbl_PalletBarcodes] h ON h.[iLine_ID] = l.[iPallet_ID]
-                                                      WHERE h.[vUnqBarcode] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetAllPalletBarcodes_RM] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", unq))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -1397,9 +1331,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" INSERT INTO [RTIS_InvCount] SELECT i.[idInvCount],i.[cInvCountNo],i.[cDescription],i.[dPrepared]
-                                                    ,i.[cWarehouses],i.[cBinLocations],'1',i.[_btblInvCount_iBranchID],i.[_btblInvCount_dCreatedDate] 
-                                                    FROM [" + My.Settings.EvoDB + "].[dbo].[_btblInvCount] i WHERE [cInvCountNo] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_ImportEvoStockTakeHeader] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", stNo))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
@@ -1415,11 +1347,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [RTIS_InvCountLines] 
-                                               SELECT il.[iInvCountID], il.[cBarcode], 0 AS [fCountQty], 0 AS [fCountQty2], il.[fSystemQty], il.[bSerialItem], il.[tSerialList]
-                                               ,il.[bLotItem], il.[iLotTrackingID], il.[iBinLocationId], il.[iStockID], il.[iWarehouseID], il.[_btblInvCountLines_dCreatedDate] , 0 AS [Counted],  1 AS [bOnST]
-                                               FROM [" + My.Settings.EvoDB + "].[dbo].[_btblInvCountLines] il INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[_btblInvCount] i ON il.[iInvCountID] = i.[idInvCount]
-                                               WHERE i.[cInvCountNo] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_ImportEvoStockTakeLines] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", stNo))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
@@ -1435,8 +1363,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [RTIS_InvCountLines_Tickets] ([iHeaderID], [vTicketNo], [dCountQty], [vCountUser], [dtDateCounted] ,[vBarcodeType],[vUnqBarcode],[bCountValid] ,[bRecountTicket])
-                                                   VALUES (@1, @2, @3, @4, GETDATE(), @5, @6, 1, 0)", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_InsertTicketLog] @1,@2,@3,@4,@5,@6", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", ticketNo))
                     sqlComm.Parameters.Add(New SqlParameter("@3", qty))
@@ -1457,8 +1384,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [RTIS_InvCountLines_Tickets] ([iHeaderID], [vTicketNo], [dCountQty2], [vCountUser2], [dtDateCounted2] ,[vBarcodeType],[vUnqBarcode],[bCountValid] ,[bRecountTicket])
-                                                   VALUES (@1, @2, @3, @4, GETDATE(), @5, @6, 1, 0)", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_InsertTicketLog2] @1,@2,@3,@4,@5,@6", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", ticketNo))
                     sqlComm.Parameters.Add(New SqlParameter("@3", qty))
@@ -1479,10 +1405,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  INSERT INTO [RTIS_InvCountLines_Tickets] 
-                                                    ([iHeaderID], [vTicketNo], [dCountQty], [vCountUser], [dtDateCounted], [dCountQty2], [vCountUser2], [dtDateCounted2] ,[vBarcodeType],[vUnqBarcode],[bCountValid] ,[bRecountTicket])
-                                                    vALUES
-                                                    (@1, @2, @3, @4, GETDATE(), @3, @4, GETDATE(), @5, @6, 1, 0)", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_InsertTicketLogBoth] @1,@2,@3,@4,@5,@6", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", ticketNo))
                     sqlComm.Parameters.Add(New SqlParameter("@3", qty))
@@ -1503,10 +1426,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  INSERT INTO [RTIS_InvCountLines_Tickets] 
-                                                    ([iHeaderID], [vTicketNo], [dCountQty], [vCountUser], [dtDateCounted], [dCountQty2], [vCountUser2], [dtDateCounted2] ,[vBarcodeType],[vUnqBarcode],[bCountValid] ,[bRecountTicket])
-                                                    vALUES
-                                                    (@1, @2, @3, @4, GETDATE(), @3, @4, GETDATE(), @5, @6, 1, 1)", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_InsertTicketLogRecount] @1,@2,@3,@4,@5,@6", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", ticketNo))
                     sqlComm.Parameters.Add(New SqlParameter("@3", qty))
@@ -1527,7 +1447,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [tbl_ExportFormats] ([vFormatName], [vFormatString], [vDelimeter]) VALUES (@1, @2, @3)", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_InsertExportFormat] @1,@2,@3", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", name))
                     sqlComm.Parameters.Add(New SqlParameter("@2", format))
                     sqlComm.Parameters.Add(New SqlParameter("@3", delimiter))
@@ -1545,13 +1465,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" INSERT INTO [RTIS_InvCountArchiveLines_Tickets] 
-                                                    SELECT [iHeaderID] ,[vTicketNo],[dCountQty],[vCountUser],[dtDateCounted],[dCountQty2],[vCountUser2],[dtDateCounted2] 
-                                                    ,[vBarcodeType],[vUnqBarcode],[bCountValid],[bRecountTicket]
-                                                    FROM [RTIS_InvCountLines_Tickets] it
-                                                    INNER JOIN [RTIS_InvCountLines] il ON il.[idInvCountLines] = it.[iHeaderID]
-                                                    INNER JOIN [RTIS_InvCount] ih ON ih.[idInvCount] = il.[iInvCountID]
-                                                    WHERE ih.[cInvCountNo] = @1 ", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_ArchiveRTStockTakeTicketLines] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", stNo))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
@@ -1567,11 +1481,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" INSERT INTO [RTIS_InvCountArchiveLines] 
-                                                SELECT il.[idInvCountLines],il.[iInvCountID], il.[cBarcode], il.[fCountQty],  il.[fCountQty2], il.[fSystemQty], il.[bSerialItem], il.[tSerialList]
-                                                ,il.[bLotItem], il.[iLotTrackingID], il.[iBinLocationId], il.[iStockID], il.[iWarehouseID], il.[_btblInvCountLines_dCreatedDate], il.[bOnST] 
-                                                FROM [RTIS_InvCountLines] il INNER JOIN [RTIS_InvCount] i ON il.[iInvCountID] = i.[idInvCount]
-                                                WHERE i.[cInvCountNo] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_ArchiveRTStockTakeLines] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", stNo))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
@@ -1588,8 +1498,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" INSERT INTO [RTIS_InvCountLines_Enquiry] ([vStNumber], [vItemCode], [vLotDescription], [dQty1], [vUserAdded], [dtAdded])
-                                                    VALUES (@1, @2, @3, @4, @5, GETDATE())", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_AddItemForInvestigation] @1,@2,@3,@4,@5", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", stockTake))
                     sqlComm.Parameters.Add(New SqlParameter("@2", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@3", lotNumber))
@@ -1610,8 +1519,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [RTIS_InvCountLines] ([iInvCountID], [cBarcode], [fCountQty] ,[fCountQty2] ,[fSystemQty] ,[bSerialItem] ,[tSerialList] ,[bLotItem], [iLotTrackingID], [iBinLocationId], [iStockID], [iWarehouseID], [_btblInvCountLines_dCreatedDate], [bIsCounted], [bOnST])
-                                                   VALUES                           (@1           , @2        , 0           , 0           , 0           , 0            , NULL         , @3      , @4              , 0               , @5        , @6            , NULL                             ,0, 0)", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_AddItemToST] @1,@2,@3,@4,@5,@6", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", invCountID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", barcode))
                     sqlComm.Parameters.Add(New SqlParameter("@3", blotItem))
@@ -1635,8 +1543,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [RTIS_InvCountLines_Tickets] SET [dCountQty] = @3, [vCountUser] = @4, [dtDateCounted] = GETDATE() 
-                                                    WHERE [iHeaderID] = @1 AND [vTicketNo] = @2 AND ([vUnqBarcode] LIKE @5 AND  [vUnqBarcode] LIKE @6 AND [vUnqBarcode] LIKE @7 AND [vUnqBarcode] LIKE @8)", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_UpdateSTCount_Lot] @1,@2,@3,@4,@5,@6,@7,@8", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", ticketNo))
                     sqlComm.Parameters.Add(New SqlParameter("@3", qty.Replace(",", ".")))
@@ -1659,8 +1566,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [RTIS_InvCountLines_Tickets] SET [dCountQty2] = @3, [vCountUser2] = @4, [dtDateCounted2] = GETDATE() 
-                                                    WHERE [iHeaderID] = @1 AND [vTicketNo] = @2 AND ([vUnqBarcode] LIKE @5 AND  [vUnqBarcode] LIKE @6 AND [vUnqBarcode] LIKE @7 AND [vUnqBarcode] LIKE @8)", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_UpdateSTCount2_Lot] @1,@2,@3,@4,@5,@6,@7,@8", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", ticketNo))
                     sqlComm.Parameters.Add(New SqlParameter("@3", qty.Replace(",", ".")))
@@ -1683,8 +1589,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [RTIS_InvCountLines_Tickets] SET [dCountQty] = @3, [vCountUser] = @4, [dtDateCounted] = GETDATE() 
-                                                    WHERE [iHeaderID] = @1 AND [vTicketNo] = @2 AND [vUnqBarcode] = @5", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_UpdateSTCount_FreshSlurry] @1,@2,@3,@4,@5", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", ticketNo))
                     sqlComm.Parameters.Add(New SqlParameter("@3", qty.Replace(",", ".")))
@@ -1704,8 +1609,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [RTIS_InvCountLines_Tickets] SET [dCountQty2] = @3, [vCountUser2] = @4, [dtDateCounted2] = GETDATE() 
-                                                    WHERE [iHeaderID] = @1 AND [vTicketNo] = @2 AND [vUnqBarcode] = @5", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_UpdateSTCount2_FreshSlurry] @1,@2,@3,@4,@5", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", ticketNo))
                     sqlComm.Parameters.Add(New SqlParameter("@3", qty.Replace(",", ".")))
@@ -1725,8 +1629,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [RTIS_InvCountLines_Tickets] SET [dCountQty] = @3, [vCountUser] = @4, [dtDateCounted] = GETDATE() 
-                                                    WHERE [iHeaderID] = @1 AND [vTicketNo] = @2 AND [vUnqBarcode] = @5", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_UpdateTicketSTCount] @1,@2,@3,@4,@5", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", ticketNo))
                     sqlComm.Parameters.Add(New SqlParameter("@3", qty.Replace(",", ".")))
@@ -1746,8 +1649,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [RTIS_InvCountLines_Tickets] SET [dCountQty2] = @3, [vCountUser2] = @4, [dtDateCounted2] = GETDATE() 
-                                                    WHERE [iHeaderID] = @1 AND [vTicketNo] = @2 AND [vUnqBarcode] = @5", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_UpdateTicketSTCount2] @1,@2,@3,@4,@5", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", ticketNo))
                     sqlComm.Parameters.Add(New SqlParameter("@3", qty.Replace(",", ".")))
@@ -1766,16 +1668,7 @@ Public Class StockTake
             Public Shared Function MBL_UpdateRTStockTakeItem_Lot(ByVal stNum As String, ByVal itemCode As String, ByVal whseCode As String, ByVal lotNumber As String, ByVal qty As String) As String
                 Try
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE il SET il.[fCountQty] = il.[fCountQty] + @5 FROM [RTIS_InvCountLines] il
-                                               INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[StkItem] s 
-                                               ON s.[StockLink] = il.[iStockID]
-                                               INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w
-                                               ON il.[iWarehouseID] = w.[WhseLink]
-                                               INNER JOIN [RTIS_InvCount] i 
-                                               ON i.[idInvCount] = il.[iInvCountID]
-                                               INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[_etblLotTracking] l
-                                               ON l.[idLotTracking] = il.[iLotTrackingID]
-                                               WHERE i.[cInvCountNo] = @1 AND s.[Code] = @2 AND w.[Code] = @3 AND l.[cLotDescription] = @4", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_UpdateRTStockTakeItem_Lot] @1,@2,@3,@4,@5", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", stNum))
                     sqlComm.Parameters.Add(New SqlParameter("@2", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@3", whseCode))
@@ -1794,16 +1687,7 @@ Public Class StockTake
             Public Shared Function MBL_UpdateRTStockTakeItem2_Lot(ByVal stNum As String, ByVal itemCode As String, ByVal whseCode As String, ByVal lotNumber As String, ByVal qty As String) As String
                 Try
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE il SET il.[fCountQty2] = il.[fCountQty2] + @5 FROM [RTIS_InvCountLines] il
-                                               INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[StkItem] s 
-                                               ON s.[StockLink] = il.[iStockID]
-                                               INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w
-                                               ON il.[iWarehouseID] = w.[WhseLink]
-                                               INNER JOIN [RTIS_InvCount] i 
-                                               ON i.[idInvCount] = il.[iInvCountID]
-                                               INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[_etblLotTracking] l
-                                               ON l.[idLotTracking] = il.[iLotTrackingID]
-                                               WHERE i.[cInvCountNo] = @1 AND s.[Code] = @2 AND w.[Code] = @3 AND l.[cLotDescription] = @4", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_UpdateRTStockTakeItem2_Lot] @1,@2,@3,@4,@5", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", stNum))
                     sqlComm.Parameters.Add(New SqlParameter("@2", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@3", whseCode))
@@ -1822,16 +1706,7 @@ Public Class StockTake
             Public Shared Function MBL_UpdateRTStockTakeItemBoth_Lot(ByVal stNum As String, ByVal itemCode As String, ByVal whseCode As String, ByVal lotNumber As String, ByVal qty As String) As String
                 Try
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE il SET il.[fCountQty] = il.[fCountQty] + @5 , il.[fCountQty2] = il.[fCountQty2] + @5 FROM [RTIS_InvCountLines] il
-                                               INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[StkItem] s 
-                                               ON s.[StockLink] = il.[iStockID]
-                                               INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w
-                                               ON il.[iWarehouseID] = w.[WhseLink]
-                                               INNER JOIN [RTIS_InvCount] i 
-                                               ON i.[idInvCount] = il.[iInvCountID]
-                                               INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[_etblLotTracking] l
-                                               ON l.[idLotTracking] = il.[iLotTrackingID]
-                                               WHERE i.[cInvCountNo] = @1 AND s.[Code] = @2 AND w.[Code] = @3 AND l.[cLotDescription] = @4", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_UpdateRTStockTakeItemBoth_Lot] @1,@2,@3,@4,@5", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", stNum))
                     sqlComm.Parameters.Add(New SqlParameter("@2", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@3", whseCode))
@@ -1925,7 +1800,7 @@ Public Class StockTake
             Public Shared Function MBL_UpdateRTStockTakeReverseTicket(ByVal lineID As String, ByVal qty1 As String, ByVal qty2 As String) As String
                 Try
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [RTIS_InvCountLines] SET [fCountQty] = @2, [fCountQty2] = @3 WHERE [idInvCountLines] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC  [dbo].[sp_MBL_UpdateRTStockTakeReverseTicket] @1,@2,@3", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", lineID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", qty1.Replace(",", ".")))
                     sqlComm.Parameters.Add(New SqlParameter("@3", qty2.Replace(",", ".")))
@@ -1942,7 +1817,7 @@ Public Class StockTake
             Public Shared Function MBL_UpdateRTStockTakeReverseTicketRT2D(ByVal lineID As String, ByVal qty1 As String, ByVal qty2 As String) As String
                 Try
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [RTIS_InvCountLines] SET [fCountQty] = [fCountQty] - @2, [fCountQty2] = [fCountQty2] - @3 WHERE [idInvCountLines] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_UpdateRTStockTakeReverseTicketRT2D] @1,@2,@3", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", lineID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", qty1.Replace(",", ".")))
                     sqlComm.Parameters.Add(New SqlParameter("@3", qty2.Replace(",", ".")))
@@ -1960,8 +1835,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [RTIS_InvCountLines_Tickets] SET [bCountValid] = 0
-                                                    WHERE [iHeaderID] = @1 AND [vTicketNo] = @2", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_InvalidateSTTicket] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", ticketNo))
                     sqlConn.Open()
@@ -1978,7 +1852,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [tbl_ExportFormats] SET [vFormatString] = @2, [vDelimeter] = @3 WHERE [vFormatName] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_UpdateExportFormat] @1,@2,@3", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", name))
                     sqlComm.Parameters.Add(New SqlParameter("@2", format))
                     sqlComm.Parameters.Add(New SqlParameter("@3", delimiter))
@@ -1996,7 +1870,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [RTIS_InvCount] SET [iStatus] = 0 WHERE [cInvCountNo] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_ArchiveStockTakeHeader] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", stNo))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
@@ -2015,7 +1889,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("DELETE FROM [tbl_ExportFormats] WHERE [vFormatName] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_RemoveExportLayout] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", name))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
@@ -2031,10 +1905,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  DELETE it FROM [RTIS_InvCountLines_Tickets] it
-                                                     INNER JOIN [RTIS_InvCountLines] il ON it.[iHeaderID] = il.[idInvCountLines]
-                                                     INNER JOIN [RTIS_InvCount] ih ON ih.[idInvCount] = il.[iInvCountID]
-                                                     WHERE ih.[cInvCountNo] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_RemovePostArchiveTicketLines] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", stNo))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
@@ -2050,8 +1921,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" DELETE il FROM [RTIS_InvCountLines] il INNER JOIN [RTIS_InvCount] i
-                                                ON il.[iInvCountID] = i.[idInvCount] WHERE i.[cInvCountNo] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_RemovePostArchiveLines] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", stNo))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
@@ -2067,10 +1937,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  DELETE it FROM [RTIS_InvCountArchiveLines_Tickets] it
-                                                     INNER JOIN [RTIS_InvCountArchiveLines] il ON it.[iHeaderID] = il.[idInvCountLines]
-                                                     INNER JOIN [RTIS_InvCount] ih ON ih.[idInvCount] = il.[iInvCountID]
-                                                     WHERE ih.[cInvCountNo] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_RemoveArchiveTicketLines] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", stNo))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
@@ -2086,8 +1953,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" DELETE il FROM [RTIS_InvCountArchiveLines] il INNER JOIN [RTIS_InvCount] i
-                                                ON il.[iInvCountID] = i.[idInvCount] WHERE i.[cInvCountNo] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_RemoveArchiveRTStockTakeLines] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", stNo))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
@@ -2103,7 +1969,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("DELETE FROM [RTIS_InvCount] WHERE [cInvCountNo] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_RemoveArchiveRTStockTakeHead] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", stNo))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
@@ -2143,8 +2009,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand(" SELECT [cInvCountNo],[cDescription]
-                                                    FROM [_btblInvCount]", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetEvoStockTakes] @1", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -2174,8 +2039,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand(" SELECT [WhseLink]
-                                                    FROM [WhseMst] WHERE [Code] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetEvoWhseID] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", whseCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -2205,8 +2069,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand(" SELECT [idLotTracking]
-                                                    FROM [_etblLotTracking] WHERE [cLotDescription] = @1 AND [iStockID] = @2", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetLotTrackingID] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", lotDesc))
                     sqlComm.Parameters.Add(New SqlParameter("@2", stockID))
                     sqlConn.Open()
@@ -2236,8 +2099,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand(" SELECT [StockLink],[Bar_Code]
-                                                    FROM [StkItem] WHERE [Code] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetItemInfoForST] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -2267,9 +2129,7 @@ Public Class StockTake
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand(" SELECT l.[idLotTracking] 
-                                                    FROM [_etblLotTracking] l INNER JOIN [StkItem] s ON l.[iStockID] = s.[StockLink]
-                                                    WHERE l.[cLotDescription] = @1 AND s.[Code] = @2", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetLotInEvo] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", lotDesc))
                     sqlComm.Parameters.Add(New SqlParameter("@2", itemCode))
                     sqlConn.Open()

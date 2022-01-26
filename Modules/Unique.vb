@@ -9,8 +9,7 @@ Public Class Unique
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELEcT ISNULL([bFromVault], 'False') FROM [tbl_unqBarcodes]
-                                                        WHERE [vUnqBarcode] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_PGM_GetBarcodeFromVault] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", barcode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -40,8 +39,7 @@ Public Class Unique
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELEcT ISNULL([bTransferredIn], 'False') FROM [tbl_unqBarcodes]
-                                                        WHERE [vUnqBarcode] LIKE @1 AND [vUnqBarcode] LIKE @2 AND [vUnqBarcode] LIKE @3 AND [vUnqBarcode] LIKE @4", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetItemReceivedTransfer] @1,@2,@3,@4", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", "%" + itemCode + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@2", "%" + lot + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@3", "%" + qty + "%"))
@@ -74,8 +72,7 @@ Public Class Unique
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELEcT ISNULL([bConsumed], 'False') FROM [tbl_unqBarcodes]
-                                                        WHERE [vUnqBarcode] LIKE @1 AND [vUnqBarcode] LIKE @2 AND [vUnqBarcode] LIKE @3 AND [vUnqBarcode] LIKE @4", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetItemConsumed] @1,@2,@3,@4", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", "%" + itemCode + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@2", "%" + lot + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@3", "%" + qty + "%"))
@@ -107,8 +104,7 @@ Public Class Unique
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELEcT [Dispatch] FROM [tbl_unqBarcodes]
-                                                        WHERE [vUnqBarcode] LIKE @1 AND [vUnqBarcode] LIKE @2 AND [vUnqBarcode] LIKE @3 AND [vUnqBarcode] LIKE @4", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetItemDispatched] @1,@2,@3,@4", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", "%" + itemCode + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@2", "%" + lot + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@3", "%" + qty + "%"))
@@ -135,8 +131,7 @@ Public Class Unique
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELEcT [iLine_ID] FROM [htbl_PalletBarcodes]
-                                                        WHERE [vUnqBarcode] LIKE @1 AND [vUnqBarcode] LIKE @2 AND [vUnqBarcode] LIKE @3 AND [vUnqBarcode] LIKE @4", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetPalletID] @1,@2,@3,@4", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", "%" + itemCode + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@2", "%" + lot + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@3", "%" + qty + "%"))
@@ -163,8 +158,7 @@ Public Class Unique
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELEcT [Dispatch] FROM [htbl_PalletBarcodes]
-                                                        WHERE [iLine_ID] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetPalletDispatched] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", lineID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -188,8 +182,7 @@ Public Class Unique
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELEcT [vUnqBarcode] FROM [ltbl_PalletBarcodes]
-                                                        WHERE [iPallet_ID] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC  [dbo].[sp_MBL_GetPalletBoxBarcodes] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", palletID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -214,8 +207,7 @@ Public Class Unique
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELEcT ISNULL([bTransferredOut], 'false') FROM [tbl_unqBarcodes]
-                                                        WHERE [vUnqBarcode] LIKE @1 AND [vUnqBarcode] LIKE @2 AND [vUnqBarcode] LIKE @3 AND [vUnqBarcode] LIKE @4", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetItemTransferredOut] @1,@2,@3,@4", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", "%" + itemCode + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@2", "%" + lot + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@3", "%" + qty + "%"))
@@ -248,8 +240,7 @@ Public Class Unique
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELEcT [vUnqBarcode] FROM [tbl_unqBarcodes]
-                                                        WHERE [vUnqBarcode] LIKE @1 AND [vUnqBarcode] LIKE @2", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_ZECT_GetZectUnq] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", "%" + itemCode + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@2", "%" + jobNO + "%"))
                     sqlConn.Open()
@@ -280,8 +271,7 @@ Public Class Unique
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELEcT [iLine_ID] FROM [htbl_PalletBarcodes]
-                                                        WHERE [vUnqBarcode] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetPalletID] 1@", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", Unq))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -311,8 +301,7 @@ Public Class Unique
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT ISNULL([StockTake], ''), ISNULL([StockTake2], '') FROM [tbl_unqBarcodes]
-                                                        WHERE [vUnqBarcode] LIKE @1 AND [vUnqBarcode] LIKE @2 AND [vUnqBarcode] LIKE @3 AND [vUnqBarcode] LIKE @4", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetSTUnqs] @1,@2,@3,@4", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", "%" + itemCode + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@2", "%" + lot + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@3", "%" + qty + "%"))
@@ -345,9 +334,7 @@ Public Class Unique
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT l.[vUnqBarcode] FROM [ltbl_PalletBarcodes] l
-                                                    INNER JOIN [htbl_PalletBarcodes] h ON h.[iLine_ID] = l.[iPallet_ID]
-                                                    WHERE h.[vUnqBarcode] = @UNQ", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetSTPalletLots] @UNQ", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@UNQ", unq))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -378,8 +365,7 @@ Public Class Unique
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT ISNULL([StockTake], ''), ISNULL([StockTake2], '') FROM [htbl_PalletBarcodes]
-                                                        WHERE [vUnqBarcode] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetSTPalletUnqs] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", unq))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -409,7 +395,7 @@ Public Class Unique
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT [iLine_ID] FROM [ltbl_PalletBarcodes] WHERE [vUnqBarcode] = @UNQ AND [bOnPallet] = 1", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_UI_GetItemOnPallet] @UNQ", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@UNQ", Unq))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -439,9 +425,7 @@ Public Class Unique
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT l.[vUnqBarcode] FROM [ltbl_PalletBarcodes] l 
-                                                    INNER JOIN [htbl_PalletBarcodes] h ON l.[iPallet_ID] = h.[iLine_ID]
-                                                    WHERE h.[vUnqBarcode] = @UNQ", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetPalletContents] @UNQ", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@UNQ", palletUnq))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -471,9 +455,7 @@ Public Class Unique
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT l.[vUnqBarcode] FROM [ltbl_PalletBarcodes] l 
-                                                    INNER JOIN [htbl_PalletBarcodes] h ON l.[iPallet_ID] = h.[iLine_ID]
-                                                    WHERE h.[vUnqBarcode] = @UNQ AND l.[bOnPallet] = 1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetPalletLots] @UNQ", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@UNQ", palletUnq))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -505,19 +487,7 @@ Public Class Unique
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [tbl_unqBarcodes] ([vUnqBarcode]
-                                                                                ,[Receive]
-                                                                                ,[Issue]
-                                                                                ,[StockTake]
-                                                                                ,[CycleCount]
-                                                                                ,[Manuf]
-                                                                                ,[Dispatch]
-                                                                                ,[Printed]
-                                                                                ,[DispatchDate]
-                                                                                ,[Quarantine]
-                                                                                ,[bValidated]
-                                                                                ,[ValidateRef])
-                                                VALUES (@1, NULL, NULL, NULL, NULL, NULL, NULL, GETDATE(), NULL, NULL, 0, @2)", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC  [dbo].[sp_UI_SaveRT2DBarcode] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", unqCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", validateRef))
                     sqlConn.Open()
@@ -535,19 +505,7 @@ Public Class Unique
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [htbl_PalletBarcodes] ([vUnqBarcode]
-                                                                                ,[StockTake]
-                                                                                ,[CycleCount]
-                                                                                ,[Dispatch]
-                                                                                ,[Printed]
-                                                                                ,[DispatchDate]
-                                                                                ,[Quarantine]
-                                                                                ,[bValidated]
-                                                                                ,[ValidateRef]
-                                                                                ,[bTransferredOut]
-                                                                                ,[bTransferredIn]
-                                                                                ,[vJobFrom])
-                                                VALUES (@1, NULL, NULL, NULL, GETDATE(), NULL, NULL, 1, @2, 0, 0, @3)", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_SaveRT2DBarcodePallet] @1,@2,@3", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", unqCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", validateRef))
                     sqlComm.Parameters.Add(New SqlParameter("@3", jobFrom))
@@ -565,21 +523,7 @@ Public Class Unique
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [htbl_PalletBarcodes] ([vUnqBarcode]
-                                                                                ,[StockTake]
-                                                                                ,[CycleCount]
-                                                                                ,[Dispatch]
-                                                                                ,[Printed]
-                                                                                ,[DispatchDate]
-                                                                                ,[Quarantine]
-                                                                                ,[bValidated]
-                                                                                ,[ValidateRef]
-                                                                                ,[bTransferredOut]
-                                                                                ,[bTransferredIn]
-                                                                                ,[vJobFrom]
-                                                                                ,[bRMPallet])
-                                                OUTPUT INSERTED.iLine_ID
-                                                VALUES (@1, NULL, NULL, NULL, GETDATE(), NULL, NULL, 1, @2, 0, 0, @3, 1)", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_SaveRMBarcodePallet] @1,@2,@3", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", unqCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", validateRef))
                     sqlComm.Parameters.Add(New SqlParameter("@3", jobFrom))
@@ -623,7 +567,7 @@ Public Class Unique
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [tbl_unqBarcodes] SET [Dispatch] = NULL, [DispatchDate] = NULL WHERE [Dispatch] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_ClearUnqsDispatch] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", soNum))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
@@ -639,7 +583,7 @@ Public Class Unique
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [htbl_PalletBarcodes] SET [Dispatch] = NULL, [DispatchDate] = NULL WHERE [Dispatch] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_ClearUnqPalletsDispatch] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", soNum))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
@@ -655,7 +599,7 @@ Public Class Unique
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [tbl_unqBarcodes] SET [bFromVault] = 1 WHERE  [vUnqBarcode] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC  [dbo].[sp_UI_UpdateTransFromVault] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", unqCode))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
@@ -672,8 +616,7 @@ Public Class Unique
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [tbl_unqBarcodes] SET [bTransferredIn] = 1, [bTransferredOut] = 0 
-                                                    WHERE [vUnqBarcode] LIKE @1 AND [vUnqBarcode] LIKE @2 AND [vUnqBarcode] LIKE @3 AND [vUnqBarcode] LIKE @4", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_UpdateItemReceived] 1,2,3,4", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", "%" + itemCode + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@2", "%" + lot + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@3", "%" + qty + "%"))
@@ -692,8 +635,7 @@ Public Class Unique
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [tbl_unqBarcodes] SET [bConsumed] = 1, [vJobConsumed] = @5
-                                                    WHERE [vUnqBarcode] LIKE @1 AND [vUnqBarcode] LIKE @2 AND [vUnqBarcode] LIKE @3 AND [vUnqBarcode] LIKE @4", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_UpdateItemConsumed] @1,@2,@3,@4,@5", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", "%" + itemCode + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@2", "%" + lot + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@3", "%" + qty + "%"))
@@ -713,8 +655,7 @@ Public Class Unique
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [tbl_unqBarcodes] SET [bConsumed] = 1, [bTransferredIn] = 1, [bTransferredOut] = 0 
-                                                    WHERE [vUnqBarcode] LIKE @1 AND [vUnqBarcode] LIKE @2 AND [vUnqBarcode] LIKE @3 AND [vUnqBarcode] LIKE @4", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_MBL_UpdateItemReceivedAndConsumed] @1,@2,@3,@4", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", "%" + itemCode + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@2", "%" + lot + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@3", "%" + qty + "%"))
@@ -734,8 +675,7 @@ Public Class Unique
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [tbl_unqBarcodes] SET [bTransferredIn] = 0, [bTransferredOut] = 1 
-                                                    WHERE [vUnqBarcode] LIKE @1 AND [vUnqBarcode] LIKE @2 AND [vUnqBarcode] LIKE @3 AND [vUnqBarcode] LIKE @4", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_UpdateItemTransferredOut] @1,@2,@3,@4", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", "%" + itemCode + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@2", "%" + lot + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@3", "%" + qty + "%"))
@@ -771,8 +711,7 @@ Public Class Unique
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [tbl_unqBarcodes] SET [Dispatch] = @5, [DispatchDate] = GETDATE()
-                                                    WHERE [vUnqBarcode] LIKE @1 AND [vUnqBarcode] LIKE @2 AND [vUnqBarcode] LIKE @3 AND [vUnqBarcode] LIKE @4", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_MBL_UpdateItemDispatched] @1,@2,@3,@4,@5", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", "%" + itemCode + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@2", "%" + lot + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@3", "%" + qty + "%"))
@@ -792,8 +731,7 @@ Public Class Unique
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [htbl_PalletBarcodes] SET [Dispatch] = @1, [DispatchDate] = GETDATE()
-                                                    WHERE [iLine_ID] = @2", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_MBL_UpdatePalletDispatched] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", soNumber))
                     sqlComm.Parameters.Add(New SqlParameter("@2", lineID))
                     sqlConn.Open()
@@ -811,8 +749,7 @@ Public Class Unique
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [tbl_unqBarcodes] SET [StockTake] = @5
-                                                    WHERE [vUnqBarcode] LIKE @1 AND [vUnqBarcode] LIKE @2 AND [vUnqBarcode] LIKE @3 AND [vUnqBarcode] LIKE @4", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_UpdateItemST1] @1,@2,@3,@4,@5", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", "%" + itemCode + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@2", "%" + lot + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@3", "%" + qty + "%"))
@@ -832,8 +769,7 @@ Public Class Unique
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [tbl_unqBarcodes] SET [StockTake2] = @5
-                                                    WHERE [vUnqBarcode] LIKE @1 AND [vUnqBarcode] LIKE @2 AND [vUnqBarcode] LIKE @3 AND [vUnqBarcode] LIKE @4", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC  [dbo].[sp_MBL_UpdateItemST2] @1,@2,@3,@4,@5", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", "%" + itemCode + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@2", "%" + lot + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@3", "%" + qty + "%"))
@@ -853,8 +789,7 @@ Public Class Unique
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [htbl_PalletBarcodes] SET [StockTake] = @2
-                                                    WHERE [vUnqBarcode] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_MBL_UpdatePalletST1] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", unq))
                     sqlComm.Parameters.Add(New SqlParameter("@2", stNum))
                     sqlConn.Open()
@@ -871,8 +806,7 @@ Public Class Unique
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [htbl_PalletBarcodes] SET [StockTake2] = @2
-                                                    WHERE [vUnqBarcode] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_UpdatePalletST2] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", unq))
                     sqlComm.Parameters.Add(New SqlParameter("@2", stNum))
                     sqlConn.Open()
@@ -889,8 +823,7 @@ Public Class Unique
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [htbl_PalletBarcodes] SET [StockTake] = @2, [StockTake2] = @2
-                                                    WHERE [vUnqBarcode] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_UpdatePalletSTBoth] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", unq))
                     sqlComm.Parameters.Add(New SqlParameter("@2", stNum))
                     sqlConn.Open()
@@ -907,8 +840,7 @@ Public Class Unique
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [tbl_unqBarcodes] SET [StockTake] = @5, [StockTake2] = @5
-                                                    WHERE [vUnqBarcode] LIKE @1 AND [vUnqBarcode] LIKE @2 AND [vUnqBarcode] LIKE @3 AND [vUnqBarcode] LIKE @4", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_UpdateItemSTBoth] @1,@2,@3,@4,@5", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", "%" + itemCode + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@2", "%" + lot + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@3", "%" + qty + "%"))
@@ -928,8 +860,7 @@ Public Class Unique
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [tbl_unqBarcodes] SET [StockTake] = '', [StockTake2] = ''
-                                                    WHERE [vUnqBarcode] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_UpdateItemSTBoth_Reversal] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", unq))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
@@ -946,10 +877,7 @@ Public Class Unique
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE l SET l.[bOnPallet] = 0
-                                                    FROM [ltbl_PalletBarcodes] l 
-                                                    INNER JOIN [htbl_PalletBarcodes] h ON l.[iPallet_ID] = h.[iLine_ID]
-                                                    WHERE h.[vUnqBarcode] = @HUNQ AND l.[vUnqBarcode] = @LUNQ", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_UpdateRMPalletRemoved] @HUNQ,@LUNQ", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@HUNQ", hunq))
                     sqlComm.Parameters.Add(New SqlParameter("@LUNQ", lunq))
                     sqlConn.Open()
@@ -967,8 +895,7 @@ Public Class Unique
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [htbl_PalletBarcodes] SET [StockTake] = '', [StockTake2] = ''
-                                                    WHERE [vUnqBarcode] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_UpdateItemSTPalletBoth_Reversal] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", unq))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()

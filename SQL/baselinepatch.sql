@@ -7082,6 +7082,3755 @@ DECLARE @res int
 GO
 
 
+IF (OBJECT_ID('[dbo].[sp_UI_getWhtProcesses') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWhtProcesses]
+GO
+CREATE PROC [dbo].[sp_UI_getWhtProcesses]
+AS
+SELECT [vDisplayName], [vProcName] FROM [tbl_ProcNames]
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWhtFGRequests]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWhtFGRequests]
+GO
+
+CREATE PROC [dbo].[sp_UI_getWhtFGRequests]
+@1 datetime,
+@2 datetime
+AS
+SELECT fg.[iLineID], 
+                    fg.[vItemCode], 
+                    fg.[vLotNumber], 
+                    fg.[vWarehouse_From], 
+                    fg.[vWarehouse_To], 
+                    fg.[dQtyTransfered], 
+                    ISNULL(lq.[fQtyOnHand], 0) AS [QtyOnHand],
+                    fg.[vUsername],
+                    fg.[vProcess], 
+                    fg.[dtDateTransfered],
+                    CASE 
+                    WHEN l.[cLotDescription] IS NULL THEN
+	                    'The lot was not found in evolution, has the lot been manufactured.'		
+                    WHEN lq.[fQtyOnHand] < fg.[dQtyTransfered] THEN
+	                    'Insufficient quantity of this lot was found in the out going warehouse.'			
+                    ELSE
+	                    ''
+                    END  AS [Warnings]
+                    FROM [tbl_WHTFGRequests] fg
+                    INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[Code] = fg.[vItemCode]
+                    INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[Code] = fg.[vWarehouse_From]
+                    LEFT JOIN [Cataler_SCN].[dbo].[_etblLotTracking] l ON l.[cLotDescription] = fg.[vLotNumber]
+                    LEFT JOIN   [Cataler_SCN].[dbo].[_etblLotTrackingQty] lq ON l.[idLotTracking] = lq.[iLotTrackingID] AND lq.[iWarehouseID] = w.[WhseLink] WHERE [dtDateTransfered] BETWEEN @1 AND @2 
+                    ORDER BY [dtDateTransfered] DESC
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_getWhtFGReports]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getWhtFGReports]
+GO
+
+CREATE PROC [dbo].[sp_UI_getWhtFGReports]
+@1 datetime,
+@2 datetime
+AS
+SELECT [iLineID]
+      ,[vItemCode]
+      ,[vLotNumber]
+      ,[vWarehouse_From]
+      ,[vWarehouse_To]
+      ,[dQtyTransfered]
+      ,[dtDateRequested]
+      ,[vUserRequested]
+      ,[dtDateTransfered]
+      ,[vUsername]
+      ,[vProcess] FROM [tbl_WHTFGRequests_Completed] WHERE [dtDateTransfered] BETWEEN @1 AND @2
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetFGTransferInfo]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetFGTransferInfo]
+GO
+
+CREATE PROC [dbo].[sp_UI_GetFGTransferInfo]
+@1 int
+AS
+SELECT [vItemCode], [vLotNumber], [vWarehouse_From], [vWarehouse_To], [dQtyTransfered], [dtDateTransfered], [vProcess] ,[vUsername]
+FROM [tbl_WHTFGRequests] WHERE [iLineID] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_SVC_GetPendingWhseTransfers]') IS NOT NULL)
+	DROP PROC [dbo].[sp_SVC_GetPendingWhseTransfers]
+GO
+
+CREATE PROC [dbo].[sp_SVC_GetPendingWhseTransfers]
+AS
+SELECT TOP 1000 [iLineID], [vItemCode], [vLotNumber], [vWarehouse_From], [vWarehouse_To], [dQtyTransfered], [vUsername] ,[vProcess] ,[vTransDesc], [dtDateTransfered] 
+FROM [tbl_WHTPending] WHERE [vStatus] = 'Pending'
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_SVC_UpdateWhseTransferFailed]') IS NOT NULL)
+	DROP PROC [dbo].[sp_SVC_UpdateWhseTransferFailed]
+GO
+
+CREATE PROC [dbo].[sp_SVC_UpdateWhseTransferFailed]
+(
+@1 int,
+@2 varchar(max)
+)
+AS
+UPDATE [tbl_WHTPending] SET [vStatus] = 'Failed', [vFailureReason] = @2, [dtDateFailed] = GETDATE()
+WHERE [iLineID] = @1
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_SVC_UpdateWhseTransferLine]') IS NOT NULL)
+	DROP PROC [dbo].[sp_SVC_UpdateWhseTransferLine]
+GO
+
+CREATE PROC [dbo].[sp_SVC_UpdateWhseTransferLine]
+(
+@1 varchar(max),
+@2 decimal(16,3),
+@3 varchar(max),
+@4 int
+)
+AS
+UPDATE [tbl_WHTPending] SET [vLotNumber] = @1, [dQtyTransfered] = @2, [vStatus] = @3 WHERE [iLineID] = @4
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_SVC_UpdateWhseTransferLinePending]') IS NOT NULL)
+	DROP PROC [dbo].[sp_SVC_UpdateWhseTransferLinePending]
+GO
+
+CREATE PROC [dbo].[sp_SVC_UpdateWhseTransferLinePending]
+(
+@1 varchar(max),
+@2 decimal(16,3),
+@3 varchar(max),
+@4 int
+)
+AS
+UPDATE [tbl_WHTPending] SET [vLotNumber] = @1, [dQtyTransfered] = @2, [vStatus] = @3, [vFailureReason] = NULL, [dtDateFailed] = NULL WHERE [iLineID] = @4
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_SVC_UpdateWhseTransfersFailedToPending]') IS NOT NULL)
+	DROP PROC [dbo].[sp_SVC_UpdateWhseTransfersFailedToPending]
+GO
+
+CREATE PROC [dbo].[sp_SVC_UpdateWhseTransfersFailedToPending]
+AS
+UPDATE [tbl_WHTPending] SET [vStatus] = 'Pending', [vFailureReason] = NULL, [dtDateFailed] = NULL WHERE [vStatus] = 'Failed'
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_SVC_InsertWHTLineCompleted]') IS NOT NULL)
+	DROP PROC [dbo].[sp_SVC_InsertWHTLineCompleted]
+GO
+
+CREATE PROC [dbo].[sp_SVC_InsertWHTLineCompleted]
+(
+@1 int,
+@2 varchar(max),
+@3 varchar(max),
+@4 varchar(max),
+@5 varchar(max),
+@6 decimal(16,3),
+@7 datetime,
+@8 varchar(max),
+@9 varchar(max),
+@10 varchar(max)
+)
+AS
+INSERT INTO [tbl_WHTCompleted] 
+([iLineID], [vItemCode], [vLotNumber], [vWarehouse_From], [vWarehouse_To], [dQtyTransfered], [dtDateEntered], [dtDateTransfered], [vUsername], [vProcess], [vTransDesc]) 
+VALUES 
+(@1, @2, @3, @4, @5, @6, @7, GETDATE(), @8, @9, @10)
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_SVC_InsertFGWHTLineCompleted]') IS NOT NULL)
+	DROP PROC [dbo].[sp_SVC_InsertFGWHTLineCompleted]
+GO
+
+CREATE PROC [dbo].[sp_SVC_InsertFGWHTLineCompleted]
+(
+@1 int,
+@2 varchar(max),
+@3 varchar(max),
+@4 varchar(max),
+@5 varchar(max),
+@6 decimal(16,3),
+@7 datetime,
+@8 varchar(max),
+@9 varchar(max),
+@10 varchar(max),
+@11 varchar(max)
+)
+AS
+INSERT INTO [tbl_WHTFGRequests_Completed] 
+([iLineID], [vItemCode], [vLotNumber], [vWarehouse_From], [vWarehouse_To], [dQtyTransfered], [dtDateRequested], [vUserRequested], [dtDateTransfered], [vUsername], [vProcess], [vStatus])
+VALUES
+(@1, @2, @3, @4, @5, @6, @7, @8, GETDATE(), @9, @10, @11)
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_DeleteFGWhseTransLineComplete]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_DeleteFGWhseTransLineComplete]
+GO
+
+CREATE PROC [dbo].[sp_UI_DeleteFGWhseTransLineComplete]
+(
+@1 int
+)
+AS
+DELETE FROM [tbl_WHTFGRequests]  WHERE [iLineID] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_SVC_DeleteWhseTransLineComplete]') IS NOT NULL)
+	DROP PROC [dbo].[sp_SVC_DeleteWhseTransLineComplete]
+GO
+
+CREATE PROC [dbo].[sp_SVC_DeleteWhseTransLineComplete]
+(
+@1 int
+)
+AS
+DELETE FROM [tbl_WHTPending]  WHERE [iLineID] = @1
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetRecWhse]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetRecWhse]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetRecWhse]
+(
+@1 varchar(60)
+)
+AS
+SELECT w.[Code], w.[Name] FROM [tbl_WHTLocations] wl 
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhseID]
+WHERE [vProcessName] = @1 AND [bIsRec] = 1
+GO
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetPPRecWhses]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetPPRecWhses]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetPPRecWhses]
+AS
+SELECT w.[Code], w.[Name] FROM [Rec_Transfers].[RTIS_WhseLookUp_PP_Rec] wl
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
+WHERE [bEnabled] = 1
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetFSRecWhses]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetFSRecWhses]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetFSRecWhses]
+AS
+SELECT w.[Code], w.[Name] FROM [Rec_Transfers].[RTIS_WhseLookUp_FS_Rec] wl
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
+WHERE [bEnabled] = 1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetMSRecWhses]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetMSRecWhses]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetMSRecWhses]
+AS
+SELECT w.[Code], w.[Name] FROM [Rec_Transfers].[RTIS_WhseLookUp_MS_Rec] wl
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
+WHERE [bEnabled] = 1
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetZect1RecWhses]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetZect1RecWhses]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetZect1RecWhses]
+AS
+SELECT w.[Code], w.[Name] FROM [Rec_Transfers].[RTIS_WhseLookUp_Zect1_Rec] wl
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
+WHERE [bEnabled] = 1
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetZect2RecWhses]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetZect2RecWhses]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetZect2RecWhses]
+AS
+SELECT w.[Code], w.[Name] FROM [Rec_Transfers].[RTIS_WhseLookUp_Zect2_Rec] wl
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
+WHERE [bEnabled] = 1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetAWRecWhses]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetAWRecWhses]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetAWRecWhses]
+AS
+SELECT w.[Code], w.[Name] FROM [Rec_Transfers].[RTIS_WhseLookUp_AW_Rec] wl
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
+WHERE [bEnabled] = 1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetCanningRecWhses]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetCanningRecWhses]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetCanningRecWhses]
+AS
+SELECT w.[Code], w.[Name] FROM [Rec_Transfers].[RTIS_WhseLookUp_Canning_Rec] wl
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
+WHERE [bEnabled] = 1
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetPGMReceivingWhses]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetPGMReceivingWhses]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetPGMReceivingWhses]
+AS
+SELECT w.[Code], w.[Name] FROM [tbl_WHTLocations] wl 
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhseID]
+WHERE [vProcessName] = 'PGM' AND [bIsRec] = 1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetPGMRecWhses]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetPGMRecWhses]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetPGMRecWhses]
+AS
+SELECT w.[Code], w.[Name] FROM [Rec_Transfers].[RTIS_WhseLookUp_PGM_Rec] wl
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
+WHERE [bEnabled] = 1
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetSlurryPowders]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetSlurryPowders]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetSlurryPowders]
+(
+@1 varchar(max)
+)
+AS
+SELECT [vPowderCode] FROM [rtbl_Slurry_Powders] WHERE [vSlurryCode] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetPowderPrepWhes]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetPowderPrepWhes]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetPowderPrepWhes]
+AS
+SELECT w.[Code], w.[Name] FROM [tbl_WHTLocations] wl 
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhseID]
+WHERE [vProcessName] = 'Powder Prep' AND [bIsRec] = 0
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetPowderPrepWhes_OLD]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetPowderPrepWhes_OLD]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetPowderPrepWhes_OLD]
+AS
+SELECT w.[Code] FROM [RTIS_WarehouseLookUp_PPtFS] wl
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
+WHERE [bEnabled] = 1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetFreshSlurryWhes]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetFreshSlurryWhes]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetFreshSlurryWhes]
+AS
+SELECT w.[Code], w.[Name] FROM [tbl_WHTLocations] wl 
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhseID]
+WHERE [vProcessName] = 'Fresh Slurry' AND [bIsRec] = 0
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetMixedSlurryWhes]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetMixedSlurryWhes]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetMixedSlurryWhes]
+AS
+SELECT w.[Code], w.[Name] FROM [RTIS_WarehouseLookUp_MStZect] wl
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
+WHERE w.[Code] NOT IN (SELECT w.[Code] 
+FROM [RTIS_WarehouseLookUp_MStZect] wl
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
+WHERE wl.[iWhse_Link] !=w.WhseLink) AND wl.bEnabled=1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetToProdWhses]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetToProdWhses]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetToProdWhses]
+AS
+SELECT w.[Code], w.[Name] FROM [RTIS_WarehouseLookUp_ToProd] wl
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
+WHERE [bEnabled] = 1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetZect1Whes]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetZect1Whes]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetZect1Whes]
+AS
+SELECT w.[Code], w.[Name] FROM [RTIS_WarehouseLookUp_Zect1] wl
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
+WHERE [bEnabled] = 1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetZect2Whes]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetZect2Whes]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetZect2Whes]
+AS
+SELECT w.[Code], w.[Name] FROM [RTIS_WarehouseLookUp_Zect2] wl
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
+WHERE [bEnabled] = 1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetAWWhes]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetAWWhes]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetAWWhes]
+AS
+SELECT w.[Code], w.[Name] FROM [RTIS_WarehouseLookUp_AW] wl
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
+WHERE [bEnabled] = 1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetCanningWhes]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetCanningWhes]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetCanningWhes]
+AS
+SELECT w.[Code], w.[Name] FROM [RTIS_WarehouseLookUp_Canning] wl
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
+WHERE [bEnabled] = 1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_CheckPowderManufactured]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_CheckPowderManufactured]
+GO
+
+CREATE PROC [dbo].[sp_MBL_CheckPowderManufactured]
+(
+@1 varchar(max),
+@2 varchar(max)
+)
+AS
+SELECT [bManufactured] FROM [tbl_RTIS_Powder_Prep] 
+WHERE [vItemCode] = @1 AND [vLotDesc] = @2
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_CheckPowderReceieved]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_CheckPowderReceieved]
+GO
+
+CREATE PROC [dbo].[sp_MBL_CheckPowderReceieved]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 decimal(16,3)
+)
+AS
+SELECT ISNULL([bRecTrans], 'False') FROM [tbl_RTIS_Powder_Prep] 
+WHERE [vItemCode] = @1 AND [vLotDesc] = @2 AND [dQty] = @3
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetFreshSlurryManufactured]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetFreshSlurryManufactured]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetFreshSlurryManufactured]
+(
+@1 varchar(max),
+@2 varchar(max)
+)
+AS
+SELECT  TOP 1 ISNULL([bManuf], 0) FROM [tbl_RTIS_Fresh_Slurry] 
+WHERE [vTrolleyCode] = @1 AND [vItemCode] = @2 ORDER BY [iLineID] DESC
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetZectManufactured]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetZectManufactured]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetZectManufactured]
+(
+@1 int
+)
+AS
+SELECT ISNULL([bManuf], 0) FROM [tbl_RTIS_Zect]
+WHERE [iLineID] = @1
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetZectTransferred]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetZectTransferred]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetZectTransferred]
+(
+@1 int
+)
+AS
+SELECT ISNULL([bTrans], 0) FROM [tbl_RTIS_Zect]
+WHERE [iLineID] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetFreshSlurryTransferred]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetFreshSlurryTransferred]
+GO
+
+CREATE PROC [dbo].[sp_MBL_GetFreshSlurryTransferred]
+(
+@1 varchar(max),
+@2 varchar(max)
+)
+AS
+SELECT TOP 1 ISNULL([bTrans], 0) FROM [tbl_RTIS_Fresh_Slurry] 
+WHERE [vTrolleyCode] = @1 AND [vItemCode] = @2 ORDER BY [iLineID] DESC
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetSlurryTransferInfo]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetSlurryTransferInfo]
+GO
+CREATE PROC [dbo].[sp_MBL_GetSlurryTransferInfo]
+(
+@1 varchar(max),
+@2 varchar(max)
+)
+AS
+SELECT [vLotNumber], [dDryWeight], s.[Description_1] FROM [tbl_RTIS_Fresh_Slurry] fs
+INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[Code] = [vItemCode]
+WHERE [vTrolleyCode] = @1 AND [vItemCode] = @2 AND ([bTrans] = 0 OR [bTrans] IS NULL) 
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_InsertWhseTransfer]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_InsertWhseTransfer]
+GO
+CREATE PROC [dbo].[sp_UI_InsertWhseTransfer]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max),
+@4 varchar(max),
+@5 decimal(16,3),
+@6 varchar(max),
+@7 varchar(max),
+@8 varchar(max),
+@9 varchar(max)
+)
+AS
+INSERT INTO [tbl_WHTPending]
+([vItemCode], [vLotNumber], [vWarehouse_From], [vWarehouse_To], [dQtyTransfered], [dtDateTransfered], [vUsername], [vProcess], [vTransDesc], [vStatus])
+VALUES
+(@1, @2, @3, @4, @5, GETDATE(), @6, @7, @8, @9) 
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_InsertFGWhseTransfer]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_InsertFGWhseTransfer]
+GO
+CREATE PROC [dbo].[sp_UI_InsertFGWhseTransfer]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max),
+@4 varchar(max),
+@5 decimal(16,3),
+@6 varchar(max),
+@7 varchar(max)
+)
+AS
+INSERT INTO [tbl_WHTFGRequests]
+([vItemCode], [vLotNumber], [vWarehouse_From], [vWarehouse_To], [dQtyTransfered], [dtDateTransfered], [vUsername], [vProcess])
+VALUES
+(@1, @2, @3, @4, CONVERT(DECIMAL,@5), GETDATE(), @6, @7) 
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_whtTransferLog]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_whtTransferLog]
+GO
+CREATE PROC [dbo].[sp_UI_whtTransferLog]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max),
+@4 varchar(max),
+@5 decimal(16,3),
+@6 varchar(max),
+@7 varchar(max)
+)
+AS
+INSERT INTO [stbl_WHTLog] ([vItemCode], [vLotNumber], [vWarehouse_From], [vWarehouse_To], [dQtyTransfered], [vUsername], [vProcess], [dtDateTransfered])
+VALUES (@1, @2, @3, @4, CONVERT(DECIMAL,@5), @6, @7, GETDATE())
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_UpdatePowderTransferred]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_UpdatePowderTransferred]
+GO
+CREATE PROC [dbo].[sp_MBL_UpdatePowderTransferred]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max)
+
+)
+AS
+UPDATE [tbl_RTIS_Powder_Prep] SET [bTransfered] = 1, [vUserTrans] = @3, [dtTransDate] = GETDATE()  WHERE [vItemCode] = @1 AND [vLotDesc] = @2
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_UpdatePowderTransferredIn]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_UpdatePowderTransferredIn]
+GO
+CREATE PROC [dbo].[sp_MBL_UpdatePowderTransferredIn]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max),
+@4 decimal(16,3)
+)
+AS
+UPDATE [tbl_RTIS_Powder_Prep] SET [bRecTrans] = 1, [vUserRec] = @3, [dtRecTrans] = GETDATE()  WHERE [vItemCode] = @1 AND [vLotDesc] = @2 AND [dQty] = @4
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_UpdateSlurryTransferred]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_UpdateSlurryTransferred]
+GO
+CREATE PROC [dbo].[sp_MBL_UpdateSlurryTransferred]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max)
+)
+AS
+UPDATE [tbl_RTIS_Fresh_Slurry] SET [bTrans] = 1, [dtTrans] = GETDATE() 
+WHERE [vTrolleyCode] = @1 AND [vItemCode] = @2 AND [vLotNumber] = @3 AND [bManuf] = 1 AND ([bTrans] = 0 OR [bTrans] IS NULL)
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_UpdateMobileTankTransferred]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_UpdateMobileTankTransferred]
+GO
+CREATE PROC [dbo].[sp_MBL_UpdateMobileTankTransferred]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max),
+@4 varchar(max)
+)
+AS
+UPDATE [tbl_RTIS_MS_Decant] SET [bTransferred] = 1, [vUserTransferred] = @4, [dtTransferred] = GETDATE()
+WHERE [vTankCode] = @1 AND [vItemCode] = @2 AND [vLotNumber] = @3 AND [iLineID] = (
+SELECT TOP 1 [iLineID] FROM [tbl_RTIS_MS_Decant] WHERE [vTankCode] = @1 AND [vItemCode] = @2 AND [vLotNumber] = @3 ORDER BY [iLineID] DESC)
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_UpdateMobileTankReceived]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_UpdateMobileTankReceived]
+GO
+CREATE PROC [dbo].[sp_MBL_UpdateMobileTankReceived]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max),
+@4 varchar(max)
+)
+AS
+UPDATE [tbl_RTIS_MS_Decant] SET [bReceived] = 1, [vUserReceived] = @4, [dtReceived] = GETDATE()
+WHERE [vTankCode] = @1 AND [vItemCode] = @2 AND [vLotNumber] = @3 AND [iLineID] = (SELECT TOP 1 [iLineID] FROM [tbl_RTIS_MS_Decant] WHERE [vTankCode] = @1 AND [vItemCode] = @2 AND [vLotNumber] = @3 ORDER BY [iLineID] DESC)
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_UpdateLargeTankTransferred]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_UpdateLargeTankTransferred]
+GO
+CREATE PROC [dbo].[sp_MBL_UpdateLargeTankTransferred]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max),
+@4 varchar(max),
+@5 varchar(max)
+)
+AS
+UPDATE [tbl_RTIS_MS_Main] SET [bTransferred] = 1, [vUserTransferred] = @5, [dtTransferred] = GETDATE()
+WHERE [vTankType] = @1 AND [vTankCode] = @2 AND [vItemCode] = @3 AND [vLotNumber] = @4
+AND [iLineID] = (SELECT TOP 1 [iLineID] FROM [tbl_RTIS_MS_Main] WHERE [vTankType] = @1 AND [vTankCode] = @2 AND [vItemCode] = @3 AND [vLotNumber] = @4 ORDER BY [iLineID] DESC)
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_UpdateLargeTankTransferred]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_UpdateLargeTankTransferred]
+GO
+CREATE PROC [dbo].[sp_MBL_UpdateLargeTankTransferred]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max),
+@4 varchar(max),
+@5 varchar(max)
+)
+AS
+UPDATE [tbl_RTIS_MS_Main] SET [bTransferred] = 1, [vUserTransferred] = @5, [dtTransferred] = GETDATE()
+WHERE [vTankType] = @1 AND [vTankCode] = @2 AND [vItemCode] = @3 AND [vLotNumber] = @4
+AND [iLineID] = (SELECT TOP 1 [iLineID] FROM [tbl_RTIS_MS_Main] WHERE [vTankType] = @1 AND [vTankCode] = @2 AND [vItemCode] = @3 AND [vLotNumber] = @4 ORDER BY [iLineID] DESC)
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_setFreshSlurryReceived]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_setFreshSlurryReceived]
+GO
+CREATE PROC [dbo].[sp_MBL_setFreshSlurryReceived]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max),
+@4 varchar(max)
+)
+AS
+UPDATE [tbl_RTIS_Fresh_Slurry] SET [bRecTrans] = 1, [dtRecTrans] = GETDATE(), [vUserRec] = @4
+WHERE [vTrolleyCode] = @1 AND [vItemCode] = @2 AND [vLotNumber] = @3 
+AND [iLineID] = (SELECT TOP 1 [iLineID] FROM [tbl_RTIS_Fresh_Slurry] WHERE [vTrolleyCode] = @1 AND [vItemCode] = @2 AND [vLotNumber] = @3 ORDER BY [iLineID] DESC)
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetCatalystRaws]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetCatalystRaws]
+GO
+CREATE PROC [dbo].[sp_UI_GetCatalystRaws]
+(
+@1 varchar(max)
+)
+AS
+SELECT [vRMCode], [vRMDesc], '' FROM [tbl_RTIS_Zect_Raws] WHERE [vCatalystCode] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetZeckLinkExists]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetZeckLinkExists]
+GO
+CREATE PROC [dbo].[sp_UI_GetZeckLinkExists]
+(
+@1 varchar(max),
+@2 varchar(max)
+)
+AS
+SELECT [vRMCode] FROM [tbl_RTIS_Zect_Raws] WHERE [vCatalystCode] = @1 AND [vRMCode] = @2
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetAllZECTJobs]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetAllZECTJobs]
+GO
+CREATE PROC [dbo].[sp_UI_GetAllZECTJobs]
+(
+@1 datetime,
+@2 datetime
+)
+AS
+SELECT [iLIneID], [vJobUnq], [vCatalystCode], [vLotNumber], [dQty], [dQtyManuf], [dtStarted], [vZectLine], [bJobRunning] ,[vUserStarted] ,[dtStopped] ,[vUserStopped] ,[dtSReopened] ,[vUserReopened]
+FROM [tbl_RTIS_Zect_Jobs] WHERE [dtStarted] BETWEEN @1 AND @2
+ORDER BY [dtStarted] DESC
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GeZECTJobInPuts]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GeZECTJobInPuts]
+GO
+CREATE PROC [dbo].[sp_UI_GeZECTJobInPuts]
+(
+@1 int
+)
+AS
+SELECT [vSlurryCode], [vSlurryLot], [dQty], [dtDateRecorded], [vUserRecorded]
+FROM [tbl_RTIS_Zect_Input]
+WHERE [iJobID] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GeZECTJobOutPuts]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GeZECTJobOutPuts]
+GO
+CREATE PROC [dbo].[sp_UI_GeZECTJobOutPuts]
+(
+@1 int
+)
+AS
+SELECT [vPalletNo], [dQty], [vUserRecorded], [dtDateRecorded],ISNULL([bManuf], 0),[dtDateManuf],[vUserManuf]
+FROM [tbl_RTIS_Zect_OutPut] WHERE [iJobID] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GeZECTJobsToManufacture]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GeZECTJobsToManufacture]
+GO
+CREATE PROC [dbo].[sp_UI_GeZECTJobsToManufacture]
+AS
+SELECT zj.[iLIneID], zj.[vJobUnq], zj.[vCatalystCode], zj.[vLotNumber], zj.[dQty], zj.[dQtyManuf], SUM(zo.dQty) , zj.[vCoat], zj.[vZectLine], zj.[bJobRunning],[dtStarted] FROM [tbl_RTIS_Zect_Jobs] zj
+  INNER JOIN [tbl_RTIS_Zect_OutPut] zo ON zo.[iJobID] = zj.[iLIneID]
+  WHERE ISNULL(zo.[bManuf], 0) = 0 GROUP BY zj.[vJobUnq], zj.[vCatalystCode], zj.[vLotNumber], zj.[dQty], zj.[dQtyManuf] , zj.[vCoat], zj.[vZectLine], zj.[bJobRunning],[dtStarted],zj.[iLIneID]
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GeZECTPalletsToManufacture]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GeZECTPalletsToManufacture]
+GO
+CREATE PROC [dbo].[sp_UI_GeZECTPalletsToManufacture]
+(
+@1 int
+)
+AS
+SELECT [iLIneID], [vPalletCode], [vPalletNo], [dQty], [dtDateRecorded], [vUserRecorded], '' FROM [tbl_RTIS_Zect_OutPut] WHERE [iJobID] = @1 AND ISNULL([bManuf], 0) = 0
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetZECTBatchTotal]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetZECTBatchTotal]
+GO
+CREATE PROC [dbo].[sp_UI_GetZECTBatchTotal]
+(
+@1 int
+)
+AS
+SELECT SUM([dQty]) AS [Total] FROM [tbl_RTIS_Zect_OutPut]
+WHERE ISNULL([bManuf], 0) = 0 AND [iJobID] = @1
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetZECTRawMaterials]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetZECTRawMaterials]
+GO
+CREATE PROC [dbo].[sp_UI_GetZECTRawMaterials]
+(
+@1 int
+)
+AS
+SELECT [vSlurryCode], [vSlurryLot] FROM [tbl_RTIS_Zect_Input] WHERE [iJobID] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_Zect_GetCatalystSlurries]') IS NOT NULL)
+	DROP PROC [dbo].[sp_Zect_GetCatalystSlurries]
+GO
+CREATE PROC [dbo].[sp_Zect_GetCatalystSlurries]
+(
+@1 varchar(max),
+@2 varchar(max)
+)
+AS
+SELECT DISTINCT [vRMCode] FROM [tbl_RTIS_Zect_Raws]
+WHERE [vCatalystCode] LIKE @1 AND [vCatalystCode] LIKE @2 AND ([vRMCode] LIKE 'TSP%' OR [vRMCode] LIKE 'VSP%')
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_Zect_GetInsertedLineID]') IS NOT NULL)
+	DROP PROC [dbo].[sp_Zect_GetInsertedLineID]
+GO
+CREATE PROC [dbo].[sp_Zect_GetInsertedLineID]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max),
+@4 varchar(max),
+@5 varchar(max),
+@6 varchar(max)
+)
+AS
+SELECT TOP 1 [iLineID] FROM [tbl_RTIS_Zect]
+WHERE [vCatalyst] = @1 AND [vItemCode] = @2 AND vLotNumber = @3 AND [vSlurry] = @4 AND [vCoatNum] = @5 AND [vZectLine] = @6 AND (bPrinted = 0 OR bPrinted IS NULL)
+ORDER BY [iLineID] DESC
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_Zect_CheckJobOnLine]') IS NOT NULL)
+	DROP PROC [dbo].[sp_Zect_CheckJobOnLine]
+GO
+CREATE PROC [dbo].[sp_Zect_CheckJobOnLine]
+(
+@1 varchar(max)
+)
+AS
+SELECT [vJobUnq] FROM [tbl_RTIS_Zect_Jobs] WHERE [bJobRunning] = 1 AND [vZectLine] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_Zect_GetJobID]') IS NOT NULL)
+	DROP PROC [dbo].[sp_Zect_GetJobID]
+GO
+CREATE PROC [dbo].[sp_Zect_GetJobID]
+(
+@1 varchar(max)
+)
+AS
+SELECT [iLIneID] FROM [tbl_RTIS_Zect_Jobs] WHERE [vJobUnq]  = @1
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_Zect_GetJobOpenInfo]') IS NOT NULL)
+	DROP PROC [dbo].[sp_Zect_GetJobOpenInfo]
+GO
+CREATE PROC [dbo].[sp_Zect_GetJobOpenInfo]
+(
+@1 varchar(max)
+)
+AS
+SELECT [vCatalystCode], [vLotNumber], [vSlurryCode], [vCoat], [bJobRunning] FROM [tbl_RTIS_Zect_Jobs] WHERE [vJobUnq] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_Zect_GetJobOpen]') IS NOT NULL)
+	DROP PROC [dbo].[sp_Zect_GetJobOpen]
+GO
+CREATE PROC [dbo].[sp_Zect_GetJobOpen]
+(
+@1 varchar(max)
+)
+AS
+SELECT [bJobRunning] FROM [tbl_RTIS_Zect_Jobs] WHERE [vJobUnq] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_Zect_GetLineJobOpen]') IS NOT NULL)
+	DROP PROC [dbo].[sp_Zect_GetLineJobOpen]
+GO
+CREATE PROC [dbo].[sp_Zect_GetLineJobOpen]
+(
+@1 varchar(max),
+@2 varchar(max)
+)
+AS
+SELECT [bJobRunning] FROM [tbl_RTIS_Zect_Jobs] WHERE [vJobUnq] = @1 AND [vZectLine] = @2
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_Zect_GetJobInformation]') IS NOT NULL)
+	DROP PROC [dbo].[sp_Zect_GetJobInformation]
+GO
+CREATE PROC [dbo].[sp_Zect_GetJobInformation]
+(
+@1 varchar(max)
+)
+AS
+SELECT [vCatalystCode], [vLotNumber], [vCoat], [dQty], ISNULL([dQtyManuf], 0) FROM [tbl_RTIS_Zect_Jobs] WHERE [vJobUnq] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_Zect_GetLastJobPallet]') IS NOT NULL)
+	DROP PROC [dbo].[sp_Zect_GetLastJobPallet]
+GO
+CREATE PROC [dbo].[sp_Zect_GetLastJobPallet]
+(
+@1 varchar(max)
+)
+AS
+SELECT TOP 1 [vPalletCode] FROM [tbl_RTIS_Zect_OutPut] WHERE [iJobID] = @1 ORDER BY [iLIneID] DESC
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_Zect_GetJobPallets]') IS NOT NULL)
+	DROP PROC [dbo].[sp_Zect_GetJobPallets]
+GO
+CREATE PROC [dbo].[sp_Zect_GetJobPallets]
+(
+@1 varchar(max)
+)
+AS
+SELECT zo.[vPalletNo], zo.[vPalletCode], zj.[vCatalystCode], zj.[vLotNumber], zo.[dQty] FROM [tbl_RTIS_Zect_OutPut] zo
+INNER JOIN [tbl_RTIS_Zect_Jobs] zj ON zj.[iLIneID] = zo.[iJobID] WHERE zj.[vJobUnq] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_Zect_GetUerPermissions]') IS NOT NULL)
+	DROP PROC [dbo].[sp_Zect_GetUerPermissions]
+GO
+CREATE PROC [dbo].[sp_Zect_GetUerPermissions]
+(
+@1 varchar(6)
+)
+AS
+SELECT p.[vPermission_Name] FROM [tbl_users] u
+INNER JOIN [htbl_userRoles] rh ON u.[iRoleID] = rh.[iRole_ID]
+INNER JOIN [ltbl_userRoleLines] rl ON rl.[iRole_ID] = rh.[iRole_ID]
+INNER JOIN [ltbl_Module_Perms] p ON p.[iPermission_ID] = rl.[iPermission_ID]
+WHERE u.[vUser_PIN] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_Zect_GetUerPermissionsReOpen]') IS NOT NULL)
+	DROP PROC [dbo].[sp_Zect_GetUerPermissionsReOpen]
+GO
+CREATE PROC [dbo].[sp_Zect_GetUerPermissionsReOpen]
+(
+@1 varchar(6)
+)
+AS
+SELECT p.[vPermission_Name] FROM [tbl_users] u
+INNER JOIN [htbl_userRoles] rh ON u.[iRoleID] = rh.[iRole_ID]
+INNER JOIN [ltbl_userRoleLines] rl ON rl.[iRole_ID] = rh.[iRole_ID]
+INNER JOIN [ltbl_Module_Perms] p ON p.[iPermission_ID] = rl.[iPermission_ID]
+WHERE u.[vUser_PIN] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_Zect_GetClosingJobInfo]') IS NOT NULL)
+	DROP PROC [dbo].[sp_Zect_GetClosingJobInfo]
+GO
+CREATE PROC [dbo].[sp_Zect_GetClosingJobInfo]
+(
+@1 varchar(max)
+)
+AS
+SELECT [vCatalystCode], [vLotNumber], [vCoat], [dQty], [dQtyManuf] FROM [tbl_RTIS_Zect_Jobs] WHERE [vJobUnq] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_Zect_GetReOpenJobInfo]') IS NOT NULL)
+	DROP PROC [dbo].[sp_Zect_GetReOpenJobInfo]
+GO
+CREATE PROC [dbo].[sp_Zect_GetReOpenJobInfo]
+(
+@1 varchar(max)
+)
+AS
+SELECT [vCatalystCode], [vLotNumber], [vCoat], [dQty], [dQtyManuf] FROM [tbl_RTIS_Zect_Jobs] WHERE [vJobUnq] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_Zect_GetReprintJobInfo]') IS NOT NULL)
+	DROP PROC [dbo].[sp_Zect_GetReprintJobInfo]
+GO
+CREATE PROC [dbo].[sp_Zect_GetReprintJobInfo]
+(
+@1 varchar(max)
+)
+AS
+SELECT [vCatalystCode], [vLotNumber], [vCoat], [dQty], [dQtyManuf] FROM [tbl_RTIS_Zect_Jobs] WHERE [vJobUnq] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_Zect_GetValidJobLots]') IS NOT NULL)
+	DROP PROC [dbo].[sp_Zect_GetValidJobLots]
+GO
+CREATE PROC [dbo].[sp_Zect_GetValidJobLots]
+(
+@1 varchar(max),
+@2 datetime
+)
+AS
+SELECT [vLotNumber] froM [tbl_RTIS_Zect_Jobs] WHERE [dtStarted] >= DATEADD(DAY, -@2, GETDATE()) AND [vCatalystCode] = @1
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_Zect_GetValidReprintJobLots]') IS NOT NULL)
+	DROP PROC [dbo].[sp_Zect_GetValidReprintJobLots]
+GO
+CREATE PROC [dbo].[sp_Zect_GetValidReprintJobLots]
+(
+@1 varchar(max),
+@2 datetime
+)
+AS
+SELECT [vLotNumber] froM [tbl_RTIS_Zect_Jobs] WHERE [dtStarted] >= DATEADD(DAY, -@2, GETDATE()) AND [vCatalystCode] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_Zect_GetJobNumber]') IS NOT NULL)
+	DROP PROC [dbo].[sp_Zect_GetJobNumber]
+GO
+CREATE PROC [dbo].[sp_Zect_GetJobNumber]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max),
+@4 varchar(max)
+)
+AS
+SELECT [vJobUnq] froM [tbl_RTIS_Zect_Jobs] WHERE [vCatalystCode] = @1 AND [vLotNumber] = @2 AND [vCoat] = @3 AND [vZectLine] = @4
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_Zect_GetReprintJobNumber]') IS NOT NULL)
+	DROP PROC [dbo].[sp_Zect_GetReprintJobNumber]
+GO
+CREATE PROC [dbo].[sp_Zect_GetReprintJobNumber]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max),
+@4 varchar(max)
+)
+AS
+SELECT [vJobUnq] froM [tbl_RTIS_Zect_Jobs] WHERE [vCatalystCode] = @1 AND [vLotNumber] = @2 AND [vCoat] = @3 AND [vZectLine] = @4
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetJobOutPutItem]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetJobOutPutItem]
+GO
+CREATE PROC [dbo].[sp_MBL_GetJobOutPutItem]
+(
+@1 varchar(max)
+)
+AS
+SELECT [vCatalystCode]
+FROM [tbl_RTIS_Zect_Jobs]
+WHERE [vJobUnq] = @1
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_checkItemRM]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_checkItemRM]
+GO
+CREATE PROC [dbo].[sp_MBL_checkItemRM]
+(
+@1 varchar(max),
+@2 varchar(max)
+)
+AS
+SELECT [vRMCode] FROM [tbl_RTIS_Zect_Raws] WHERE [vCatalystCode] = @1 AND [vRMCode] = @2
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_Zect_OpenJobOnLine]') IS NOT NULL)
+	DROP PROC [dbo].[sp_Zect_OpenJobOnLine]
+GO
+CREATE PROC [dbo].[sp_Zect_OpenJobOnLine]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max),
+@4 varchar(max),
+@5 varchar(max),
+@6 decimal(16,3),
+@7 varchar(max),
+@8 varchar(max),
+@9 varchar(max),
+@10 varchar(max)
+)
+AS
+INSERT INTO [tbl_RTIS_Zect_Jobs] ([vJobUnq], [vCatalystCode], [vLotNumber], [vSlurryCode], [vSlurryLot], [dQty], [vCoat], [vZectLine], [vUserStarted], [dtStarted], [bJobRunning], [vScanSheet])
+VALUES (@1, @2, @3, @4, @5, @6, @7, @8, @9, GETDATE(), 1, @10)
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_Zect_LogRM]') IS NOT NULL)
+	DROP PROC [dbo].[sp_Zect_LogRM]
+GO
+CREATE PROC [dbo].[sp_Zect_LogRM]
+(
+@1 int,
+@2 varchar(max),
+@3 varchar(max),
+@4 decimal(16,3),
+@5 varchar(max)
+)
+AS
+INSERT INTO [tbl_RTIS_Zect_Input] ([iJobID], [vSlurryCode], [vSlurryLot], [dQty], [dtDateRecorded], [vUserRecorded])
+VALUES (@1, @2, @3, @4, GETDATE(), @5)
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_Zect_ManufacturePalletUnprinted]') IS NOT NULL)
+	DROP PROC [dbo].[sp_Zect_ManufacturePalletUnprinted]
+GO
+CREATE PROC [dbo].[sp_Zect_ManufacturePalletUnprinted]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max),
+@4 varchar(max),
+@5 varchar(max),
+@6 varchar(max),
+@7 decimal(16,3),
+@8 varchar(max),
+@9 varchar(max)
+)
+AS
+INSERT INTO [tbl_RTIS_Zect] ([vCatalyst], [vItemCode], [vItemDesc], [vLotNumber], [vCoatNum], [vSlurry], [dPalletQty], [vZectLine], [dtDateEntered], [vUserEntered])
+VALUES (@1, @2, @3, @4, @5, @6, @7, @8, GETDATE(), @9)
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_Zect_AddNewPallet]') IS NOT NULL)
+	DROP PROC [dbo].[sp_Zect_AddNewPallet]
+GO
+CREATE PROC [dbo].[sp_Zect_AddNewPallet]
+(
+@1 int,
+@2 varchar(max),
+@3 varchar(max),
+@4 decimal(16,3),
+@5 varchar(max)
+)
+AS
+INSERT INTO [tbl_RTIS_Zect_OutPut] ([iJobID], [vPalletCode], [vPalletNo], [dQty], [vUserRecorded], [dtDateRecorded])
+VALUES (@1, @2, @3, @4, @5, GETDATE())
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_InsertRMLink]') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_InsertRMLink]
+GO
+CREATE PROC [dbo].[sp_UI_InsertRMLink]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max),
+@4 varchar(max)
+)
+AS
+INSERT INTO [tbl_RTIS_Zect_Raws] ([vCatalystCode], [vRMCode], [vRMDesc], [vUserAdded], [dtDateAdded])
+VALUES (@1, @2, @3, @4, GETDATE())
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_ZECT_UpdateManufacturedQty]') IS NOT NULL)
+	DROP PROC [dbo].[sp_ZECT_UpdateManufacturedQty]
+GO
+CREATE PROC [dbo].[sp_ZECT_UpdateManufacturedQty]
+(
+@1 varchar(max),
+@2 decimal(16,3)
+)
+AS
+UPDATE [tbl_RTIS_Zect_Jobs] SET [dQtyManuf] = ISNULL([dQtyManuf], 0) + @2
+WHERE [vJobUnq] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_ZECT_UpdateJobClosed]') IS NOT NULL)
+	DROP PROC [dbo].[sp_ZECT_UpdateJobClosed]
+GO
+CREATE PROC [dbo].[sp_ZECT_UpdateJobClosed]
+(
+@1 varchar(max),
+@2 varchar(max)
+)
+AS
+UPDATE [tbl_RTIS_Zect_Jobs] SET [bJobRunning] =0, [vUserStopped] = @2, [dtStopped] = GETDATE()
+WHERE [vJobUnq] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_ZECT_UpdateJobReOpened]') IS NOT NULL)
+	DROP PROC [dbo].[sp_ZECT_UpdateJobReOpened]
+GO
+CREATE PROC [dbo].[sp_ZECT_UpdateJobReOpened]
+(
+@1 varchar(max),
+@2 varchar(max)
+)
+AS
+UPDATE [tbl_RTIS_Zect_Jobs] SET [bJobRunning] =1, [vUserReopened] = @2, [dtSReopened] = GETDATE()
+WHERE [vJobUnq] = @1
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_UpdateZectTransferred]') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_UpdateZectTransferred]
+GO
+CREATE PROC [dbo].[sp_MBL_UpdateZectTransferred]
+(
+@1 int,
+@2 varchar(max)
+)
+AS
+UPDATE [tbl_RTIS_Zect] SET [bTrans] = 1, [dtTrans]= GETDATE(), [vUserTrans] = @2
+WHERE [iLineID] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_Zect_UpdateZectLine_Printed') IS NOT NULL)
+	DROP PROC [dbo].[sp_Zect_UpdateZectLine_Printed]
+GO
+CREATE PROC [dbo].[sp_Zect_UpdateZectLine_Printed]
+(
+@1 int,
+@2 varchar(max)
+)
+AS
+UPDATE [tbl_RTIS_Zect] SET [bPrinted] = 1, [dtPrinted] = GETDATE(), [vUserPrinted] = @2
+WHERE [iLineID] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_UpdatePalletManufactured') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_UpdatePalletManufactured]
+GO
+CREATE PROC [dbo].[sp_UI_UpdatePalletManufactured]
+(
+@1 int,
+@2 int,
+@3 varchar(max)
+)
+AS
+UPDATE [tbl_RTIS_Zect_OutPut] SET [bManuf] = 1, [dtDateManuf] = GETDATE(), [vUserManuf] = @3
+WHERE [iLIneID] = @1 AND [iJobID] = @2
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_setZECTBatchManufactured') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_setZECTBatchManufactured]
+GO
+CREATE PROC [dbo].[sp_UI_setZECTBatchManufactured]
+(
+@1 int,
+@2 varchar(max)
+)
+AS
+UPDATE [tbl_RTIS_Zect_OutPut] SET [bManuf] = '1', [dtDateManuf] = GETDATE(), [vUserManuf] = @2 WHERE [iJobID] = @1 AND ISNULL( [bManuf] , 0) = 0
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_setZECTBatchManufacturedManual') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_setZECTBatchManufacturedManual]
+GO
+CREATE PROC [dbo].[sp_UI_setZECTBatchManufacturedManual]
+(
+@1 int,
+@2 varchar(max)
+)
+AS
+UPDATE [tbl_RTIS_Zect_OutPut] SET [bManuf] = '1', [dtManufDateManual] = GETDATE(), [vUserManufManual] = @2 WHERE [iJobID] = @1 AND ISNULL( [bManuf] , 0) = 0
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_DeleteRMLink') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_DeleteRMLink]
+GO
+CREATE PROC [dbo].[sp_UI_DeleteRMLink]
+(
+@1 varchar(max),
+@2 varchar(max)
+)
+AS
+DELETE FROM [tbl_RTIS_Zect_Raws] WHERE [vCatalystCode] = @1 AND [vRMCode] = @2
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_PGM_GetBarcodeFromVault') IS NOT NULL)
+	DROP PROC [dbo].[sp_PGM_GetBarcodeFromVault]
+GO
+CREATE PROC [dbo].[sp_PGM_GetBarcodeFromVault]
+(
+@1 varchar(max)
+)
+AS
+SELEcT ISNULL([bFromVault], 'False') FROM [tbl_unqBarcodes]
+WHERE [vUnqBarcode] = @1
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetItemReceivedTransfer') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetItemReceivedTransfer]
+GO
+CREATE PROC [dbo].[sp_MBL_GetItemReceivedTransfer]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max),
+@4 varchar(max)
+)
+AS
+SELEcT ISNULL([bTransferredIn], 'False') FROM [tbl_unqBarcodes]
+WHERE [vUnqBarcode] LIKE @1 AND [vUnqBarcode] LIKE @2 AND [vUnqBarcode] LIKE @3 AND [vUnqBarcode] LIKE @4
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetItemConsumed') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetItemConsumed]
+GO
+CREATE PROC [dbo].[sp_MBL_GetItemConsumed]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max),
+@4 varchar(max)
+)
+AS
+SELEcT ISNULL([bConsumed], 'False') FROM [tbl_unqBarcodes]
+WHERE [vUnqBarcode] LIKE @1 AND [vUnqBarcode] LIKE @2 AND [vUnqBarcode] LIKE @3 AND [vUnqBarcode] LIKE @4
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetItemDispatched') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetItemDispatched]
+GO
+CREATE PROC [dbo].[sp_MBL_GetItemDispatched]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max),
+@4 varchar(max)
+)
+AS
+SELEcT [Dispatch] FROM [tbl_unqBarcodes]
+WHERE [vUnqBarcode] LIKE @1 AND [vUnqBarcode] LIKE @2 AND [vUnqBarcode] LIKE @3 AND [vUnqBarcode] LIKE @4
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetPalletID') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetPalletID]
+GO
+CREATE PROC [dbo].[sp_MBL_GetPalletID]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max),
+@4 varchar(max)
+)
+AS
+SELEcT [iLine_ID] FROM [htbl_PalletBarcodes]
+WHERE [vUnqBarcode] LIKE @1 AND [vUnqBarcode] LIKE @2 AND [vUnqBarcode] LIKE @3 AND [vUnqBarcode] LIKE @4
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetPalletDispatched') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetPalletDispatched]
+GO
+CREATE PROC [dbo].[sp_MBL_GetPalletDispatched]
+(
+@1 int
+)
+AS
+SELEcT [Dispatch] FROM [htbl_PalletBarcodes]
+WHERE [iLine_ID] = @1
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetPalletBoxBarcodes') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetPalletBoxBarcodes]
+GO
+CREATE PROC [dbo].[sp_MBL_GetPalletBoxBarcodes]
+(
+@1 int
+)
+AS
+SELEcT [vUnqBarcode] FROM [ltbl_PalletBarcodes]
+WHERE [iPallet_ID] = @1
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetItemTransferredOut') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetItemTransferredOut]
+GO
+CREATE PROC [dbo].[sp_MBL_GetItemTransferredOut]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max),
+@4 varchar(max)
+)
+AS
+SELEcT ISNULL([bTransferredOut], 'false') FROM [tbl_unqBarcodes]
+WHERE [vUnqBarcode] LIKE @1 AND [vUnqBarcode] LIKE @2 AND [vUnqBarcode] LIKE @3 AND [vUnqBarcode] LIKE @4
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_ZECT_GetZectUnq') IS NOT NULL)
+	DROP PROC [dbo].[sp_ZECT_GetZectUnq]
+GO
+CREATE PROC [dbo].[sp_ZECT_GetZectUnq]
+(
+@1 varchar(max),
+@2 varchar(max)
+)
+AS
+SELEcT [vUnqBarcode] FROM [tbl_unqBarcodes]
+WHERE [vUnqBarcode] LIKE @1 AND [vUnqBarcode] LIKE @2
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetPalletID') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetPalletID]
+GO
+CREATE PROC [dbo].[sp_UI_GetPalletID]
+(
+@1 varchar(max)
+)
+AS
+SELEcT [iLine_ID] FROM [htbl_PalletBarcodes]
+WHERE [vUnqBarcode] = @1
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetSTUnqs') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetSTUnqs]
+GO
+CREATE PROC [dbo].[sp_MBL_GetSTUnqs]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max),
+@4 varchar(max)
+)
+AS
+SELECT ISNULL([StockTake], ''), ISNULL([StockTake2], '') FROM [tbl_unqBarcodes]
+WHERE [vUnqBarcode] LIKE @1 AND [vUnqBarcode] LIKE @2 AND [vUnqBarcode] LIKE @3 AND [vUnqBarcode] LIKE @4
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetSTPalletLots') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetSTPalletLots]
+GO
+CREATE PROC [dbo].[sp_MBL_GetSTPalletLots]
+(
+@UNQ varchar(max)
+)
+AS
+SELECT l.[vUnqBarcode] FROM [ltbl_PalletBarcodes] l
+INNER JOIN [htbl_PalletBarcodes] h ON h.[iLine_ID] = l.[iPallet_ID]
+WHERE h.[vUnqBarcode] = @UNQ
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetSTPalletUnqs') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetSTPalletUnqs]
+GO
+CREATE PROC [dbo].[sp_MBL_GetSTPalletUnqs]
+(
+@1 varchar(max)
+)
+AS
+SELECT ISNULL([StockTake], ''), ISNULL([StockTake2], '') FROM [htbl_PalletBarcodes]
+WHERE [vUnqBarcode] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetItemOnPallet') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetItemOnPallet]
+GO
+CREATE PROC [dbo].[sp_UI_GetItemOnPallet]
+(
+@UNQ varchar(max)
+)
+AS
+SELECT [iLine_ID] FROM [ltbl_PalletBarcodes] WHERE [vUnqBarcode] = @UNQ AND [bOnPallet] = 1
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetPalletContents') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetPalletContents]
+GO
+CREATE PROC [dbo].[sp_MBL_GetPalletContents]
+(
+@UNQ varchar(max)
+)
+AS
+SELECT l.[vUnqBarcode] FROM [ltbl_PalletBarcodes] l 
+INNER JOIN [htbl_PalletBarcodes] h ON l.[iPallet_ID] = h.[iLine_ID]
+WHERE h.[vUnqBarcode] = @UNQ
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetPalletLots') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetPalletLots]
+GO
+CREATE PROC [dbo].[sp_MBL_GetPalletLots]
+(
+@UNQ varchar(max)
+)
+AS
+SELECT l.[vUnqBarcode] FROM [ltbl_PalletBarcodes] l 
+INNER JOIN [htbl_PalletBarcodes] h ON l.[iPallet_ID] = h.[iLine_ID]
+WHERE h.[vUnqBarcode] = @UNQ AND l.[bOnPallet] = 1
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_SaveRT2DBarcode') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_SaveRT2DBarcode]
+GO
+CREATE PROC [dbo].[sp_UI_SaveRT2DBarcode]
+(
+@1 varchar(max),
+@2 varchar(max)
+)
+AS
+INSERT INTO [tbl_unqBarcodes] (
+[vUnqBarcode]
+,[Receive]
+,[Issue]
+,[StockTake]
+,[CycleCount]
+,[Manuf]
+,[Dispatch]
+,[Printed]
+,[DispatchDate]
+,[Quarantine]
+,[bValidated]
+,[ValidateRef])
+VALUES (@1, NULL, NULL, NULL, NULL, NULL, NULL, GETDATE(), NULL, NULL, 0, @2)
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_SaveRT2DBarcodePallet') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_SaveRT2DBarcodePallet]
+GO
+CREATE PROC [dbo].[sp_UI_SaveRT2DBarcodePallet]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max)
+)
+AS
+INSERT INTO [htbl_PalletBarcodes] ([vUnqBarcode]
+,[StockTake]
+,[CycleCount]
+,[Dispatch]
+,[Printed]
+,[DispatchDate]
+,[Quarantine]
+,[bValidated]
+,[ValidateRef]
+,[bTransferredOut]
+,[bTransferredIn]
+,[vJobFrom])
+VALUES (@1, NULL, NULL, NULL, GETDATE(), NULL, NULL, 1, @2, 0, 0, @3)
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_SaveRMBarcodePallet') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_SaveRMBarcodePallet]
+GO
+CREATE PROC [dbo].[sp_UI_SaveRMBarcodePallet]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max)
+)
+AS
+INSERT INTO [htbl_PalletBarcodes] (
+[vUnqBarcode]
+,[StockTake]
+,[CycleCount]
+,[Dispatch]
+,[Printed]
+,[DispatchDate]
+,[Quarantine]
+,[bValidated]
+,[ValidateRef]
+,[bTransferredOut]
+,[bTransferredIn]
+,[vJobFrom]
+,[bRMPallet])
+OUTPUT INSERTED.iLine_ID
+VALUES (@1, NULL, NULL, NULL, GETDATE(), NULL, NULL, 1, @2, 0, 0, @3, 1)
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_ClearUnqsDispatch') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_ClearUnqsDispatch]
+GO
+CREATE PROC [dbo].[sp_UI_ClearUnqsDispatch]
+(
+@1 varchar(20)
+)
+AS
+UPDATE [tbl_unqBarcodes] SET [Dispatch] = NULL, [DispatchDate] = NULL WHERE [Dispatch] = @1
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_ClearUnqPalletsDispatch') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_ClearUnqPalletsDispatch]
+GO
+CREATE PROC [dbo].[sp_UI_ClearUnqPalletsDispatch]
+(
+@1 varchar(20)
+)
+AS
+UPDATE [htbl_PalletBarcodes] SET [Dispatch] = NULL, [DispatchDate] = NULL WHERE [Dispatch] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_UpdateTransFromVault') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_UpdateTransFromVault]
+GO
+CREATE PROC [dbo].[sp_UI_UpdateTransFromVault]
+(
+@1 varchar(max)
+)
+AS
+UPDATE [tbl_unqBarcodes] SET [bFromVault] = 1 WHERE  [vUnqBarcode] = @1
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_UpdateItemReceived') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_UpdateItemReceived]
+GO
+CREATE PROC [dbo].[sp_MBL_UpdateItemReceived]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max),
+@4 varchar(max)
+)
+AS
+UPDATE [tbl_unqBarcodes] SET [bTransferredIn] = 1, [bTransferredOut] = 0 
+WHERE [vUnqBarcode] LIKE @1 AND [vUnqBarcode] LIKE @2 AND [vUnqBarcode] LIKE @3 AND [vUnqBarcode] LIKE @4
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_UpdateItemConsumed') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_UpdateItemConsumed]
+GO
+CREATE PROC [dbo].[sp_MBL_UpdateItemConsumed]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max),
+@4 varchar(max),
+@5 varchar(max)
+)
+AS
+UPDATE [tbl_unqBarcodes] SET [bConsumed] = 1, [vJobConsumed] = @5
+WHERE [vUnqBarcode] LIKE @1 AND [vUnqBarcode] LIKE @2 AND [vUnqBarcode] LIKE @3 AND [vUnqBarcode] LIKE @4
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_UpdateItemReceivedAndConsumed') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_UpdateItemReceivedAndConsumed]
+GO
+CREATE PROC [dbo].[sp_MBL_UpdateItemReceivedAndConsumed]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max),
+@4 varchar(max)
+)
+AS
+UPDATE [tbl_unqBarcodes] SET [bConsumed] = 1, [bTransferredIn] = 1, [bTransferredOut] = 0 
+WHERE [vUnqBarcode] LIKE @1 AND [vUnqBarcode] LIKE @2 AND [vUnqBarcode] LIKE @3 AND [vUnqBarcode] LIKE @4
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_UpdateItemTransferredOut') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_UpdateItemTransferredOut]
+GO
+CREATE PROC [dbo].[sp_MBL_UpdateItemTransferredOut]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max),
+@4 varchar(max)
+)
+AS
+UPDATE [tbl_unqBarcodes] SET [bTransferredIn] = 0, [bTransferredOut] = 1 
+WHERE [vUnqBarcode] LIKE @1 AND [vUnqBarcode] LIKE @2 AND [vUnqBarcode] LIKE @3 AND [vUnqBarcode] LIKE @4
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_UpdateBoxesDispatched') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_UpdateBoxesDispatched]
+GO
+CREATE PROC [dbo].[sp_MBL_UpdateBoxesDispatched]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max),
+@4 varchar(max)
+)
+AS
+UPDATE [tbl_unqBarcodes] SET [bTransferredIn] = 0, [bTransferredOut] = 1 
+WHERE [vUnqBarcode] LIKE @1 AND [vUnqBarcode] LIKE @2 AND [vUnqBarcode] LIKE @3 AND [vUnqBarcode] LIKE @4
+GO
+
+IF (OBJECT_ID('[dbo].[sp_MBL_UpdateItemDispatched') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_UpdateItemDispatched]
+GO
+CREATE PROC [dbo].[sp_MBL_UpdateItemDispatched]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max),
+@4 varchar(max),
+@5 varchar(20)
+)
+AS
+UPDATE [tbl_unqBarcodes] SET [Dispatch] = @5, [DispatchDate] = GETDATE()
+WHERE [vUnqBarcode] LIKE @1 AND [vUnqBarcode] LIKE @2 AND [vUnqBarcode] LIKE @3 AND [vUnqBarcode] LIKE @4
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_UpdatePalletDispatched') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_UpdatePalletDispatched]
+GO
+CREATE PROC [dbo].[sp_MBL_UpdatePalletDispatched]
+(
+@1 varchar(20),
+@2 int
+)
+AS
+UPDATE [htbl_PalletBarcodes] SET [Dispatch] = @1, [DispatchDate] = GETDATE()
+WHERE [iLine_ID] = @2
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_UpdateItemST1') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_UpdateItemST1]
+GO
+CREATE PROC [dbo].[sp_MBL_UpdateItemST1]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max),
+@4 varchar(max),
+@5 varchar(20)
+)
+AS
+UPDATE [tbl_unqBarcodes] SET [StockTake] = @5
+WHERE [vUnqBarcode] LIKE @1 AND [vUnqBarcode] LIKE @2 AND [vUnqBarcode] LIKE @3 AND [vUnqBarcode] LIKE @4
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_UpdateItemST2') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_UpdateItemST2]
+GO
+CREATE PROC [dbo].[sp_MBL_UpdateItemST2]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max),
+@4 varchar(max),
+@5 varchar(max)
+)
+AS
+UPDATE [tbl_unqBarcodes] SET [StockTake2] = @5
+WHERE [vUnqBarcode] LIKE @1 AND [vUnqBarcode] LIKE @2 AND [vUnqBarcode] LIKE @3 AND [vUnqBarcode] LIKE @4
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_UpdatePalletST1') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_UpdatePalletST1]
+GO
+CREATE PROC [dbo].[sp_MBL_UpdatePalletST1]
+(
+@1 varchar(max),
+@2 varchar(20)
+)
+AS
+UPDATE [htbl_PalletBarcodes] SET [StockTake] = @2
+WHERE [vUnqBarcode] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_UpdatePalletST2') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_UpdatePalletST2]
+GO
+CREATE PROC [dbo].[sp_MBL_UpdatePalletST2]
+(
+@1 varchar(max),
+@2 varchar(max)
+)
+AS
+UPDATE [htbl_PalletBarcodes] SET [StockTake2] = @2
+    WHERE [vUnqBarcode] = @1
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_UpdatePalletSTBoth') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_UpdatePalletSTBoth]
+GO
+CREATE PROC [dbo].[sp_MBL_UpdatePalletSTBoth]
+(
+@1 varchar(max),
+@2 varchar(max)
+)
+AS
+UPDATE [htbl_PalletBarcodes] SET [StockTake] = @2, [StockTake2] = @2
+WHERE [vUnqBarcode] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_UpdateItemSTBoth') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_UpdateItemSTBoth]
+GO
+CREATE PROC [dbo].[sp_MBL_UpdateItemSTBoth]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max),
+@4 varchar(max),
+@5 varchar(max)
+)
+AS
+UPDATE [tbl_unqBarcodes] SET [StockTake] = @5, [StockTake2] = @5
+WHERE [vUnqBarcode] LIKE @1 AND [vUnqBarcode] LIKE @2 AND [vUnqBarcode] LIKE @3 AND [vUnqBarcode] LIKE @4
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_UpdateItemSTBoth_Reversal') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_UpdateItemSTBoth_Reversal]
+GO
+CREATE PROC [dbo].[sp_MBL_UpdateItemSTBoth_Reversal]
+(
+@1 varchar(max)
+)
+AS
+UPDATE [tbl_unqBarcodes] SET [StockTake] = '', [StockTake2] = ''
+WHERE [vUnqBarcode] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_UpdateRMPalletRemoved') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_UpdateRMPalletRemoved]
+GO
+CREATE PROC [dbo].[sp_MBL_UpdateRMPalletRemoved]
+(
+@HUNQ varchar(max),
+@LUNQ varchar(max)
+)
+AS
+UPDATE l SET l.[bOnPallet] = 0
+FROM [ltbl_PalletBarcodes] l 
+INNER JOIN [htbl_PalletBarcodes] h ON l.[iPallet_ID] = h.[iLine_ID]
+WHERE h.[vUnqBarcode] = @HUNQ AND l.[vUnqBarcode] = @LUNQ
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_UpdateItemSTPalletBoth_Reversal') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_UpdateItemSTPalletBoth_Reversal]
+GO
+CREATE PROC [dbo].[sp_MBL_UpdateItemSTPalletBoth_Reversal]
+(
+@1 varchar(max)
+)
+AS
+UPDATE [htbl_PalletBarcodes] SET [StockTake] = '', [StockTake2] = ''
+WHERE [vUnqBarcode] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetRTStockTakes') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetRTStockTakes]
+GO
+CREATE PROC [dbo].[sp_UI_GetRTStockTakes]
+AS
+SELECT [cInvCountNo] ,[cDescription]
+FROM [RTIS_InvCount] WHERE [iStatus] = 1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_CheckSTHeader') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_CheckSTHeader]
+GO
+CREATE PROC [dbo].[sp_UI_CheckSTHeader]
+(
+@1 varchar(50)
+)
+AS
+SELECT [cInvCountNo]
+FROM [RTIS_InvCount] WHERE [iStatus] = 1 AND [cInvCountNo] = @1
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_getInvCountLineTickets') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getInvCountLineTickets]
+GO
+CREATE PROC [dbo].[sp_UI_getInvCountLineTickets]
+(
+@1 int
+)
+AS
+SELECT [iLineID],[vTicketNo],[dCountQty],[vCountUser] ,[dtDateCounted],[dCountQty2],[vCountUser2],[dtDateCounted2],[vBarcodeType],[bCountValid],[bRecountTicket]
+FROM [RTIS_InvCountLines_Tickets]
+WHERE [iHeaderID] =@1 AND [bCountValid] = 1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_getInvCountLineTickets_Archive') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getInvCountLineTickets_Archive]
+GO
+CREATE PROC [dbo].[sp_UI_getInvCountLineTickets_Archive]
+(
+@1 int
+)
+AS
+SELECT [iLineID],[vTicketNo],[dCountQty],[vCountUser] ,[dtDateCounted],[dCountQty2],[vCountUser2],[dtDateCounted2],[vBarcodeType],[bCountValid],[bRecountTicket]
+FROM [RTIS_InvCountArchiveLines_Tickets]
+WHERE [iHeaderID] =@1 AND [bCountValid] = 1
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_getTicketInfo') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getTicketInfo]
+GO
+CREATE PROC [dbo].[sp_UI_getTicketInfo]
+(
+@1 varchar(100),
+@2 int
+)
+AS
+SELECT ISNULL([dCountQty],0), ISNULL([dCountQty2], 0), [vUnqBarcode] FROM [RTIS_InvCountLines_Tickets]
+WHERE [vTicketNo] = @1 AND [iHeaderID] = @2
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_getAllTicketInfo') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getAllTicketInfo]
+GO
+CREATE PROC [dbo].[sp_UI_getAllTicketInfo]
+(
+@1 varchar(100)
+)
+AS
+SELECT [iHeaderID], ISNULL([dCountQty],0), ISNULL([dCountQty2], 0), [vUnqBarcode] FROM [RTIS_InvCountLines_Tickets]
+WHERE [vTicketNo] = @1
+GO
+
+IF (OBJECT_ID('[dbo].[sp_UI_getStQtys') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_getStQtys]
+GO
+CREATE PROC [dbo].[sp_UI_getStQtys]
+(
+@1 int
+)
+AS
+SELECT [fCountQty] , [fCountQty2] FROM [RTIS_InvCountLines]
+WHERE [idInvCountLines] = @1
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetExportFormats') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetExportFormats]
+GO
+CREATE PROC [dbo].[sp_UI_GetExportFormats]
+AS
+SELECT [vFormatName]
+FROM [tbl_ExportFormats] 
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetExportFormatString') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetExportFormatString]
+GO
+CREATE PROC [dbo].[sp_UI_GetExportFormatString]
+(
+@1 varchar(max)
+)
+AS
+SELECT [vFormatString], [vDelimeter]
+FROM [tbl_ExportFormats] WHERE [vFormatName] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_CheckExportFormatExists') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_CheckExportFormatExists]
+GO
+CREATE PROC [dbo].[sp_UI_CheckExportFormatExists]
+(
+@1 varchar(max)
+)
+AS
+SELECT [vFormatName]
+FROM [tbl_ExportFormats] WHERE [vFormatName] = @1
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetSTLinesCount') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetSTLinesCount]
+GO
+CREATE PROC [dbo].[sp_UI_GetSTLinesCount]
+(
+@1 varchar(max)
+)
+AS
+SELECT COUNT([iStockID]) FROM [RTIS_InvCountLines] il
+INNER JOIN [RTIS_InvCount] i ON il.[iInvCountID] = i.[idInvCount]
+WHERE i.[cInvCountNo] = @1 AND [bOnST] = 1
+GO
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetSTLinesCountArchive') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetSTLinesCountArchive]
+GO
+CREATE PROC [dbo].[sp_UI_GetSTLinesCountArchive]
+(
+@1 varchar(max)
+)
+AS
+SELECT COUNT([iStockID]) FROM [RTIS_InvCountArchiveLines] il
+INNER JOIN [RTIS_InvCount] i ON il.[iInvCountID] = i.[idInvCount]
+WHERE i.[cInvCountNo] = @1 AND [bOnST] = 1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetSTLinesCountAll') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetSTLinesCountAll]
+GO
+CREATE PROC [dbo].[sp_UI_GetSTLinesCountAll]
+(
+@1 varchar(max)
+)
+AS
+SELECT COUNT([iStockID]) FROM [RTIS_InvCountLines] il
+INNER JOIN [RTIS_InvCount] i ON il.[iInvCountID] = i.[idInvCount]
+WHERE i.[cInvCountNo] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetSTLinesCountAllArchive') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetSTLinesCountAllArchive]
+GO
+CREATE PROC [dbo].[sp_UI_GetSTLinesCountAllArchive]
+(
+@1 varchar(max)
+)
+AS
+SELECT COUNT([iStockID]) FROM [RTIS_InvCountArchiveLines] il
+INNER JOIN [RTIS_InvCount] i ON il.[iInvCountID] = i.[idInvCount]
+WHERE i.[cInvCountNo] = @1
+GO
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetSTLinesCount1') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetSTLinesCount1]
+GO
+CREATE PROC [dbo].[sp_UI_GetSTLinesCount1]
+(
+@1 varchar(max)
+)
+AS
+SELECT COUNT([iStockID]) FROM [RTIS_InvCountLines] il
+INNER JOIN [RTIS_InvCount] i ON il.[iInvCountID] = i.[idInvCount]
+WHERE i.[cInvCountNo] = @1 AND [fCountQty] <> 0
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetSTLinesCount1Archive') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetSTLinesCount1Archive]
+GO
+CREATE PROC [dbo].[sp_UI_GetSTLinesCount1Archive]
+(
+@1 varchar(max)
+)
+AS
+SELECT COUNT([iStockID]) FROM [RTIS_InvCountArchiveLines] il
+INNER JOIN [RTIS_InvCount] i ON il.[iInvCountID] = i.[idInvCount]
+WHERE i.[cInvCountNo] = @1 AND [fCountQty] <> 0
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetSTLinesCount2') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetSTLinesCount2]
+GO
+CREATE PROC [dbo].[sp_UI_GetSTLinesCount2]
+(
+@1 varchar(max)
+)
+AS
+SELECT COUNT([iStockID]) FROM [RTIS_InvCountLines] il
+INNER JOIN [RTIS_InvCount] i ON il.[iInvCountID] = i.[idInvCount]
+WHERE i.[cInvCountNo] = @1 AND [fCountQty2] <> 0
+GO
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetSTLinesCount2Archive') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetSTLinesCount2Archive]
+GO
+CREATE PROC [dbo].[sp_UI_GetSTLinesCount2Archive]
+(
+@1 varchar(max)
+)
+AS
+SELECT COUNT([iStockID]) FROM [RTIS_InvCountArchiveLines] il
+INNER JOIN [RTIS_InvCount] i ON il.[iInvCountID] = i.[idInvCount]
+WHERE i.[cInvCountNo] = @1 AND [fCountQty2] <> 0
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_GetRTArchiveStockTakes') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_GetRTArchiveStockTakes]
+GO
+CREATE PROC [dbo].[sp_UI_GetRTArchiveStockTakes]
+AS
+SELECT [cInvCountNo],[cDescription]
+FROM [RTIS_InvCount] WHERE [iStatus] = 0
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetRTStockTakes') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetRTStockTakes]
+GO
+CREATE PROC [dbo].[sp_MBL_GetRTStockTakes]
+AS
+SELECT [cInvCountNo]
+FROM [RTIS_InvCount] WHERE [iStatus] = 1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetStockTakeWarehosesBySTNum') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetStockTakeWarehosesBySTNum]
+GO
+CREATE PROC [dbo].[sp_MBL_GetStockTakeWarehosesBySTNum]
+(
+@1 varchar(max)
+)
+AS
+SELECT DISTINCT w.[Code], w.[Name] FROM [dbo].[RTIS_InvCountLines] il
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = il.[iWarehouseID] 
+INNER JOIN [dbo].[RTIS_InvCount] i ON i.[idInvCount] = il.[iInvCountID]
+WHERE i.[cInvCountNo] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetStockTakIDBySTNum') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetStockTakIDBySTNum]
+GO
+CREATE PROC [dbo].[sp_MBL_GetStockTakIDBySTNum]
+(
+@1 varchar(max)
+)
+AS
+SELECT [idInvCount] FROM [RTIS_InvCount] WHERE [cInvCountNo] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetSTLineIDNoLot') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetSTLineIDNoLot]
+GO
+CREATE PROC [dbo].[sp_MBL_GetSTLineIDNoLot]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max)
+)
+AS
+SELECT l.[idInvCountLines] FROM [RTIS_InvCountLines] l
+INNER JOIN [RTIS_InvCount] h ON h.[idInvCount] = l.[iInvCountID]
+INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[StockLink] = l.[iStockID]
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = l.[iWarehouseID] 
+WHERE h.[cInvCountNo] = @1 AND s.[Code] = @2 AND w.[Code] = @3 AND l.[bLotItem] = 0
+GO
+
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetSTLineIDLot') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetSTLineIDLot]
+GO
+CREATE PROC [dbo].[sp_MBL_GetSTLineIDLot]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max),
+@4 varchar(max)
+)
+AS
+SELECT l.[idInvCountLines] FROM [RTIS_InvCountLines] l
+INNER JOIN [RTIS_InvCount] h ON h.[idInvCount] = l.[iInvCountID]
+INNER JOIN [Cataler_SCN].[dbo].[StkItem] s ON s.[StockLink] = l.[iStockID]
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w ON w.[WhseLink] = l.[iWarehouseID] 
+INNER JOIN [Cataler_SCN].[dbo].[_etblLotTracking] lo ON lo.[idLotTracking] = l.[iLotTrackingID]
+WHERE h.[cInvCountNo] = @1 AND s.[Code] = @2 AND w.[Code] = @3 AND lo.[cLotDescription] = @4
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_checkRT2dForRecount') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_checkRT2dForRecount]
+GO
+CREATE PROC [dbo].[sp_MBL_checkRT2dForRecount]
+(
+@1 int,
+@2 varchar(max)
+)
+AS
+SELECT TOP 1 [bCountValid] FROM [RTIS_InvCountLines_Tickets]
+WHERE [iHeaderID] = @1 AND [vUnqBarcode] = @2 ORDER BY [iLineID] DESC
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_checkPowderPrepForRecount') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_checkPowderPrepForRecount]
+GO
+CREATE PROC [dbo].[sp_MBL_checkPowderPrepForRecount]
+(
+@1 int,
+@2 varchar(max)
+)
+AS
+SELECT TOP 1 [bCountValid] FROM [RTIS_InvCountLines_Tickets]
+WHERE [iHeaderID] = @1 AND [vUnqBarcode] = @2 AND ISNULL([bCountValid], 0) = 0 ORDER BY [iLineID] DESC
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_checkTicketNumber') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_checkTicketNumber]
+GO
+CREATE PROC [dbo].[sp_MBL_checkTicketNumber]
+(
+@1 int,
+@2 varchar(max)
+)
+AS
+SELECT [vTicketNo] FROM [RTIS_InvCountLines_Tickets] WHERE [iHeaderID] = @1 AND [vTicketNo] = @2
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_getFreshSlurryInfo') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_getFreshSlurryInfo]
+GO
+CREATE PROC [dbo].[sp_MBL_getFreshSlurryInfo]
+(
+@1 varchar(max),
+@2 varchar(max)
+)
+AS
+SELECT TOP 1 [vLotNumber], [dDryWeight], ISNULL([bRecTrans], 0)  FROM [tbl_RTIS_Fresh_Slurry]
+WHERE [vTrolleyCode] = @1 AND [vItemCode] = @2 ORDER BY [iLineID] DESC
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_getFreshSlurryInfo_CheckAddLot') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_getFreshSlurryInfo_CheckAddLot]
+GO
+CREATE PROC [dbo].[sp_MBL_getFreshSlurryInfo_CheckAddLot]
+(
+@1 varchar(max),
+@2 varchar(max)
+)
+AS
+SELECT TOP 1 [vLotNumber], [dDryWeight], ISNULL([bRecTrans], 0)  FROM [tbl_RTIS_Fresh_Slurry]
+WHERE [vTrolleyCode] = @1 AND [vItemCode] = @2 ORDER BY [iLineID] DESC
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_getSlurryTicketInfo') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_getSlurryTicketInfo]
+GO
+CREATE PROC [dbo].[sp_MBL_getSlurryTicketInfo]
+(
+@1 int,
+@2 varchar(max)
+)
+AS
+SELECT ISNULL([dCountQty], 0), ISNULL([dCountQty2],0) FROM [RTIS_InvCountLines_Tickets] WHERE [iHeaderID] = @1 AND [vUnqBarcode] = @2 AND [bCountValid] = 1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_getTicketUpdateInfo') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_getTicketUpdateInfo]
+GO
+CREATE PROC [dbo].[sp_MBL_getTicketUpdateInfo]
+(
+@1 int,
+@2 varchar(max)
+)
+AS
+SELECT TOP 1 ISNULL([dCountQty], 0), ISNULL([dCountQty2], 0), [vUnqBarcode], [bCountValid] FROM [RTIS_InvCountLines_Tickets]
+WHERE [iHeaderID] = @1 AND [vTicketNo] = @2
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_getFreshSlurryUnqTicket') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_getFreshSlurryUnqTicket]
+GO
+CREATE PROC [dbo].[sp_MBL_getFreshSlurryUnqTicket]
+(
+@1 int,
+@2 varchar(max)
+)
+AS
+SELECT TOP 1 [vTicketNo] FROM [RTIS_InvCountLines_Tickets]
+WHERE [iHeaderID] = @1 AND [vUnqBarcode] = @2 AND [bCountValid] = 1 ORDER BY [iLineID] DESC
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_getUnqcodeTicket') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_getUnqcodeTicket]
+GO
+CREATE PROC [dbo].[sp_MBL_getUnqcodeTicket]
+(
+@1 int,
+@2 varchar(max)
+)
+AS
+SELECT TOP 1 [vTicketNo] FROM [RTIS_InvCountLines_Tickets]
+WHERE [iHeaderID] = @1 AND [vUnqBarcode] = @2  AND [bCountValid] = 1 ORDER BY [iLineID] DESC
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_getMixedSlurryTankInfo') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_getMixedSlurryTankInfo]
+GO
+CREATE PROC [dbo].[sp_MBL_getMixedSlurryTankInfo]
+(
+@1 varchar(max),
+@2 varchar(max)
+)
+AS
+SELECT TOP 1 [vLotNumber], [dDryWeight], ISNULL([bReceived], 0), ISNULL([bManualclose], 0)  FROM [tbl_RTIS_MS_Main]
+WHERE [vTankCode] = @1 AND [vItemCode] = @2 AND [vTankType] = 'TNK' ORDER BY [iLineID] DESC
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_getMixedSlurryTankInfo_CheckLot') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_getMixedSlurryTankInfo_CheckLot]
+GO
+CREATE PROC [dbo].[sp_MBL_getMixedSlurryTankInfo_CheckLot]
+(
+@1 varchar(max),
+@2 varchar(max)
+)
+AS
+SELECT TOP 1 [vLotNumber], [dDryWeight], ISNULL([bReceived], 0), ISNULL([bManualclose], 0)  FROM [tbl_RTIS_MS_Main]
+WHERE [vTankCode] = @1 AND [vItemCode] = @2 AND [vTankType] = 'TNK' ORDER BY [iLineID] DESC
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_getMixedSlurryMobileTankInfo_CheckLot') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_getMixedSlurryMobileTankInfo_CheckLot]
+GO
+CREATE PROC [dbo].[sp_MBL_getMixedSlurryMobileTankInfo_CheckLot]
+(
+@1 varchar(max),
+@2 varchar(max)
+)
+AS
+SELECT TOP 1 m.[vLotNumber], md.[dDryWeight], ISNULL(md.[bReceived], 0), ISNULL(md.[bManualclose], 0)  FROM [tbl_RTIS_MS_Decant] md 
+INNER JOIN [tbl_RTIS_MS_Main] m ON m.[iLineID] = md.[iHeaderID]
+WHERE md.[vTankCode] = @1 AND md.[vItemCode] = @2 ORDER BY md.[iLineID] DESC
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_getMixedSlurryMobileTankInfo') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_getMixedSlurryMobileTankInfo]
+GO
+CREATE PROC [dbo].[sp_MBL_getMixedSlurryMobileTankInfo]
+(
+@1 varchar(max),
+@2 varchar(max)
+)
+AS
+SELECT TOP 1 m.[vLotNumber], md.[dDryWeight], ISNULL(md.[bReceived], 0), ISNULL(md.[bManualclose], 0)  FROM [tbl_RTIS_MS_Decant] md 
+INNER JOIN [tbl_RTIS_MS_Main] m ON m.[iLineID] = md.[iHeaderID]
+WHERE md.[vTankCode] = @1 AND md.[vItemCode] = @2 ORDER BY md.[iLineID] DESC
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_checkTicketRef') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_checkTicketRef]
+GO
+CREATE PROC [dbo].[sp_MBL_checkTicketRef]
+(
+@1 varchar(max),
+@2 varchar(max)
+)
+AS
+SELECT t.[vTicketNo] FROM [RTIS_InvCountLines_Tickets] t 
+INNER JOIN [RTIS_InvCountLines] il ON il.[idInvCountLines] = t.[iHeaderID]
+INNER JOIN [RTIS_InvCount] i ON il.[iInvCountID] = i.[idInvCount]
+WHERE i.[cInvCountNo] = @1 AND t.[vTicketNo] = @2
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_getPGMContainerInfo') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_getPGMContainerInfo]
+GO
+CREATE PROC [dbo].[sp_MBL_getPGMContainerInfo]
+(
+@1 varchar(max),
+@2 varchar(max)
+)
+AS
+SELECT TOP 1 ph.[vLotDesc], pl.[dWeightIn], ISNULL(pt.[bReceived], 0)  FROM [ltbl_RTIS_PGM_Manuf] pl --
+INNER JOIN [htbl_RTIS_PGM_Manuf] ph ON pl.[iHeaderID] = ph.[iLineID]
+LEFT JOIN [ltbl_RTIS_PGM_Trans] pt ON pt.[iHeaderID] = ph.[iLineID] 
+WHERE pl.[vContainer] = @1 AND ph.[vItemCode] = @2
+ORDER BY pl.[iLineID] DESC
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetAllPalletBarcodes') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetAllPalletBarcodes]
+GO
+CREATE PROC [dbo].[sp_MBL_GetAllPalletBarcodes]
+(
+@1 varchar(max)
+)
+AS
+SELECT l.[vUnqBarcode] FROM [ltbl_PalletBarcodes] l
+INNER JOIN [htbl_PalletBarcodes] h ON h.[iLine_ID] = l.[iPallet_ID]
+WHERE h.[vUnqBarcode] = @1
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_GetAllPalletBarcodes_RM') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_GetAllPalletBarcodes_RM]
+GO
+CREATE PROC [dbo].[sp_MBL_GetAllPalletBarcodes_RM]
+(
+@1 varchar(max)
+)
+AS
+SELECT l.[vUnqBarcode] FROM [ltbl_PalletBarcodes] l
+INNER JOIN [htbl_PalletBarcodes] h ON h.[iLine_ID] = l.[iPallet_ID]
+WHERE h.[vUnqBarcode] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_ImportEvoStockTakeHeader') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_ImportEvoStockTakeHeader]
+GO
+CREATE PROC [dbo].[sp_UI_ImportEvoStockTakeHeader]
+(
+@1 varchar(max)
+)
+AS
+INSERT INTO [RTIS_InvCount] SELECT i.[idInvCount],i.[cInvCountNo],i.[cDescription],i.[dPrepared]
+,i.[cWarehouses],i.[cBinLocations],'1',i.[_btblInvCount_iBranchID],i.[_btblInvCount_dCreatedDate] 
+FROM [Cataler_SCN].[dbo].[_btblInvCount] i WHERE [cInvCountNo] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_ImportEvoStockTakeLines') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_ImportEvoStockTakeLines]
+GO
+CREATE PROC [dbo].[sp_UI_ImportEvoStockTakeLines]
+(
+@1 varchar(max)
+)
+AS
+INSERT INTO [RTIS_InvCountLines] 
+SELECT il.[iInvCountID], il.[cBarcode], 0 AS [fCountQty], 0 AS [fCountQty2], il.[fSystemQty], il.[bSerialItem], il.[tSerialList]
+,il.[bLotItem], il.[iLotTrackingID], il.[iBinLocationId], il.[iStockID], il.[iWarehouseID], il.[_btblInvCountLines_dCreatedDate] , 0 AS [Counted],  1 AS [bOnST]
+FROM [Cataler_SCN].[dbo].[_btblInvCountLines] il INNER JOIN [Cataler_SCN].[dbo].[_btblInvCount] i ON il.[iInvCountID] = i.[idInvCount]
+WHERE i.[cInvCountNo] = @1
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_InsertTicketLog') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_InsertTicketLog]
+GO
+CREATE PROC [dbo].[sp_MBL_InsertTicketLog]
+(
+@1 int,
+@2 varchar(max),
+@3 decimal(16,3),
+@4 varchar(max),
+@5 varchar(max),
+@6 varchar(max)
+)
+AS
+INSERT INTO [RTIS_InvCountLines_Tickets] ([iHeaderID], [vTicketNo], [dCountQty], [vCountUser], [dtDateCounted] ,[vBarcodeType],[vUnqBarcode],[bCountValid] ,[bRecountTicket])
+VALUES (@1, @2, @3, @4, GETDATE(), @5, @6, 1, 0)
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_InsertTicketLog2') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_InsertTicketLog2]
+GO
+CREATE PROC [dbo].[sp_MBL_InsertTicketLog2]
+(
+@1 int,
+@2 varchar(max),
+@3 decimal(16,3),
+@4 varchar(max),
+@5 varchar(max),
+@6 varchar(max)
+)
+AS
+INSERT INTO [RTIS_InvCountLines_Tickets] ([iHeaderID], [vTicketNo], [dCountQty2], [vCountUser2], [dtDateCounted2] ,[vBarcodeType],[vUnqBarcode],[bCountValid] ,[bRecountTicket])
+VALUES (@1, @2, @3, @4, GETDATE(), @5, @6, 1, 0)
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_InsertTicketLogBoth') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_InsertTicketLogBoth]
+GO
+CREATE PROC [dbo].[sp_MBL_InsertTicketLogBoth]
+(
+@1 int,
+@2 varchar(max),
+@3 decimal(16,3),
+@4 varchar(max),
+@5 varchar(max),
+@6 varchar(max)
+)
+AS
+INSERT INTO [RTIS_InvCountLines_Tickets] 
+([iHeaderID], [vTicketNo], [dCountQty], [vCountUser], [dtDateCounted], [dCountQty2], [vCountUser2], [dtDateCounted2] ,[vBarcodeType],[vUnqBarcode],[bCountValid] ,[bRecountTicket])
+vALUES
+(@1, @2, @3, @4, GETDATE(), @3, @4, GETDATE(), @5, @6, 1, 0)
+GO
+
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_InsertTicketLogRecount') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_InsertTicketLogRecount]
+GO
+CREATE PROC [dbo].[sp_MBL_InsertTicketLogRecount]
+(
+@1 int,
+@2 varchar(max),
+@3 decimal(16,3),
+@4 varchar(max),
+@5 varchar(max),
+@6 varchar(max)
+)
+AS
+INSERT INTO [RTIS_InvCountLines_Tickets] 
+([iHeaderID], [vTicketNo], [dCountQty], [vCountUser], [dtDateCounted], [dCountQty2], [vCountUser2], [dtDateCounted2] ,[vBarcodeType],[vUnqBarcode],[bCountValid] ,[bRecountTicket])
+vALUES
+(@1, @2, @3, @4, GETDATE(), @3, @4, GETDATE(), @5, @6, 1, 1)
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_InsertExportFormat') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_InsertExportFormat]
+GO
+CREATE PROC [dbo].[sp_UI_InsertExportFormat]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max)
+)
+AS
+INSERT INTO [tbl_ExportFormats] ([vFormatName], [vFormatString], [vDelimeter]) VALUES (@1, @2, @3)
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_ArchiveRTStockTakeTicketLines') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_ArchiveRTStockTakeTicketLines]
+GO
+CREATE PROC [dbo].[sp_UI_ArchiveRTStockTakeTicketLines]
+(
+@1 varchar(max)
+)
+AS
+INSERT INTO [RTIS_InvCountArchiveLines_Tickets] 
+SELECT [iHeaderID] ,[vTicketNo],[dCountQty],[vCountUser],[dtDateCounted],[dCountQty2],[vCountUser2],[dtDateCounted2] 
+,[vBarcodeType],[vUnqBarcode],[bCountValid],[bRecountTicket]
+FROM [RTIS_InvCountLines_Tickets] it
+INNER JOIN [RTIS_InvCountLines] il ON il.[idInvCountLines] = it.[iHeaderID]
+INNER JOIN [RTIS_InvCount] ih ON ih.[idInvCount] = il.[iInvCountID]
+WHERE ih.[cInvCountNo] = @1 
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_ArchiveRTStockTakeLines') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_ArchiveRTStockTakeLines]
+GO
+CREATE PROC [dbo].[sp_UI_ArchiveRTStockTakeLines]
+(
+@1 varchar(max)
+)
+AS
+INSERT INTO [RTIS_InvCountArchiveLines] 
+SELECT il.[idInvCountLines],il.[iInvCountID], il.[cBarcode], il.[fCountQty],  il.[fCountQty2], il.[fSystemQty], il.[bSerialItem], il.[tSerialList]
+,il.[bLotItem], il.[iLotTrackingID], il.[iBinLocationId], il.[iStockID], il.[iWarehouseID], il.[_btblInvCountLines_dCreatedDate], il.[bOnST] 
+FROM [RTIS_InvCountLines] il INNER JOIN [RTIS_InvCount] i ON il.[iInvCountID] = i.[idInvCount]
+WHERE i.[cInvCountNo] = @1
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_AddItemForInvestigation') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_AddItemForInvestigation]
+GO
+CREATE PROC [dbo].[sp_MBL_AddItemForInvestigation]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max),
+@4 decimal(16,3),
+@5 varchar(max)
+)
+AS
+INSERT INTO [RTIS_InvCountLines_Enquiry] ([vStNumber], [vItemCode], [vLotDescription], [dQty1], [vUserAdded], [dtAdded])
+VALUES (@1, @2, @3, @4, @5, GETDATE())
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_AddItemToST') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_AddItemToST]
+GO
+CREATE PROC [dbo].[sp_MBL_AddItemToST]
+(
+@1 int,
+@2 varchar(max),
+@3 varchar(max),
+@4 int,
+@5 int,
+@6 int
+)
+AS
+INSERT INTO [RTIS_InvCountLines] ([iInvCountID], [cBarcode], [fCountQty] ,[fCountQty2] ,[fSystemQty] ,[bSerialItem] ,[tSerialList] ,[bLotItem], [iLotTrackingID], [iBinLocationId], [iStockID], [iWarehouseID], [_btblInvCountLines_dCreatedDate], [bIsCounted], [bOnST])
+VALUES                           (@1           , @2        , 0           , 0           , 0           , 0            , NULL         , @3      , @4              , 0               , @5        , @6            , NULL                             ,0, 0)
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_UpdateSTCount_Lot') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_UpdateSTCount_Lot]
+GO
+CREATE PROC [dbo].[sp_MBL_UpdateSTCount_Lot]
+(
+@1 int,
+@2 varchar(max),
+@3 decimal(16,3),
+@4 varchar(max),
+@5 varchar(max),
+@6 varchar(max),
+@7 varchar(max),
+@8 varchar(max)
+)
+AS
+UPDATE [RTIS_InvCountLines_Tickets] SET [dCountQty] = @3, [vCountUser] = @4, [dtDateCounted] = GETDATE() 
+WHERE [iHeaderID] = @1 AND [vTicketNo] = @2 AND ([vUnqBarcode] LIKE @5 AND  [vUnqBarcode] LIKE @6 AND [vUnqBarcode] LIKE @7 AND [vUnqBarcode] LIKE @8)
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_UpdateSTCount2_Lot') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_UpdateSTCount2_Lot]
+GO
+CREATE PROC [dbo].[sp_MBL_UpdateSTCount2_Lot]
+(
+@1 int,
+@2 varchar(max),
+@3 decimal(16,3),
+@4 varchar(max),
+@5 varchar(max),
+@6 varchar(max),
+@7 varchar(max),
+@8 varchar(max)
+)
+AS
+UPDATE [RTIS_InvCountLines_Tickets] SET [dCountQty2] = @3, [vCountUser2] = @4, [dtDateCounted2] = GETDATE() 
+WHERE [iHeaderID] = @1 AND [vTicketNo] = @2 AND ([vUnqBarcode] LIKE @5 AND  [vUnqBarcode] LIKE @6 AND [vUnqBarcode] LIKE @7 AND [vUnqBarcode] LIKE @8)
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_UpdateSTCount_FreshSlurry') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_UpdateSTCount_FreshSlurry]
+GO
+CREATE PROC [dbo].[sp_MBL_UpdateSTCount_FreshSlurry]
+(
+@1 int,
+@2 varchar(max),
+@3 decimal(16,3),
+@4 varchar(max),
+@5 varchar(max)
+)
+AS
+UPDATE [RTIS_InvCountLines_Tickets] SET [dCountQty] = @3, [vCountUser] = @4, [dtDateCounted] = GETDATE() 
+WHERE [iHeaderID] = @1 AND [vTicketNo] = @2 AND [vUnqBarcode] = @5
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_UpdateSTCount2_FreshSlurry') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_UpdateSTCount2_FreshSlurry]
+GO
+CREATE PROC [dbo].[sp_MBL_UpdateSTCount2_FreshSlurry]
+(
+@1 int,
+@2 varchar(max),
+@3 decimal(16,3),
+@4 varchar(max),
+@5 varchar(max)
+)
+AS
+UPDATE [RTIS_InvCountLines_Tickets] SET [dCountQty2] = @3, [vCountUser2] = @4, [dtDateCounted2] = GETDATE() 
+WHERE [iHeaderID] = @1 AND [vTicketNo] = @2 AND [vUnqBarcode] = @5
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_UpdateTicketSTCount') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_UpdateTicketSTCount]
+GO
+CREATE PROC [dbo].[sp_MBL_UpdateTicketSTCount]
+(
+@1 int,
+@2 varchar(max),
+@3 decimal(16,3),
+@4 varchar(max),
+@5 varchar(max)
+)
+AS
+UPDATE [RTIS_InvCountLines_Tickets] SET [dCountQty] = @3, [vCountUser] = @4, [dtDateCounted] = GETDATE() 
+WHERE [iHeaderID] = @1 AND [vTicketNo] = @2 AND [vUnqBarcode] = @5
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_UpdateTicketSTCount2') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_UpdateTicketSTCount2]
+GO
+CREATE PROC [dbo].[sp_MBL_UpdateTicketSTCount2]
+(
+@1 int,
+@2 varchar(max),
+@3 decimal(16,3),
+@4 varchar(max),
+@5 varchar(max)
+)
+AS
+UPDATE [RTIS_InvCountLines_Tickets] SET [dCountQty2] = @3, [vCountUser2] = @4, [dtDateCounted2] = GETDATE() 
+WHERE [iHeaderID] = @1 AND [vTicketNo] = @2 AND [vUnqBarcode] = @5
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_UpdateRTStockTakeItem_Lot') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_UpdateRTStockTakeItem_Lot]
+GO
+CREATE PROC [dbo].[sp_MBL_UpdateRTStockTakeItem_Lot]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max),
+@4 varchar(max),
+@5 decimal(16,3)
+)
+AS
+UPDATE il SET il.[fCountQty] = il.[fCountQty] + @5 FROM [RTIS_InvCountLines] il
+INNER JOIN [Cataler_SCN].[dbo].[StkItem] s 
+ON s.[StockLink] = il.[iStockID]
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w
+ON il.[iWarehouseID] = w.[WhseLink]
+INNER JOIN [RTIS_InvCount] i 
+ON i.[idInvCount] = il.[iInvCountID]
+INNER JOIN [Cataler_SCN].[dbo].[_etblLotTracking] l
+ON l.[idLotTracking] = il.[iLotTrackingID]
+WHERE i.[cInvCountNo] = @1 AND s.[Code] = @2 AND w.[Code] = @3 AND l.[cLotDescription] = @4
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_UpdateRTStockTakeItem2_Lot') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_UpdateRTStockTakeItem2_Lot]
+GO
+CREATE PROC [dbo].[sp_MBL_UpdateRTStockTakeItem2_Lot]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max),
+@4 varchar(max),
+@5 decimal(16,3)
+)
+AS
+UPDATE il SET il.[fCountQty2] = il.[fCountQty2] + @5 FROM [RTIS_InvCountLines] il
+INNER JOIN [Cataler_SCN].[dbo].[StkItem] s 
+ON s.[StockLink] = il.[iStockID]
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w
+ON il.[iWarehouseID] = w.[WhseLink]
+INNER JOIN [RTIS_InvCount] i 
+ON i.[idInvCount] = il.[iInvCountID]
+INNER JOIN [Cataler_SCN].[dbo].[_etblLotTracking] l
+ON l.[idLotTracking] = il.[iLotTrackingID]
+WHERE i.[cInvCountNo] = @1 AND s.[Code] = @2 AND w.[Code] = @3 AND l.[cLotDescription] = @4
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_UpdateRTStockTakeItemBoth_Lot') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_UpdateRTStockTakeItemBoth_Lot]
+GO
+CREATE PROC [dbo].[sp_MBL_UpdateRTStockTakeItemBoth_Lot]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max),
+@4 varchar(max),
+@5 decimal(16,3)
+)
+AS
+UPDATE il SET il.[fCountQty] = il.[fCountQty] + @5 , il.[fCountQty2] = il.[fCountQty2] + @5 FROM [RTIS_InvCountLines] il
+INNER JOIN [Cataler_SCN].[dbo].[StkItem] s 
+ON s.[StockLink] = il.[iStockID]
+INNER JOIN [Cataler_SCN].[dbo].[WhseMst] w
+ON il.[iWarehouseID] = w.[WhseLink]
+INNER JOIN [RTIS_InvCount] i 
+ON i.[idInvCount] = il.[iInvCountID]
+INNER JOIN [Cataler_SCN].[dbo].[_etblLotTracking] l
+ON l.[idLotTracking] = il.[iLotTrackingID]
+WHERE i.[cInvCountNo] = @1 AND s.[Code] = @2 AND w.[Code] = @3 AND l.[cLotDescription] = @4
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_UpdateRTStockTakeReverseTicket') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_UpdateRTStockTakeReverseTicket]
+GO
+CREATE PROC [dbo].[sp_MBL_UpdateRTStockTakeReverseTicket]
+(
+@1 bigint,
+@2 float,
+@3 float
+)
+AS
+UPDATE [RTIS_InvCountLines] SET [fCountQty] = @2, [fCountQty2] = @3 WHERE [idInvCountLines] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_MBL_UpdateRTStockTakeReverseTicketRT2D') IS NOT NULL)
+	DROP PROC [dbo].[sp_MBL_UpdateRTStockTakeReverseTicketRT2D]
+GO
+CREATE PROC [dbo].[sp_MBL_UpdateRTStockTakeReverseTicketRT2D]
+(
+@1 bigint,
+@2 float,
+@3 float
+)
+AS
+UPDATE [RTIS_InvCountLines] SET [fCountQty] = [fCountQty] - @2, [fCountQty2] = [fCountQty2] - @3 WHERE [idInvCountLines] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_InvalidateSTTicket') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_InvalidateSTTicket]
+GO
+CREATE PROC [dbo].[sp_UI_InvalidateSTTicket]
+(
+@1 int,
+@2 varchar(max)
+)
+AS
+UPDATE [RTIS_InvCountLines_Tickets] SET [bCountValid] = 0
+WHERE [iHeaderID] = @1 AND [vTicketNo] = @2
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_UpdateExportFormat') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_UpdateExportFormat]
+GO
+CREATE PROC [dbo].[sp_UI_UpdateExportFormat]
+(
+@1 varchar(max),
+@2 varchar(max),
+@3 varchar(max)
+)
+AS
+UPDATE [tbl_ExportFormats] SET [vFormatString] = @2, [vDelimeter] = @3 WHERE [vFormatName] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_ArchiveStockTakeHeader') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_ArchiveStockTakeHeader]
+GO
+CREATE PROC [dbo].[sp_UI_ArchiveStockTakeHeader]
+(
+@1 varchar(max)
+)
+AS
+UPDATE [RTIS_InvCount] SET [iStatus] = 0 WHERE [cInvCountNo] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_RemoveExportLayout') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_RemoveExportLayout]
+GO
+CREATE PROC [dbo].[sp_UI_RemoveExportLayout]
+(
+@1 varchar(max)
+)
+AS
+DELETE FROM [tbl_ExportFormats] WHERE [vFormatName] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_RemovePostArchiveTicketLines') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_RemovePostArchiveTicketLines]
+GO
+CREATE PROC [dbo].[sp_UI_RemovePostArchiveTicketLines]
+(
+@1 varchar(max)
+)
+AS
+DELETE it FROM [RTIS_InvCountLines_Tickets] it
+INNER JOIN [RTIS_InvCountLines] il ON it.[iHeaderID] = il.[idInvCountLines]
+INNER JOIN [RTIS_InvCount] ih ON ih.[idInvCount] = il.[iInvCountID]
+WHERE ih.[cInvCountNo] = @1
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_RemovePostArchiveLines') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_RemovePostArchiveLines]
+GO
+CREATE PROC [dbo].[sp_UI_RemovePostArchiveLines]
+(
+@1 varchar(max)
+)
+AS
+DELETE il FROM [RTIS_InvCountLines] il INNER JOIN [RTIS_InvCount] i
+ON il.[iInvCountID] = i.[idInvCount] WHERE i.[cInvCountNo] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_RemoveArchiveTicketLines') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_RemoveArchiveTicketLines]
+GO
+CREATE PROC [dbo].[sp_UI_RemoveArchiveTicketLines]
+(
+@1 varchar(max)
+)
+AS
+DELETE it FROM [RTIS_InvCountArchiveLines_Tickets] it
+INNER JOIN [RTIS_InvCountArchiveLines] il ON it.[iHeaderID] = il.[idInvCountLines]
+INNER JOIN [RTIS_InvCount] ih ON ih.[idInvCount] = il.[iInvCountID]
+WHERE ih.[cInvCountNo] = @1
+GO
+
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_RemoveArchiveRTStockTakeLines') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_RemoveArchiveRTStockTakeLines]
+GO
+CREATE PROC [dbo].[sp_UI_RemoveArchiveRTStockTakeLines]
+(
+@1 varchar(max)
+)
+AS
+DELETE il FROM [RTIS_InvCountArchiveLines] il INNER JOIN [RTIS_InvCount] i
+ON il.[iInvCountID] = i.[idInvCount] WHERE i.[cInvCountNo] = @1
+GO
+
+
+IF (OBJECT_ID('[dbo].[sp_UI_RemoveArchiveRTStockTakeHead') IS NOT NULL)
+	DROP PROC [dbo].[sp_UI_RemoveArchiveRTStockTakeHead]
+GO
+CREATE PROC [dbo].[sp_UI_RemoveArchiveRTStockTakeHead]
+(
+@1 varchar(max)
+)
+AS
+DELETE FROM [RTIS_InvCount] WHERE [cInvCountNo] = @1
+GO
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

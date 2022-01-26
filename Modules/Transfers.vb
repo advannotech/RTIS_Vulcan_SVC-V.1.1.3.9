@@ -16,10 +16,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("     SELECT [IdWhseStk] FROM [WhseStk] wstk
-                                                        INNER JOIN [WhseMst] w ON w.[WhseLink] = wstk.[WHWhseID]
-                                                        INNER JOIN [StkItem] s ON s.[StockLink] = wstk.[WHStockLink]
-                                                        WHERE s.[Code] = @1 AND w.[Code] = @2", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_CheckWhseStockAso] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemcode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", whsecode))
                     sqlConn.Open()
@@ -54,9 +51,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("      SELECT w.[Code], w.[Name] FROM [tbl_WHTLocations] wl 
-                                                   INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhseID]
-                                                   WHERE [vProcessName] = @1 AND [bIsRec] = 1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetRecWhse] @1", sqlConn)
                     sqlComm.Parameters.Add(new SqlParameter("@1",procName))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -86,9 +81,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("    SELECT w.[Code], w.[Name] FROM [Rec_Transfers].[RTIS_WhseLookUp_PP_Rec] wl
-                                                       INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
-                                                       WHERE [bEnabled] = 1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC  [dbo].[sp_MBL_GetPPRecWhses]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -118,9 +111,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("    SELECT w.[Code], w.[Name] FROM [Rec_Transfers].[RTIS_WhseLookUp_FS_Rec] wl
-                                                       INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
-                                                       WHERE [bEnabled] = 1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC MBL_GetFSRecWhses ", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -150,9 +141,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("    SELECT w.[Code], w.[Name] FROM [Rec_Transfers].[RTIS_WhseLookUp_MS_Rec] wl
-                                                       INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
-                                                       WHERE [bEnabled] = 1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetMSRecWhses] ", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -182,9 +171,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("    SELECT w.[Code], w.[Name] FROM [Rec_Transfers].[RTIS_WhseLookUp_Zect1_Rec] wl
-                                                       INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
-                                                       WHERE [bEnabled] = 1", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_MBL_GetZect1RecWhses]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -214,9 +201,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("    SELECT w.[Code], w.[Name] FROM [Rec_Transfers].[RTIS_WhseLookUp_Zect2_Rec] wl
-                                                       INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
-                                                       WHERE [bEnabled] = 1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetZect2RecWhses] ", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -246,9 +231,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("    SELECT w.[Code], w.[Name] FROM [Rec_Transfers].[RTIS_WhseLookUp_AW_Rec] wl
-                                                       INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
-                                                       WHERE [bEnabled] = 1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetAWRecWhses]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -278,9 +261,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("    SELECT w.[Code], w.[Name] FROM [Rec_Transfers].[RTIS_WhseLookUp_Canning_Rec] wl
-                                                       INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
-                                                       WHERE [bEnabled] = 1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetCanningRecWhses] ", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -310,9 +291,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT w.[Code], w.[Name] FROM [tbl_WHTLocations] wl 
-                                                   INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhseID]
-                                                   WHERE [vProcessName] = 'PGM' AND [bIsRec] = 1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetPGMReceivingWhses]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -340,9 +319,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("    SELECT w.[Code], w.[Name] FROM [Rec_Transfers].[RTIS_WhseLookUp_PGM_Rec] wl
-                                                       INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
-                                                       WHERE [bEnabled] = 1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetPGMRecWhses]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -376,7 +353,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT [vPowderCode] FROM [rtbl_Slurry_Powders] WHERE [vSlurryCode] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("  EXEC [dbo].[sp_MBL_GetSlurryPowders] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", slurryCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -407,9 +384,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("      SELECT w.[Code], w.[Name] FROM [tbl_WHTLocations] wl 
-                                                   INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhseID]
-                                                   WHERE [vProcessName] = 'Powder Prep' AND [bIsRec] = 0", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetPowderPrepWhes] ", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -439,9 +414,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("    SELECT w.[Code] FROM [RTIS_WarehouseLookUp_PPtFS] wl
-                                                       INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
-                                                       WHERE [bEnabled] = 1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetPowderPrepWhes_OLD] ", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -471,9 +444,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("    SELECT w.[Code], w.[Name] FROM [tbl_WHTLocations] wl 
-                                                   INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhseID]
-                                                   WHERE [vProcessName] = 'Fresh Slurry' AND [bIsRec] = 0", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetFreshSlurryWhes] ", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -509,12 +480,7 @@ Public Class Transfers
                     '                                   INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
                     '                                   WHERE [bEnabled] = 1", sqlConn)
 
-                    Dim sqlComm As New SqlCommand("SELECT w.[Code], w.[Name] FROM [RTIS_WarehouseLookUp_MStZect] wl
-                                                    INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
-                                                    WHERE w.[Code] NOT IN (SELECT w.[Code] 
-                                                    FROM [RTIS_WarehouseLookUp_MStZect] wl
-                                                    INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
-                                                    WHERE wl.[iWhse_Link] !=w.WhseLink) AND wl.bEnabled=1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetMixedSlurryWhes] ", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -544,9 +510,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("    SELECT w.[Code], w.[Name] FROM [RTIS_WarehouseLookUp_ToProd] wl
-                                                       INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
-                                                       WHERE [bEnabled] = 1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetToProdWhses]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -576,9 +540,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("    SELECT w.[Code], w.[Name] FROM [RTIS_WarehouseLookUp_Zect1] wl
-                                                       INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
-                                                       WHERE [bEnabled] = 1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetZect1Whes] ", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -608,9 +570,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("    SELECT w.[Code], w.[Name] FROM [RTIS_WarehouseLookUp_Zect2] wl
-                                                       INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
-                                                       WHERE [bEnabled] = 1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetZect2Whes] ", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -640,9 +600,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("    SELECT w.[Code], w.[Name] FROM [RTIS_WarehouseLookUp_AW] wl
-                                                       INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
-                                                       WHERE [bEnabled] = 1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetAWWhes]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -672,9 +630,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("    SELECT w.[Code], w.[Name] FROM [RTIS_WarehouseLookUp_Canning] wl
-                                                       INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[WhseMst] w ON w.[WhseLink] = wl.[iWhse_Link]
-                                                       WHERE [bEnabled] = 1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetCanningWhes] ", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
@@ -704,8 +660,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("    SELECT [bManufactured] FROM [tbl_RTIS_Powder_Prep] 
-                                                       WHERE [vItemCode] = @1 AND [vLotDesc] = @2", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_CheckPowderManufactured] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", lotNum))
                     sqlConn.Open()
@@ -737,8 +692,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("    SELECT ISNULL([bRecTrans], 'False') FROM [tbl_RTIS_Powder_Prep] 
-                                                       WHERE [vItemCode] = @1 AND [vLotDesc] = @2 AND [dQty] = @3", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC  [dbo].[sp_MBL_CheckPowderReceieved] @1,@2,@3", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", lotNum))
                     sqlComm.Parameters.Add(New SqlParameter("@3", qty.Replace(",", ".")))
@@ -771,8 +725,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT  TOP 1 ISNULL([bManuf], 0) FROM [tbl_RTIS_Fresh_Slurry] 
-                                                     WHERE [vTrolleyCode] = @1 AND [vItemCode] = @2 ORDER BY [iLineID] DESC", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_MBL_GetFreshSlurryManufactured] @1, @2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", trolleyCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", itemCode))
                     sqlConn.Open()
@@ -805,8 +758,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT ISNULL([bManuf], 0) FROM [tbl_RTIS_Zect]
-                                                     WHERE [iLineID] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC  [dbo].[sp_MBL_GetZectManufactured] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", lineID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -901,8 +853,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT ISNULL([bTrans], 0) FROM [tbl_RTIS_Zect]
-                                                     WHERE [iLineID] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetZectTransferred] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", lineID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -933,8 +884,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT TOP 1 ISNULL([bTrans], 0) FROM [tbl_RTIS_Fresh_Slurry] 
-                                                     WHERE [vTrolleyCode] = @1 AND [vItemCode] = @2 ORDER BY [iLineID] DESC", sqlConn)
+                    Dim sqlComm As New SqlCommand("  EXEC [dbo].[sp_MBL_GetFreshSlurryTransferred] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", trolleyCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", itemCode))
                     sqlConn.Open()
@@ -967,9 +917,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT [vLotNumber], [dDryWeight], s.[Description_1] FROM [tbl_RTIS_Fresh_Slurry] fs
-                                                    INNER JOIN [" + My.Settings.EvoDB + "].[dbo].[StkItem] s ON s.[Code] = [vItemCode]
-                                                    WHERE [vTrolleyCode] = @1 AND [vItemCode] = @2 AND ([bTrans] = 0 OR [bTrans] IS NULL) ", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_GetSlurryTransferInfo] @1, @2", sqlConn)
                     ' --AND [bManuf] = 1 
                     sqlComm.Parameters.Add(New SqlParameter("@1", trolleyCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", itemCode))
@@ -1007,10 +955,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" INSERT INTO [tbl_WHTPending]
-                                                    ([vItemCode], [vLotNumber], [vWarehouse_From], [vWarehouse_To], [dQtyTransfered], [dtDateTransfered], [vUsername], [vProcess], [vTransDesc], [vStatus])
-                                                    VALUES
-                                                    (@1, @2, @3, @4, @5, GETDATE(), @6, @7, @8, @9) ", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_UI_InsertWhseTransfer] @1, @2, @3, @4, @5, @6, @7, @8, @9", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", lotNum))
                     sqlComm.Parameters.Add(New SqlParameter("@3", whseFrom))
@@ -1035,10 +980,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" INSERT INTO [tbl_WHTFGRequests]
-                                                    ([vItemCode], [vLotNumber], [vWarehouse_From], [vWarehouse_To], [dQtyTransfered], [dtDateTransfered], [vUsername], [vProcess])
-                                                    VALUES
-                                                    (@1, @2, @3, @4, CONVERT(DECIMAL,@5), GETDATE(), @6, @7) ", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_UI_InsertFGWhseTransfer] @1, @2, @3, @4, @5, @6, @7 ", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", lotNum))
                     sqlComm.Parameters.Add(New SqlParameter("@3", whseFrom))
@@ -1062,8 +1004,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [stbl_WHTLog] ([vItemCode], [vLotNumber], [vWarehouse_From], [vWarehouse_To], [dQtyTransfered], [vUsername], [vProcess], [dtDateTransfered])
-                                                                               VALUES (@1, @2, @3, @4, CONVERT(DECIMAL,@5), @6, @7, GETDATE())", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_whtTransferLog] @1, @2, @3, @4, @5, @6, @7", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", lotNum))
                     sqlComm.Parameters.Add(New SqlParameter("@3", whseFrom))
@@ -1113,7 +1054,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [tbl_RTIS_Powder_Prep] SET [bTransfered] = 1, [vUserTrans] = @3, [dtTransDate] = GETDATE()  WHERE [vItemCode] = @1 AND [vLotDesc] = @2", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC  [dbo].[sp_MBL_UpdatePowderTransferred] @1 ,@2 ,@3", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", lotNum))
                     sqlComm.Parameters.Add(New SqlParameter("@3", userName))
@@ -1132,7 +1073,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [tbl_RTIS_Powder_Prep] SET [bRecTrans] = 1, [vUserRec] = @3, [dtRecTrans] = GETDATE()  WHERE [vItemCode] = @1 AND [vLotDesc] = @2 AND [dQty] = @4", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_UpdatePowderTransferredIn] @1,@2,@3,@4", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", lotNum))
                     sqlComm.Parameters.Add(New SqlParameter("@3", userName))
@@ -1152,8 +1093,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [tbl_RTIS_Fresh_Slurry] SET [bTrans] = 1, [dtTrans] = GETDATE() 
-                                                    WHERE [vTrolleyCode] = @1 AND [vItemCode] = @2 AND [vLotNumber] = @3 AND [bManuf] = 1 AND ([bTrans] = 0 OR [bTrans] IS NULL)", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_MBL_UpdateSlurryTransferred] @1,@2,@3", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", trolley))
                     sqlComm.Parameters.Add(New SqlParameter("@2", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@3", lotNum))
@@ -1174,8 +1114,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [tbl_RTIS_MS_Decant] SET [bTransferred] = 1, [vUserTransferred] = @4, [dtTransferred] = GETDATE()
-                                                    WHERE [vTankCode] = @1 AND [vItemCode] = @2 AND [vLotNumber] = @3 AND [iLineID] = (SELECT TOP 1 [iLineID] FROM [tbl_RTIS_MS_Decant] WHERE [vTankCode] = @1 AND [vItemCode] = @2 AND [vLotNumber] = @3 ORDER BY [iLineID] DESC)", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_MBL_UpdateMobileTankTransferred] @1,@2,@3,@4", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", tank))
                     sqlComm.Parameters.Add(New SqlParameter("@2", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@3", lotNum))
@@ -1195,8 +1134,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [tbl_RTIS_MS_Decant] SET [bReceived] = 1, [vUserReceived] = @4, [dtReceived] = GETDATE()
-                                                    WHERE [vTankCode] = @1 AND [vItemCode] = @2 AND [vLotNumber] = @3 AND [iLineID] = (SELECT TOP 1 [iLineID] FROM [tbl_RTIS_MS_Decant] WHERE [vTankCode] = @1 AND [vItemCode] = @2 AND [vLotNumber] = @3 ORDER BY [iLineID] DESC)", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_MBL_UpdateMobileTankReceived] @1,@2,@3,@4", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", tank))
                     sqlComm.Parameters.Add(New SqlParameter("@2", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@3", lotNum))
@@ -1216,9 +1154,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [tbl_RTIS_MS_Main] SET [bTransferred] = 1, [vUserTransferred] = @5, [dtTransferred] = GETDATE()
-	                                                WHERE [vTankType] = @1 AND [vTankCode] = @2 AND [vItemCode] = @3 AND [vLotNumber] = @4
-	                                                AND [iLineID] = (SELECT TOP 1 [iLineID] FROM [tbl_RTIS_MS_Main] WHERE [vTankType] = @1 AND [vTankCode] = @2 AND [vItemCode] = @3 AND [vLotNumber] = @4 ORDER BY [iLineID] DESC)", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_MBL_UpdateLargeTankTransferred] @1,@2,@3,@4,@5", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", tankType))
                     sqlComm.Parameters.Add(New SqlParameter("@2", tank))
                     sqlComm.Parameters.Add(New SqlParameter("@3", itemCode))
@@ -1239,9 +1175,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [tbl_RTIS_MS_Main] SET [bReceived] = 1, [vUserReceived] = @5, [dtReceived] = GETDATE()
-	                                                WHERE [vTankType] = @1 AND [vTankCode] = @2 AND [vItemCode] = @3 AND [vLotNumber] = @4
-	                                                AND [iLineID] = (SELECT TOP 1 [iLineID] FROM [tbl_RTIS_MS_Main] WHERE [vTankType] = @1 AND [vTankCode] = @2 AND [vItemCode] = @3 AND [vLotNumber] = @4 ORDER BY [iLineID] DESC)", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_UpdateLargeTankTransferred] @1,@2,@3,@4,@5", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", tankType))
                     sqlComm.Parameters.Add(New SqlParameter("@2", tank))
                     sqlComm.Parameters.Add(New SqlParameter("@3", itemCode))
@@ -1262,9 +1196,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [tbl_RTIS_Fresh_Slurry] SET [bRecTrans] = 1, [dtRecTrans] = GETDATE(), [vUserRec] = @4
-                                                   WHERE [vTrolleyCode] = @1 AND [vItemCode] = @2 AND [vLotNumber] = @3 
-                                                    AND [iLineID] = (SELECT TOP 1 [iLineID] FROM [tbl_RTIS_Fresh_Slurry] WHERE [vTrolleyCode] = @1 AND [vItemCode] = @2 AND [vLotNumber] = @3 ORDER BY [iLineID] DESC)", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_MBL_setFreshSlurryReceived] @1,@2,@3,@4", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", trolleyCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@3", lot))
@@ -1287,7 +1219,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("  SELECT [StockLink] FROM [StkItem] WHERE [Code] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("  EXEC [dbo].[sp_MBL_ValidatePPItem] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -1319,7 +1251,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("  SELECT [idLotTracking] FROM [_etblLotTracking] WHERE [cLotDescription] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("  EXEC [dbo].[sp_MBL_ValidatePPLot] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", lotNumber))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -1351,7 +1283,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("  SELECT [idLotTracking] FROM [_etblLotTracking] WHERE [cLotDescription] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("  EXEC [dbo].[sp_MBL_GetLotID] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", lotNumber))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -1383,7 +1315,7 @@ Public Class Transfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("  SELECT [StockLink], [Description_1] FROM [StkItem] WHERE [Code] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("  EXEC [dbo].[sp_MBL_GetPPItemInfo] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()

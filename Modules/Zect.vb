@@ -13,7 +13,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [vRMCode], [vRMDesc], '' FROM [tbl_RTIS_Zect_Raws] WHERE [vCatalystCode] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetCatalystRaws] @1", sqlConn)
                     sqlConn.Open()
                     sqlComm.Parameters.Add(New SqlParameter("@1", catalystCode))
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -37,7 +37,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [vRMCode] FROM [tbl_RTIS_Zect_Raws] WHERE [vCatalystCode] = @1 AND [vRMCode] = @2", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetZeckLinkExists] @1,@2", sqlConn)
                     sqlConn.Open()
                     sqlComm.Parameters.Add(New SqlParameter("@1", catalystCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", rmCode))
@@ -62,9 +62,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [iLIneID], [vJobUnq], [vCatalystCode], [vLotNumber], [dQty], [dQtyManuf], [dtStarted], [vZectLine], [bJobRunning] ,[vUserStarted] ,[dtStopped] ,[vUserStopped] ,[dtSReopened] ,[vUserReopened]
-                                                    FROM [tbl_RTIS_Zect_Jobs] WHERE [dtStarted] BETWEEN @1 AND @2
-                                                    ORDER BY [dtStarted] DESC", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetAllZECTJobs] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", dateFrom))
                     sqlComm.Parameters.Add(New SqlParameter("@2", dateTo))
                     sqlConn.Open()
@@ -89,9 +87,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT [vSlurryCode], [vSlurryLot], [dQty], [dtDateRecorded], [vUserRecorded]
-                                                     FROM [tbl_RTIS_Zect_Input]
-                                                     WHERE [iJobID] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GeZECTJobInPuts] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -115,8 +111,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("   SELECT [vPalletNo], [dQty], [vUserRecorded], [dtDateRecorded],ISNULL([bManuf], 0),[dtDateManuf],[vUserManuf]
-                                                      FROM [tbl_RTIS_Zect_OutPut] WHERE [iJobID] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("   EXEC [dbo].[sp_UI_GeZECTJobOutPuts] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -140,9 +135,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("  SELECT zj.[iLIneID], zj.[vJobUnq], zj.[vCatalystCode], zj.[vLotNumber], zj.[dQty], zj.[dQtyManuf], SUM(zo.dQty) , zj.[vCoat], zj.[vZectLine], zj.[bJobRunning],[dtStarted] FROM [tbl_RTIS_Zect_Jobs] zj
-  INNER JOIN [tbl_RTIS_Zect_OutPut] zo ON zo.[iJobID] = zj.[iLIneID]
-  WHERE ISNULL(zo.[bManuf], 0) = 0 GROUP BY zj.[vJobUnq], zj.[vCatalystCode], zj.[vLotNumber], zj.[dQty], zj.[dQtyManuf] , zj.[vCoat], zj.[vZectLine], zj.[bJobRunning],[dtStarted],zj.[iLIneID]", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GeZECTJobsToManufacture] ", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     While sqlReader.Read()
@@ -165,7 +158,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [iLIneID], [vPalletCode], [vPalletNo], [dQty], [dtDateRecorded], [vUserRecorded], '' FROM [tbl_RTIS_Zect_OutPut] WHERE [iJobID] = @1 AND ISNULL([bManuf], 0) = 0", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GeZECTPalletsToManufacture] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -189,8 +182,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("	SELECT SUM([dQty]) AS [Total] FROM [tbl_RTIS_Zect_OutPut]
-                                                    WHERE ISNULL([bManuf], 0) = 0 AND [iJobID] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("	EXEC [dbo].[sp_UI_GetZECTBatchTotal] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -214,7 +206,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("	SELECT [vSlurryCode], [vSlurryLot] FROM [tbl_RTIS_Zect_Input] WHERE [iJobID] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("	EXEC [dbo].[sp_UI_GetZECTRawMaterials] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -240,8 +232,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT DISTINCT [vRMCode] FROM [tbl_RTIS_Zect_Raws]
-                                                    WHERE [vCatalystCode] LIKE @1 AND [vCatalystCode] LIKE @2 AND ([vRMCode] LIKE 'TSP%' OR [vRMCode] LIKE 'VSP%')", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_Zect_GetCatalystSlurries] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", "%" + itemCode + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@2", "%" + coatNum + "%"))
                     sqlConn.Open()
@@ -266,9 +257,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT TOP 1 [iLineID] FROM [tbl_RTIS_Zect]
-                                                    WHERE [vCatalyst] = @1 AND [vItemCode] = @2 AND vLotNumber = @3 AND [vSlurry] = @4 AND [vCoatNum] = @5 AND [vZectLine] = @6 AND (bPrinted = 0 OR bPrinted IS NULL)
-                                                    ORDER BY [iLineID] DESC", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_Zect_GetInsertedLineID] @1,@2,@3,@4,@5,@6", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", catalystCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@3", lotNum))
@@ -297,7 +286,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT [vJobUnq] FROM [tbl_RTIS_Zect_Jobs] WHERE [bJobRunning] = 1 AND [vZectLine] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_Zect_CheckJobOnLine] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", whseCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -326,7 +315,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT [iLIneID] FROM [tbl_RTIS_Zect_Jobs] WHERE [vJobUnq]  = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_Zect_GetJobID] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", unq))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -356,9 +345,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand(" SELECT [Bar_Code], [cSimpleCode], b.[cBinLocationName], [Description_1], [Description_2], [Description_3], [ItemGroup] 
-                                                FROM [StkItem] s
-                                                LEFT JOIN [_btblBINLocation] b ON s.[iBinLocationID] = b.[idBinLocation] WHERE [Code] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_Zect_GetConfigTagInfo] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -386,9 +373,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand(" SELECT [Code], [Bar_Code], [cSimpleCode], b.[cBinLocationName], [Description_1], [Description_2], [Description_3], [ItemGroup] 
-                                                FROM [StkItem] s
-                                                LEFT JOIN [_btblBINLocation] b ON s.[iBinLocationID] = b.[idBinLocation] WHERE [Code] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_Zect_GetLabelInfo] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -416,9 +401,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand(" SELECT [Code], [Bar_Code], [cSimpleCode], b.[cBinLocationName], [Description_1], [Description_2], [Description_3], [ItemGroup] 
-                                                FROM [StkItem] s
-                                                LEFT JOIN [_btblBINLocation] b ON s.[iBinLocationID] = b.[idBinLocation] WHERE [Code] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_Zect_GetLabelInfo_ZectTage] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -446,9 +429,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand(" SELECT [Code], [Bar_Code], [cSimpleCode], b.[cBinLocationName], [Description_1], [Description_2], [Description_3], [ItemGroup] 
-                                                FROM [StkItem] s
-                                                LEFT JOIN [_btblBINLocation] b ON s.[iBinLocationID] = b.[idBinLocation] WHERE [Code] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_Zect_GetReprintInfo_ZectTag] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -476,7 +457,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT [vCatalystCode], [vLotNumber], [vSlurryCode], [vCoat], [bJobRunning] FROM [tbl_RTIS_Zect_Jobs] WHERE [vJobUnq] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_Zect_GetJobOpenInfo] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", unq))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -505,7 +486,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT [bJobRunning] FROM [tbl_RTIS_Zect_Jobs] WHERE [vJobUnq] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_Zect_GetJobOpen] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", unq))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -534,7 +515,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT [bJobRunning] FROM [tbl_RTIS_Zect_Jobs] WHERE [vJobUnq] = @1 AND [vZectLine] = @2", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_Zect_GetLineJobOpen] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", unq))
                     sqlComm.Parameters.Add(New SqlParameter("@2", whse))
                     sqlConn.Open()
@@ -564,7 +545,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT [vCatalystCode], [vLotNumber], [vCoat], [dQty], ISNULL([dQtyManuf], 0) FROM [tbl_RTIS_Zect_Jobs] WHERE [vJobUnq] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_Zect_GetJobInformation] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", unq))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -622,8 +603,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT zo.[vPalletNo], zo.[vPalletCode], zj.[vCatalystCode], zj.[vLotNumber], zo.[dQty] FROM [tbl_RTIS_Zect_OutPut] zo
-	                                                INNER JOIN [tbl_RTIS_Zect_Jobs] zj ON zj.[iLIneID] = zo.[iJobID] WHERE zj.[vJobUnq] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_Zect_GetJobPallets] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", jobNo))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -652,11 +632,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("   SELECT p.[vPermission_Name] FROM [tbl_users] u
-                                                      INNER JOIN [htbl_userRoles] rh ON u.[iRoleID] = rh.[iRole_ID]
-                                                      INNER JOIN [ltbl_userRoleLines] rl ON rl.[iRole_ID] = rh.[iRole_ID]
-                                                      INNER JOIN [ltbl_Module_Perms] p ON p.[iPermission_ID] = rl.[iPermission_ID]
-                                                      WHERE u.[vUser_PIN] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_Zect_GetUerPermissions] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", userPin))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -685,11 +661,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("   SELECT p.[vPermission_Name] FROM [tbl_users] u
-                                                      INNER JOIN [htbl_userRoles] rh ON u.[iRoleID] = rh.[iRole_ID]
-                                                      INNER JOIN [ltbl_userRoleLines] rl ON rl.[iRole_ID] = rh.[iRole_ID]
-                                                      INNER JOIN [ltbl_Module_Perms] p ON p.[iPermission_ID] = rl.[iPermission_ID]
-                                                      WHERE u.[vUser_PIN] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_Zect_GetUerPermissionsReOpen] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", userPin))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -718,7 +690,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT [vCatalystCode], [vLotNumber], [vCoat], [dQty], [dQtyManuf] FROM [tbl_RTIS_Zect_Jobs] WHERE [vJobUnq] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_Zect_GetClosingJobInfo] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", jobNo))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -747,7 +719,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT [vCatalystCode], [vLotNumber], [vCoat], [dQty], [dQtyManuf] FROM [tbl_RTIS_Zect_Jobs] WHERE [vJobUnq] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_Zect_GetReOpenJobInfo] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", jobNo))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -776,7 +748,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT [vCatalystCode], [vLotNumber], [vCoat], [dQty], [dQtyManuf] FROM [tbl_RTIS_Zect_Jobs] WHERE [vJobUnq] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_Zect_GetReprintJobInfo] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", jobNo))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -805,7 +777,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("   SELECT [vLotNumber] froM [tbl_RTIS_Zect_Jobs] WHERE [dtStarted] >= DATEADD(DAY, -@2, GETDATE()) AND [vCatalystCode] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_Zect_GetValidJobLots] @1, @2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", Convert.ToInt32(days)))
                     sqlConn.Open()
@@ -830,7 +802,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("   SELECT [vLotNumber] froM [tbl_RTIS_Zect_Jobs] WHERE [dtStarted] >= DATEADD(DAY, -@2, GETDATE()) AND [vCatalystCode] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_Zect_GetValidReprintJobLots] @1, @2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", Convert.ToInt32(days)))
                     sqlConn.Open()
@@ -855,7 +827,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [vJobUnq] froM [tbl_RTIS_Zect_Jobs] WHERE [vCatalystCode] = @1 AND [vLotNumber] = @2 AND [vCoat] = @3 AND [vZectLine] = @4", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_Zect_GetJobNumber] @1,@2,@3,@4", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", lot))
                     sqlComm.Parameters.Add(New SqlParameter("@3", coat))
@@ -882,7 +854,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("SELECT [vJobUnq] froM [tbl_RTIS_Zect_Jobs] WHERE [vCatalystCode] = @1 AND [vLotNumber] = @2 AND [vCoat] = @3 AND [vZectLine] = @4", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_Zect_GetReprintJobNumber] @1,@2,@3,@4", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", lot))
                     sqlComm.Parameters.Add(New SqlParameter("@3", coat))
@@ -909,9 +881,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand(" SELECT [Code], [Bar_Code], [cSimpleCode], b.[cBinLocationName], [Description_1], [Description_2], [Description_3], [ItemGroup] 
-                                                FROM [StkItem] s
-                                                LEFT JOIN [_btblBINLocation] b ON s.[iBinLocationID] = b.[idBinLocation] WHERE [Code] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_Zect_GetreOpenLabelInfo] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -939,9 +909,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand(" SELECT [Code], [Bar_Code], [cSimpleCode], b.[cBinLocationName], [Description_1], [Description_2], [Description_3], [ItemGroup] 
-                                                FROM [StkItem] s
-                                                LEFT JOIN [_btblBINLocation] b ON s.[iBinLocationID] = b.[idBinLocation] WHERE [Code] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_Zect_GetReprintLabelInfo] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -973,9 +941,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT [vCatalystCode]
-                                                FROM [tbl_RTIS_Zect_Jobs]
-                                                WHERE [vJobUnq] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC  [dbo].[sp_MBL_GetJobOutPutItem] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", jobNo))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -1003,7 +969,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" SELECT [vRMCode] FROM [tbl_RTIS_Zect_Raws] WHERE [vCatalystCode] = @1 AND [vRMCode] = @2", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_MBL_checkItemRM] @1, @2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", catalyst))
                     sqlComm.Parameters.Add(New SqlParameter("@2", rm))
                     sqlConn.Open()
@@ -1036,8 +1002,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [tbl_RTIS_Zect_Jobs] ([vJobUnq], [vCatalystCode], [vLotNumber], [vSlurryCode], [vSlurryLot], [dQty], [vCoat], [vZectLine], [vUserStarted], [dtStarted], [bJobRunning], [vScanSheet])
-                                                                               VALUES (@1, @2, @3, @4, @5, @6, @7, @8, @9, GETDATE(), 1, @10)", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC  [dbo].[sp_Zect_OpenJobOnLine] @1,@2,@3,@4,@5,@6,@7,@8,@9,@10", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", unq))
                     sqlComm.Parameters.Add(New SqlParameter("@2", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@3", itemLot))
@@ -1062,8 +1027,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [tbl_RTIS_Zect_Input] ([iJobID], [vSlurryCode], [vSlurryLot], [dQty], [dtDateRecorded], [vUserRecorded])
-                                                   VALUES (@1, @2, @3, @4, GETDATE(), @5)", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_Zect_LogRM] @1,@2,@3,@4,@5", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", lineID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@3", itemLot))
@@ -1084,8 +1048,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [tbl_RTIS_Zect] ([vCatalyst], [vItemCode], [vItemDesc], [vLotNumber], [vCoatNum], [vSlurry], [dPalletQty], [vZectLine], [dtDateEntered], [vUserEntered])
-                                                                               VALUES (@1, @2, @3, @4, @5, @6, @7, @8, GETDATE(), @9)", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_Zect_ManufacturePalletUnprinted] @1,@2,@3,@4,@5,@6,@7,@8,@9", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", baseCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", itemCode))
                     sqlComm.Parameters.Add(New SqlParameter("@3", itemDesc))
@@ -1109,8 +1072,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [tbl_RTIS_Zect_OutPut] ([iJobID], [vPalletCode], [vPalletNo], [dQty], [vUserRecorded], [dtDateRecorded])
-                                                                               VALUES (@1, @2, @3, @4, @5, GETDATE())", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_Zect_AddNewPallet] @1,@2,@3,@4,@5", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", jobID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", palletCode))
                     sqlComm.Parameters.Add(New SqlParameter("@3", palletNo))
@@ -1130,8 +1092,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("INSERT INTO [tbl_RTIS_Zect_Raws] ([vCatalystCode], [vRMCode], [vRMDesc], [vUserAdded], [dtDateAdded])
-                                                   VALUES (@1, @2, @3, @4, GETDATE())", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_InsertRMLink] @1,@2,@3,@4", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", catalystCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", rmCode))
                     sqlComm.Parameters.Add(New SqlParameter("@3", rmDesc))
@@ -1152,8 +1113,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [tbl_RTIS_Zect_Jobs] SET [dQtyManuf] = ISNULL([dQtyManuf], 0) + @2
-                                                    WHERE [vJobUnq] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_ZECT_UpdateManufacturedQty] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", jobNo))
                     sqlComm.Parameters.Add(New SqlParameter("@2", qty.Replace(",", ".")))
                     sqlConn.Open()
@@ -1170,8 +1130,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [tbl_RTIS_Zect_Jobs] SET [bJobRunning] =0, [vUserStopped] = @2, [dtStopped] = GETDATE()
-                                                    WHERE [vJobUnq] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_ZECT_UpdateJobClosed] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", jobNo))
                     sqlComm.Parameters.Add(New SqlParameter("@2", username))
                     sqlConn.Open()
@@ -1188,8 +1147,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [tbl_RTIS_Zect_Jobs] SET [bJobRunning] =1, [vUserReopened] = @2, [dtSReopened] = GETDATE()
-                                                    WHERE [vJobUnq] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_ZECT_UpdateJobReOpened] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", jobNo))
                     sqlComm.Parameters.Add(New SqlParameter("@2", username))
                     sqlConn.Open()
@@ -1206,8 +1164,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [tbl_RTIS_Zect] SET [bTrans] = 1, [dtTrans]= GETDATE(), [vUserTrans] = @2
-                                                    WHERE [iLineID] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_MBL_UpdateZectTransferred] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", lineID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", userName))
                     sqlConn.Open()
@@ -1242,8 +1199,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [tbl_RTIS_Zect] SET [bPrinted] = 1, [dtPrinted] = GETDATE(), [vUserPrinted] = @2
-                                                   WHERE [iLineID] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_Zect_UpdateZectLine_Printed] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", iLineID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", userPrinted))
                     sqlConn.Open()
@@ -1260,8 +1216,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" UPDATE [tbl_RTIS_Zect_OutPut] SET [bManuf] = 1, [dtDateManuf] = GETDATE(), [vUserManuf] = @3
-                                                    WHERE [iLIneID] = @1 AND [iJobID] = @2", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_UI_UpdatePalletManufactured] @1,@2,@3", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", lineID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", jobID))
                     sqlComm.Parameters.Add(New SqlParameter("@3", userName))
@@ -1279,7 +1234,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [tbl_RTIS_Zect_OutPut] SET [bManuf] = '1', [dtDateManuf] = GETDATE(), [vUserManuf] = @2 WHERE [iJobID] = @1 AND ISNULL( [bManuf] , 0) = 0", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_setZECTBatchManufactured] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", UserName))
                     sqlConn.Open()
@@ -1297,7 +1252,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("UPDATE [tbl_RTIS_Zect_OutPut] SET [bManuf] = '1', [dtManufDateManual] = GETDATE(), [vUserManufManual] = @2 WHERE [iJobID] = @1 AND ISNULL( [bManuf] , 0) = 0", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_setZECTBatchManufacturedManual] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", headerID))
                     sqlComm.Parameters.Add(New SqlParameter("@2", UserName))
                     sqlConn.Open()
@@ -1336,7 +1291,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("DELETE FROM [tbl_RTIS_Zect_Raws] WHERE [vCatalystCode] = @1 AND [vRMCode] = @2", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_DeleteRMLink] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", catalystCode))
                     sqlComm.Parameters.Add(New SqlParameter("@2", rmCode))
                     sqlConn.Open()
@@ -1358,8 +1313,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("Select [Code],[Description_1],[Description_2], '' FROM [StkItem]
-                     WHERE [Code] Like '18461%' OR ([Code] LIKE 'V%' AND [Code] NOT LIKE 'VS%')", sqlConn)
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_GetAllCatalysts] ", sqlConn)
 
 
                     'Select Case [ucIICoatStage],[Description_1],[Description_2], '' FROM [StkItem]
@@ -1387,8 +1341,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand(" SELECT [Code],[Description_1], '' FROM [StkItem]
-                                                    WHERE [ItemGroup] LIKE '%007%' OR [ItemGroup] LIKE '%011%' OR [ItemGroup] LIKE '%005%'", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_UI_GetAllCatalystRMs]", sqlConn)
                     'SELECT [Code],[Description_1], '' FROM [StkItem]
                     'WHERE [ItemGroup] LIKE '%007%' OR [ItemGroup] LIKE '%011%'
                     sqlConn.Open()
@@ -1414,7 +1367,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("   SELECT [Code] FROM [StkItem] WHERE [ucIICoatStage] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("  EXEC [dbo].[sp_Zect_GetMFCode] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", catalyst))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -1438,7 +1391,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("   SELECT [ucIICoatStage] FROM [StkItem] WHERE [Code] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_Zect_GetItemCodeFromMFCode] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", catalyst))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -1463,7 +1416,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("   SELECT [Code] FROM [StkItem] WHERE [Code] LIKE @1 AND [Code] LIKE @2", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_Zect_GetItemCode] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", "%" + catalyst + "%"))
                     sqlComm.Parameters.Add(New SqlParameter("@2", "%" + coatNum + "%"))
                     sqlConn.Open()
@@ -1489,39 +1442,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    'Dim sqlComm As New SqlCommand("SELECT DISTINCT 'Large Tank', rl.vTankCode, l.[cLotDescription], 'TNK', rl.[dWetWeight], rl.[dDryWeight] FROM [_etblLotTrackingQty] lq
-                    '                                    INNER JOIN [_etblLotTracking] l ON l.[idLotTracking] = lq.[iLotTrackingID] 
-                    '                                    INNER JOIN [_etblLotStatus] ls ON l.[iLotStatusID] = ls.[idLotStatus]
-                    'INNER JOIN [WhseMst] w ON w.[WhseLink] = lq.[iWarehouseID]
-                    '                                    INNER JOIN [StkItem] s ON s.[StockLink] = l.[iStockID]
-                    '                                    INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Main] rl ON rl.[vLotNumber] COLLATE Latin1_General_CI_AS = l.[cLotDescription] AND rl.[vItemCode] = s.[Code]
-                    'WHERE s.[Code] = @1 AND w.[Code] = @2 AND rl.[vTankType] = 'TNK'  AND lq.[fQtyOnHand]  <> 0 AND rl.[bTransferred] = 1 AND ISNULL(rl.[bReceived], 0)  = 0 AND rl.[dSolidity] IS NOT NULL 
-                    'UNION
-                    'SELECT DISTINCT 'Mobile Tank', rd.vTankCode, l.[cLotDescription], 'MTNK', rd.[dFinalWetWeight], rd.[dDryWeight] FROM [_etblLotTrackingQty] lq
-                    '                                    INNER JOIN [_etblLotTracking] l ON l.[idLotTracking] = lq.[iLotTrackingID] 
-                    '                                    INNER JOIN [_etblLotStatus] ls ON l.[iLotStatusID] = ls.[idLotStatus]
-                    'INNER JOIN [WhseMst] w ON w.[WhseLink] = lq.[iWarehouseID]
-                    '                                    INNER JOIN [StkItem] s ON s.[StockLink] = l.[iStockID]
-                    '                                    INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Main] rl ON rl.[vLotNumber] COLLATE Latin1_General_CI_AS = l.[cLotDescription] AND rl.[vItemCode] = s.[Code]
-                    'INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Decant] rd ON rd.[iHeaderID] = rl.[iLineID] 
-                    'WHERE s.[Code] = @1 AND w.[Code] = @2 AND rl.[vTankType] = 'BTNK'  AND lq.[fQtyOnHand]  <> 0 AND rd.[bTransferred] = 1 AND ISNULL(rd.[bReceived], 0)  = 0 AND rd.[dSolidity] IS NOT NULL ", sqlConn)
-
-                    Dim sqlComm As New SqlCommand(" SELECT DISTINCT 'Large Tank', rl.vTankCode, l.[cLotDescription], 'TNK', rl.[dWetWeight], rl.[dDryWeight] FROM [_etblLotTrackingQty] lq
-                                            INNER JOIN [_etblLotTracking] l ON l.[idLotTracking] = lq.[iLotTrackingID] 
-                                            INNER JOIN [_etblLotStatus] ls ON l.[iLotStatusID] = ls.[idLotStatus]
-                                            INNER JOIN [WhseMst] w ON w.[WhseLink] = lq.[iWarehouseID]
-                                            INNER JOIN [StkItem] s ON s.[StockLink] = l.[iStockID]
-                                            INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Main] rl ON rl.[vLotNumber] COLLATE Latin1_General_CI_AS = l.[cLotDescription] AND rl.[vItemCode] = s.[Code]
-                                            WHERE s.[Code] = @1 AND w.[Code] = @2 AND rl.[vTankType] = 'TNK'  AND lq.[fQtyOnHand]  > 0 AND rl.[bTransferred] = 1 AND rl.[dSolidity] >0 
-                                            UNION
-                                            SELECT DISTINCT 'Mobile Tank', rd.vTankCode, l.[cLotDescription], 'MTNK', rd.[dFinalWetWeight], rd.[dDryWeight] FROM [_etblLotTrackingQty] lq
-                                            INNER JOIN [_etblLotTracking] l ON l.[idLotTracking] = lq.[iLotTrackingID] 
-                                            INNER JOIN [_etblLotStatus] ls ON l.[iLotStatusID] = ls.[idLotStatus]
-                                            INNER JOIN [WhseMst] w ON w.[WhseLink] = lq.[iWarehouseID]
-                                            INNER JOIN [StkItem] s ON s.[StockLink] = l.[iStockID]
-                                            INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Main] rl ON rl.[vLotNumber] COLLATE Latin1_General_CI_AS = l.[cLotDescription] AND rl.[vItemCode] = s.[Code]
-                                            INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Decant] rd ON rd.[iHeaderID] = rl.[iLineID] 
-                                            WHERE s.[Code] = @1 AND w.[Code] = @2 AND rl.[vTankType] = 'BTNK'  AND lq.[fQtyOnHand]  > 0 AND rd.[bTransferred] = 1 AND rd.[dSolidity] >0", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_Zect_GetItemLotsFromTanks] @1,@2", sqlConn)
 
                     sqlComm.Parameters.Add(New SqlParameter("@1", code))
                     sqlComm.Parameters.Add(New SqlParameter("@2", whse))
@@ -1547,19 +1468,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("   SELECT m.[iLineID], m.[vTankType] + '_' + m.[vTankCode], m.[vItemCode], m.[vDescription], m.[vLotNumber], ISNULL( COUNT( s.[iLineID]), 0)
-                                                      FROM [tbl_RTIS_MS_Main] m
-                                                      LEFT JOIN [tbl_RTIS_MS_Slurries] s ON s.[iHeaderID] = m.[iLineID]
-                                                      WHERE m.[vTankType] = 'TNK' AND m.[vItemCode] = @1 AND m.[vLotNumber] = @2
-                                                      GROUP BY m.[iLineID], m.[vTankType] , m.[vTankCode], m.[vItemCode], m.[vDescription], m.[vLotNumber] 													  
-                                                      UNION
-                                                      SELECT 0, 'MTNK_' + d.[vTankCode], d.[vItemCode], m.[vDescription], d.[vLotNumber], ISNULL( COUNT( s.[iLineID]), 0) FROM [tbl_RTIS_MS_Decant] d
-                                                      INNER JOIN [tbl_RTIS_MS_Main] m ON m.[iLineID] = d.[iHeaderID]
-                                                      INNER JOIN [tbl_RTIS_MS_Slurries] s ON m.[iLineID] = s.[iHeaderID]
-                                                      WHERE d.[vItemCode] = @1 AND d.[vLotNumber] = @2
-                                                      GROUP BY d.[vTankCode], d.[vItemCode], m.[vDescription], d.[vLotNumber] ", sqlConn)
-
-
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_Zect_GetSlurryTanks] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", code))
                     sqlComm.Parameters.Add(New SqlParameter("@2", lot))
                     sqlConn.Open()
@@ -1585,8 +1494,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand(" SELECT [Code] FROM [StkItem]
-                                                    WHERE [Code] LIKE @1", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_Zect_GetReOpenCatalystCoats] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -1610,8 +1518,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand(" SELECT [Code] FROM [StkItem]
-                                                    WHERE [Code] LIKE @1", sqlConn)
+                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_ZZect_GetReOpenCatalystCoats] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -1635,7 +1542,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("  SELECT [Description_1] FROM [StkItem] WHERE [Code] = @1", sqlConn)
+                    Dim sqlComm As New SqlCommand("  EXEC [dbo].[sp_Zect_GetItemDescription] @1", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", itemCode))
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
@@ -1666,24 +1573,7 @@ Public Class Zect
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(EvoString)
-                    Dim sqlComm As New SqlCommand("
-                                            SELECT DISTINCT 'Large Tank', rl.vTankCode, l.[cLotDescription], 'TNK', rl.[dWetWeight], rl.[dDryWeight] FROM [_etblLotTrackingQty] lq
-                                            INNER JOIN [_etblLotTracking] l ON l.[idLotTracking] = lq.[iLotTrackingID] 
-                                            INNER JOIN [_etblLotStatus] ls ON l.[iLotStatusID] = ls.[idLotStatus]
-                                            INNER JOIN [WhseMst] w ON w.[WhseLink] = lq.[iWarehouseID]
-                                            INNER JOIN [StkItem] s ON s.[StockLink] = l.[iStockID]
-                                            INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Main] rl ON rl.[vLotNumber] COLLATE Latin1_General_CI_AS = l.[cLotDescription] AND rl.[vItemCode] = s.[Code]
-                                            WHERE s.[Code] = @1 AND w.[Code] = @2 AND rl.[vTankType] = 'TNK'  AND lq.[fQtyOnHand]  > 0 AND rl.[bTransferred] = 1 AND rl.[dSolidity] >0
-                                            UNION
-                                            SELECT DISTINCT 'Mobile Tank', rd.vTankCode, l.[cLotDescription], 'MTNK', rd.[dFinalWetWeight], rd.[dDryWeight] FROM [_etblLotTrackingQty] lq
-                                            INNER JOIN [_etblLotTracking] l ON l.[idLotTracking] = lq.[iLotTrackingID] 
-                                            INNER JOIN [_etblLotStatus] ls ON l.[iLotStatusID] = ls.[idLotStatus]
-                                            INNER JOIN [WhseMst] w ON w.[WhseLink] = lq.[iWarehouseID]
-                                            INNER JOIN [StkItem] s ON s.[StockLink] = l.[iStockID]
-                                            INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Main] rl ON rl.[vLotNumber] COLLATE Latin1_General_CI_AS = l.[cLotDescription] AND rl.[vItemCode] = s.[Code]
-                                            INNER JOIN [" + My.Settings.RTDB + "].[dbo].[tbl_RTIS_MS_Decant] rd ON rd.[iHeaderID] = rl.[iLineID] 
-                                            WHERE s.[Code] = @1 AND w.[Code] = @2 AND rl.[vTankType] = 'BTNK'  AND lq.[fQtyOnHand]  > 0 AND rd.[bTransferred] = 1  AND rd.[dSolidity] >0", sqlConn)
-
+                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_Zect_GetItemLotsFromTank_AddSlurry] @1,@2", sqlConn)
                     sqlComm.Parameters.Add(New SqlParameter("@1", code))
                     sqlComm.Parameters.Add(New SqlParameter("@2", whse))
                     sqlConn.Open()

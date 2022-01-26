@@ -116,7 +116,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Reltech")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("sa")>  _
         Public Property RTUser() As String
             Get
                 Return CType(Me("RTUser"),String)
@@ -128,7 +128,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Reltech")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("sa")>  _
         Public Property EvoUser() As String
             Get
                 Return CType(Me("EvoUser"),String)
@@ -140,7 +140,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("Reltech")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("sa")>  _
         Public Property EvoComUser() As String
             Get
                 Return CType(Me("EvoComUser"),String)
@@ -152,7 +152,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("R3lt3ch!4")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("62017")>  _
         Public Property EvoComPassword() As String
             Get
                 Return CType(Me("EvoComPassword"),String)
@@ -164,7 +164,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("R3lt3ch!4")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("62017")>  _
         Public Property RTPassword() As String
             Get
                 Return CType(Me("RTPassword"),String)
@@ -176,7 +176,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("R3lt3ch!4")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("62017")>  _
         Public Property EvoPassword() As String
             Get
                 Return CType(Me("EvoPassword"),String)
@@ -188,7 +188,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("CATALER2")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("LAPTOP-BURSESPP")>  _
         Public Property RTServer() As String
             Get
                 Return CType(Me("RTServer"),String)
@@ -200,7 +200,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("CATALER2")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("LAPTOP-BURSESPP")>  _
         Public Property EvoServer() As String
             Get
                 Return CType(Me("EvoServer"),String)
@@ -212,7 +212,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("CATALER2")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("LAPTOP-BURSESPP")>  _
         Public Property EvoComServer() As String
             Get
                 Return CType(Me("EvoComServer"),String)
