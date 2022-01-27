@@ -12,10 +12,10 @@
       <Value Profile="(Default)">EvolutionCommon</Value>
     </Setting>
     <Setting Name="RTDB" Type="System.String" Scope="User">
-      <Value Profile="(Default)">CAT_RTIS</Value>
+      <Value Profile="(Default)">CAT_RTIS_Test</Value>
     </Setting>
     <Setting Name="EvoDB" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Cataler_SCN</Value>
+      <Value Profile="(Default)">Cataler_SCN_Test</Value>
     </Setting>
     <Setting Name="RTUser" Type="System.String" Scope="User">
       <Value Profile="(Default)">Reltech</Value>
