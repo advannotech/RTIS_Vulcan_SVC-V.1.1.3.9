@@ -47,7 +47,7 @@ Public Class WhseTransfers
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand(" EXEC [dbo].[sp_UI_getWhtProcesses] ", sqlConn)
+                    Dim sqlComm As New SqlCommand("SELECT [vDisplayName], [vProcName] FROM [tbl_ProcNames]", sqlConn)
                     sqlConn.Open()
                     Dim sqlReader As SqlDataReader = sqlComm.ExecuteReader()
                     sqlReader.Read()
