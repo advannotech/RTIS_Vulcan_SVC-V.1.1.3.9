@@ -4797,28 +4797,32 @@ IF (OBJECT_ID('[dbo].[sp_UI_UpdateUser') IS NOT NULL)
 GO
 CREATE PROC [dbo].[sp_UI_UpdateUser]
 (
-@iUser_ID int,
-@vUser_Name varchar(200), 
-@vUser_Username varchar(200),
-@vUser_PIN varchar(200), 
-@vUser_Password varchar(50),
-@dUser_Modified datetime, 
-@iRoleID int,
-@bHasAgent bit, 
-@vAgentName varchar(255)
+@1 int,
+@2 varchar(max),
+@3 varchar(max),
+@4 varchar(max),
+@5 varchar(max),
+@6 int,
+@7 bit,
+@8 varchar(max)
+
 )
 AS
-UPDATE [tbl_users] SET 
- [vUser_Name] = @vUser_Name
-,[vUser_Username] = @vUser_Username
-,[vUser_PIN] = @vUser_PIN
-,[vUser_Password] = @vUser_Password
+UPDATE [tbl_users] SET [vUser_Name] = @2
+,[vUser_Username] = @3
+,[vUser_PIN] = @4
+,[vUser_Password] = @5
 ,[dUser_Modified] = GETDATE()
-,[iRoleID] = @iRoleID
-,[bHasAgent] = @bHasAgent
-,[vAgentName] = @vAgentName
-WHERE [iUser_ID] = @iUser_ID
+,[iRoleID] = @6
+,[bHasAgent] = @7
+,[vAgentName] = @8
+WHERE [iUser_ID] = @1
 GO
+
+
+
+
+
 
 
 IF (OBJECT_ID('[dbo].[sp_UI_ActivateUser') IS NOT NULL)

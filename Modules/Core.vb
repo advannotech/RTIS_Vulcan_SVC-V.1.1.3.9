@@ -1018,15 +1018,23 @@ Public Class User_Management
                 Try
                     Dim ReturnData As String = ""
                     Dim sqlConn As New SqlConnection(RTString)
-                    Dim sqlComm As New SqlCommand("EXEC [dbo].[sp_UI_UpdateUser]@iUser_ID, @vUser_Name, @vUser_Username, @vUser_PIN, @vUser_Password, GETDATE(), @iRoleID,@bHasAgent,@vAgentName", sqlConn)
-                    sqlComm.Parameters.Add(New SqlParameter("@iUser_ID", userID))
-                    sqlComm.Parameters.Add(New SqlParameter("@vUser_Name", name))
-                    sqlComm.Parameters.Add(New SqlParameter("@vUser_Username", userName))
-                    sqlComm.Parameters.Add(New SqlParameter("@vUser_PIN", pin))
-                    sqlComm.Parameters.Add(New SqlParameter("@vUser_Password", password))
-                    sqlComm.Parameters.Add(New SqlParameter("@iRoleID", roleID))
-                    sqlComm.Parameters.Add(New SqlParameter("@bHasAgent", hasAgent))
-                    sqlComm.Parameters.Add(New SqlParameter("@vAgentName", evoAgent))
+                    Dim sqlComm As New SqlCommand("UPDATE [tbl_users] SET [vUser_Name] = @2
+                                                                                ,[vUser_Username] = @3
+                                                                                ,[vUser_PIN] = @4
+                                                                                ,[vUser_Password] = @5
+                                                                                ,[dUser_Modified] = GETDATE()
+                                                                                ,[iRoleID] = @6
+                                                                                ,[bHasAgent] = @7
+                                                                                ,[vAgentName] = @8
+                                                                                WHERE [iUser_ID] = @1", sqlConn)
+                    sqlComm.Parameters.Add(New SqlParameter("@1", userID))
+                    sqlComm.Parameters.Add(New SqlParameter("@2", name))
+                    sqlComm.Parameters.Add(New SqlParameter("@3", userName))
+                    sqlComm.Parameters.Add(New SqlParameter("@4", pin))
+                    sqlComm.Parameters.Add(New SqlParameter("@5", password))
+                    sqlComm.Parameters.Add(New SqlParameter("@6", roleID))
+                    sqlComm.Parameters.Add(New SqlParameter("@7", hasAgent))
+                    sqlComm.Parameters.Add(New SqlParameter("@8", evoAgent))
                     sqlConn.Open()
                     sqlComm.ExecuteNonQuery()
                     sqlComm.Dispose()
